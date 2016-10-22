@@ -16,27 +16,28 @@ namespace Cygni.DataTypes
 		BlockEx body;
 		string[] parameters;
 		NestedScope funcScope;
+		int nArgs;
 		public Function(string name, string[] parameters, BlockEx body, NestedScope funcScope)
 		{
 			this.name = name;
 			this.parameters = parameters;
 			this.body = body;
 			this.funcScope = funcScope;
+			this.nArgs = parameters.Length;
 		}
 		
-		public Function Update(IList< DynValue> arguments)
+		public Function Update(DynValue[] arguments)
 		{
-			int n = parameters.Length;
-			if (n != arguments.Count)
-				throw RuntimeException.BadArgsNum(name, n);
+			if (nArgs != arguments.Length)
+				throw RuntimeException.BadArgsNum(name, nArgs);
 			var newScope = new NestedScope(funcScope.Parent);
 			
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < nArgs; i++)
 				newScope[parameters[i]] = arguments[i];
 			
 			return new Function(name, parameters, body, newScope);
 		}
-		
+
 		public DynValue Invoke()
 		{
 			var result = body.Eval(funcScope);
@@ -44,6 +45,7 @@ namespace Cygni.DataTypes
 				return result.Value as DynValue;
 			return result;
 		}
+
 		public override string ToString()
 		{
 			return "(Function)";

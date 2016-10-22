@@ -64,6 +64,7 @@ namespace Cygni.Settings
 			{ "inf",double.PositiveInfinity },
 			{ "realmax",double.MaxValue },
 			{ "realmin",double.MinValue },
+			{"warranty",warranty},
 		};
 		public static bool Quiet = false;
 		//quiet output
@@ -80,15 +81,13 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 ";
 		public static void SetBuiltInFunctions(IScope GlobalScope)
 		{
-			foreach (var element in BuiltInFunctions) {
+			foreach (var element in BuiltInFunctions) 
 				GlobalScope[element.Key] = DynValue.FromNativeFunction(new  NativeFunction(element.Value));
-			}
 		}
 		public static void SetBuiltInVariables(IScope GlobalScope)
 		{
-			foreach (var element in BuiltInVariables) {
+			foreach (var element in BuiltInVariables) 
 				GlobalScope[element.Key] = element.Value;
-			}
 		}
 		public static void BuiltIn(string name, Func<DynValue[],DynValue> f)
 		{

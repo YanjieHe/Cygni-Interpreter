@@ -113,11 +113,11 @@ namespace Cygni.AST
 		{
 			return new Constant(DynValue.FromString(value));
 		}
-		
+
 		public static readonly ASTNode True = new Constant(DynValue.True);
 		public static readonly ASTNode False = new Constant(DynValue.False);
 		
-		public static BlockEx Block(List<ASTNode> expressions)
+		public static BlockEx Block(ICollection<ASTNode> expressions)
 		{
 			return new BlockEx(expressions);
 		}
@@ -161,7 +161,7 @@ namespace Cygni.AST
 		{
 			return new IndexEx(list, indexes);
 		}
-		public static ASTNode Invoke(ASTNode function, List<ASTNode>arguments)
+		public static ASTNode Invoke(ASTNode function, ICollection<ASTNode>arguments)
 		{
 			return new InvokeEx(function, arguments);
 		}

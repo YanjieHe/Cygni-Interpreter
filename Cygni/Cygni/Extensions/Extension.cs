@@ -15,18 +15,16 @@ namespace Cygni.Extensions
 		{
 			int n = list.Count;
 			var array = new R[n];
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < n; i++) 
 				array[i] = converter(list[i]);
-			}
 			return array;
 		}
 		public static R[] SkipMap<T,R>(this IList<T>list, int count, Func<T,R> converter)
 		{
 			int n = list.Count - count;
 			var array = new R[n];
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < n; i++) 
 				array[i] = converter(list[i + count]);
-			}
 			return array;
 		}
 		public static DynList ToDynList<T>(this IEnumerable<T> collection, Func<T,DynValue> converter)

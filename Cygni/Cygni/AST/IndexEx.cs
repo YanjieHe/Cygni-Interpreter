@@ -14,12 +14,12 @@ namespace Cygni.AST
 	{
 		public override NodeType type{ get { return NodeType.Index; } }
 		internal ASTNode list{  get; private set; }
-		internal List<ASTNode> indexes{  get; private set; }
-		public IndexEx(ASTNode list, List<ASTNode> indexes)
+		internal ASTNode[] indexes{  get; private set; }
+		public IndexEx(ASTNode list, ICollection<ASTNode> indexes)
 		{
 			this.list = list;
-			indexes.TrimExcess();
-			this.indexes = indexes;
+			this.indexes = new ASTNode[indexes.Count];
+			indexes.CopyTo (this.indexes, 0);
 		}
 		public override DynValue Eval(IScope scope)
 		{

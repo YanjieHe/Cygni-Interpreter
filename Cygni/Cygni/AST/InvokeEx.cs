@@ -13,22 +13,24 @@ namespace Cygni.AST
 	public class InvokeEx:ASTNode
 	{
 		ASTNode func;
-		List<ASTNode> arguments;
+		ASTNode[] arguments;
+		int nArgs;
 		public override  NodeType type { get { return NodeType.Invoke; } }
 		
-		public InvokeEx(ASTNode func, List<ASTNode>arguments)
+		public InvokeEx(ASTNode func, ICollection<ASTNode>arguments)
 		{
 			this.func = func;
-			arguments.TrimExcess();
-			this.arguments = arguments;
+			this.arguments = new ASTNode[arguments.Count];
+			nArgs = arguments.Count;
+			arguments.CopyTo (this.arguments, 0);
 		}
 		
 		public override DynValue Eval(IScope scope)
 		{
 			var f = func.Eval(scope);
-			var args = new DynValue[arguments.Count];
+			var args = new DynValue[nArgs];
 			
-			for (int i = 0; i < args.Length; i++)
+			for (int i = 0; i < nArgs; i++)
 				args[i] = arguments[i].Eval(scope);
 			
 			switch (f.type) {
@@ -44,7 +46,7 @@ namespace Cygni.AST
 		}
 		public override string ToString()
 		{
-			return string.Concat(func, "(", string.Join(", ", arguments), ")");
+			return string.Concat(func, "(", string.Join(", ", arguments.Select(i=>i.ToString())), ")");
 		}
 	}
 }

@@ -28,15 +28,16 @@ namespace Cygni.AST
 		}
 		public override DynValue Eval(IScope scope)
 		{
+			
 			var result = DynValue.Null;
 			int istart = (int)start.Eval(scope).AsNumber();
 			int iend = (int)end.Eval(scope).AsNumber();
 			
 			if (step == null) {
 				/* for i = start,end { ... } */
-				
-				
 				var iter_var = new DynValue(DataType.Number, (double)istart);
+				/* Please do not try to modify the iteration variable during the loop,
+				 * it may cause unpredictable error */
 				scope[iterator] = iter_var;
 				
 				for (int i = istart; i < iend; i++, iter_var.Value = (double)i) {
