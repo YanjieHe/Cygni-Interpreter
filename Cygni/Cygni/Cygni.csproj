@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{3A9D907A-3830-44BF-88DC-CC12656620FF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Cygni</RootNamespace>
+    <AssemblyName>Cygni</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Lexical\Lexer.cs" />
+    <Compile Include="Lexical\Tokens\NumToken.cs" />
+    <Compile Include="Lexical\Tokens\StrToken.cs" />
+    <Compile Include="Lexical\Tokens\Tag.cs" />
+    <Compile Include="Lexical\Tokens\Token.cs" />
+    <Compile Include="Lexical\Tokens\Word.cs" />
+    <Compile Include="Errors\InterpreterException.cs" />
+    <Compile Include="Errors\LexicalException.cs" />
+    <Compile Include="Errors\RuntimeException.cs" />
+    <Compile Include="Errors\SyntaxException.cs" />
+    <Compile Include="AST\ASTNode.cs" />
+    <Compile Include="AST\BasicScope.cs" />
+    <Compile Include="AST\BinaryEx.cs" />
+    <Compile Include="AST\BlockEx.cs" />
+    <Compile Include="AST\CommandEx.cs" />
+    <Compile Include="AST\Constant.cs" />
+    <Compile Include="AST\DefClassEx.cs" />
+    <Compile Include="AST\DefFuncEx.cs" />
+    <Compile Include="AST\DotEx.cs" />
+    <Compile Include="AST\ForEx.cs" />
+    <Compile Include="AST\IScope.cs" />
+    <Compile Include="AST\IfEx.cs" />
+    <Compile Include="AST\IndexEx.cs" />
+    <Compile Include="AST\InvokeEx.cs" />
+    <Compile Include="AST\ListInitEx.cs" />
+    <Compile Include="AST\NameEx.cs" />
+    <Compile Include="AST\NestedScope.cs" />
+    <Compile Include="AST\NodeType.cs" />
+    <Compile Include="AST\Parser.cs" />
+    <Compile Include="AST\ReturnEx.cs" />
+    <Compile Include="AST\UnaryEx.cs" />
+    <Compile Include="AST\WhileEx.cs" />
+    <Compile Include="DataTypes\ClassInfo.cs" />
+    <Compile Include="DataTypes\DataType.cs" />
+    <Compile Include="DataTypes\DynHashTable.cs" />
+    <Compile Include="DataTypes\DynList.cs" />
+    <Compile Include="DataTypes\DynValue.cs" />
+    <Compile Include="DataTypes\Function.cs" />
+    <Compile Include="DataTypes\IComputable.cs" />
+    <Compile Include="DataTypes\IDot.cs" />
+    <Compile Include="DataTypes\IIndexable.cs" />
+    <Compile Include="DataTypes\NativeFunction.cs" />
+    <Compile Include="DataTypes\Structure.cs" />
+    <Compile Include="Executors\CodeFileExecutor.cs" />
+    <Compile Include="Executors\CodeStringExecutor.cs" />
+    <Compile Include="Executors\Engine.cs" />
+    <Compile Include="Executors\Executor.cs" />
+    <Compile Include="Executors\InteractiveExecutor.cs" />
+    <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Libraries\BasicLib.cs" />
+    <Compile Include="Libraries\Commands.cs" />
+    <Compile Include="Libraries\HashTableLib.cs" />
+    <Compile Include="Libraries\ListLib.cs" />
+    <Compile Include="Libraries\MathLib.cs" />
+    <Compile Include="Libraries\StrLib.cs" />
+    <Compile Include="Settings\GlobalSettings.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Lexical\" />
+  </ItemGroup>
+</Project>
