@@ -20,6 +20,7 @@ namespace Cygni.AST
 			this._expressions = new ASTNode[_expressions.Count];
 			_expressions.CopyTo(this._expressions, 0);
 		}
+		public static BlockEx EmptyBlock = new BlockEx (new ASTNode[0]);
 		public override DynValue Eval(IScope scope)
 		{
 			DynValue result = DynValue.Null;

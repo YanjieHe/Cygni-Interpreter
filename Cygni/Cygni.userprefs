@@ -2,9 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Program.cs">
     <Files>
-      <File FileName="Cygni/Program.cs" Line="4" Column="2" />
-      <File FileName="Cygni/Executors/Engine.cs" Line="45" Column="4" />
-      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="48" Column="7" />
+      <File FileName="Cygni/DataTypes/ClassInfo.cs" Line="186" Column="4" />
+      <File FileName="Cygni/AST/BlockEx.cs" Line="33" Column="21" />
+      <File FileName="Cygni/Program.cs" Line="17" Column="37" />
+      <File FileName="Cygni/AST/ASTNode.cs" Line="114" Column="45" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

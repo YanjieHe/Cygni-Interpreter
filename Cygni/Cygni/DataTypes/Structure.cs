@@ -28,7 +28,11 @@ namespace Cygni.DataTypes
 		{
 			var s = new StringBuilder("struct: {\r\n");
 			foreach (var item in this) {
-				s.Append('\t').Append(item.Key).Append(" = ").AppendLine(item.Value.ToString());
+				s
+					.Append('\t')
+					.Append(item.Key)
+					.Append(" = ")
+					.AppendLine(item.Value.ToString());
 			}
 			s.Append(" }");
 			return s.ToString();

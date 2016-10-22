@@ -21,6 +21,5 @@ namespace Cygni.AST
 		{
 			return DynValue.FromList(new DynList(list.Select(i => i.Eval(scope)), list.Count));
 		}
-		
 	}
 }

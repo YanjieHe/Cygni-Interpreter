@@ -113,6 +113,9 @@ namespace Cygni.AST
 		{
 			return new Constant(DynValue.FromString(value));
 		}
+		public static ASTNode Constant(DynValue value){
+			return new Constant (value);
+		}
 
 		public static readonly ASTNode True = new Constant(DynValue.True);
 		public static readonly ASTNode False = new Constant(DynValue.False);

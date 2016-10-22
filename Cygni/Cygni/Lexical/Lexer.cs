@@ -55,7 +55,8 @@ namespace Cygni.Lexical
 			
 			while (IsSpace(Peek()))/* Skip the white spaces */
 				GetChar();
-			if (Peek() == '#') {
+			
+			if (Peek() == '#') { /* start of comments */
 				while (Peek() != -1 && Peek() != '\n')
 					GetChar();
 			}

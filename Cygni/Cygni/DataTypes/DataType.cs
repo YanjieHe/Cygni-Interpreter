@@ -13,6 +13,7 @@ namespace Cygni.DataTypes
 		String,
 		Function,
 		NativeFunction,
+	
 		List,
 		HashTable,
 		
