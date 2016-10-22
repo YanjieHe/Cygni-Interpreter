@@ -10,7 +10,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of NativeFunction.
 	/// </summary>
-	public sealed class NativeFunction
+	public sealed class NativeFunction:IFunction
 	{
 		readonly Func<DynValue[],DynValue> func;
 		public NativeFunction(Func<DynValue[],DynValue> func)
@@ -20,6 +20,15 @@ namespace Cygni.DataTypes
 		public DynValue Invoke(DynValue[] args)
 		{
 			return func(args);
+		}
+		public DynValue DynInvoke (DynValue[] args)
+		{
+			return func (args);
+		}
+
+		public Func<DynValue[],DynValue> AsDelegate ()
+		{
+			return func;
 		}
 		public override string ToString()
 		{

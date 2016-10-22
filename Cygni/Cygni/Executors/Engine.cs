@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST;
 using Cygni.Settings;
+
 namespace Cygni.Executors
 {
 	/// <summary>
@@ -14,56 +15,71 @@ namespace Cygni.Executors
 	public class Engine
 	{
 		BasicScope globalScope;
-		public Engine()
+
+		public Engine ()
 		{
-			globalScope = new BasicScope();
+			globalScope = new BasicScope ();
 		}
-		
-		public void Initialize()
+
+		public void Initialize ()
 		{
-			GlobalSettings.SetBuiltInFunctions(globalScope);
-			GlobalSettings.SetBuiltInVariables(globalScope);
+			GlobalSettings.SetBuiltInFunctions (globalScope);
+			GlobalSettings.SetBuiltInVariables (globalScope);
 		}
-		
-		public static Engine CreateInstance()
+
+		public static Engine CreateInstance ()
 		{
-			var engine = new Engine();
-			engine.Initialize();
+			var engine = new Engine ();
+			engine.Initialize ();
 			return engine;
 		}
-		
-		public DynValue Evaluate(string code)
+
+		public DynValue Evaluate (string code)
 		{
-			var executor = new CodeStringExecutor(globalScope, code);
-			return executor.Run();
+			var executor = new CodeStringExecutor (globalScope, code);
+			return executor.Run ();
 		}
-		
-		public DynValue DoFile(string filepath, Encoding encoding = null)
+
+		public T Evaluate<T> (string code)
 		{
-			var executor = new CodeFileExecutor(globalScope, filepath, encoding ?? Encoding.Default);
-			return executor.Run();
+			var executor = new CodeStringExecutor (globalScope, code);
+			var result = executor.Run ();
+			return (T)Convert.ChangeType (result.Value, typeof(T));
 		}
-		
-		public DynValue ExecuteInConsole()
+
+		public DynValue DoFile (string filepath, Encoding encoding = null)
 		{
-			var executor = new InteractiveExecutor(globalScope);
-			return executor.Run();
+			var executor = new CodeFileExecutor (globalScope, filepath, encoding ?? Encoding.Default);
+			return executor.Run ();
 		}
-		
-		public Engine SetSymbol(string name, DynValue value)
+
+		public T DoFile<T> (string filepath, Encoding encoding = null)
 		{
-			globalScope[name] = value;
+			var executor = new CodeFileExecutor (globalScope, filepath, encoding ?? Encoding.Default);
+			var result = executor.Run ();
+			return (T)Convert.ChangeType (result.Value, typeof(T));
+		}
+
+		public DynValue ExecuteInConsole ()
+		{
+			var executor = new InteractiveExecutor (globalScope);
+			return executor.Run ();
+		}
+
+		public Engine SetSymbol (string name, DynValue value)
+		{
+			globalScope [name] = value;
 			return this;
 		}
-		
-		public DynValue GetSymbol(string name)
+
+		public DynValue GetSymbol (string name)
 		{
-			return globalScope[name];
+			return globalScope [name];
 		}
-		
-		public bool TryGetValue(string name, out DynValue value)
+
+		public bool TryGetValue (string name, out DynValue value)
 		{
-			return globalScope.TryGetValue(name, out value);
+			return globalScope.TryGetValue (name, out value);
 		}
 	}
 }

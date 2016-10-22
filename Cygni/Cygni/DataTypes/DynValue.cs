@@ -140,7 +140,7 @@ namespace Cygni.DataTypes
 		{
 			return (string)value;
 		}
-		
+
 		public TValue As<TValue>()
 		{
 			return (TValue)value;

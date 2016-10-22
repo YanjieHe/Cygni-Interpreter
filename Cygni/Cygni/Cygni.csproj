@@ -91,6 +91,7 @@
     <Compile Include="Libraries\MathLib.cs" />
     <Compile Include="Libraries\StrLib.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
+    <Compile Include="DataTypes\IFunction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

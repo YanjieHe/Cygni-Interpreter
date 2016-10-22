@@ -32,8 +32,9 @@ namespace Cygni.AST
 			
 			for (int i = 0; i < nArgs; i++)
 				args[i] = arguments[i].Eval(scope);
-			
-			switch (f.type) {
+
+			return f.As<IFunction> ().DynInvoke (args);
+			/*switch (f.type) {
 				case DataType.Function:
 					return f.As<Function>().Update(args).Invoke();
 				case DataType.NativeFunction:
@@ -42,7 +43,7 @@ namespace Cygni.AST
 					return DynValue.FromClass(f.As<ClassInfo>().Init(args));
 				default:
 					throw new RuntimeException("Error function type '{0}'.", f.type);
-			}
+			}*/
 		}
 		public override string ToString()
 		{
