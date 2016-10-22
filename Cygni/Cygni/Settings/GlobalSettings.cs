@@ -7,6 +7,7 @@ using Cygni.AST;
 using Cygni.DataTypes;
 using Cygni.Libraries;
 using Cygni.Extensions;
+
 namespace Cygni.Settings
 {
 	/// <summary>
@@ -25,7 +26,7 @@ namespace Cygni.Settings
 			{ "scan",BasicLib.scan },
 			{ "clock",BasicLib.clock },
 			{ "bit_or",BasicLib.bit_or },
-			
+			{ "CSharpDll",BasicLib.CSharpDll },
 			
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -64,11 +65,10 @@ namespace Cygni.Settings
 			{ "inf",double.PositiveInfinity },
 			{ "realmax",double.MaxValue },
 			{ "realmin",double.MinValue },
-			{"warranty",warranty},
+			{ "warranty",warranty },
 		};
 		public static bool Quiet = false;
 		//quiet output
-		
 		const string warranty = 
 			@"
 Cygni, version 1.0.0
@@ -80,29 +80,34 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ";
-		public static void SetBuiltInFunctions(IScope GlobalScope)
+
+		public static void SetBuiltInFunctions (IScope GlobalScope)
 		{
-			foreach (var element in BuiltInFunctions) 
-				GlobalScope[element.Key] = DynValue.FromNativeFunction(new  NativeFunction(element.Value));
+			foreach (var element in BuiltInFunctions)
+				GlobalScope [element.Key] = DynValue.FromNativeFunction (new  NativeFunction (element.Value));
 		}
-		public static void SetBuiltInVariables(IScope GlobalScope)
+
+		public static void SetBuiltInVariables (IScope GlobalScope)
 		{
-			foreach (var element in BuiltInVariables) 
-				GlobalScope[element.Key] = element.Value;
+			foreach (var element in BuiltInVariables)
+				GlobalScope [element.Key] = element.Value;
 		}
-		public static void BuiltIn(string name, Func<DynValue[],DynValue> f)
+
+		public static void BuiltIn (string name, Func<DynValue[],DynValue> f)
 		{
-			BuiltInFunctions.Add(name, f);
+			BuiltInFunctions.Add (name, f);
 		}
-		public static void AddVariable(string name, DynValue value)
+
+		public static void AddVariable (string name, DynValue value)
 		{
-			BuiltInVariables.Add(name, value);
+			BuiltInVariables.Add (name, value);
 		}
-		public static BasicScope CreateGlobalScope()
+
+		public static BasicScope CreateGlobalScope ()
 		{
-			var scope = new BasicScope();
-			SetBuiltInFunctions(scope);
-			SetBuiltInVariables(scope);
+			var scope = new BasicScope ();
+			SetBuiltInFunctions (scope);
+			SetBuiltInVariables (scope);
 			return scope;
 		}
 	}

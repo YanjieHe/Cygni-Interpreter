@@ -31,8 +31,9 @@ namespace Cygni.Executors
 			DynValue Result = DynValue.Null;
 			for (;;) {
 				try {
+					Console.ForegroundColor = ConsoleColor.Cyan;
+					Console.Write("Cygni:  ");
 					Console.ForegroundColor = ConsoleColor.Gray;
-					Console.Write(">>> ");
 					Start:
 					string line = Console.ReadLine();
 					if(re_exit.IsMatch(line))
@@ -42,13 +43,14 @@ namespace Cygni.Executors
 					var state = TryParse(code);
 					if (state == InteractiveState.Error) {
 						list.Clear();
+						Console.ForegroundColor = ConsoleColor.Cyan;
+						Console.Write("Cygni:  ");
 						Console.ForegroundColor = ConsoleColor.Gray;
-						Console.Write(">>> ");
 						goto Start;
 					}
 					if (state == InteractiveState.Waiting) {
 						Console.ForegroundColor = ConsoleColor.Gray;
-						Console.Write("... ");
+						Console.Write("....    ");
 						goto Start;
 					}
 					list.Clear();
@@ -58,13 +60,15 @@ namespace Cygni.Executors
 						/*var a = ast.Program();
 						Console.WriteLine(a);*/
 						Result = ast.Program().Eval(GlobalScope);
-						if (!GlobalSettings.Quiet && Result != DynValue.Null)
+						if (!GlobalSettings.Quiet && Result != DynValue.Null){
+							Console.Write("=>  ");
 							Console.WriteLine(Result);
+						}
 					}
 				} catch (Exception ex) {
 					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine(ex.Message);
-					Console.WriteLine(ex);
+					Console.WriteLine("error:  {0}", ex.Message);
+					//Console.WriteLine(ex);
 				}
 			}
 			return Result;

@@ -7,6 +7,8 @@ using Cygni.AST;
 using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.Errors;
+using System.Reflection;
+using System.IO;
 using Cygni.Settings;
 namespace Cygni.Libraries
 {
@@ -38,10 +40,10 @@ namespace Cygni.Libraries
 		public static DynValue Struct(DynValue[] args)
 		{
 			if ((args.Length & 1) == 0) {/* even */
-				var dict = new Dictionary<string,DynValue>();
+				var structure = new Structure();
 				for (int i = 0; i < args.Length - 1; i += 2)
-					dict.Add(args[i].AsString(), args[i + 1]);
-				return new DynValue(DataType.Struct, dict as Structure);
+					structure.Add(args[i].AsString(), args[i + 1]);
+				return new DynValue(DataType.Struct, structure);
 			} 
 			throw RuntimeException.BadArgsNum("struct", "even");
 		}
@@ -74,7 +76,7 @@ namespace Cygni.Libraries
 				case "char":
 					return DynValue.FromUserData(Convert.ToChar(obj));
 				case "datetime":
-				case"date":
+				case "date":
 				case "time":
 					return DynValue.FromUserData(Convert.ToDateTime(obj));
 				default:
@@ -129,5 +131,32 @@ namespace Cygni.Libraries
 			}
 			return (double)value;
 		}
+
+		public static DynValue CSharpDll(DynValue[]args)
+		{
+			string filepath = args[0].AsString();
+			string class_name = args[1].AsString();
+			if (!Path.IsPathRooted(filepath))
+				filepath = Path.GetFullPath(filepath);
+
+			Assembly assembly = Assembly.LoadFile(filepath);
+			Type t = assembly.GetType(class_name, true, true);  //namespace.class
+			var methods = t.GetMethods();
+			//var names = new List<string>();
+			var structure = new Structure ();
+			foreach (var method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
+				var parameters = method.GetParameters();
+				if (parameters.Length == 1 && parameters[0].ParameterType == typeof(DynValue[])) {
+					var method_name = method.Name;
+					structure[method_name] = DynValue.FromDelegate(
+						method.CreateDelegate(typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>);
+					//names.Add(method_name);
+				}
+			}
+			//return DynValue.FromList(new DynList(names.Select(DynValue.FromString), names.Count));
+			return DynValue.FromStructure(structure);
+		}
+
+
 	}
 }

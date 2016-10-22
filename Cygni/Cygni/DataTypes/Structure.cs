@@ -11,6 +11,8 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class Structure:Dictionary<string,DynValue>, IDot
 	{
+		public Structure():base(){
+		}
 		#region IDot implementation
 
 		public DynValue GetByDot(string fieldname)

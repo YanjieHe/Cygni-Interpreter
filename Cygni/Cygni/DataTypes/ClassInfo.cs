@@ -153,36 +153,5 @@ namespace Cygni.DataTypes
 				return classScope ["__TOSTRING__"].As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			return string.Concat ("(class: ", name, ")");
 		}
-
-		public static ClassInfo CreateClass (IScope parentScope, string className, string[] fields, DynValue[] fieldnames)
-		{
-			var scope = new NestedScope (parentScope);
-			int n = fields.Length;
-			if (n != fieldnames.Length)
-				throw new ArgumentException ();
-			for (int i = 0; i < n; i++) {
-				scope [fields [i]] = fieldnames [i];
-			}
-			return new ClassInfo (className, BlockEx.EmptyBlock, scope, null);
-		}
-		public static void AddMethod(ClassInfo classInfo,string methodName,string[] parameters, string fieldName, Func<DynValue[],DynValue>f){
-			IScope classScope = classInfo.classScope;
-			var arguments = new ASTNode[parameters.Length];
-			arguments [0] = ASTNode.Dot (ASTNode.Variable ("this"), fieldName);
-			for (int i = 1; i < arguments.Length; i++) {
-				arguments [i] = ASTNode.Parameter (parameters [i - 1]);
-			}
-			var func =  new Function (
-				methodName,
-				parameters,
-				ASTNode.Block (new ASTNode[] {
-					ASTNode.Invoke (
-						ASTNode.Constant (
-							DynValue.FromDelegate (
-								f)),
-						arguments)
-				}), new NestedScope (classScope));
-			classScope [methodName] = DynValue.FromFunction( func);
-		}
 	}
 }
