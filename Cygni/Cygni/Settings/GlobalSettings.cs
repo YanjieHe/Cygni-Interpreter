@@ -7,6 +7,7 @@ using Cygni.AST;
 using Cygni.DataTypes;
 using Cygni.Libraries;
 using Cygni.Extensions;
+using Cygni.AST.Scopes;
 
 namespace Cygni.Settings
 {

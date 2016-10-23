@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
+using Cygni.AST.Scopes;
 namespace Cygni.AST
 {
 	/// <summary>

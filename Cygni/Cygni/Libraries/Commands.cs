@@ -10,6 +10,8 @@ using Cygni.Settings;
 using System.Reflection;
 using System.IO;
 using Cygni.Errors;
+using Cygni.AST.Scopes;
+
 namespace Cygni.Libraries
 {
 	/// <summary>

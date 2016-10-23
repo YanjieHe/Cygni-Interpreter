@@ -46,7 +46,6 @@
     <Compile Include="Errors\RuntimeException.cs" />
     <Compile Include="Errors\SyntaxException.cs" />
     <Compile Include="AST\ASTNode.cs" />
-    <Compile Include="AST\BasicScope.cs" />
     <Compile Include="AST\BinaryEx.cs" />
     <Compile Include="AST\BlockEx.cs" />
     <Compile Include="AST\CommandEx.cs" />
@@ -55,13 +54,11 @@
     <Compile Include="AST\DefFuncEx.cs" />
     <Compile Include="AST\DotEx.cs" />
     <Compile Include="AST\ForEx.cs" />
-    <Compile Include="AST\IScope.cs" />
     <Compile Include="AST\IfEx.cs" />
     <Compile Include="AST\IndexEx.cs" />
     <Compile Include="AST\InvokeEx.cs" />
     <Compile Include="AST\ListInitEx.cs" />
     <Compile Include="AST\NameEx.cs" />
-    <Compile Include="AST\NestedScope.cs" />
     <Compile Include="AST\NodeType.cs" />
     <Compile Include="AST\Parser.cs" />
     <Compile Include="AST\ReturnEx.cs" />
@@ -92,9 +89,16 @@
     <Compile Include="Libraries\StrLib.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="DataTypes\IFunction.cs" />
+    <Compile Include="AST\Scopes\BasicScope.cs" />
+    <Compile Include="AST\Scopes\NestedScope.cs" />
+    <Compile Include="AST\Scopes\IScope.cs" />
+    <Compile Include="AST\Scopes\ArrayScope.cs" />
+    <Compile Include="AST\LocalNameEx.cs" />
+    <Compile Include="AST\INameLookUp.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Lexical\" />
+    <Folder Include="AST\Scopes\" />
   </ItemGroup>
 </Project>

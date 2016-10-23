@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
+using Cygni.AST.Scopes;
+
 namespace Cygni.AST
 {
 	/// <summary>
@@ -11,10 +13,13 @@ namespace Cygni.AST
 	/// </summary>
 	public class NameEx:ASTNode
 	{
-		readonly string name;
+		protected readonly string name;
 		public string Name{ get { return name; } }
 		public  override NodeType type { get { return NodeType.Name; } }
-		
+
+
+
+
 		public NameEx(string name)
 		{
 			this.name = name;

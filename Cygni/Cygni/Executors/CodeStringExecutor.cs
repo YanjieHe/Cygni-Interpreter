@@ -7,6 +7,8 @@ using Cygni.AST;
 using Cygni.DataTypes;
 using System.IO;
 using Cygni.Lexical;
+using Cygni.AST.Scopes;
+
 namespace Cygni.Executors
 {
 	/// <summary>

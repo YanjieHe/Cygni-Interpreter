@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.Errors;
-namespace Cygni.AST
+namespace Cygni.AST.Scopes
 {
 	/// <summary>
 	/// Description of BasicScope.

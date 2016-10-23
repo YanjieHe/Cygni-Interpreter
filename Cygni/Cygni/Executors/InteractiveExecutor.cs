@@ -10,6 +10,8 @@ using System.IO;
 using Cygni.Settings;
 using Cygni.Lexical.Tokens;
 using System.Text.RegularExpressions;
+using Cygni.AST.Scopes;
+
 namespace Cygni.Executors
 {
 	/// <summary>

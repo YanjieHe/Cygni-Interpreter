@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.Extensions;
+using Cygni.AST.Scopes;
+
 namespace Cygni.AST
 {
 	/// <summary>
