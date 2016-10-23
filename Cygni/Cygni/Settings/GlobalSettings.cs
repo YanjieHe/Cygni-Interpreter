@@ -43,8 +43,11 @@ namespace Cygni.Settings
 			{ "strformat",StrLib.strformat },
 			{ "strlen",StrLib.strlen },
 			{ "strsplit",StrLib.strsplit },
-			{ "getencoding",StrLib.getencoding },
-			
+			{ "strrpl",StrLib.strrpl },
+			{ "strcmp",StrLib.strcmp },
+
+
+
 			{ "append",ListLib.append },
 			{ "len",ListLib.len },
 			{ "remove_at",ListLib.remove_at },
@@ -82,6 +85,16 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ";
 
+		public static Dictionary<string,Structure> BuiltInStructures = 
+			new Dictionary<string, Structure>{
+			{"Console",
+				new Structure(){
+					{"Clear",BasicLib.ConsoleClear},
+					{"Write",BasicLib.ConsoleWrite}
+				}
+			},
+		};
+
 		public static void SetBuiltInFunctions (IScope GlobalScope)
 		{
 			foreach (var element in BuiltInFunctions)
@@ -92,6 +105,12 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 		{
 			foreach (var element in BuiltInVariables)
 				GlobalScope [element.Key] = element.Value;
+		}
+
+		public static void SetBuiltInStructures (IScope GlobalScope)
+		{
+			foreach (var element in BuiltInStructures)
+				GlobalScope [element.Key] = DynValue.FromStructure(element.Value);
 		}
 
 		public static void BuiltIn (string name, Func<DynValue[],DynValue> f)
@@ -109,6 +128,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			var scope = new BasicScope ();
 			SetBuiltInFunctions (scope);
 			SetBuiltInVariables (scope);
+			SetBuiltInStructures (scope);
 			return scope;
 		}
 	}

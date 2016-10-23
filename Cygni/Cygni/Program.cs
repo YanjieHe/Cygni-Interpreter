@@ -20,7 +20,7 @@ namespace Cygni
 			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/reader.cyg");
 			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
 			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fib.cyg");
-			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fibtest.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fibtest.cyg");
 
 			engine.ExecuteInConsole ();
 		}

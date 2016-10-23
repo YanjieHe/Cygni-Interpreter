@@ -31,6 +31,7 @@ namespace Cygni.Libraries
 		}
 		public static DynValue printf(DynValue[] args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "printf");
 			var arguments = new object[args.Length - 1];
 			for (int i = 0; i < arguments.Length; i++)
 				arguments[i] = args[i + 1].Value;
@@ -85,10 +86,11 @@ namespace Cygni.Libraries
 		}
 		public static DynValue typeinfo(DynValue[] args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length == 1, "typeinfo");
 			if (args[0].type != DataType.UserData)
 				return DynValue.FromString(args[0].type.ToString());
 			else
-				return DynValue.FromString(args[0].GetDynType().ToString());
+				return DynValue.FromString(args[0].GetDynType().Name);
 		}
 		public static DynValue tonumber(DynValue[] args)
 		{
@@ -134,6 +136,7 @@ namespace Cygni.Libraries
 
 		public static DynValue CSharpDll(DynValue[]args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length == 2, "CSharpDll");
 			string filepath = args[0].AsString();
 			string class_name = args[1].AsString();
 			if (!Path.IsPathRooted(filepath))
@@ -142,7 +145,6 @@ namespace Cygni.Libraries
 			Assembly assembly = Assembly.LoadFile(filepath);
 			Type t = assembly.GetType(class_name, true, true);  //namespace.class
 			var methods = t.GetMethods();
-			//var names = new List<string>();
 			var structure = new Structure ();
 			foreach (var method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
 				var parameters = method.GetParameters();
@@ -150,13 +152,24 @@ namespace Cygni.Libraries
 					var method_name = method.Name;
 					structure[method_name] = DynValue.FromDelegate(
 						method.CreateDelegate(typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>);
-					//names.Add(method_name);
 				}
 			}
-			//return DynValue.FromList(new DynList(names.Select(DynValue.FromString), names.Count));
 			return DynValue.FromStructure(structure);
 		}
-
+		public static DynValue ConsoleClear(DynValue[]args)
+		{
+			Console.Clear ();
+			return DynValue.Null;
+		}
+		public static DynValue ConsoleWrite(DynValue[]args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "Console.Write");
+			if(args.Length == 1)
+				Console.Write (args[0].Value);
+			if(args.Length == 2)
+				Console.Write (args[0].AsString(),args[1].Value);
+			return DynValue.Null;
+		}
 
 	}
 }

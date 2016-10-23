@@ -11,15 +11,11 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of NameEx.
 	/// </summary>
-	public class NameEx:ASTNode
+	public sealed class NameEx:ASTNode,IAssignable
 	{
-		protected readonly string name;
+		readonly string name;
 		public string Name{ get { return name; } }
 		public  override NodeType type { get { return NodeType.Name; } }
-
-
-
-
 		public NameEx(string name)
 		{
 			this.name = name;
@@ -27,6 +23,9 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			return scope[name];
+		}
+		public DynValue Assign(DynValue value,IScope scope){
+			return scope [name] = value;
 		}
 		public override string ToString()
 		{

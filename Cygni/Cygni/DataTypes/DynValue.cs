@@ -38,6 +38,10 @@ namespace Cygni.DataTypes
 		{
 			return new DynValue(DataType.String, value);
 		}
+		public static implicit operator DynValue(Func<DynValue[],DynValue> f)
+		{
+			return new DynValue(DataType.NativeFunction,new NativeFunction(f));
+		}
 		#endregion
 		
 		public static DynValue FromNumber(double value)

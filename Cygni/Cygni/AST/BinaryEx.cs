@@ -27,31 +27,10 @@ namespace Cygni.AST
 			this.left = left;
 			this.right = right;
 		}
-		public DynValue ComputeAssign(IScope scope, DynValue _right)
-		{
-			switch (left.type) {
-				case NodeType.Name:
-					var _left = left as NameEx;
-					scope[_left.Name] = _right;
-					return _right;
-					
-				case NodeType.Dot:
-					var dotEx = left as DotEx;
-					var target = dotEx.Obj.Eval(scope);
-					return dotEx.Set(target.As<IDot>(), _right);
-					
-				case NodeType.Index:
-					var indexEx = left as IndexEx;
-					var list = indexEx.list.Eval(scope);
-					return list.As<IIndexable>()[indexEx.indexes.Map(i => i.Eval(scope))] = _right;
-				default:
-					throw new Exception("leftside cannot be assigned to.");
-			}
-		}
 		public override DynValue Eval(IScope scope)
 		{
 			if (op == BinaryOp.Assign) {
-				return ComputeAssign(scope, right.Eval(scope));
+				return (left as IAssignable).Assign (right.Eval(scope), scope);
 			}
 			var _left = left.Eval(scope);
 			//var _right = right.Eval(scope);
@@ -126,7 +105,6 @@ namespace Cygni.AST
 					return string.Concat("(", left, "=", right, ")");
 				default:
 					throw new NotSupportedException(op.ToString());
-					
 			}
 		}
 	}

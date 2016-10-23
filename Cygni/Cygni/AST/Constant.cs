@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of Constant.
 	/// </summary>
-	public class Constant:ASTNode
+	public sealed class Constant:ASTNode
 	{
 		readonly DynValue value;
 		public DynValue Value{ get { return value; } }

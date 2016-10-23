@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.Errors;
 using Cygni.Extensions;
+
 namespace Cygni.Libraries
 {
 	/// <summary>
@@ -14,52 +15,80 @@ namespace Cygni.Libraries
 	public static class HashTableLib
 	{
 		
-		public static DynValue hashtable(DynValue[] args)
+		public static DynValue hashtable (DynValue[] args)
 		{
-			var hashTable = new DynHashTable();
+			var hashTable = new DynHashTable ();
 			if (args.Length == 0)
-				return DynValue.FromHashTable(hashTable);
+				return DynValue.FromHashTable (hashTable);
 			if ((args.Length & 1) == 0) {/* even */
 				for (int i = 0; i < args.Length - 1; i += 2)
-					hashTable.Add(args[i], args[i + 1]);
-				return DynValue.FromHashTable(hashTable);
+					hashTable.Add (args [i], args [i + 1]);
+				return DynValue.FromHashTable (hashTable);
 			}
-			throw RuntimeException.BadArgsNum("hashtable", "even");
+			throw RuntimeException.BadArgsNum ("hashtable", "even");
 		}
-		public static DynValue has_key(DynValue[] args)
+
+		public static DynValue has_key (DynValue[] args)
 		{
-			var ht = args[0].As<DynHashTable>();
-			var key = args[1];
-			return ht.ContainsKey(key);
+			var ht = args [0].As<DynHashTable> ();
+			var key = args [1];
+			switch (key.type) {
+			case DataType.Number:
+				return ht.ContainsKey ((int)(double)key.Value);
+			case DataType.Boolean:
+			case DataType.String:
+				return ht.ContainsKey (key.Value);
+			default:
+				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+			}
 		}
-		public static DynValue has_value(DynValue[] args)
+
+		public static DynValue has_value (DynValue[] args)
 		{
-			var ht = args[0].As<DynHashTable>();
-			var value = args[1];
-			return ht.ContainsValue(value);
+			var ht = args [0].As<DynHashTable> ();
+			var value = args [1];
+			return ht.ContainsValue (value);
 		}
-		public static DynValue ht_count(DynValue[] args)
+
+		public static DynValue ht_count (DynValue[] args)
 		{
-			var ht = args[0].As<DynHashTable>();
+			var ht = args [0].As<DynHashTable> ();
 			return ht.Count;
 		}
-		public static DynValue ht_remove(DynValue[] args)
+
+		public static DynValue ht_remove (DynValue[] args)
 		{
-			var ht = args[0].As<DynHashTable>();
-			var key = args[1];
-			return ht.Remove(key);
+			var ht = args [0].As<DynHashTable> ();
+			var key = args [1];
+			switch (key.type) {
+			case DataType.Number:
+				return ht.Remove ((int)(double)key.Value);
+			case DataType.Boolean:
+			case DataType.String:
+				return ht.Remove (key.Value);
+			default:
+				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+			}
 		}
-		public static DynValue ht_keys(DynValue[] args)
+
+		public static DynValue ht_keys (DynValue[] args)
 		{
-			var ht = args[0].As<DynHashTable>();
+			var ht = args [0].As<DynHashTable> ();
 			int n = ht.Count;
-			return DynValue.FromList(ht.Keys.ToDynList(DynValue.FromObject, n));
+			return DynValue.FromList (ht.Keys.ToDynList (i => {
+				if (i is int)
+					return (double)(int)i;
+				if (i is bool)
+					return (bool)i;
+				return i as string;
+			}, n));
 		}
-		public static DynValue ht_values(DynValue[] args)
+
+		public static DynValue ht_values (DynValue[] args)
 		{
-			var ht = args[0].As<DynHashTable>();
+			var ht = args [0].As<DynHashTable> ();
 			int n = ht.Count;
-			return DynValue.FromList(ht.Values.ToDynList(i => i, n));
+			return DynValue.FromList (ht.Values.ToDynList (i => i, n));
 		}
 	}
 }

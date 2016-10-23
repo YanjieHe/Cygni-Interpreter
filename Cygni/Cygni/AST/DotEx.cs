@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of DotEx.
 	/// </summary>
-	public class DotEx:ASTNode
+	public class DotEx:ASTNode,IAssignable
 	{
 		ASTNode obj;
 		public ASTNode Obj{ get { return obj; } }
@@ -36,5 +36,10 @@ namespace Cygni.AST
 		}
 
 		#endregion
+
+		public DynValue Assign(DynValue value,IScope scope){
+			var target = obj.Eval(scope);
+			return target.As<IDot> ().SetByDot (fieldname, value);
+		}
 	}
 }

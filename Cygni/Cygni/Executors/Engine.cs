@@ -26,6 +26,7 @@ namespace Cygni.Executors
 		{
 			GlobalSettings.SetBuiltInFunctions (globalScope);
 			GlobalSettings.SetBuiltInVariables (globalScope);
+			GlobalSettings.SetBuiltInStructures (globalScope);
 		}
 
 		public static Engine CreateInstance ()
