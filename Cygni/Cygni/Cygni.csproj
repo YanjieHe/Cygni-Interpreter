@@ -92,9 +92,7 @@
     <Compile Include="AST\Scopes\BasicScope.cs" />
     <Compile Include="AST\Scopes\NestedScope.cs" />
     <Compile Include="AST\Scopes\IScope.cs" />
-    <Compile Include="AST\Scopes\ArrayScope.cs" />
-    <Compile Include="AST\LocalNameEx.cs" />
-    <Compile Include="AST\INameLookUp.cs" />
+    <Compile Include="AST\IAssignable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

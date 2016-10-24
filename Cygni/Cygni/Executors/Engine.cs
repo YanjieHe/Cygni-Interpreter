@@ -26,6 +26,7 @@ namespace Cygni.Executors
 		{
 			GlobalSettings.SetBuiltInFunctions (globalScope);
 			GlobalSettings.SetBuiltInVariables (globalScope);
+			GlobalSettings.SetBuiltInStructures (globalScope);
 		}
 
 		public static Engine CreateInstance ()
@@ -69,13 +70,13 @@ namespace Cygni.Executors
 
 		public Engine SetSymbol (string name, DynValue value)
 		{
-			globalScope [name] = value;
+			globalScope.Put (name, value);
 			return this;
 		}
 
 		public DynValue GetSymbol (string name)
 		{
-			return globalScope [name];
+			return globalScope.Get(name);
 		}
 
 		public bool TryGetValue (string name, out DynValue value)

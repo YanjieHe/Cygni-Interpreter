@@ -10,42 +10,28 @@ namespace Cygni.AST.Scopes
 	/// <summary>
 	/// Description of NestedScope.
 	/// </summary>
-	public class NestedScope:IScope
+	public class NestedScope:Dictionary<string,DynValue>, IScope
 	{
-		Dictionary<string,DynValue> EnvTable;
 		IScope parent;
 		public IScope Parent{ get { return parent; } }
-		public NestedScope(IScope parent = null)
+		public NestedScope(IScope parent = null):base()
 		{
-			this.EnvTable = new Dictionary<string, DynValue>();
 			this.parent = parent;
 		}
-
-		#region IScope implementation
-
-		public DynValue this[string name] {
-			get {
-				DynValue value;
-				if (EnvTable.TryGetValue(name, out value))
-					return value;
-				if (parent == null)
-					throw RuntimeException.NotDefined(name);
-				return parent[name];
-			}
-			set {
-				EnvTable[name] = value;
-			}
+		public DynValue Get(string name){
+			DynValue value;
+			if (this.TryGetValue (name, out value))
+				return value;
+			if (parent == null)
+				throw RuntimeException.NotDefined (name);
+			return parent.Get (name);
 		}
-
-		#endregion
-		public bool HasName(string name)
-		{
-			return EnvTable.ContainsKey(name);
+		public DynValue Put(string name,DynValue value){
+			return this [name] = value;
 		}
-
-		public bool TryGetValue(string name, out DynValue value)
+		public new bool TryGetValue(string name, out DynValue value)
 		{
-			if (EnvTable.TryGetValue(name, out value))
+			if (base.TryGetValue(name, out value))
 				return true;
 			if (parent == null)
 				return false;

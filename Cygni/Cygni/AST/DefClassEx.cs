@@ -32,18 +32,18 @@ namespace Cygni.AST
 			body.Eval(newScope);
 			if (parentsName == null) {
 				var func = DynValue.FromClass(new ClassInfo(name, body, newScope));
-				return scope[name] = func;
+				return scope.Put(name, func);
 			} else {
 				var parentsClasses = new ClassInfo[parentsName.Length];
 				
 				for (int i = 0; i < parentsName.Length; i++) {
-					var _class = scope[parentsName[i]];
+					var _class = scope.Get(parentsName[i]);
 					if (_class.type != DataType.Class)
 						throw RuntimeException.NotDefined(parentsName[i]);
 					parentsClasses[i] = _class.Value as ClassInfo;
 				}
 				var func = DynValue.FromClass(new ClassInfo(name, body, newScope, parentsClasses));
-				return scope[name] = func;
+				return scope.Put(name, func);
 			}
 		}
 	}

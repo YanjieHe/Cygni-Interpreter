@@ -16,6 +16,7 @@ namespace Cygni.Libraries
 	{
 		public static DynValue append(DynValue[] args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length >= 2, "append");
 			args[0].As<DynList>().AddRange(args.Skip(1));
 			return DynValue.Null;
 		}
@@ -25,11 +26,13 @@ namespace Cygni.Libraries
 		}
 		public static DynValue remove_at(DynValue[] args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length == 2, "remove_at");
 			args[0].As<DynList>().RemoveAt((int)args[1].AsNumber());
 			return DynValue.Null;
 		}
 		public static DynValue insert_at(DynValue[] args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length == 3, "insert_at");
 			args[0].As<DynList>().Insert((int)args[1].AsNumber(),args[2]);
 			return DynValue.Null;
 		}

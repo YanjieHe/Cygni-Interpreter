@@ -11,32 +11,53 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class DynHashTable: Dictionary<object,DynValue>, IIndexable
 	{
-		public DynValue this[DynValue[] key] {
+		public DynValue this [DynValue[] key] {
 			get { 
-				var k = key[0];
-				if (k.type == DataType.Number) {
+				var k = key [0];
+				switch (k.type) {
+				case DataType.Number:
 					return this[(int)(double)k.Value];
+				case DataType.Boolean:
+				case DataType.String:
+					return this[k.Value];
+				default :
+					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
 				}
-				return this[k.Value];
 			}
 			set { 
-				var k = key[0];
-				if (k.type == DataType.Number) {
-					this[(int)(double)k.Value] = value;
+				var k = key [0];
+				switch (k.type) {
+				case DataType.Number:
+					this [(int)(double)k.Value] = value;
+					return;
+				case DataType.Boolean:
+				case DataType.String:
+					this[k.Value] = value;
+					return;
+				default :
+					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
 				}
-				this[k.Value] = value; 
 			}
 		}
-		public void Add(DynValue key, DynValue value)
+
+		public void Add (DynValue key, DynValue value)
 		{
-			if (key.type == DataType.Number) {
-				Add((int)(double)key.Value, value);
-			} else
-				Add(key.Value, value);
+			switch (key.type) {
+			case DataType.Number:
+				Add ((int)(double)key.Value, value);
+				return;
+			case DataType.Boolean:
+			case DataType.String:
+				Add (key.Value, value);
+				return;
+			default :
+				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+			}
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
-			return string.Concat("[ ", string.Join(", ", this), " ]");
+			return string.Concat ("[ ", string.Join (", ", this), " ]");
 		}
 	}
 }

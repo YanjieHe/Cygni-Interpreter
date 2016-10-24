@@ -36,7 +36,7 @@ namespace Cygni.DataTypes
 			var newScope = new NestedScope (funcScope.Parent);
 			
 			for (int i = 0; i < nArgs; i++)
-				newScope [parameters [i]] = arguments [i];
+				newScope.Put(parameters [i], arguments [i]);
 			
 			return new Function (name, parameters, body, newScope);
 		}

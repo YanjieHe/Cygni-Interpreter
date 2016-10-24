@@ -10,34 +10,21 @@ namespace Cygni.AST.Scopes
 	/// <summary>
 	/// Description of BasicScope.
 	/// </summary>
-	public class BasicScope:IScope
+	public class BasicScope:Dictionary<string,DynValue> ,IScope
 	{
-		Dictionary<string,DynValue> EnvTable;
-		public BasicScope()
+		public BasicScope():base()
 		{
-			EnvTable = new Dictionary<string, DynValue>();
+			
 		}
-		public int Count{ get { return EnvTable.Count; } }
-		#region IScope implementation
-		public DynValue this[string name] {
-			get {
-				DynValue _value;
-				if (EnvTable.TryGetValue(name, out _value))
-					return _value;
-				throw RuntimeException.NotDefined(name);
-			}
-			set {
-				EnvTable[name] = value;
-			}
+		public DynValue Get(string name){
+			DynValue _value;
+			if (TryGetValue (name, out _value))
+				return _value;
+			throw RuntimeException.NotDefined (name);
 		}
-		#endregion
-		public bool HasName(string name){
-			return EnvTable.ContainsKey(name);
+		public DynValue Put (string name, DynValue value){
+			return this [name] = value;
 		}
 
-		public bool TryGetValue(string name, out DynValue value)
-		{
-			return EnvTable.TryGetValue(name,out value);
-		}
 	}
 }

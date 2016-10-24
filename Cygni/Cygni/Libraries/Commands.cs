@@ -54,11 +54,11 @@ namespace Cygni.Libraries
 				var parameters = method.GetParameters();
 				if (parameters.Length == 1 && parameters[0].ParameterType == typeof(DynValue[])) {
 					var method_name = method.Name;
-					if (scope.HasName(method_name)) {
+					if (scope.ContainsKey(method_name)) {
 						Console.WriteLine("overwriting method '{0}'", method_name);
 					}
-					scope[method_name] = DynValue.FromDelegate(
-						method.CreateDelegate(typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>);
+					scope.Put(method_name, DynValue.FromDelegate(
+						method.CreateDelegate(typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>));
 					names.Add(method_name);
 				}
 			}

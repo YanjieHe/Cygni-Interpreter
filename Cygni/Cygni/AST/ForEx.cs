@@ -40,7 +40,7 @@ namespace Cygni.AST
 				var iter_var = new DynValue(DataType.Number, (double)istart);
 				/* Please do not try to modify the iteration variable during the loop,
 				 * it may cause unpredictable error */
-				scope[iterator] = iter_var;
+				scope.Put(iterator, iter_var);
 				
 				for (int i = istart; i < iend; i++, iter_var.Value = (double)i) {
 					result = body.Eval(scope);
@@ -62,7 +62,7 @@ namespace Cygni.AST
 				if (istep > 0) { /* forward */
 					
 					var iter_var = new DynValue(DataType.Number, (double)istart);
-					scope[iterator] = iter_var;
+					scope.Put(iterator, iter_var);
 					
 					for (int i = istart; i < iend; i += istep, iter_var.Value = (double)i) {
 						
@@ -78,7 +78,7 @@ namespace Cygni.AST
 					}
 				} else {/* backward */
 					var iter_var = new DynValue(DataType.Number, (double)istart);
-					scope[iterator] = iter_var;
+					scope.Put(iterator, iter_var);
 					
 					for (int i = istart; i > iend; i += istep, iter_var.Value = (double)i) {
 						result = body.Eval(scope);

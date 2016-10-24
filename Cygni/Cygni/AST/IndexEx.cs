@@ -12,7 +12,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of IndexEx.
 	/// </summary>
-	public class IndexEx:ASTNode
+	public class IndexEx:ASTNode,IAssignable
 	{
 		public override NodeType type{ get { return NodeType.Index; } }
 		internal ASTNode list{  get; private set; }
@@ -26,6 +26,10 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			return list.Eval(scope).As<IIndexable>()[indexes.Map(i => i.Eval(scope))];
+		}
+		public DynValue Assign(DynValue value, IScope scope){
+			var collection = list.Eval(scope);
+			return collection.As<IIndexable>()[indexes.Map(i => i.Eval(scope))] = value;
 		}
 	}
 }

@@ -28,8 +28,7 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			var func = DynValue.FromFunction(new Function(name, parameters, body, new NestedScope(scope)));
-			scope[name] = func;
-			return func;
+			return scope.Put(name, func);
 		}
 		public override string ToString()
 		{

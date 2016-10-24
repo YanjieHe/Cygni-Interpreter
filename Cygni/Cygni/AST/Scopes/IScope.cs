@@ -9,10 +9,10 @@ namespace Cygni.AST.Scopes
 	/// <summary>
 	/// Description of IScope.
 	/// </summary>
-	public interface IScope
+	public interface IScope:IDictionary<string,DynValue>
 	{
-		DynValue this[string name]{ get; set; }
-		bool HasName(string name);
-		bool TryGetValue(string name, out DynValue value);
+		//DynValue this[string name]{ get; set; }
+		DynValue Get(string name);
+		DynValue Put (string name, DynValue value);
 	}
 }

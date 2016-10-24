@@ -32,10 +32,10 @@ namespace Cygni.DataTypes
 			var newScope = new NestedScope (classScope.Parent);
 			body.Eval (newScope);
 			var newClass = new ClassInfo (name, body, newScope, parents);
-			newScope ["this"] = DynValue.FromClass (newClass);
+			newScope.Put ("this", DynValue.FromClass (newClass));
 			newClass.InitParents ();/* initialize parents */
-			if (!no_arg_construct && newScope.HasName ("__INIT__")) /* initialize */
-			newScope ["__INIT__"].As<Function> ().Update (parameters).Invoke ();
+			if (!no_arg_construct && newScope.ContainsKey ("__INIT__")) /* initialize */
+				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 		}
 
@@ -44,7 +44,7 @@ namespace Cygni.DataTypes
 			if (parents != null) { /* has parents */
 				for (int i = 0; i < parents.Length; i++) {
 					parents [i] = parents [i].Init (null, true);/* no-arg construct parent classes */
-					classScope [parents [i].name] = DynValue.FromClass (parents [i]);
+					classScope.Put (parents [i].name, DynValue.FromClass (parents [i]));
 					/* add parent class pointers */
 				}
 			}
@@ -59,7 +59,7 @@ namespace Cygni.DataTypes
 
 		public DynValue SetByDot (string fieldname, DynValue value)
 		{
-			return classScope [fieldname] = value;
+			return classScope.Put (fieldname, value);
 		}
 
 		#endregion
@@ -81,7 +81,7 @@ namespace Cygni.DataTypes
 
 		public int CompareTo (DynValue other)
 		{
-			return (int)classScope ["__COMPARETO__"].As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
+			return (int)classScope.Get ("__COMPARETO__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
 		}
 
 		#endregion
@@ -91,49 +91,49 @@ namespace Cygni.DataTypes
 
 		public DynValue Add (DynValue other)
 		{
-			return classScope ["__ADD__"].As<Function> ().Update (new []{ other }).Invoke ();
+			return classScope.Get ("__ADD__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Subtract (DynValue other)
 		{
-			return classScope ["__SUBTRACT__"].As<Function> ().Update (new []{ other }).Invoke ();
+			return classScope.Get ("__SUBTRACT__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Multiply (DynValue other)
 		{
-			return classScope ["__MULTIPLY__"].As<Function> ().Update (new []{ other }).Invoke ();
+			return classScope.Get ("__MULTIPLY__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Divide (DynValue other)
 		{
-			return classScope ["__DIVIDE__"].As<Function> ().Update (new []{ other }).Invoke ();
+			return classScope.Get ("__DIVIDE__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Modulo (DynValue other)
 		{
-			return classScope ["__MODULO__"].As<Function> ().Update (new []{ other }).Invoke ();
+			return classScope.Get ("__MODULO__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Power (DynValue other)
 		{
-			return classScope ["__POWER__"].As<Function> ().Update (new []{ other }).Invoke ();
+			return classScope.Get ("__POWER__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue UnaryPlus ()
 		{
-			return classScope ["__UNARYPLUS__"].As<Function> ().Update (new DynValue[0]).Invoke ();
+			return classScope.Get ("__UNARYPLUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
 		}
 
 
 		public DynValue UnaryMinus ()
 		{
-			return classScope ["__UNARYMINUS__"].As<Function> ().Update (new DynValue[0]).Invoke ();
+			return classScope.Get ("__UNARYMINUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
 		}
 
 		public DynValue DynInvoke (DynValue[] args)
@@ -150,8 +150,8 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			if (classScope.HasName ("this") && classScope.HasName ("__TOSTRING__"))
-				return classScope ["__TOSTRING__"].As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
+			if (classScope.ContainsKey ("this") && classScope.ContainsKey ("__TOSTRING__"))
+				return classScope.Get("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			return string.Concat ("(class: ", name, ")");
 		}
 	}

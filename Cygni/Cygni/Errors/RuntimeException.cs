@@ -32,5 +32,9 @@ namespace Cygni.Errors
 		{
 			return new RuntimeException("bad number of arguments for '{0}', expecting '{1}' arguments.", funcName, ArgInfo);
 		}
+		public static void FuncArgsCheck(bool condition,string funcName){
+			if (!condition)
+				throw new RuntimeException ("bad number of arguments for function '{0}'", funcName);
+		}
 	}
 }
