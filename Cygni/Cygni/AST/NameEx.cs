@@ -27,9 +27,6 @@ namespace Cygni.AST
 		public DynValue Assign(DynValue value,IScope scope){
 			return scope.Put(name, value);
 		}
-		public DynValue Assign(DynValue value,IScope scope){
-			return scope [name] = value;
-		}
 		public override string ToString()
 		{
 			return name;

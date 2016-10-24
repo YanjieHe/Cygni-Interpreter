@@ -51,12 +51,9 @@ namespace Cygni.Libraries
 			return (double)string.Compare (args [0].AsString (),
 				args [1].AsString ());
 		}
-<<<<<<< HEAD
 		public static DynValue strfind(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
 			return args [0].AsString ().IndexOf (args [1].AsString ());
 		}
-=======
->>>>>>> 77d0590f93c25f1f193620b3c6ad1a405dbbc0ad
 	}
 }

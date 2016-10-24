@@ -170,15 +170,11 @@ namespace Cygni.Libraries
 				Console.Write (args[0].AsString(),args[1].Value);
 			return DynValue.Null;
 		}
-<<<<<<< HEAD
 		public static DynValue dispose(DynValue[] args){
 			for (int i = 0; i < args.Length; i++) {
 				args [i].As<IDisposable> ().Dispose ();
 			}
 			return DynValue.Null;
 		}
-=======
-
->>>>>>> 77d0590f93c25f1f193620b3c6ad1a405dbbc0ad
 	}
 }

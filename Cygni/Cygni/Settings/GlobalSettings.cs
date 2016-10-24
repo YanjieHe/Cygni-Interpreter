@@ -46,11 +46,8 @@ namespace Cygni.Settings
 			{ "strsplit",StrLib.strsplit },
 			{ "strrpl",StrLib.strrpl },
 			{ "strcmp",StrLib.strcmp },
-<<<<<<< HEAD
 			{ "strfind",StrLib.strfind },
-=======
 
->>>>>>> 77d0590f93c25f1f193620b3c6ad1a405dbbc0ad
 
 
 			{ "append",ListLib.append },
@@ -91,7 +88,6 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 ";
 
 		public static Dictionary<string,Structure> BuiltInStructures = 
-<<<<<<< HEAD
 			new Dictionary<string, Structure> { {"Console",
 					new Structure () {
 						{ "Clear",BasicLib.ConsoleClear },
@@ -99,16 +95,6 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					}
 				},
 			};
-=======
-			new Dictionary<string, Structure>{
-			{"Console",
-				new Structure(){
-					{"Clear",BasicLib.ConsoleClear},
-					{"Write",BasicLib.ConsoleWrite}
-				}
-			},
-		};
->>>>>>> 77d0590f93c25f1f193620b3c6ad1a405dbbc0ad
 
 		public static void SetBuiltInFunctions (IScope GlobalScope)
 		{
@@ -127,13 +113,6 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			foreach (var element in BuiltInStructures)
 				GlobalScope.Put (element.Key, DynValue.FromStructure (element.Value));
 		}
-
-		public static void SetBuiltInStructures (IScope GlobalScope)
-		{
-			foreach (var element in BuiltInStructures)
-				GlobalScope [element.Key] = DynValue.FromStructure(element.Value);
-		}
-
 		public static void BuiltIn (string name, Func<DynValue[],DynValue> f)
 		{
 			BuiltInFunctions.Add (name, f);
