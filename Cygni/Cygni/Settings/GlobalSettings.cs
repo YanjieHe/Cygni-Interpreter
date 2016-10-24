@@ -28,7 +28,8 @@ namespace Cygni.Settings
 			{ "clock",BasicLib.clock },
 			{ "bit_or",BasicLib.bit_or },
 			{ "CSharpDll",BasicLib.CSharpDll },
-			
+			{ "dispose",BasicLib.dispose },
+
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
 			{ "sqrt",MathLib.sqrt },
@@ -87,29 +88,29 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 
 		public static Dictionary<string,Structure> BuiltInStructures = 
 			new Dictionary<string, Structure> { {"Console",
-				new Structure(){
-					{"Clear",BasicLib.ConsoleClear},
-					{"Write",BasicLib.ConsoleWrite}
-				}
-			},
-		};
+					new Structure () {
+						{ "Clear",BasicLib.ConsoleClear },
+						{ "Write",BasicLib.ConsoleWrite }
+					}
+				},
+			};
 
 		public static void SetBuiltInFunctions (IScope GlobalScope)
 		{
 			foreach (var element in BuiltInFunctions)
-				GlobalScope.Put(element.Key, DynValue.FromNativeFunction (new  NativeFunction (element.Value)));
+				GlobalScope.Put (element.Key, DynValue.FromNativeFunction (new  NativeFunction (element.Value)));
 		}
 
 		public static void SetBuiltInVariables (IScope GlobalScope)
 		{
 			foreach (var element in BuiltInVariables)
-				GlobalScope.Put(element.Key, element.Value);
+				GlobalScope.Put (element.Key, element.Value);
 		}
 
 		public static void SetBuiltInStructures (IScope GlobalScope)
 		{
 			foreach (var element in BuiltInStructures)
-				GlobalScope.Put(element.Key, DynValue.FromStructure(element.Value));
+				GlobalScope.Put (element.Key, DynValue.FromStructure (element.Value));
 		}
 
 		public static void BuiltIn (string name, Func<DynValue[],DynValue> f)

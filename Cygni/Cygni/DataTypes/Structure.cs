@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System;
-
+using Cygni.Errors;
 namespace Cygni.DataTypes
 {
 	/// <summary>
@@ -22,7 +22,9 @@ namespace Cygni.DataTypes
 
 		public DynValue SetByDot(string fieldname, DynValue value)
 		{
-			return this[fieldname] = value;
+			if(this.ContainsKey(fieldname))
+				return this[fieldname] = value;
+			throw RuntimeException.FieldNotExists ("structure", fieldname);
 		}
 		
 		#endregion

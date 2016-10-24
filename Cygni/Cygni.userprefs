@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Scopes/IScope.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Libraries/BasicLib.cs">
     <Files>
-      <File FileName="Cygni/Program.cs" Line="16" Column="10" />
-      <File FileName="Cygni/AST/Scopes/BasicScope.cs" Line="13" Column="30" />
-      <File FileName="Cygni/AST/Scopes/IScope.cs" Line="15" Column="29" />
+      <File FileName="Cygni/Program.cs" Line="17" Column="4" />
+      <File FileName="Cygni/Libraries/BasicLib.cs" Line="124" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

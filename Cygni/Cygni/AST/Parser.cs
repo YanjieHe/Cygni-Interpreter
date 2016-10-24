@@ -372,7 +372,9 @@ namespace Cygni.AST
 						throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
 					}
 					Move ();
-					return ASTNode.Invoke (x, list);
+					//return ASTNode.Invoke (x, list);
+					x = ASTNode.Invoke (x, list);
+					continue;
 				}
 			
 			
@@ -392,12 +394,14 @@ namespace Cygni.AST
 					}
 					Move ();
 					x = ASTNode.Index (x, indexes);
+					continue;
 				}
 			
 				if (tok.tag == Tag.Dot) {
 					var fieldname = look.ToString ();
 					Match (Tag.ID);
 					x = ASTNode.Dot (x, fieldname);
+					continue;
 				}
 			
 			}
