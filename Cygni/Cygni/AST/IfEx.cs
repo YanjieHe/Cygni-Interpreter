@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of IfEx.
 	/// </summary>
-	public class IfEx:ASTNode
+	public class IfEx:ASTNode,ISymbolLookUp
 	{
 		ASTNode condition;
 		ASTNode IfTrue;
@@ -37,6 +37,15 @@ namespace Cygni.AST
 			} else {
 				return string.Concat(" if ", condition, IfTrue, " else ", IfFalse);
 			}
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			if (condition is ISymbolLookUp)
+				(condition as ISymbolLookUp).LookUpForLocalVariable (names);
+			if (IfTrue is ISymbolLookUp)
+				(IfTrue as ISymbolLookUp).LookUpForLocalVariable (names);
+			if (IfFalse !=null && IfFalse is ISymbolLookUp)
+				(IfFalse as ISymbolLookUp).LookUpForLocalVariable (names);
 		}
 	}
 }

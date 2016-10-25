@@ -12,7 +12,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of IndexEx.
 	/// </summary>
-	public class IndexEx:ASTNode,IAssignable
+	public class IndexEx:ASTNode,IAssignable,ISymbolLookUp
 	{
 		public override NodeType type{ get { return NodeType.Index; } }
 		internal ASTNode list{  get; private set; }
@@ -30,6 +30,15 @@ namespace Cygni.AST
 		public DynValue Assign(DynValue value, IScope scope){
 			var collection = list.Eval(scope);
 			return collection.As<IIndexable>()[indexes.Map(i => i.Eval(scope))] = value;
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			if (list is ISymbolLookUp)
+				(list as ISymbolLookUp).LookUpForLocalVariable (names);
+			for (int i = 0; i < indexes.Length; i++) {
+				if (indexes[i] is ISymbolLookUp)
+					(indexes[i] as ISymbolLookUp).LookUpForLocalVariable (names);
+			}
 		}
 	}
 }

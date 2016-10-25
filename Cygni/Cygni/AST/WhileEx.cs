@@ -44,5 +44,11 @@ namespace Cygni.AST
 		{
 			return string.Concat(" while ", condition, body);
 		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			if (condition is ISymbolLookUp)
+				(condition as ISymbolLookUp).LookUpForLocalVariable (names);
+			body.LookUpForLocalVariable (names);
+		}
 	}
 }

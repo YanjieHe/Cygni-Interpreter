@@ -21,6 +21,10 @@ namespace Cygni.Libraries
 	{
 		public static DynValue DoFile(DynValue[] args, IScope scope)
 		{
+			var basicScope = scope as BasicScope;
+			if (basicScope == null)
+				throw new RuntimeException("Unable to run command 'dofile' in local scope");
+			
 			string filepath = args[0].AsString();
 			if (!Path.HasExtension(filepath))
 				filepath = Path.ChangeExtension(filepath, "cyg");
@@ -30,10 +34,7 @@ namespace Cygni.Libraries
 				: Encoding.Default;
 			bool quiet = GlobalSettings.Quiet;
 			GlobalSettings.Quiet = true;
-			var basicScope = scope as BasicScope;
-			if (basicScope == null)
-				throw new RuntimeException("Unable to run command 'dofile' in local scope");
-			
+
 			var executor = new CodeFileExecutor(scope as BasicScope, filepath, encoding);
 			GlobalSettings.Quiet = quiet;
 			return executor.Run();
@@ -54,7 +55,7 @@ namespace Cygni.Libraries
 				var parameters = method.GetParameters();
 				if (parameters.Length == 1 && parameters[0].ParameterType == typeof(DynValue[])) {
 					var method_name = method.Name;
-					if (scope.ContainsKey(method_name)) {
+					if (scope.HasName(method_name)) {
 						Console.WriteLine("overwriting method '{0}'", method_name);
 					}
 					scope.Put(method_name, DynValue.FromDelegate(
@@ -64,6 +65,23 @@ namespace Cygni.Libraries
 			}
 			return DynValue.FromList(new DynList(names.Select(DynValue.FromString), names.Count));
 		}
-		
+		public static DynValue Delete(DynValue[] args,IScope scope){
+			var basicScope = scope as BasicScope;
+			if (basicScope == null)
+				throw new RuntimeException("Unable to run command 'delete' in local scope");
+			if(!args.All(i=>i.type == DataType.String))
+				throw new RuntimeException("Type of parameters for command 'delete' must be string");
+			foreach (var item in args) {
+				var name = item.AsString ();
+				bool success = basicScope.Delete (name);
+				if (!GlobalSettings.Quiet) {
+					if (success)
+						Console.WriteLine ("variable '{0}' has been deleted successfully.", name);
+					else
+						Console.WriteLine ("Unable to delete variable '{0}'.", name);
+				}
+			}
+			return DynValue.Null;
+		}
 	}
 }

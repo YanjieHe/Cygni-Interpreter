@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of BlockEx.
 	/// </summary>
-	public class BlockEx:ASTNode
+	public class BlockEx:ASTNode,ISymbolLookUp
 	{
 		readonly ASTNode[] _expressions;
 		public ASTNode[] expressions{ get { return _expressions; } }
@@ -46,6 +46,13 @@ namespace Cygni.AST
 			}
 			s.AppendLine("} ");
 			return s.ToString();
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			foreach (var item in _expressions) {
+				if(item is ISymbolLookUp)
+					(item as ISymbolLookUp).LookUpForLocalVariable (names);
+			}
 		}
 	}
 }

@@ -9,12 +9,12 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public sealed class DynValue: IConvertible, IComputable,IComparable<DynValue>, IEquatable<DynValue>
+	public struct DynValue: IComputable,IComparable<DynValue>, IEquatable<DynValue>
 	{
-		DataType _type;
+		readonly DataType _type;
 		public DataType type { get { return _type; } }
-		object value;
-		public object Value{ get { return value; } internal set { this.value = value;/* unchecked */ } }
+		readonly object value;
+		public object Value{ get { return value; }  }
 		
 		public DynValue(DataType _type, object value)
 		{
@@ -93,7 +93,7 @@ namespace Cygni.DataTypes
 		{
 			return new DynValue(DataType.HashTable, hashTable);
 		}
-		
+
 		public static DynValue FromUserData(object value)
 		{
 			return new DynValue(DataType.UserData, value);
@@ -277,109 +277,5 @@ namespace Cygni.DataTypes
 					return value.GetType();
 			}
 		}
-
-		#region IConvertible implementation
-
-		public TypeCode GetTypeCode()
-		{
-			switch (type) {
-				case DataType.Number:
-					return TypeCode.Double;
-				case DataType.Boolean:
-					return TypeCode.Boolean;
-				case DataType.String:
-					return TypeCode.String;
-				case DataType.Null:
-					return TypeCode.Empty;
-				default:
-					var iconv = value as IConvertible;
-					if (iconv == null)
-						return TypeCode.Object;
-					return iconv.GetTypeCode();
-			}
-		}
-
-		public bool ToBoolean(IFormatProvider provider)
-		{
-			return Convert.ToBoolean(value, provider);
-		}
-
-		public char ToChar(IFormatProvider provider)
-		{
-			return Convert.ToChar(value, provider);
-		}
-
-		public sbyte ToSByte(IFormatProvider provider)
-		{
-			return Convert.ToSByte(value, provider);
-		}
-
-		public byte ToByte(IFormatProvider provider)
-		{
-			return Convert.ToByte(value, provider);
-		}
-
-		public short ToInt16(IFormatProvider provider)
-		{
-			return Convert.ToInt16(value, provider);
-		}
-
-		public ushort ToUInt16(IFormatProvider provider)
-		{
-			return Convert.ToUInt16(value, provider);
-		}
-
-		public int ToInt32(IFormatProvider provider)
-		{
-			return Convert.ToInt32(value, provider);
-		}
-
-		public uint ToUInt32(IFormatProvider provider)
-		{
-			return Convert.ToUInt32(value, provider);
-		}
-
-		public long ToInt64(IFormatProvider provider)
-		{
-			return Convert.ToInt64(value, provider);
-		}
-
-		public ulong ToUInt64(IFormatProvider provider)
-		{
-			return Convert.ToUInt64(value, provider);
-		}
-
-		public float ToSingle(IFormatProvider provider)
-		{
-			return Convert.ToSingle(value, provider);
-		}
-
-		public double ToDouble(IFormatProvider provider)
-		{
-			return Convert.ToDouble(value, provider);
-		}
-
-		public decimal ToDecimal(IFormatProvider provider)
-		{
-			return Convert.ToDecimal(value, provider);
-		}
-
-		public DateTime ToDateTime(IFormatProvider provider)
-		{
-			return Convert.ToDateTime(value, provider);
-		}
-
-		public string ToString(IFormatProvider provider)
-		{
-			return Convert.ToString(value, provider);
-		}
-
-		public object ToType(Type conversionType, IFormatProvider provider)
-		{
-			return Convert.ChangeType(value, conversionType, provider);
-		}
-
-		#endregion
-
 	}
 }

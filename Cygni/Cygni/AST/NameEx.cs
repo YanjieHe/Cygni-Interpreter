@@ -11,25 +11,65 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of NameEx.
 	/// </summary>
-	public sealed class NameEx:ASTNode,IAssignable
+	public sealed class NameEx:ASTNode,IAssignable,ISymbolLookUp
 	{
-		readonly string name;
+		string name;
+
 		public string Name{ get { return name; } }
+
 		public  override NodeType type { get { return NodeType.Name; } }
-		public NameEx(string name)
+
+		int index;
+
+		//public int IndexInScope { get { return index; } internal set { index = value; } }
+
+		public bool IsLocal {
+			get{ return index != -1; }
+		}
+
+		public NameEx (string name, int index = -1)
 		{
 			this.name = name;
+			this.index = index;
 		}
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
-			return scope.Get(name);
+			return index == (-1)
+				? scope.Get (name)
+					: scope.Get (index);
 		}
-		public DynValue Assign(DynValue value,IScope scope){
-			return scope.Put(name, value);
+
+		public DynValue Assign (DynValue value, IScope scope)
+		{
+			return index == (-1)
+				? scope.Put (name, value)
+					: scope.Put (index, value);
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
 			return name;
+		}
+
+		public override bool Equals (object obj)
+		{
+			var a = obj as NameEx;
+			if (a == null)
+				return false;
+			return name == a.name;
+		}
+
+		public override int GetHashCode ()
+		{
+			return name.GetHashCode ();
+		}
+
+		public void LookUpForLocalVariable (List<NameEx> names)
+		{
+			int i =	names.IndexOf (this);
+			if (i >= 0)
+				this.index = i;
 		}
 	}
 }

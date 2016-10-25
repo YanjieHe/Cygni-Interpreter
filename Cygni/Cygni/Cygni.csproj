@@ -93,6 +93,9 @@
     <Compile Include="AST\Scopes\NestedScope.cs" />
     <Compile Include="AST\Scopes\IScope.cs" />
     <Compile Include="AST\IAssignable.cs" />
+    <Compile Include="AST\Scopes\ArrayScope.cs" />
+    <Compile Include="AST\ISymbolLookUp.cs" />
+    <Compile Include="AST\Scopes\EnvTable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of InvokeEx.
 	/// </summary>
-	public class InvokeEx:ASTNode
+	public class InvokeEx:ASTNode,ISymbolLookUp
 	{
 		ASTNode func;
 		ASTNode[] arguments;
@@ -34,12 +34,21 @@ namespace Cygni.AST
 			
 			for (int i = 0; i < nArgs; i++)
 				args[i] = arguments[i].Eval(scope);
-
+			
 			return f.As<IFunction> ().DynInvoke (args);
 		}
 		public override string ToString()
 		{
 			return string.Concat(func, "(", string.Join(", ", arguments.Select(i=>i.ToString())), ")");
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			if (func is ISymbolLookUp)
+				(func as ISymbolLookUp).LookUpForLocalVariable (names);
+			for (int i = 0; i < arguments.Length; i++) {
+				if (arguments[i] is ISymbolLookUp)
+					(arguments[i] as ISymbolLookUp).LookUpForLocalVariable (names);
+			}
 		}
 	}
 }

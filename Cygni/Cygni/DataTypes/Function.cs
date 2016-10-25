@@ -14,38 +14,31 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class Function:IFunction
 	{
-		string name;
-		BlockEx body;
-		string[] parameters;
-		NestedScope funcScope;
-		int nArgs;
-
-		public Function (string name, string[] parameters, BlockEx body, NestedScope funcScope)
+		readonly BlockEx body;
+		readonly ArrayScope funcScope;
+		readonly int nArgs;
+		public Function (int nArgs, BlockEx body, ArrayScope funcScope)
 		{
-			this.name = name;
-			this.parameters = parameters;
 			this.body = body;
 			this.funcScope = funcScope;
-			this.nArgs = parameters.Length;
+			this.nArgs = nArgs;
 		}
 
 		public Function Update (DynValue[] arguments)
 		{
 			if (nArgs != arguments.Length)
-				throw RuntimeException.BadArgsNum (name, nArgs);
-			var newScope = new NestedScope (funcScope.Parent);
-			
-			for (int i = 0; i < nArgs; i++)
-				newScope.Put(parameters [i], arguments [i]);
-			
-			return new Function (name, parameters, body, newScope);
+				throw RuntimeException.BadArgsNum ("Function", nArgs);
+			var args = new DynValue[funcScope.Count];
+			Array.Copy (arguments, args, nArgs);
+			var newScope = new ArrayScope (args, funcScope.Parent);
+			return new Function (nArgs, body, newScope);
 		}
 
 		public DynValue Invoke ()
 		{
 			var result = body.Eval (funcScope);
 			if (result.type == DataType.Return)
-				return result.Value as DynValue;
+				return (DynValue)result.Value;
 			return result;
 		}
 

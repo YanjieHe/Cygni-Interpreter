@@ -16,42 +16,52 @@ namespace Cygni.AST
 	public class CommandEx:ASTNode
 	{
 		public override NodeType type { get { return NodeType.Command; } }
+
 		public CommandType commandType;
 		IList<ASTNode> parameters;
-		public CommandEx(CommandType commandType, IList<ASTNode>parameters)
+
+		public CommandEx (CommandType commandType, IList<ASTNode>parameters)
 		{
 			this.commandType = commandType;
 			this.parameters = parameters;
 		}
-		public CommandEx(string commandName, IList<ASTNode>parameters)
+		internal static readonly Dictionary<string,CommandType>
+		cmdDict = new Dictionary<string, CommandType>(){
+			{"dofile", CommandType.DoFile},
+			{"loaddll", CommandType.LoadDll},
+			{"delete", CommandType.Delete},
+		};
+		public CommandEx (string commandName, IList<ASTNode>parameters)
 		{
-			switch (commandName.ToLower()) {
-				case "dofile":
-					this.commandType = CommandType.DoFile;
-					break;
-				case "loaddll":
-					this.commandType = CommandType.LoadDll;
-					break;
-				default:
-					throw new NotSupportedException(commandName);
-			}
+			if(!cmdDict.TryGetValue(commandName,out commandType))
+				throw new NotSupportedException (commandName);
 			this.parameters = parameters;
 		}
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
 			switch (commandType) {
-				case CommandType.DoFile:
-					return Commands.DoFile(parameters.Map(i => i.Eval(scope)), scope);
-				case CommandType.LoadDll:
-					return Commands.LoadDll(parameters.Map(i => i.Eval(scope)), scope);
-				default:
-					throw new NotSupportedException(commandType.ToString());
+			case CommandType.DoFile:
+				return RunCommand (Commands.DoFile, scope);
+			case CommandType.LoadDll:
+				return RunCommand (Commands.LoadDll, scope);
+			case CommandType.Delete:
+				return RunCommand (Commands.Delete, scope);
+			default:
+				throw new NotSupportedException (commandType.ToString ());
 			}
 		}
+
+		DynValue RunCommand (Func<DynValue[],IScope, DynValue> command, IScope scope)
+		{
+			return command (parameters.Map (i => i.Eval (scope)), scope);
+		}
 	}
+
 	public enum CommandType
 	{
 		DoFile,
 		LoadDll,
+		Delete,
 	}
 }

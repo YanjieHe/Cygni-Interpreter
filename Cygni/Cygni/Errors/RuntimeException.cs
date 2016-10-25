@@ -27,11 +27,6 @@ namespace Cygni.Errors
 			return new RuntimeException ("'{0}' is not defined.", name);
 		}
 
-		public static RuntimeException FieldNotExists (string target, string field)
-		{
-			return new RuntimeException ("The field '{0}' of '{1}' does not exist.", field, target);
-		}
-
 		public static RuntimeException BadArgsNum (string funcName, int nArgs)
 		{
 			return new RuntimeException ("bad number of arguments for '{0}', expecting '{1}' arguments.", funcName, nArgs);

@@ -19,6 +19,7 @@ namespace Cygni.DataTypes
 		NestedScope classScope;
 		ClassInfo[] parents;
 
+		public int ParametersCount{ get { throw new NotImplementedException(); } }
 		public ClassInfo (string name, BlockEx body, NestedScope classScope, ClassInfo[] parents = null)
 		{
 			this.name = name;
@@ -34,7 +35,7 @@ namespace Cygni.DataTypes
 			var newClass = new ClassInfo (name, body, newScope, parents);
 			newScope.Put ("this", DynValue.FromClass (newClass));
 			newClass.InitParents ();/* initialize parents */
-			if (!no_arg_construct && newScope.ContainsKey ("__INIT__")) /* initialize */
+			if (!no_arg_construct && newScope.HasName ("__INIT__")) /* initialize */
 				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 		}
@@ -150,7 +151,7 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			if (classScope.ContainsKey ("this") && classScope.ContainsKey ("__TOSTRING__"))
+			if (classScope.HasName ("this") && classScope.HasName ("__TOSTRING__"))
 				return classScope.Get("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			return string.Concat ("(class: ", name, ")");
 		}

@@ -12,10 +12,10 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of ForEx.
 	/// </summary>
-	public class ForEx:ASTNode
+	public class ForEx:ASTNode,ISymbolLookUp
 	{
 		BlockEx body;
-		string iterator;
+		NameEx iterator;
 		ASTNode start;
 		ASTNode end;
 		ASTNode step;
@@ -23,7 +23,7 @@ namespace Cygni.AST
 		public ForEx(BlockEx body, string iterator, ASTNode start, ASTNode end, ASTNode step)
 		{
 			this.body = body;
-			this.iterator = iterator;
+			this.iterator = new NameEx (iterator);
 			this.start = start;
 			this.end = end;
 			this.step = step;
@@ -34,15 +34,17 @@ namespace Cygni.AST
 			var result = DynValue.Null;
 			int istart = (int)start.Eval(scope).AsNumber();
 			int iend = (int)end.Eval(scope).AsNumber();
+			var iter_var = new DynValue(DataType.Number, (double)istart);
+			/* Please do not try to modify the iteration variable during the loop,
+			 * it may cause unpredictable error */
+
+			iterator.Assign(iter_var,scope);
 			
 			if (step == null) {
 				/* for i = start,end { ... } */
-				var iter_var = new DynValue(DataType.Number, (double)istart);
-				/* Please do not try to modify the iteration variable during the loop,
-				 * it may cause unpredictable error */
-				scope.Put(iterator, iter_var);
 				
-				for (int i = istart; i < iend; i++, iter_var.Value = (double)i) {
+				//for (int i = istart; i < iend; i++, iter_var.Value = (double)i) {
+				for (int i = istart; i < iend; i++, iterator.Assign((double)i,scope)) {
 					result = body.Eval(scope);
 					switch (result.type) {
 						case DataType.Break:
@@ -61,11 +63,8 @@ namespace Cygni.AST
 					throw new RuntimeException("The step of for-loop cannot be zero.");
 				if (istep > 0) { /* forward */
 					
-					var iter_var = new DynValue(DataType.Number, (double)istart);
-					scope.Put(iterator, iter_var);
-					
-					for (int i = istart; i < iend; i += istep, iter_var.Value = (double)i) {
-						
+					//for (int i = istart; i < iend; i += istep, iter_var.Value = (double)i) {
+					for (int i = istart; i < iend; i += istep, iterator.Assign((double)i,scope)) {
 						result = body.Eval(scope);
 						switch (result.type) {
 							case DataType.Break:
@@ -77,10 +76,9 @@ namespace Cygni.AST
 						}
 					}
 				} else {/* backward */
-					var iter_var = new DynValue(DataType.Number, (double)istart);
-					scope.Put(iterator, iter_var);
 					
-					for (int i = istart; i > iend; i += istep, iter_var.Value = (double)i) {
+					//for (int i = istart; i > iend; i += istep, iter_var.Value = (double)i) {
+					for (int i = istart; i > iend; i += istep, iterator.Assign((double)i,scope)) {
 						result = body.Eval(scope);
 						switch (result.type) {
 							case DataType.Break:
@@ -95,5 +93,20 @@ namespace Cygni.AST
 			}
 			return result;
 		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			//iterator.LookUpForLocalVariable (names);
+			iterator = new NameEx(iterator.Name,names.Count);
+			names.Add (iterator);
+
+			if (start is ISymbolLookUp)
+				(start as ISymbolLookUp).LookUpForLocalVariable (names);
+			if (end is ISymbolLookUp)
+				(end as ISymbolLookUp).LookUpForLocalVariable (names);
+			if (step != null && step is ISymbolLookUp)
+				(step as ISymbolLookUp).LookUpForLocalVariable (names);
+			body.LookUpForLocalVariable (names);
+		}
+
 	}
 }

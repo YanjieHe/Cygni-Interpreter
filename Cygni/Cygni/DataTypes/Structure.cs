@@ -22,9 +22,7 @@ namespace Cygni.DataTypes
 
 		public DynValue SetByDot(string fieldname, DynValue value)
 		{
-			if(this.ContainsKey(fieldname))
-				return this[fieldname] = value;
-			throw RuntimeException.FieldNotExists ("structure", fieldname);
+			return this[fieldname] = value;
 		}
 		
 		#endregion

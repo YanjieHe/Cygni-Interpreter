@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of UnaryEx.
 	/// </summary>
-	public class UnaryEx:ASTNode
+	public class UnaryEx:ASTNode,ISymbolLookUp
 	{
 		ASTNode operand;
 		UnaryOp op;
@@ -48,6 +48,11 @@ namespace Cygni.AST
 				default:
 					throw new NotSupportedException(op.ToString());
 			}
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			if (operand is ISymbolLookUp)
+				(operand as ISymbolLookUp).LookUpForLocalVariable (names);
 		}
 	}
 	public enum UnaryOp:byte

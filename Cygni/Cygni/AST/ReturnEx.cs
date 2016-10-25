@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of ReturnEx.
 	/// </summary>
-	public class ReturnEx:ASTNode
+	public class ReturnEx:ASTNode,ISymbolLookUp
 	{
 		ASTNode value;
 		public override NodeType type { get { return NodeType.Return; } }
@@ -22,6 +22,11 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			return DynValue.Return(value.Eval(scope));
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+				if (value is ISymbolLookUp)
+					(value as ISymbolLookUp).LookUpForLocalVariable (names);
 		}
 	}
 }

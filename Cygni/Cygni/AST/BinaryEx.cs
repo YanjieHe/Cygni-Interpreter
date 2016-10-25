@@ -12,102 +12,129 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of BinaryEx.
 	/// </summary>
-	public class BinaryEx:ASTNode
+	public class BinaryEx:ASTNode,ISymbolLookUp
 	{
 		ASTNode left;
 		ASTNode right;
+
 		public ASTNode Left{ get { return left; } }
+
 		public ASTNode Right{ get { return right; } }
+
 		BinaryOp op;
+
 		public BinaryOp Op{ get { return op; } }
+
 		public override NodeType type { get { return NodeType.Binary; } }
-		public BinaryEx(BinaryOp op, ASTNode left, ASTNode right)
+
+		public BinaryEx (BinaryOp op, ASTNode left, ASTNode right)
 		{
 			this.op = op;
 			this.left = left;
 			this.right = right;
 		}
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
 			if (op == BinaryOp.Assign) {
-				return (left as IAssignable).Assign (right.Eval(scope), scope);
+				return (left as IAssignable).Assign (right.Eval (scope), scope);
 			}
-			var _left = left.Eval(scope);
+			var _left = left.Eval (scope);
 			//var _right = right.Eval(scope);
 			switch (op) {
-				case BinaryOp.Add:
-					return _left.Add(right.Eval(scope));
-				case BinaryOp.Sub:
-					return _left.Subtract(right.Eval(scope));
-				case BinaryOp.Mul:
-					return _left.Multiply(right.Eval(scope));
-				case BinaryOp.Div:
-					return _left.Divide(right.Eval(scope));
-				case BinaryOp.Mod:
-					return _left.Modulo(right.Eval(scope));
-				case BinaryOp.Pow:
-					return _left.Power(right.Eval(scope));
-				case BinaryOp.And:
-					if ((bool)_left.Value)
-						return (bool)right.Eval(scope).Value;
-					return DynValue.False;/* shortcut evaluate*/
-				case BinaryOp.Or:
-					if ((bool)_left.Value)
-						return DynValue.True;/* shortcut evaluate*/
-					return (bool)right.Eval(scope).Value;
-				case BinaryOp.Less:
-					return _left.CompareTo(right.Eval(scope)) < 0;
-				case BinaryOp.Greater:
-					return _left.CompareTo(right.Eval(scope)) > 0;
-				case BinaryOp.LessOrEqual:
-					return _left.CompareTo(right.Eval(scope)) <= 0;
-				case BinaryOp.GreaterOrEqual:
-					return _left.CompareTo(right.Eval(scope)) >= 0;
+			case BinaryOp.Add:
+				return _left.Add (right.Eval (scope));
+			case BinaryOp.Sub:
+				return _left.Subtract (right.Eval (scope));
+			case BinaryOp.Mul:
+				return _left.Multiply (right.Eval (scope));
+			case BinaryOp.Div:
+				return _left.Divide (right.Eval (scope));
+			case BinaryOp.Mod:
+				return _left.Modulo (right.Eval (scope));
+			case BinaryOp.Pow:
+				return _left.Power (right.Eval (scope));
+			case BinaryOp.And:
+				if ((bool)_left.Value)
+					return (bool)right.Eval (scope).Value;
+				return DynValue.False;/* shortcut evaluate*/
+			case BinaryOp.Or:
+				if ((bool)_left.Value)
+					return DynValue.True;/* shortcut evaluate*/
+				return (bool)right.Eval (scope).Value;
+			case BinaryOp.Less:
+				return _left.CompareTo (right.Eval (scope)) < 0;
+			case BinaryOp.Greater:
+				return _left.CompareTo (right.Eval (scope)) > 0;
+			case BinaryOp.LessOrEqual:
+				return _left.CompareTo (right.Eval (scope)) <= 0;
+			case BinaryOp.GreaterOrEqual:
+				return _left.CompareTo (right.Eval (scope)) >= 0;
 					
-				case BinaryOp.Equal:
-					return _left.Equals(right.Eval(scope)) ? DynValue.True : DynValue.False;
-				default: /* BinaryOp.NotEqual */
-					return _left.Equals(right.Eval(scope)) ? DynValue.False : DynValue.True;
+			case BinaryOp.Equal:
+				return _left.Equals (right.Eval (scope)) ? DynValue.True : DynValue.False;
+			default: /* BinaryOp.NotEqual */
+				return _left.Equals (right.Eval (scope)) ? DynValue.False : DynValue.True;
 			}
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
 			switch (op) {
-				case BinaryOp.Add:
-					return string.Concat("(", left, "+", right, ")");
-				case BinaryOp.Sub:
-					return string.Concat("(", left, "-", right, ")");
-				case BinaryOp.Mul:
-					return string.Concat("(", left, "*", right, ")");
-				case BinaryOp.Div:
-					return string.Concat("(", left, "/", right, ")");
-				case BinaryOp.Mod:
-					return string.Concat("(", left, "%", right, ")");
-				case BinaryOp.Pow:
-					return string.Concat("(", left, "^", right, ")");
-				case BinaryOp.And:
-					return string.Concat("(", left, " and ", right, ")");
-				case BinaryOp.Or:
-					return string.Concat("(", left, " or ", right, ")");
-				case BinaryOp.Less:
-					return string.Concat("(", left, "<", right, ")");
-				case BinaryOp.Greater:
-					return string.Concat("(", left, ">", right, ")");
-				case BinaryOp.LessOrEqual:
-					return string.Concat("(", left, "<=", right, ")");
-				case BinaryOp.GreaterOrEqual:
-					return string.Concat("(", left, ">=", right, ")");
-				case BinaryOp.Equal:
-					return string.Concat("(", left, "==", right, ")");
-				case BinaryOp.NotEqual:
-					return string.Concat("(", left, "!=", right, ")");
-				case BinaryOp.Assign:
-					return string.Concat("(", left, "=", right, ")");
-				default:
-					throw new NotSupportedException(op.ToString());
+			case BinaryOp.Add:
+				return string.Concat ("(", left, "+", right, ")");
+			case BinaryOp.Sub:
+				return string.Concat ("(", left, "-", right, ")");
+			case BinaryOp.Mul:
+				return string.Concat ("(", left, "*", right, ")");
+			case BinaryOp.Div:
+				return string.Concat ("(", left, "/", right, ")");
+			case BinaryOp.Mod:
+				return string.Concat ("(", left, "%", right, ")");
+			case BinaryOp.Pow:
+				return string.Concat ("(", left, "^", right, ")");
+			case BinaryOp.And:
+				return string.Concat ("(", left, " and ", right, ")");
+			case BinaryOp.Or:
+				return string.Concat ("(", left, " or ", right, ")");
+			case BinaryOp.Less:
+				return string.Concat ("(", left, "<", right, ")");
+			case BinaryOp.Greater:
+				return string.Concat ("(", left, ">", right, ")");
+			case BinaryOp.LessOrEqual:
+				return string.Concat ("(", left, "<=", right, ")");
+			case BinaryOp.GreaterOrEqual:
+				return string.Concat ("(", left, ">=", right, ")");
+			case BinaryOp.Equal:
+				return string.Concat ("(", left, "==", right, ")");
+			case BinaryOp.NotEqual:
+				return string.Concat ("(", left, "!=", right, ")");
+			case BinaryOp.Assign:
+				return string.Concat ("(", left, "=", right, ")");
+			default:
+				throw new NotSupportedException (op.ToString ());
 			}
 		}
+
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			if (op == BinaryOp.Assign && left.type == NodeType.Name) {
+				var nameEx = left as NameEx;
+				if (names.Contains (nameEx)) {
+					nameEx.LookUpForLocalVariable (names);
+				} else {
+					var newName = new NameEx (nameEx.Name, names.Count);
+					left = newName;
+					names.Add (newName);
+				}
+			}
+			if (left is ISymbolLookUp)
+				(left as ISymbolLookUp).LookUpForLocalVariable (names);
+			if (right is ISymbolLookUp)
+				(right as ISymbolLookUp).LookUpForLocalVariable (names);
+		}
 	}
+
 	public enum BinaryOp:byte
 	{
 		Add,

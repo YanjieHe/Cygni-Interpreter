@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of ListInitEx.
 	/// </summary>
-	public class ListInitEx:ASTNode
+	public class ListInitEx:ASTNode,ISymbolLookUp
 	{
 		public override NodeType type { get { return NodeType.ListInit; } }
 		List<ASTNode> list;
@@ -22,6 +22,13 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			return DynValue.FromList(new DynList(list.Select(i => i.Eval(scope)), list.Count));
+		}
+		public void LookUpForLocalVariable (List<NameEx>names)
+		{
+			for (int i = 0; i < list.Count; i++) {
+				if (list[i] is ISymbolLookUp)
+					(list[i] as ISymbolLookUp).LookUpForLocalVariable (names);
+			}
 		}
 	}
 }

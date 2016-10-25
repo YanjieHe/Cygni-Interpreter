@@ -25,10 +25,10 @@ namespace Cygni.Settings
 			{ "quiet",BasicLib.quiet },
 			{ "struct",BasicLib.Struct },
 			{ "scan",BasicLib.scan },
-			{ "clock",BasicLib.clock },
 			{ "bit_or",BasicLib.bit_or },
 			{ "CSharpDll",BasicLib.CSharpDll },
 			{ "dispose",BasicLib.dispose },
+			{ "throw",BasicLib.Throw },
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -52,13 +52,12 @@ namespace Cygni.Settings
 
 			{ "append",ListLib.append },
 			{ "len",ListLib.len },
-			{ "remove_at",ListLib.remove_at },
-			{ "insert_at",ListLib.insert_at },
+			{ "removeAt",ListLib.removeAt },
+			{ "insertAt",ListLib.insertAt },
 			
 			{ "hashtable",HashTableLib.hashtable },
-			{ "has_key",HashTableLib.has_key },
-			{ "has_value",HashTableLib.has_value },
-			{ "ht_count",HashTableLib.ht_count },
+			{ "hasKey",HashTableLib.hasKey },
+			{ "hasValue",HashTableLib.hasValue },
 			{ "ht_remove",HashTableLib.ht_remove },
 			{ "ht_keys",HashTableLib.ht_keys },
 			{ "ht_values",HashTableLib.ht_values },
@@ -88,12 +87,53 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 ";
 
 		public static Dictionary<string,Structure> BuiltInStructures = 
-			new Dictionary<string, Structure> { {"Console",
+			new Dictionary<string, Structure> { 
+			{"os",new Structure(){
+					{"clock",BasicLib.os_clock}
+				}
+			},
+			{"console",
 					new Structure () {
-						{ "Clear",BasicLib.ConsoleClear },
-						{ "Write",BasicLib.ConsoleWrite }
+					{ "clear",BasicLib.console_clear },
+					{ "write",BasicLib.console_write },
+					{ "read",BasicLib.console_read },
+					{ "readLine",BasicLib.console_readLine },
+
+					}
+				}, {"string",
+					new Structure () {
+						{ "concat",StrLib.strcat },
+						{ "join",StrLib.strjoin },
+						{ "format",StrLib.strformat },
+						{ "len",StrLib.strlen },
+						{ "split",StrLib.strsplit },
+						{ "replace",StrLib.strrpl },
+						{ "compare",StrLib.strcmp },
+						{ "find",StrLib.strfind },
+						{ "lower",StrLib.tolower },
+						{ "upper",StrLib.toupper },
+						{ "char",StrLib._char },
+						{ "empty",string.Empty },
 					}
 				},
+			{"List",new Structure(){
+					{ "append",ListLib.append },
+					{ "len",ListLib.len },
+					{ "removeAt",ListLib.removeAt },
+					{ "insertAt",ListLib.insertAt },
+					{ "sort",ListLib.sort },
+					{ "bSearch",ListLib.bSearch },
+				}
+			},
+			{"htable",
+				new Structure() {
+					{ "hasKey",HashTableLib.hasKey },
+					{ "hasValue",HashTableLib.hasValue },
+					{ "remove",HashTableLib.ht_remove },
+					{ "keys",HashTableLib.ht_keys },
+					{ "values",HashTableLib.ht_values },
+				}
+			},
 			};
 
 		public static void SetBuiltInFunctions (IScope GlobalScope)
@@ -131,5 +171,6 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			SetBuiltInStructures (scope);
 			return scope;
 		}
+
 	}
 }

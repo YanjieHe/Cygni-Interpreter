@@ -14,7 +14,6 @@ namespace Cygni.Libraries
 	/// </summary>
 	public static class HashTableLib
 	{
-		
 		public static DynValue hashtable (DynValue[] args)
 		{
 			var hashTable = new DynHashTable ();
@@ -28,7 +27,7 @@ namespace Cygni.Libraries
 			throw RuntimeException.BadArgsNum ("hashtable", "even");
 		}
 
-		public static DynValue has_key (DynValue[] args)
+		public static DynValue hasKey (DynValue[] args)
 		{
 			var ht = args [0].As<DynHashTable> ();
 			var key = args [1];
@@ -43,17 +42,11 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue has_value (DynValue[] args)
+		public static DynValue hasValue (DynValue[] args)
 		{
 			var ht = args [0].As<DynHashTable> ();
 			var value = args [1];
 			return ht.ContainsValue (value);
-		}
-
-		public static DynValue ht_count (DynValue[] args)
-		{
-			var ht = args [0].As<DynHashTable> ();
-			return ht.Count;
 		}
 
 		public static DynValue ht_remove (DynValue[] args)

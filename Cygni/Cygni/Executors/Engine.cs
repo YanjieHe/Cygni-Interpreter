@@ -83,5 +83,6 @@ namespace Cygni.Executors
 		{
 			return globalScope.TryGetValue (name, out value);
 		}
+
 	}
 }

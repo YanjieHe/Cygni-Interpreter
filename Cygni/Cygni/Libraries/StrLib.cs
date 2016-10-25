@@ -16,12 +16,12 @@ namespace Cygni.Libraries
 		public static DynValue strcat(DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length > 0, "strcat");
-			return string.Concat(args.Map(i => i.AsString()));
+			return string.Concat(args.Map(i => i.Value));
 		}
 		public static DynValue strjoin(DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length > 1, "strjoin");
-			return string.Join(args[0].AsString(), args.SkipMap(1, i => i.AsString()));
+			return string.Join(args[0].AsString(), args.SkipMap(1, i => i.Value));
 		}
 		public static DynValue strformat(DynValue[] args)
 		{
@@ -54,6 +54,18 @@ namespace Cygni.Libraries
 		public static DynValue strfind(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
 			return args [0].AsString ().IndexOf (args [1].AsString ());
+		}
+		public static DynValue tolower(DynValue[]args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "tolower");
+			return args [0].AsString ().ToLower ();
+		}
+		public static DynValue toupper(DynValue[]args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "toupper");
+			return args [0].AsString ().ToUpper ();
+		}
+		public static DynValue _char(DynValue[]args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "char");
+			return char.ToString((char)(int)args [0].AsNumber ());
 		}
 	}
 }

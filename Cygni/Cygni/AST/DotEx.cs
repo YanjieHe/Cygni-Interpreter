@@ -11,11 +11,11 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of DotEx.
 	/// </summary>
-	public class DotEx:ASTNode,IAssignable
+	public class DotEx:ASTNode,IAssignable,ISymbolLookUp
 	{
 		ASTNode obj;
 		public ASTNode Obj{ get { return obj; } }
-		string fieldname;
+		readonly string fieldname;
 		public override  NodeType type { get { return NodeType.Dot; } }
 		
 		public DotEx(ASTNode obj, string fieldname)
@@ -40,6 +40,11 @@ namespace Cygni.AST
 		public DynValue Assign(DynValue value,IScope scope){
 			var target = obj.Eval(scope);
 			return target.As<IDot> ().SetByDot (fieldname, value);
+		}
+
+		public void LookUpForLocalVariable(List<NameEx> names){
+			if (obj is ISymbolLookUp)
+				(obj as ISymbolLookUp).LookUpForLocalVariable (names);
 		}
 	}
 }

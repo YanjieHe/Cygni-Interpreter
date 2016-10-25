@@ -55,7 +55,7 @@ namespace Cygni.AST
 			return block;
 		}
 
-		static readonly string[] commands = { "dofile", "loaddll", };
+		static readonly string[] commands = CommandEx.cmdDict.Keys.ToArray ();
 
 		ASTNode Statement ()
 		{
