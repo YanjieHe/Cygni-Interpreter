@@ -19,7 +19,8 @@ namespace Cygni.DataTypes
 		NestedScope classScope;
 		ClassInfo[] parents;
 
-		public int ParametersCount{ get { throw new NotImplementedException(); } }
+		public int ParametersCount{ get { throw new NotImplementedException (); } }
+
 		public ClassInfo (string name, BlockEx body, NestedScope classScope, ClassInfo[] parents = null)
 		{
 			this.name = name;
@@ -70,11 +71,11 @@ namespace Cygni.DataTypes
 			DynValue value;
 			if (classScope.TryGetValue (fieldname, out value))/* Find in self */
 				return value;
-			
-			foreach (var parent in parents) { /* Find in parents */
-				if (parent.classScope.TryGetValue (fieldname, out value))
-					return value;
-			}
+			if (parents != null)
+				foreach (var parent in parents) { /* Find in parents */
+					if (parent.classScope.TryGetValue (fieldname, out value))
+						return value;
+				}
 			throw RuntimeException.NotDefined (fieldname);
 		}
 
@@ -152,7 +153,7 @@ namespace Cygni.DataTypes
 		public override string ToString ()
 		{
 			if (classScope.HasName ("this") && classScope.HasName ("__TOSTRING__"))
-				return classScope.Get("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
+				return classScope.Get ("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			return string.Concat ("(class: ", name, ")");
 		}
 	}

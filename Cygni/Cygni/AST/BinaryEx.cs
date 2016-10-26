@@ -43,17 +43,41 @@ namespace Cygni.AST
 			//var _right = right.Eval(scope);
 			switch (op) {
 			case BinaryOp.Add:
-				return _left.Add (right.Eval (scope));
+				{
+					if (_left.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)_left.Value + (double)right.Eval (scope).Value);
+					return ((IComputable)_left.Value).Add (right.Eval (scope));
+				}
 			case BinaryOp.Sub:
-				return _left.Subtract (right.Eval (scope));
+				{
+					if (_left.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)_left.Value - (double)right.Eval (scope).Value);
+					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+				}
 			case BinaryOp.Mul:
-				return _left.Multiply (right.Eval (scope));
+				{
+					if (_left.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)_left.Value * (double)right.Eval (scope).Value);
+					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+				}
 			case BinaryOp.Div:
-				return _left.Divide (right.Eval (scope));
+				{
+					if (_left.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)_left.Value / (double)right.Eval (scope).Value);
+					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+				}
 			case BinaryOp.Mod:
-				return _left.Modulo (right.Eval (scope));
+				{
+					if (_left.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)_left.Value % (double)right.Eval (scope).Value);
+					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+				}
 			case BinaryOp.Pow:
-				return _left.Power (right.Eval (scope));
+				{
+					if (_left.type == DataType.Number)
+						return new DynValue (DataType.Number,Math.Pow((double)_left.Value , (double)right.Eval (scope).Value));
+					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+				}
 			case BinaryOp.And:
 				if ((bool)_left.Value)
 					return (bool)right.Eval (scope).Value;

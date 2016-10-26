@@ -32,7 +32,7 @@ namespace Cygni.AST
 				list.Add (new NameEx (parameters [i],  i));
 			body.LookUpForLocalVariable (list);
 			var arrayScope = new ArrayScope (list.Count,scope);
-			var func = DynValue.FromFunction(new Function(parameters.Length, body, arrayScope));
+			var func = DynValue.FromFunction(new Function(name,parameters.Length, body, arrayScope));
 			return scope.Put(name, func);
 		}
 		public override string ToString()

@@ -39,6 +39,7 @@ namespace Cygni.Executors
 			} catch (Exception ex) {
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine("error: {0}", ex.Message);
+				//Console.WriteLine (ex);
 			}
 			return Result;
 		}

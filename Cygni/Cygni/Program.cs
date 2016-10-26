@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using Cygni.Settings;
+using System.Linq.Expressions;
 namespace Cygni
 {
 	class MainClass
@@ -24,6 +26,7 @@ namespace Cygni
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/post_data.cyg");
 			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fib.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fibtest.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/get_data.cyg");
 
 			engine.ExecuteInConsole ();
 		}

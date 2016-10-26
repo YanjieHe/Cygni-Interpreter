@@ -14,11 +14,13 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class Function:IFunction
 	{
+		readonly string name;
 		readonly BlockEx body;
 		readonly ArrayScope funcScope;
 		readonly int nArgs;
-		public Function (int nArgs, BlockEx body, ArrayScope funcScope)
+		public Function (string name, int nArgs, BlockEx body, ArrayScope funcScope)
 		{
+			this.name = name;
 			this.body = body;
 			this.funcScope = funcScope;
 			this.nArgs = nArgs;
@@ -27,11 +29,11 @@ namespace Cygni.DataTypes
 		public Function Update (DynValue[] arguments)
 		{
 			if (nArgs != arguments.Length)
-				throw RuntimeException.BadArgsNum ("Function", nArgs);
+				throw RuntimeException.BadArgsNum (name, nArgs);
 			var args = new DynValue[funcScope.Count];
 			Array.Copy (arguments, args, nArgs);
 			var newScope = new ArrayScope (args, funcScope.Parent);
-			return new Function (nArgs, body, newScope);
+			return new Function (name,nArgs, body, newScope);
 		}
 
 		public DynValue Invoke ()

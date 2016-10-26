@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/ASTVisitor.cs">
     <Files>
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="172" Column="11" />
-      <File FileName="Cygni/Program.cs" Line="17" Column="1" />
+      <File FileName="Cygni/Program.cs" Line="12" Column="16" />
+      <File FileName="Cygni/AST/ASTVisitor.cs" Line="5" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
