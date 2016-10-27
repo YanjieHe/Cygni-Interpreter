@@ -19,7 +19,7 @@ namespace Cygni.AST
 		int nArgs;
 		public override  NodeType type { get { return NodeType.Invoke; } }
 		
-		public InvokeEx(ASTNode func, ICollection<ASTNode>arguments)
+		public InvokeEx(ASTNode func, ICollection<ASTNode> arguments)
 		{
 			this.func = func;
 			this.arguments = new ASTNode[arguments.Count];

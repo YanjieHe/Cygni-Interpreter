@@ -28,10 +28,18 @@ namespace Cygni.AST
 		{
 			var obj = Operand.Eval(scope);
 			switch (op) {
-				case UnaryOp.Plus:
-					return obj.UnaryPlus();
-				case UnaryOp.Minus:
-					return obj.UnaryMinus();
+			case UnaryOp.Plus:
+				{
+					if (obj.type == DataType.Number)
+						return new DynValue (DataType.Number, +(double)obj.Value);
+					return (obj.Value as IComputable).UnaryPlus ();
+				}
+			case UnaryOp.Minus:
+				{
+					if (obj.type == DataType.Number)
+						return new DynValue (DataType.Number, -(double)obj.Value);
+					return (obj.Value as IComputable).UnaryPlus ();
+				}
 				default: /* UnaryOp.Not */
 					return (bool)obj.Value ? DynValue.False : DynValue.True;
 			}

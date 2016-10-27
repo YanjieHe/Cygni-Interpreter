@@ -9,7 +9,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public struct DynValue: IComputable,IComparable<DynValue>, IEquatable<DynValue>
+	public struct DynValue: IComparable<DynValue>, IEquatable<DynValue>
 	{
 		readonly DataType _type;
 		public DataType type { get { return _type; } }
@@ -150,68 +150,11 @@ namespace Cygni.DataTypes
 			return (TValue)value;
 		}
 
-		#region IComputable implementation
-		public DynValue Add(DynValue other)
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, (double)value + (double)other.value);
-			return (value as IComputable).Add(other);
-		}
-		public DynValue Subtract(DynValue other)
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, (double)value - (double)other.value);
-			return (value as IComputable).Add(other);
-		}
-		public DynValue Multiply(DynValue other)
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, (double)value * (double)other.value);
-			return (value as IComputable).Add(other);
-		}
-		public DynValue Divide(DynValue other)
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, (double)value / (double)other.value);
-			return (value as IComputable).Add(other);
-		}
-		public DynValue Modulo(DynValue other)
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, (double)value % (double)other.value);
-			return (value as IComputable).Add(other);
-		}
-		public DynValue Power(DynValue other)
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, Math.Pow((double)value, (double)other.value));
-			return (value as IComputable).Add(other);
-		}
-
-		public DynValue UnaryPlus()
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, +(double)value);
-			return (value as IComputable).UnaryPlus();
-		}
-
-		public DynValue UnaryMinus()
-		{
-			if (type == DataType.Number)
-				return new DynValue(DataType.Number, -(double)value);
-			return (value as IComputable).UnaryMinus();
-		}
-
-		#endregion
-
 		#region IComparable implementation
 
 
 		public int CompareTo(DynValue other)
 		{
-			if (type == DataType.Number)
-				return ((double)value).CompareTo((double)other.value);
-			
 			return (value as IComparable<DynValue>).CompareTo(other);
 		}
 

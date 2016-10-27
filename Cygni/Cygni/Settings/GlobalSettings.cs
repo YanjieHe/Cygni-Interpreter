@@ -87,52 +87,49 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 ";
 
 		public static Dictionary<string,Structure> BuiltInStructures = 
-			new Dictionary<string, Structure> { 
-			{"os",new Structure(){
-					{"clock",BasicLib.os_clock}
-				}
+			new Dictionary<string, Structure> { {"os",new Structure(
+					new KeyValuePair<string, DynValue>("clock",BasicLib.os_clock) )
 			},
 			{"console",
-					new Structure () {
-					{ "clear",BasicLib.console_clear },
-					{ "write",BasicLib.console_write },
-					{ "read",BasicLib.console_read },
-					{ "readLine",BasicLib.console_readLine },
+					new Structure (
+					new KeyValuePair<string, DynValue>( "clear",BasicLib.console_clear ),
+					new KeyValuePair<string, DynValue>( "write",BasicLib.console_write ),
+					new KeyValuePair<string, DynValue>( "read",BasicLib.console_read ),
+					new KeyValuePair<string, DynValue>( "readLine",BasicLib.console_readLine ) )
 
-					}
 				}, {"string",
-					new Structure () {
-						{ "concat",StrLib.strcat },
-						{ "join",StrLib.strjoin },
-						{ "format",StrLib.strformat },
-						{ "len",StrLib.strlen },
-						{ "split",StrLib.strsplit },
-						{ "replace",StrLib.strrpl },
-						{ "compare",StrLib.strcmp },
-						{ "find",StrLib.strfind },
-						{ "lower",StrLib.tolower },
-						{ "upper",StrLib.toupper },
-						{ "char",StrLib._char },
-						{ "empty",string.Empty },
-					}
+					new Structure (
+					new KeyValuePair<string, DynValue>( "concat",StrLib.strcat ),
+					new KeyValuePair<string, DynValue>( "join",StrLib.strjoin ),
+					new KeyValuePair<string, DynValue>( "format",StrLib.strformat ),
+					new KeyValuePair<string, DynValue>( "len",StrLib.strlen ),
+					new KeyValuePair<string, DynValue>( "split",StrLib.strsplit ),
+					new KeyValuePair<string, DynValue>( "replace",StrLib.strrpl ),
+					new KeyValuePair<string, DynValue>( "compare",StrLib.strcmp ),
+					new KeyValuePair<string, DynValue>( "find",StrLib.strfind ),
+					new KeyValuePair<string, DynValue>( "lower",StrLib.tolower ),
+					new KeyValuePair<string, DynValue>( "upper",StrLib.toupper ),
+					new KeyValuePair<string, DynValue>( "char",StrLib._char ),
+					new KeyValuePair<string, DynValue>( "empty",string.Empty ) ,
+					new KeyValuePair<string, DynValue>( "trim",StrLib.Trim ) ,
+					new KeyValuePair<string, DynValue>( "subString",StrLib.SubString ) 
+				)
 				},
-			{"List",new Structure(){
-					{ "append",ListLib.append },
-					{ "len",ListLib.len },
-					{ "removeAt",ListLib.removeAt },
-					{ "insertAt",ListLib.insertAt },
-					{ "sort",ListLib.sort },
-					{ "bSearch",ListLib.bSearch },
-				}
+			{"List",new Structure(
+					new KeyValuePair<string, DynValue>(  "append",ListLib.append ),
+					new KeyValuePair<string, DynValue>(  "len",ListLib.len ),
+					new KeyValuePair<string, DynValue>(  "removeAt",ListLib.removeAt ),
+					new KeyValuePair<string, DynValue>(  "insertAt",ListLib.insertAt ),
+					new KeyValuePair<string, DynValue>(  "sort",ListLib.sort ),
+					new KeyValuePair<string, DynValue>(  "bSearch",ListLib.bSearch ) )
 			},
 			{"htable",
-				new Structure() {
-					{ "hasKey",HashTableLib.hasKey },
-					{ "hasValue",HashTableLib.hasValue },
-					{ "remove",HashTableLib.ht_remove },
-					{ "keys",HashTableLib.ht_keys },
-					{ "values",HashTableLib.ht_values },
-				}
+				new Structure(
+					new KeyValuePair<string, DynValue>(  "hasKey",HashTableLib.hasKey ),
+					new KeyValuePair<string, DynValue>(  "hasValue",HashTableLib.hasValue ),
+					new KeyValuePair<string, DynValue>(  "remove",HashTableLib.ht_remove ),
+					new KeyValuePair<string, DynValue>(  "keys",HashTableLib.ht_keys ),
+					new KeyValuePair<string, DynValue>(  "values",HashTableLib.ht_values ) )
 			},
 			};
 

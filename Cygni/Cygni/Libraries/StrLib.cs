@@ -67,5 +67,19 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "char");
 			return char.ToString((char)(int)args [0].AsNumber ());
 		}
+		public static DynValue Trim(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "string.trim");
+			if (args.Length == 1)
+				return args [0].AsString ().Trim ();
+			else
+				return args [0].AsString ().Trim (args.SkipMap (1, i => char.Parse (i.AsString ())));
+		}
+		public static DynValue SubString(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length ==2|| args.Length == 3, "string.subString");
+			if (args.Length ==2)
+				return args [0].AsString ().Substring ((int)args [1].AsNumber ());
+			else
+				return args [0].AsString ().Substring ((int)args [1].AsNumber (),(int)args [2].AsNumber ());
+		}
 	}
 }

@@ -75,7 +75,7 @@ namespace Cygni.AST
 			case BinaryOp.Pow:
 				{
 					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number,Math.Pow((double)_left.Value , (double)right.Eval (scope).Value));
+						return new DynValue (DataType.Number, Math.Pow ((double)_left.Value, (double)right.Eval (scope).Value));
 					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
 				}
 			case BinaryOp.And:
@@ -87,14 +87,29 @@ namespace Cygni.AST
 					return DynValue.True;/* shortcut evaluate*/
 				return (bool)right.Eval (scope).Value;
 			case BinaryOp.Less:
-				return _left.CompareTo (right.Eval (scope)) < 0;
+				{
+					if (_left.type == DataType.Number)
+						return 	(double)_left.Value < (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return _left.CompareTo (right.Eval (scope)) < 0;
+				}
 			case BinaryOp.Greater:
-				return _left.CompareTo (right.Eval (scope)) > 0;
+				{
+					if (_left.type == DataType.Number)
+						return 	(double)_left.Value > (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return _left.CompareTo (right.Eval (scope)) > 0;
+				}
 			case BinaryOp.LessOrEqual:
-				return _left.CompareTo (right.Eval (scope)) <= 0;
+				{
+					if (_left.type == DataType.Number)
+						return 	(double)_left.Value <= (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return _left.CompareTo (right.Eval (scope)) <= 0;
+				}
 			case BinaryOp.GreaterOrEqual:
-				return _left.CompareTo (right.Eval (scope)) >= 0;
-					
+				{
+					if (_left.type == DataType.Number)
+						return 	(double)_left.Value >= (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return _left.CompareTo (right.Eval (scope)) >= 0;
+				}
 			case BinaryOp.Equal:
 				return _left.Equals (right.Eval (scope)) ? DynValue.True : DynValue.False;
 			default: /* BinaryOp.NotEqual */
@@ -140,7 +155,7 @@ namespace Cygni.AST
 			}
 		}
 
-		public void LookUpForLocalVariable (List<NameEx>names)
+		public void LookUpForLocalVariable (List<NameEx> names)
 		{
 			if (op == BinaryOp.Assign && left.type == NodeType.Name) {
 				var nameEx = left as NameEx;
@@ -151,6 +166,9 @@ namespace Cygni.AST
 					left = newName;
 					names.Add (newName);
 				}
+				if (right is ISymbolLookUp)
+					(right as ISymbolLookUp).LookUpForLocalVariable (names);
+				return;
 			}
 			if (left is ISymbolLookUp)
 				(left as ISymbolLookUp).LookUpForLocalVariable (names);

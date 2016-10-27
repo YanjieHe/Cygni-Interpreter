@@ -39,7 +39,7 @@ namespace Cygni.AST.Scopes
 			throw new NotSupportedException ();
 		}
 
-		public	int Count { get { return values.Length; } }
+		public int Count { get { return values.Length; } }
 		public bool HasName(string name){
 			throw new NotSupportedException ();
 		}

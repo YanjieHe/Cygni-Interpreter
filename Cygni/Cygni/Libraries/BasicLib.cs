@@ -45,9 +45,9 @@ namespace Cygni.Libraries
 		public static DynValue Struct (DynValue[] args)
 		{
 			if ((args.Length & 1) == 0) {/* even */
-				var structure = new Structure ();
-				for (int i = 0; i < args.Length - 1; i += 2)
-					structure.Add (args [i].AsString (), args [i + 1]);
+				var structure = new Structure (args.Length >> 1);
+				for (int i = 0, j = 0; i < args.Length - 1; i += 2,j++)
+					structure.SetAt (j, args [i].AsString (), args [i + 1]);
 				return new DynValue (DataType.Struct, structure);
 			} 
 			throw RuntimeException.BadArgsNum ("struct", "even");
@@ -152,15 +152,17 @@ namespace Cygni.Libraries
 			Assembly assembly = Assembly.LoadFile (filepath);
 			Type t = assembly.GetType (class_name, true, true);  //namespace.class
 			var methods = t.GetMethods ();
-			var structure = new Structure ();
+			var list = new List<KeyValuePair<string,DynValue>> ();
+
 			foreach (var method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
 				var parameters = method.GetParameters ();
 				if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
 					var method_name = method.Name;
-					structure [method_name] = DynValue.FromDelegate (
-						method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>);
+					list.Add (new KeyValuePair<string,DynValue> (method_name, DynValue.FromDelegate (
+						method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>)));
 				}
 			}
+			var structure = new Structure (list);
 			return DynValue.FromStructure (structure);
 		}
 

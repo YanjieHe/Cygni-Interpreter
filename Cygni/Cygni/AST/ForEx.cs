@@ -15,6 +15,7 @@ namespace Cygni.AST
 	public class ForEx:ASTNode,ISymbolLookUp
 	{
 		BlockEx body;
+		public BlockEx Body{ get { return body; } }
 		NameEx iterator;
 		ASTNode start;
 		ASTNode end;

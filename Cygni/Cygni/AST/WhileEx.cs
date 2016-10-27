@@ -11,7 +11,7 @@ namespace Cygni.AST
 	/// <summary>
 	/// Description of WhileEx.
 	/// </summary>
-	public class WhileEx:ASTNode
+	public class WhileEx:ASTNode,ISymbolLookUp
 	{
 		ASTNode condition;
 		BlockEx body;

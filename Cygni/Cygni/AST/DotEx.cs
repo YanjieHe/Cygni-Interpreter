@@ -46,5 +46,9 @@ namespace Cygni.AST
 			if (obj is ISymbolLookUp)
 				(obj as ISymbolLookUp).LookUpForLocalVariable (names);
 		}
+		public override string ToString ()
+		{
+			return string.Format ("{0}.{1}", obj, fieldname);
+		}
 	}
 }

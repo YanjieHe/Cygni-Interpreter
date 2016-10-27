@@ -97,6 +97,7 @@
     <Compile Include="AST\ISymbolLookUp.cs" />
     <Compile Include="AST\Scopes\EnvTable.cs" />
     <Compile Include="AST\ASTVisitor.cs" />
+    <Compile Include="DataTypes\StructureItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

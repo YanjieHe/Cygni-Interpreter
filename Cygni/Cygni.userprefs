@@ -1,9 +1,13 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/ASTVisitor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Settings/GlobalSettings.cs">
     <Files>
-      <File FileName="Cygni/Program.cs" Line="12" Column="16" />
-      <File FileName="Cygni/AST/ASTVisitor.cs" Line="5" Column="25" />
+      <File FileName="Cygni/AST/ForEx.cs" Line="109" Column="1" />
+      <File FileName="Cygni/AST/InvokeEx.cs" Line="46" Column="1" />
+      <File FileName="Cygni/AST/DefFuncEx.cs" Line="30" Column="1" />
+      <File FileName="Cygni/AST/BinaryEx.cs" Line="160" Column="14" />
+      <File FileName="Cygni/Libraries/StrLib.cs" Line="82" Column="82" />
+      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="120" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
