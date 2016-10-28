@@ -21,92 +21,98 @@ namespace Cygni.Executors
 	{
 		LinkedList<string> list;
 		Stack<Tag> stack;
-		public InteractiveExecutor(BasicScope GlobalScope)
-			: base(GlobalScope)
+
+		public InteractiveExecutor (BasicScope GlobalScope)
+			: base (GlobalScope)
 		{
-			list = new LinkedList<string>();
-			stack = new Stack<Tag>();
+			list = new LinkedList<string> ();
+			stack = new Stack<Tag> ();
 		}
-		static readonly Regex re_exit = new Regex(@"[\s]*exit[\s]*");/* Support 'exit' command */
-		public override DynValue Run()
+
+		static readonly Regex re_exit = new Regex (@"[\s]*exit[\s]*");
+/* Support 'exit' command */
+		public override DynValue Run ()
 		{
 			DynValue Result = DynValue.Null;
 			for (;;) {
 				try {
 					Console.ForegroundColor = ConsoleColor.Cyan;
-					Console.Write("Cygni:  ");
+					Console.Write ("Cygni:  ");
 					Console.ForegroundColor = ConsoleColor.Gray;
 					Start:
-					string line = Console.ReadLine();
-					if(re_exit.IsMatch(line))
+					string line = Console.ReadLine ();
+					if (re_exit.IsMatch (line))
 						break;
-					list.AddLast(line);
-					string code = string.Join("\n", list);
-					var state = TryParse(code);
+					list.AddLast (line);
+					string code = string.Join ("\n", list);
+					var state = TryParse (code);
 					if (state == InteractiveState.Error) {
-						list.Clear();
+						list.Clear ();
 						Console.ForegroundColor = ConsoleColor.Cyan;
-						Console.Write("Cygni:  ");
+						Console.Write ("Cygni:  ");
 						Console.ForegroundColor = ConsoleColor.Gray;
 						goto Start;
 					}
 					if (state == InteractiveState.Waiting) {
 						Console.ForegroundColor = ConsoleColor.Gray;
-						Console.Write("....    ");
+						Console.Write ("....    ");
 						goto Start;
 					}
-					list.Clear();
-					using (var sr = new StringReader(code)) {
-						var lexer = new Lexer(1, sr);
-						var ast = new Parser(lexer);
+					list.Clear ();
+					using (var sr = new StringReader (code)) {
+						var lexer = new Lexer (1, sr);
+						var ast = new Parser (lexer);
 						/*var a = ast.Program();
 						Console.WriteLine(a);*/
-						Result = ast.Program().Eval(GlobalScope);
-						if (!GlobalSettings.Quiet && Result != DynValue.Null){
-							Console.Write("=>  ");
-							Console.WriteLine(Result);
+						Result = ast.Program ().Eval (GlobalScope);
+						if (!GlobalSettings.Quiet && Result != DynValue.Null) {
+							Console.Write ("=>  ");
+							Console.WriteLine (Result);
 						}
 					}
 				} catch (Exception ex) {
 					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("error:  {0}", ex.Message);
-					//Console.WriteLine(ex);
+					if (GlobalSettings.CompleteErrorOutput)
+						Console.WriteLine ("error: {0}", ex);
+					else
+						Console.WriteLine ("error: {0}", ex.Message);
 				}
 			}
 			return Result;
 		}
-		InteractiveState TryParse(string code)
+
+		InteractiveState TryParse (string code)
 		{
 			if (stack.Count > 0)
-				stack.Clear();
+				stack.Clear ();
 			try {
-				using (var sr = new StringReader(code)) {
-					var lexer = new Lexer(1, sr);
+				using (var sr = new StringReader (code)) {
+					var lexer = new Lexer (1, sr);
 					while (true) {
-						var tok = lexer.Scan();
+						var tok = lexer.Scan ();
 						switch (tok.tag) {
-							case Tag.LeftParenthesis:
-							case Tag.LeftBrace:
-								stack.Push(tok.tag);
-								break;
-							case Tag.RightParenthesis:
-								if (stack.Count == 0)
-									return InteractiveState.Error;
-								if (stack.Peek() == Tag.LeftParenthesis)
-									stack.Pop();
-								else
-									return InteractiveState.Error;
-								break;
-							case Tag.RightBrace:
-								if (stack.Count == 0)
-									return InteractiveState.Error;
-								if (stack.Peek() == Tag.LeftBrace)
-									stack.Pop();
-								else
-									return InteractiveState.Error;
-								break;
-							case Tag.EOF:
-								goto Finish;
+						case Tag.LeftParenthesis:
+						case Tag.LeftBrace:
+							stack.Push (tok.tag);
+							break;
+						case Tag.RightParenthesis:
+							if (stack.Count == 0)
+								return InteractiveState.Error;
+							if (stack.Peek () == Tag.LeftParenthesis)
+								stack.Pop ();
+							else
+								return InteractiveState.Error;
+							break;
+						case Tag.RightBrace:
+							if (stack.Count == 0)
+								return InteractiveState.Error;
+							if (stack.Peek () == Tag.LeftBrace)
+								stack.Pop ();
+							else
+								return InteractiveState.Error;
+							break;
+						case Tag.EOF:
+							goto Finish;
 						}
 					}
 					Finish:
@@ -114,11 +120,15 @@ namespace Cygni.Executors
 				}
 			} catch (Exception ex) {
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("error:  {0}", ex.Message);
+				if (GlobalSettings.CompleteErrorOutput)
+					Console.WriteLine ("error: {0}", ex);
+				else
+					Console.WriteLine ("error: {0}", ex.Message);
 				return InteractiveState.Error;
 			}
 		}
-		enum InteractiveState
+
+		private enum InteractiveState
 		{
 			Waiting,
 			Error,

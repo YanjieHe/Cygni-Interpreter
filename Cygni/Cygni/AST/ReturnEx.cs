@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of ReturnEx.
 	/// </summary>
-	public class ReturnEx:ASTNode,ISymbolLookUp
+	public class ReturnEx:ASTNode
 	{
 		ASTNode value;
+		public ASTNode Value{ get { return value; } }
+
 		public override NodeType type { get { return NodeType.Return; } }
 		public ReturnEx(ASTNode value)
 		{
@@ -23,10 +26,10 @@ namespace Cygni.AST
 		{
 			return DynValue.Return(value.Eval(scope));
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+
+		internal override void Accept (ASTVisitor visitor)
 		{
-				if (value is ISymbolLookUp)
-					(value as ISymbolLookUp).LookUpForLocalVariable (names);
+			visitor.Visit (this);
 		}
 	}
 }

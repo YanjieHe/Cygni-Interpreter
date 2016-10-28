@@ -6,20 +6,29 @@ using System;
 using Cygni.DataTypes;
 using Cygni.Errors;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of ForEx.
 	/// </summary>
-	public class ForEx:ASTNode,ISymbolLookUp
+	public class ForEx:ASTNode
 	{
 		BlockEx body;
 		public BlockEx Body{ get { return body; } }
 		NameEx iterator;
+		public NameEx Iterator{ get { return iterator; } }
+		internal void SetIterator(NameEx iterator){
+			this.iterator = iterator;
+		}
 		ASTNode start;
 		ASTNode end;
 		ASTNode step;
+		public ASTNode Start{ get { return start; } }
+		public ASTNode End{ get { return end; } }
+		public ASTNode Step{ get { return step; } }
+
 		public override NodeType type { get { return NodeType.For; } }
 		public ForEx(BlockEx body, string iterator, ASTNode start, ASTNode end, ASTNode step)
 		{
@@ -94,20 +103,9 @@ namespace Cygni.AST
 			}
 			return result;
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+		internal override void Accept (ASTVisitor visitor)
 		{
-			//iterator.LookUpForLocalVariable (names);
-			iterator = new NameEx(iterator.Name,names.Count);
-			names.Add (iterator);
-
-			if (start is ISymbolLookUp)
-				(start as ISymbolLookUp).LookUpForLocalVariable (names);
-			if (end is ISymbolLookUp)
-				(end as ISymbolLookUp).LookUpForLocalVariable (names);
-			if (step != null && step is ISymbolLookUp)
-				(step as ISymbolLookUp).LookUpForLocalVariable (names);
-			body.LookUpForLocalVariable (names);
+			visitor.Visit (this);
 		}
-
 	}
 }

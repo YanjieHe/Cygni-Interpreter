@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
-
+using Cygni.AST.Visitors;
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of BlockEx.
 	/// </summary>
-	public class BlockEx:ASTNode,ISymbolLookUp
+	public class BlockEx:ASTNode
 	{
 		readonly ASTNode[] _expressions;
 		public ASTNode[] expressions{ get { return _expressions; } }
@@ -47,12 +47,10 @@ namespace Cygni.AST
 			s.AppendLine("} ");
 			return s.ToString();
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+
+		internal override void Accept (ASTVisitor visitor)
 		{
-			foreach (var item in _expressions) {
-				if(item is ISymbolLookUp)
-					(item as ISymbolLookUp).LookUpForLocalVariable (names);
-			}
+			visitor.Visit (this);
 		}
 	}
 }

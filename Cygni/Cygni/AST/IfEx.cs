@@ -5,47 +5,48 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of IfEx.
 	/// </summary>
-	public class IfEx:ASTNode,ISymbolLookUp
+	public class IfEx:ASTNode
 	{
 		ASTNode condition;
-		ASTNode IfTrue;
-		ASTNode IfFalse;
+		ASTNode ifTrue;
+		ASTNode ifFalse;
+		public ASTNode Condition { get { return condition; } }
+		public ASTNode IfTrue { get { return ifTrue; } }
+		public ASTNode IfFalse { get { return ifFalse; } }
+
 		public  override NodeType type { get { return NodeType.If; } }
 		
-		public IfEx(ASTNode condition, ASTNode IfTrue, ASTNode IfFalse)
+		public IfEx(ASTNode condition, ASTNode ifTrue, ASTNode ifFalse)
 		{
 			this.condition = condition;
-			this.IfTrue = IfTrue;
-			this.IfFalse = IfFalse;
+			this.ifTrue = ifTrue;
+			this.ifFalse = ifFalse;
 		}
 		public override DynValue Eval(IScope scope)
 		{
 			if ((bool)condition.Eval(scope).Value)
-				return IfTrue.Eval(scope);
-			return IfFalse == null ? DynValue.Null : IfFalse.Eval(scope);
+				return ifTrue.Eval(scope);
+			return ifFalse == null ? DynValue.Null : ifFalse.Eval(scope);
 		}
 		public override string ToString()
 		{
-			if (IfFalse == null) {
-				return string.Concat(" if ", condition, IfTrue);
+			if (ifFalse == null) {
+				return string.Concat(" if ", condition, ifTrue);
 			} else {
-				return string.Concat(" if ", condition, IfTrue, " else ", IfFalse);
+				return string.Concat(" if ", condition, ifTrue, " else ", ifFalse);
 			}
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+
+		internal override void Accept (ASTVisitor visitor)
 		{
-			if (condition is ISymbolLookUp)
-				(condition as ISymbolLookUp).LookUpForLocalVariable (names);
-			if (IfTrue is ISymbolLookUp)
-				(IfTrue as ISymbolLookUp).LookUpForLocalVariable (names);
-			if (IfFalse !=null && IfFalse is ISymbolLookUp)
-				(IfFalse as ISymbolLookUp).LookUpForLocalVariable (names);
+			visitor.Visit (this);
 		}
 	}
 }

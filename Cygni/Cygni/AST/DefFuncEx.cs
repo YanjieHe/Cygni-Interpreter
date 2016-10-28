@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
@@ -15,6 +16,7 @@ namespace Cygni.AST
 	{
 		string name;
 		BlockEx body;
+		public BlockEx Body{ get { return body; } }
 		string[] parameters;
 		public override  NodeType type {get{return NodeType.DefFunc;}}
 		
@@ -27,11 +29,13 @@ namespace Cygni.AST
 		
 		public override DynValue Eval(IScope scope)
 		{
-			var list = new List<NameEx> ();
+			var names = new List<NameEx> ();
 			for (int i = 0; i < parameters.Length; i++) 
-				list.Add (new NameEx (parameters [i],  i));
-			body.LookUpForLocalVariable (list);
-			var arrayScope = new ArrayScope (list.Count,scope);
+				names.Add (new NameEx (parameters [i],  i));
+			//body.LookUpForLocalVariable (list);
+			LookUpVisitor visitor = new LookUpVisitor(names);
+			body.Accept (visitor);
+			var arrayScope = new ArrayScope (names.Count,scope);
 			var func = DynValue.FromFunction(new Function(name,parameters.Length, body, arrayScope));
 			return scope.Put(name, func);
 		}
@@ -39,6 +43,9 @@ namespace Cygni.AST
 		{
 			return string.Concat(" def ", name, "(", string.Join(", ", parameters), ")", body);
 		}
-		
+		internal override void Accept (ASTVisitor visitor)
+		{
+			visitor.Visit (this);
+		}		
 	}
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
@@ -31,7 +32,10 @@ namespace Cygni.AST
 		{
 			return value.ToString();
 		}
-		
+		internal override void Accept (ASTVisitor visitor)
+		{
+			visitor.Visit (this);
+		}		
 	}
 	
 }

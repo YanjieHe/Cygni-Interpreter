@@ -6,16 +6,20 @@ using System;
 using Cygni.DataTypes;
 using Cygni.Errors;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of InvokeEx.
 	/// </summary>
-	public class InvokeEx:ASTNode,ISymbolLookUp
+	public class InvokeEx:ASTNode
 	{
 		ASTNode func;
+		public ASTNode Func{ get { return func; } }
 		ASTNode[] arguments;
+		public ASTNode[] Arguments{ get { return arguments; } }
+
 		int nArgs;
 		public override  NodeType type { get { return NodeType.Invoke; } }
 		
@@ -41,14 +45,9 @@ namespace Cygni.AST
 		{
 			return string.Concat(func, "(", string.Join(", ", arguments.Select(i=>i.ToString())), ")");
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+		internal override void Accept (ASTVisitor visitor)
 		{
-			if (func is ISymbolLookUp)
-				(func as ISymbolLookUp).LookUpForLocalVariable (names);
-			for (int i = 0; i < arguments.Length; i++) {
-				if (arguments[i] is ISymbolLookUp)
-					(arguments[i] as ISymbolLookUp).LookUpForLocalVariable (names);
-			}
+			visitor.Visit (this);
 		}
 	}
 }

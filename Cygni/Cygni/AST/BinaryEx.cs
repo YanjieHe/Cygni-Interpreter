@@ -6,13 +6,13 @@ using System;
 using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
-
+using Cygni.AST.Visitors;
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of BinaryEx.
 	/// </summary>
-	public class BinaryEx:ASTNode,ISymbolLookUp
+	public class BinaryEx:ASTNode
 	{
 		ASTNode left;
 		ASTNode right;
@@ -155,25 +155,15 @@ namespace Cygni.AST
 			}
 		}
 
-		public void LookUpForLocalVariable (List<NameEx> names)
+		internal override void Accept (ASTVisitor visitor)
 		{
-			if (op == BinaryOp.Assign && left.type == NodeType.Name) {
-				var nameEx = left as NameEx;
-				if (names.Contains (nameEx)) {
-					nameEx.LookUpForLocalVariable (names);
-				} else {
-					var newName = new NameEx (nameEx.Name, names.Count);
-					left = newName;
-					names.Add (newName);
-				}
-				if (right is ISymbolLookUp)
-					(right as ISymbolLookUp).LookUpForLocalVariable (names);
-				return;
-			}
-			if (left is ISymbolLookUp)
-				(left as ISymbolLookUp).LookUpForLocalVariable (names);
-			if (right is ISymbolLookUp)
-				(right as ISymbolLookUp).LookUpForLocalVariable (names);
+			visitor.Visit (this);
+		}
+		internal void SetLeft(ASTNode left){
+			this.left = left;
+		}
+		internal void SetRight(ASTNode right){
+			this.right = right;
 		}
 	}
 

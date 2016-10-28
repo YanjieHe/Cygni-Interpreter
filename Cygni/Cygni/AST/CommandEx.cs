@@ -7,6 +7,7 @@ using Cygni.DataTypes;
 using Cygni.Libraries;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
@@ -19,7 +20,7 @@ namespace Cygni.AST
 
 		public CommandType commandType;
 		IList<ASTNode> parameters;
-
+		public IList<ASTNode>Parameters { get { return parameters; } }
 		public CommandEx (CommandType commandType, IList<ASTNode>parameters)
 		{
 			this.commandType = commandType;
@@ -30,6 +31,8 @@ namespace Cygni.AST
 			{"dofile", CommandType.DoFile},
 			{"loaddll", CommandType.LoadDll},
 			{"delete", CommandType.Delete},
+			{"import", CommandType.Import},
+
 		};
 		public CommandEx (string commandName, IList<ASTNode>parameters)
 		{
@@ -47,6 +50,8 @@ namespace Cygni.AST
 				return RunCommand (Commands.LoadDll, scope);
 			case CommandType.Delete:
 				return RunCommand (Commands.Delete, scope);
+			case CommandType.Import:
+				return RunCommand (Commands.Import, scope);
 			default:
 				throw new NotSupportedException (commandType.ToString ());
 			}
@@ -56,6 +61,10 @@ namespace Cygni.AST
 		{
 			return command (parameters.Map (i => i.Eval (scope)), scope);
 		}
+		internal override void Accept (ASTVisitor visitor)
+		{
+			visitor.Visit (this);
+		}
 	}
 
 	public enum CommandType
@@ -63,5 +72,6 @@ namespace Cygni.AST
 		DoFile,
 		LoadDll,
 		Delete,
+		Import,
 	}
 }

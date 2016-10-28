@@ -36,7 +36,7 @@ namespace Cygni.AST.Scopes
 		}
 
 		public DynValue Put (string name, DynValue value){
-			throw new NotSupportedException ();
+			throw new NotSupportedException (name);
 		}
 
 		public int Count { get { return values.Length; } }

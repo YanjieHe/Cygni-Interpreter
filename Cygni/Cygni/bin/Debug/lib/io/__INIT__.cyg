@@ -1,0 +1,3 @@
+dofile "./lib/io/File"
+dofile "./lib/io/reader"
+dofile "./lib/io/writer"

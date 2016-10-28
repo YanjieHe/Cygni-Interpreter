@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of WhileEx.
 	/// </summary>
-	public class WhileEx:ASTNode,ISymbolLookUp
+	public class WhileEx:ASTNode
 	{
 		ASTNode condition;
 		BlockEx body;
+		public	ASTNode Condition{ get { return condition; } }
+		public	BlockEx Body{ get { return body; } }
 		public  override NodeType type { get { return NodeType.While; } }
 		
 		public WhileEx(ASTNode condition, BlockEx body)
@@ -44,11 +47,10 @@ namespace Cygni.AST
 		{
 			return string.Concat(" while ", condition, body);
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+	
+		internal override void Accept (ASTVisitor visitor)
 		{
-			if (condition is ISymbolLookUp)
-				(condition as ISymbolLookUp).LookUpForLocalVariable (names);
-			body.LookUpForLocalVariable (names);
+			visitor.Visit (this);
 		}
 	}
 }

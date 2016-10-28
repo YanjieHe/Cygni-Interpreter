@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of DotEx.
 	/// </summary>
-	public class DotEx:ASTNode,IAssignable,ISymbolLookUp
+	public class DotEx:ASTNode,IAssignable
 	{
 		ASTNode obj;
-		public ASTNode Obj{ get { return obj; } }
+		public ASTNode Target{ get { return obj; } }
 		readonly string fieldname;
 		public override  NodeType type { get { return NodeType.Dot; } }
 		
@@ -42,13 +43,14 @@ namespace Cygni.AST
 			return target.As<IDot> ().SetByDot (fieldname, value);
 		}
 
-		public void LookUpForLocalVariable(List<NameEx> names){
-			if (obj is ISymbolLookUp)
-				(obj as ISymbolLookUp).LookUpForLocalVariable (names);
-		}
+
 		public override string ToString ()
 		{
 			return string.Format ("{0}.{1}", obj, fieldname);
+		}
+		internal override void Accept (ASTVisitor visitor)
+		{
+			visitor.Visit (this);
 		}
 	}
 }

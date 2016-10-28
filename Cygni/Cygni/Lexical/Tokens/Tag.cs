@@ -11,33 +11,48 @@ namespace Cygni.Lexical.Tokens
 	/// </summary>
 	public enum Tag
 	{
+		/* Arithmetic Operators */
 		Add,
 		Sub,
 		Mul,
 		Div,
 		Mod,
 		Pow,
+
+		/*Logical Operators */
 		And,
 		Or,
 		Not,
+
 		Assign,
+
+		/* Relation Operators */
 		Equal,
 		NotEqual,
 		Less,
 		Greater,
 		LessOrEqual,
 		GreaterOrEqual,
+
+
 		True,
 		False,
+
+		/* Statements */
 		If,
 		Else,
 		ElseIf,
+		While,
+		For,
+		ForEach,
+		Define,
+		Class,
+
+
 		Number,
 		String,
 		ID,
-		While,
-		For,
-		Define,
+
 		Comma,
 		Colon,
 		Semicolon,
@@ -47,11 +62,13 @@ namespace Cygni.Lexical.Tokens
 		RightBracket,
 		LeftBrace,
 		RightBrace,
+
+		/* Goto Expression */
 		Break,
 		Continue,
 		Return,
+
 		Dot,
-		Class,
 		Null,
 		EOF,
 		EOL,

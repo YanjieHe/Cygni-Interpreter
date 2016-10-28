@@ -8,7 +8,7 @@ using Cygni.DataTypes;
 using System.IO;
 using Cygni.Lexical;
 using Cygni.AST.Scopes;
-
+using Cygni.Settings;
 namespace Cygni.Executors
 {
 	/// <summary>
@@ -36,8 +36,10 @@ namespace Cygni.Executors
 				}
 			} catch (Exception ex) {
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine(ex.Message);
-				//Console.WriteLine(ex);
+				if (GlobalSettings.CompleteErrorOutput)
+					Console.WriteLine ("error: {0}", ex);
+				else
+					Console.WriteLine ("error: {0}", ex.Message);
 
 			}
 			return Result;

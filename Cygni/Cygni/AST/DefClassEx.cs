@@ -7,6 +7,7 @@ using Cygni.Errors;
 using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
@@ -17,6 +18,7 @@ namespace Cygni.AST
 	{
 		string name;
 		BlockEx body;
+		public BlockEx Body{ get { return body; } }
 		string[] parentsName;
 		public  override NodeType type { get { return NodeType.DefClass; } }
 		
@@ -45,6 +47,10 @@ namespace Cygni.AST
 				var func = DynValue.FromClass(new ClassInfo(name, body, newScope, parentsClasses));
 				return scope.Put(name, func);
 			}
+		}
+		internal override void Accept (ASTVisitor visitor)
+		{
+			visitor.Visit (this);
 		}
 	}
 }

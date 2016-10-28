@@ -6,7 +6,7 @@ namespace Cygni.Lexical.Tokens
 	/// <summary>
 	/// Description of NumToken.
 	/// </summary>
-	public class NumToken:Token
+	public sealed class NumToken:Token
 	{
 		readonly double value;
 		public double Value { get { return value; } }

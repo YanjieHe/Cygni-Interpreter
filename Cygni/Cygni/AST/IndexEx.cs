@@ -6,17 +6,21 @@ using System;
 using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of IndexEx.
 	/// </summary>
-	public class IndexEx:ASTNode,IAssignable,ISymbolLookUp
+	public class IndexEx:ASTNode,IAssignable
 	{
 		public override NodeType type{ get { return NodeType.Index; } }
-		internal ASTNode list{  get; private set; }
-		internal ASTNode[] indexes{  get; private set; }
+		ASTNode list;
+		ASTNode[] indexes;
+		public ASTNode _List { get { return list; } }
+		public ASTNode[] Indexes { get { return indexes; } }
+
 		public IndexEx(ASTNode list, ICollection<ASTNode> indexes)
 		{
 			this.list = list;
@@ -31,14 +35,9 @@ namespace Cygni.AST
 			var collection = list.Eval(scope);
 			return collection.As<IIndexable>()[indexes.Map(i => i.Eval(scope))] = value;
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+		internal override void Accept (ASTVisitor visitor)
 		{
-			if (list is ISymbolLookUp)
-				(list as ISymbolLookUp).LookUpForLocalVariable (names);
-			for (int i = 0; i < indexes.Length; i++) {
-				if (indexes[i] is ISymbolLookUp)
-					(indexes[i] as ISymbolLookUp).LookUpForLocalVariable (names);
-			}
+			visitor.Visit (this);
 		}
 	}
 }

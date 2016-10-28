@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 namespace Cygni.AST
 {
 	/// <summary>
@@ -14,6 +15,7 @@ namespace Cygni.AST
 	{
 		public abstract DynValue Eval(IScope scope);
 		public abstract NodeType type { get; }
+		internal abstract void Accept (ASTVisitor visitor);
 		public static ASTNode Variable(string name)
 		{
 			return new NameEx(name);

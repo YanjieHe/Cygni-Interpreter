@@ -5,16 +5,18 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of ListInitEx.
 	/// </summary>
-	public class ListInitEx:ASTNode,ISymbolLookUp
+	public class ListInitEx:ASTNode
 	{
 		public override NodeType type { get { return NodeType.ListInit; } }
 		List<ASTNode> list;
+		public List<ASTNode>_List{ get { return list; } }
 		public ListInitEx(List<ASTNode>list)
 		{
 			this.list = list;
@@ -23,12 +25,10 @@ namespace Cygni.AST
 		{
 			return DynValue.FromList(new DynList(list.Select(i => i.Eval(scope)), list.Count));
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+
+		internal override void Accept (ASTVisitor visitor)
 		{
-			for (int i = 0; i < list.Count; i++) {
-				if (list[i] is ISymbolLookUp)
-					(list[i] as ISymbolLookUp).LookUpForLocalVariable (names);
-			}
+			visitor.Visit (this);
 		}
 	}
 }

@@ -1,0 +1,18 @@
+writer_functions = CSharpDll("CygniLibraries.dll","CygniLibraries.IO.writer")
+
+class writer {
+
+	def __INIT__(stream,encoding){
+		this.self_writer = writer_functions.writer_init(stream,encoding)
+	}
+	def write(content){
+		writer_functions.writer_write(this.self_writer,content)
+	}
+	def writeLine(content){
+		writer_functions.writer_writeline(this.self_writer,content)
+	}
+	def close(){
+		writer_functions.writer_close(this.self_writer)
+	}
+
+}

@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of NameEx.
 	/// </summary>
-	public sealed class NameEx:ASTNode,IAssignable,ISymbolLookUp
+	public sealed class NameEx:ASTNode,IAssignable
 	{
 		string name;
 
@@ -20,7 +21,9 @@ namespace Cygni.AST
 		public  override NodeType type { get { return NodeType.Name; } }
 
 		int index;
-
+		internal void SetIndex(int index){
+			this.index = index;
+		}
 		//public int IndexInScope { get { return index; } internal set { index = value; } }
 
 		public bool IsLocal {
@@ -64,12 +67,10 @@ namespace Cygni.AST
 		{
 			return name.GetHashCode ();
 		}
-
-		public void LookUpForLocalVariable (List<NameEx> names)
+			
+		internal override void Accept (ASTVisitor visitor)
 		{
-			int i =	names.IndexOf (this);
-			if (i >= 0)
-				this.index = i;
+			visitor.Visit (this);
 		}
 	}
 }

@@ -2,12 +2,14 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Settings/GlobalSettings.cs">
     <Files>
-      <File FileName="Cygni/AST/ForEx.cs" Line="109" Column="1" />
-      <File FileName="Cygni/AST/InvokeEx.cs" Line="46" Column="1" />
-      <File FileName="Cygni/AST/DefFuncEx.cs" Line="30" Column="1" />
-      <File FileName="Cygni/AST/BinaryEx.cs" Line="160" Column="14" />
-      <File FileName="Cygni/Libraries/StrLib.cs" Line="82" Column="82" />
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="120" Column="62" />
+      <File FileName="Cygni/DataTypes/Structure.cs" Line="63" Column="3" />
+      <File FileName="Cygni/AST/CommandEx.cs" Line="35" Column="4" />
+      <File FileName="Cygni/Executors/CodeFileExecutor.cs" Line="45" Column="9" />
+      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="10" Column="24" />
+      <File FileName="Cygni/Executors/CodeStringExecutor.cs" Line="11" Column="22" />
+      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="60" Column="30" />
+      <File FileName="Cygni/Libraries/BasicLib.cs" Line="233" Column="6" />
+      <File FileName="Cygni/Libraries/HashTableLib.cs" Line="52" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

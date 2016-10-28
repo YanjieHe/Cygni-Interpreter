@@ -74,6 +74,7 @@ namespace Cygni.Settings
 		};
 		public static bool Quiet = false;
 		//quiet output
+		public static bool CompleteErrorOutput = false;
 		const string warranty = 
 			@"
 Cygni, version 1.0.0
@@ -90,7 +91,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			new Dictionary<string, Structure> { {"os",new Structure(
 					new KeyValuePair<string, DynValue>("clock",BasicLib.os_clock) )
 			},
-			{"console",
+			{"Console",
 					new Structure (
 					new KeyValuePair<string, DynValue>( "clear",BasicLib.console_clear ),
 					new KeyValuePair<string, DynValue>( "write",BasicLib.console_write ),

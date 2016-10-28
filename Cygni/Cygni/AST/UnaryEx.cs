@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
+using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of UnaryEx.
 	/// </summary>
-	public class UnaryEx:ASTNode,ISymbolLookUp
+	public class UnaryEx:ASTNode
 	{
 		ASTNode operand;
 		UnaryOp op;
@@ -57,10 +58,10 @@ namespace Cygni.AST
 					throw new NotSupportedException(op.ToString());
 			}
 		}
-		public void LookUpForLocalVariable (List<NameEx>names)
+
+		internal override void Accept (ASTVisitor visitor)
 		{
-			if (operand is ISymbolLookUp)
-				(operand as ISymbolLookUp).LookUpForLocalVariable (names);
+			visitor.Visit (this);
 		}
 	}
 	public enum UnaryOp:byte
