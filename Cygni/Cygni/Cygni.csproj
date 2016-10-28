@@ -98,6 +98,7 @@
     <Compile Include="DataTypes\StructureItem.cs" />
     <Compile Include="AST\Visitors\ASTVisitor.cs" />
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
+    <Compile Include="AST\ForEachEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

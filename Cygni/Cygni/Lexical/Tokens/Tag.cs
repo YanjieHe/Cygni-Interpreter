@@ -69,6 +69,7 @@ namespace Cygni.Lexical.Tokens
 		Return,
 
 		Dot,
+		In,
 		Null,
 		EOF,
 		EOL,

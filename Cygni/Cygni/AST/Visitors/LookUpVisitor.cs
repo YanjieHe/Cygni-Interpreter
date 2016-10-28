@@ -44,6 +44,16 @@ namespace Cygni.AST.Visitors
 				forEx.Step.Accept (this);
 			forEx.Body.Accept (this);
 		}
+		internal override void Visit(ForEachEx forEachEx){
+			if (names.Contains (forEachEx.Iterator))
+				forEachEx.Iterator.Accept (this);
+			else {
+				forEachEx.SetIterator (new NameEx (forEachEx.Iterator.Name, names.Count));
+				names.Add (forEachEx.Iterator);
+			}
+			forEachEx.Collection.Accept (this);
+			forEachEx.Body.Accept (this);
+		}
 	}
 }
 

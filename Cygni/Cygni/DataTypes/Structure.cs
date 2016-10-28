@@ -72,10 +72,23 @@ namespace Cygni.DataTypes
 				s
 					.Append ('\t')
 					.Append (item.Key)
-					.Append (" = ")
+					.Append (": ")
 					.AppendLine (item.Value.ToString ());
 			}
-			s.Append (" }");
+			s.Append ('}');
+			/*var s = new StringBuilder ("struct(");
+			if (contents.Length >= 1) {
+				s.Append (contents[0].Key);
+				s.Append (": ");
+				s.AppendLine (contents[0].Value.ToString());
+			}
+			for (int i = 1; i < contents.Length; i++) {
+				s.Append (", ");
+				s.Append (contents[i].Key);
+				s.Append (": ");
+				s.AppendLine (contents[i].Value.ToString());
+			}
+			s.Append (')');*/
 			return s.ToString ();
 		}
 	}

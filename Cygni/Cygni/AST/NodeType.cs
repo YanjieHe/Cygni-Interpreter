@@ -27,5 +27,6 @@ namespace Cygni.AST
 		Command,
 		ListInit,
 		Index,
+		ForEach,
 	}
 }

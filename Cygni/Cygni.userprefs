@@ -1,15 +1,17 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Settings/GlobalSettings.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Program.cs">
     <Files>
-      <File FileName="Cygni/DataTypes/Structure.cs" Line="63" Column="3" />
-      <File FileName="Cygni/AST/CommandEx.cs" Line="35" Column="4" />
-      <File FileName="Cygni/Executors/CodeFileExecutor.cs" Line="45" Column="9" />
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="10" Column="24" />
-      <File FileName="Cygni/Executors/CodeStringExecutor.cs" Line="11" Column="22" />
-      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="60" Column="30" />
-      <File FileName="Cygni/Libraries/BasicLib.cs" Line="233" Column="6" />
-      <File FileName="Cygni/Libraries/HashTableLib.cs" Line="52" Column="29" />
+      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="35" Column="4" />
+      <File FileName="Cygni/DataTypes/DynHashTable.cs" Line="16" Column="21" />
+      <File FileName="Cygni/DataTypes/DynValue.cs" Line="164" Column="37" />
+      <File FileName="Cygni/DataTypes/Structure.cs" Line="71" Column="36" />
+      <File FileName="Cygni/Libraries/BasicLib.cs" Line="1" Column="1" />
+      <File FileName="Cygni/Libraries/StrLib.cs" Line="17" Column="50" />
+      <File FileName="Cygni/Libraries/ListLib.cs" Line="54" Column="58" />
+      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="119" Column="26" />
+      <File FileName="Cygni/Program.cs" Line="18" Column="6" />
+      <File FileName="Cygni/AST/BinaryEx.cs" Line="104" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

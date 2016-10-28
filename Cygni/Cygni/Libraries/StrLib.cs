@@ -16,14 +16,16 @@ namespace Cygni.Libraries
 	{
 		public static DynValue strcat (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length > 0, "strcat");
-			return string.Concat (args.Map (i => i.Value));
+			RuntimeException.FuncArgsCheck (args.Length ==  1, "strcat");
+			//return string.Concat (args.Map (i => i.Value));
+			return string.Concat(args[0].As<DynList>().Select(i=>i.Value));
 		}
 
 		public static DynValue strjoin (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length > 1, "strjoin");
-			return string.Join (args [0].AsString (), args.SkipMap (1, i => i.Value));
+			RuntimeException.FuncArgsCheck (args.Length == 2, "strjoin");
+			//return string.Join (args [0].AsString (), args.SkipMap (1, i => i.Value));
+			return string.Join (args [0].AsString (), args[1].As<DynList>().Select(i=>i.Value));
 		}
 
 		public static DynValue strformat (DynValue[] args)

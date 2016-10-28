@@ -46,5 +46,13 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 2, "bSearch");
 			return (double)args [0].As <DynList> ().BinarySearch (args[1]);
 		}
+		public static DynValue list_max(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "max");
+			return args [0].As<DynList> ().Max ();
+		}
+		public static DynValue list_min(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "min");
+			return args [0].As<DynList> ().Min ();
+		}
 	}
 }

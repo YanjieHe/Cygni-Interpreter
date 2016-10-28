@@ -146,6 +146,10 @@ namespace Cygni.AST
 		{
 			return new ForEx(body, iterator, start, end, step);
 		}
+		public static ASTNode ForEach(BlockEx body, string iterator, ASTNode collection)
+		{
+			return new ForEachEx(body, iterator, collection);
+		}
 		public static ASTNode Define(string name, string[] parameters, BlockEx body)
 		{
 			return new DefFuncEx(name, parameters, body);

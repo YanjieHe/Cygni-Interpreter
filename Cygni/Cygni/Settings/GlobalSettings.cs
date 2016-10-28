@@ -122,7 +122,10 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new KeyValuePair<string, DynValue>(  "removeAt",ListLib.removeAt ),
 					new KeyValuePair<string, DynValue>(  "insertAt",ListLib.insertAt ),
 					new KeyValuePair<string, DynValue>(  "sort",ListLib.sort ),
-					new KeyValuePair<string, DynValue>(  "bSearch",ListLib.bSearch ) )
+					new KeyValuePair<string, DynValue>(  "bSearch",ListLib.bSearch ) ,
+					new KeyValuePair<string, DynValue>(  "max",ListLib.list_max ),
+					new KeyValuePair<string, DynValue>(  "min",ListLib.list_min ) 
+					)
 			},
 			{"htable",
 				new Structure(

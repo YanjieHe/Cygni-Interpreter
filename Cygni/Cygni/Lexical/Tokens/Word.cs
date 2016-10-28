@@ -105,6 +105,8 @@ namespace Cygni.Lexical.Tokens
 				return Return;
 			case ".":
 				return Dot;
+			case "in":
+				return In;
 			case "null":
 				return Null;
 			case "\\n":
@@ -149,6 +151,7 @@ namespace Cygni.Lexical.Tokens
 			Continue = new Word ("continue", Tag.Continue),
 			Return = new Word ("return", Tag.Return),
 			Dot = new Word (".", Tag.Dot),
+			In = new Word ("in", Tag.In),
 			Null = new Word ("null", Tag.Null),
 			EOL = new Word ("\\n", Tag.EOL);
 

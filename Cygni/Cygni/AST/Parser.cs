@@ -79,6 +79,9 @@ namespace Cygni.AST
 				case Tag.For:
 					list.Add (For ());
 					break;
+				case Tag.ForEach:
+					list.Add (ForEach ());
+					break;
 				case Tag.Define:
 					list.Add (DefFunc ());
 					break;
@@ -154,7 +157,16 @@ namespace Cygni.AST
 				return ASTNode.For (body, iterator, start, end);
 			}
 		}
-
+		ASTNode ForEach ()
+		{
+			Match (Tag.ForEach);
+			var iterator = look.ToString ();
+			Match (Tag.ID);
+			Match (Tag.In);
+			var collection = Bool ();
+			var body = Block ();
+			return ASTNode.ForEach (body, iterator, collection);
+		}
 		
 		public ASTNode DefFunc ()
 		{

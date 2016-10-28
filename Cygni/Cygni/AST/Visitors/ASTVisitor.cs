@@ -35,6 +35,11 @@ namespace Cygni.AST.Visitors
 				forEx.Step.Accept (this);
 			forEx.Body.Accept (this);
 		}
+		internal virtual void Visit(ForEachEx forEachEx){
+			forEachEx.Iterator.Accept (this);
+			forEachEx.Collection.Accept (this);
+			forEachEx.Body.Accept (this);
+		}
 		internal virtual void Visit(IfEx ifEx){
 			ifEx.Condition.Accept (this);
 			ifEx.IfTrue.Accept (this);

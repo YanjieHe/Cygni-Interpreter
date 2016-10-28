@@ -9,17 +9,17 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynHashTable.
 	/// </summary>
-	public sealed class DynHashTable: Dictionary<object,DynValue>, IIndexable
+	public sealed class DynHashTable: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable
 	{
 		public DynValue this [DynValue[] key] {
 			get { 
 				var k = key [0];
 				switch (k.type) {
 				case DataType.Number:
-					return this[(int)(double)k.Value];
+					return this [(int)(double)k.Value];
 				case DataType.Boolean:
 				case DataType.String:
-					return this[k.Value];
+					return this [k.Value];
 				default :
 					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
 				}
@@ -32,7 +32,7 @@ namespace Cygni.DataTypes
 					return;
 				case DataType.Boolean:
 				case DataType.String:
-					this[k.Value] = value;
+					this [k.Value] = value;
 					return;
 				default :
 					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
@@ -57,7 +57,34 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			return string.Concat ("[ ", string.Join (", ", this), " ]");
+			StringBuilder s = new StringBuilder ();
+			var iterator = base.GetEnumerator();
+			s.Append ("[ ");
+			if (iterator.MoveNext ())
+				s.Append (iterator.Current);
+			while (iterator.MoveNext()) {
+				s.Append (',').Append (iterator.Current);
+			}
+			s.Append (" ]");
+			return s.ToString ();
+		}
+
+		public new IEnumerator<DynValue> GetEnumerator ()
+		{
+			var iterator = base.GetEnumerator();
+			while(iterator.MoveNext()){
+				var kvp = new DynList (2);
+				kvp.Add (DynValue.FromObject (iterator.Current.Key));
+				kvp.Add (iterator.Current.Value);
+				yield return DynValue.FromList(kvp);
+			}
+		}
+
+		 System.Collections.IEnumerator  System.Collections.IEnumerable.GetEnumerator ()
+		{
+			var iterator = this.GetEnumerator();
+			while (iterator.MoveNext()) 
+				yield return iterator.Current;
 		}
 	}
 }
