@@ -54,5 +54,12 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "min");
 			return args [0].As<DynList> ().Min ();
 		}
+		public static DynValue list_pop(DynValue [] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "pop");
+			var list = args [0].As<DynList> ();
+			var last = list [list.Count - 1];
+			list.RemoveAt (list.Count - 1);
+			return last;
+		}
 	}
 }

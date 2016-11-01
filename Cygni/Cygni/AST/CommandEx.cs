@@ -20,34 +20,30 @@ namespace Cygni.AST
 
 		public CommandType commandType;
 		IList<ASTNode> parameters;
+
 		public IList<ASTNode>Parameters { get { return parameters; } }
+
 		public CommandEx (CommandType commandType, IList<ASTNode>parameters)
 		{
 			this.commandType = commandType;
 			this.parameters = parameters;
 		}
-		internal static readonly Dictionary<string,CommandType>
-		cmdDict = new Dictionary<string, CommandType>(){
-			{"dofile", CommandType.DoFile},
-			{"loaddll", CommandType.LoadDll},
-			{"delete", CommandType.Delete},
-			{"import", CommandType.Import},
-			{"clear", CommandType.Clear},
-			{"dispScope", CommandType.DispScope},
-		};
-		internal static readonly Dictionary<string,bool>
-		cmdDictNon_Args = new Dictionary<string, bool>(){
-			{"dofile", false},
-			{"loaddll", false},
-			{"delete", false},
-			{"import", false},
-			{"clear", true},
-			{"dispScope", true},
 
+		internal static readonly Dictionary<string,CommandType>
+			cmdDict = new Dictionary<string, CommandType> () {
+			{ "dofile", CommandType.DoFile },
+			{ "loaddll", CommandType.LoadDll },
+			{ "delete", CommandType.Delete },
+			{ "import", CommandType.Import },
+			{ "clear", CommandType.Clear },
+			{ "dispScope", CommandType.DispScope },
 		};
+		internal static readonly string[] NonArgCmd = 
+			{ "clear", "dispScope" };
+
 		public CommandEx (string commandName, IList<ASTNode>parameters)
 		{
-			if(!cmdDict.TryGetValue(commandName,out commandType))
+			if (!cmdDict.TryGetValue (commandName, out commandType))
 				throw new NotSupportedException (commandName);
 			this.parameters = parameters;
 		}
@@ -76,13 +72,14 @@ namespace Cygni.AST
 		{
 			return command (parameters.Map (i => i.Eval (scope)), scope);
 		}
+
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);
 		}
 	}
 
-	public enum CommandType
+	public enum CommandType:byte
 	{
 		DoFile,
 		LoadDll,

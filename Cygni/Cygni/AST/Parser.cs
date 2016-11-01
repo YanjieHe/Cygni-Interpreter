@@ -226,7 +226,7 @@ namespace Cygni.AST
 		{
 			var name = look.ToString ();
 			Match (Tag.ID);
-			if (CommandEx.cmdDictNon_Args [name]) {
+			if (CommandEx.NonArgCmd.Contains(name)) {
 				return ASTNode.Command (name, new ASTNode[0]);
 			}
 			var list = new List<ASTNode> ();

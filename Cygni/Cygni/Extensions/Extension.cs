@@ -35,5 +35,17 @@ namespace Cygni.Extensions
 		{
 			return new DynList(collection.Select(converter),count);
 		}
+		public static IEnumerable<int> Range(int start,int end,int step = 1){
+			if (step == 0)
+				throw new ArgumentException ("step cannot be zero","step");
+			if (step > 0) {
+				for (int i = start; i < end; i+=step) 
+					yield return i;
+			} else {
+				for (int i = start; i > end; i+=step) {
+					yield return i;
+				}
+			}
+		}
 	}
 }

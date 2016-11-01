@@ -26,7 +26,6 @@ namespace Cygni.Libraries
 			}
 			throw RuntimeException.BadArgsNum ("hashtable", "even");
 		}
-
 		public static DynValue hasKey (DynValue[] args)
 		{
 			var ht = args [0].As<DynHashTable> ();
@@ -82,6 +81,24 @@ namespace Cygni.Libraries
 			var ht = args [0].As<DynHashTable> ();
 			int n = ht.Count;
 			return DynValue.FromList (ht.Values.ToDynList (i => i, n));
+		}
+		public static DynValue ht_add (DynValue[] args)
+		{
+			var ht = args [0].As<DynHashTable> ();
+			var key = args [1];
+			var value = args [2];
+			switch (key.type) {
+			case DataType.Number:
+				ht.Add ((int)(double)key.Value, value);
+				break;
+			case DataType.Boolean:
+			case DataType.String:
+				ht.Add (key.Value, value);
+				break;
+			default:
+				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+			}
+			return DynValue.Null;
 		}
 	}
 }

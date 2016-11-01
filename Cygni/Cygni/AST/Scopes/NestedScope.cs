@@ -26,7 +26,7 @@ namespace Cygni.AST.Scopes
 				throw RuntimeException.NotDefined (name);
 			return parent.Get (name);
 		}
-		public override  bool TryGetValue(string name, out DynValue value)
+		public override bool TryGetValue(string name, out DynValue value)
 		{
 			if (this.envTable.TryGetValue(name, out value))
 				return true;

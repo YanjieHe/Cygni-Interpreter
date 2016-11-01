@@ -1,17 +1,8 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Scopes/BasicScope.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Executors/InteractiveExecutor.cs">
     <Files>
-      <File FileName="Cygni/Program.cs" Line="21" Column="38" />
-      <File FileName="Cygni/AST/Scopes/NestedScope.cs" Line="13" Column="36" />
-      <File FileName="Cygni/AST/Scopes/BasicScope.cs" Line="54" Column="1" />
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="157" Column="48" />
-      <File FileName="Cygni/AST/Scopes/BuiltInScope.cs" Line="35" Column="3" />
-      <File FileName="Cygni/DataTypes/DynValue.cs" Line="69" Column="4" />
-      <File FileName="Cygni/Executors/Engine.cs" Line="22" Column="29" />
-      <File FileName="Cygni/AST/CommandEx.cs" Line="72" Column="5" />
-      <File FileName="Cygni/Libraries/Commands.cs" Line="114" Column="25" />
-      <File FileName="Cygni/AST/Parser.cs" Line="226" Column="4" />
+      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="60" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

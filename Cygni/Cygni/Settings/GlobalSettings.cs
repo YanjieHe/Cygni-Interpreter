@@ -30,6 +30,8 @@ namespace Cygni.Settings
 			{ "dispose",BasicLib.dispose },
 			{ "throw",BasicLib.Throw },
 			{ "exit",BasicLib.exit },
+			{ "range",BasicLib.Range },
+			{ "collect",BasicLib.Collect },
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -65,7 +67,7 @@ namespace Cygni.Settings
 			{ "len",ListLib.len },
 			{ "removeAt",ListLib.removeAt },
 			{ "insertAt",ListLib.insertAt },
-			
+
 			{ "hashtable",HashTableLib.hashtable },
 			{ "hasKey",HashTableLib.hasKey },
 			{ "hasValue",HashTableLib.hasValue },
@@ -135,7 +137,8 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem(  "sort",ListLib.sort ),
 					new StructureItem(  "bSearch",ListLib.bSearch ) ,
 					new StructureItem(  "max",ListLib.list_max ),
-					new StructureItem(  "min",ListLib.list_min ) 
+					new StructureItem(  "min",ListLib.list_min ) ,
+					new StructureItem(  "pop",ListLib.list_pop ) 
 					)
 			},
 			{"htable",
@@ -144,7 +147,8 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem(  "hasValue",HashTableLib.hasValue ),
 					new StructureItem(  "remove",HashTableLib.ht_remove ),
 					new StructureItem(  "keys",HashTableLib.ht_keys ),
-					new StructureItem(  "values",HashTableLib.ht_values ) )
+					new StructureItem(  "values",HashTableLib.ht_values ) ,
+					new StructureItem(  "add",HashTableLib.ht_add ) )
 			},
 			};
 

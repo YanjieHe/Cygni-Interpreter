@@ -11,7 +11,6 @@ using System.Reflection;
 using System.IO;
 using Cygni.Settings;
 using System.Threading;
-
 namespace Cygni.Libraries
 {
 	/// <summary>
@@ -231,5 +230,21 @@ namespace Cygni.Libraries
 				GlobalSettings.CompleteErrorOutput = args[0].AsBoolean();
 			return GlobalSettings.CompleteErrorOutput;
 		}*/
+		public static DynValue Range (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 2||args.Length == 3, "range");
+			if (args.Length == 2)
+				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber (), 
+					(int)args [1].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
+			else
+				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber ()
+					, (int)args [1].AsNumber ()
+					, (int)args [2].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
+		}
+		public static DynValue Collect (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length ==1, "collect");
+			return new DynList (args [0].As<IEnumerable<DynValue>> ());
+		}
 	}
 }
