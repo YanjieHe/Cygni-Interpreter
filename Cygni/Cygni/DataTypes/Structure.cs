@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
-
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +31,10 @@ namespace Cygni.DataTypes
 			int i = 0;
 			foreach (var item in collection)
 				contents [i++] = new StructureItem (item.Key, item.Value);
+		}
+		
+		internal Structure(params StructureItem[] contents){
+			this.contents = contents;
 		}
 
 		public void SetAt (int i, string key, DynValue value)

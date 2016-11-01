@@ -46,5 +46,32 @@ namespace Cygni.Libraries
 		public static DynValue sign(DynValue[] args){
 			return (double)Math.Sign(args[0].AsNumber());
 		}
+		public static DynValue sin(DynValue[] args){
+			return Math.Sin (args [0].AsNumber ());
+		}
+		public static DynValue cos(DynValue[] args){
+			return Math.Cos (args [0].AsNumber ());
+		}
+		public static DynValue tan(DynValue[] args){
+			return Math.Tan (args [0].AsNumber ());
+		}
+		public static DynValue asin(DynValue[] args){
+			return Math.Asin (args [0].AsNumber ());
+		}
+		public static DynValue acos(DynValue[] args){
+			return Math.Acos (args [0].AsNumber ());
+		}
+		public static DynValue atan(DynValue[] args){
+			return Math.Atan (args [0].AsNumber ());
+		}
+		public static DynValue ceiling(DynValue[] args){
+			return Math.Ceiling (args [0].AsNumber ());
+		}
+		public static DynValue floor(DynValue[] args){
+			return Math.Floor (args [0].AsNumber ());
+		}
+		public static DynValue round(DynValue[] args){
+			return Math.Round (args [0].AsNumber (), MidpointRounding.AwayFromZero);
+		}
 	}
 }

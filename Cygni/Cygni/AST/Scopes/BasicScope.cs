@@ -10,27 +10,29 @@ namespace Cygni.AST.Scopes
 	/// <summary>
 	/// Description of BasicScope.
 	/// </summary>
-	public sealed class BasicScope:IScope
+	public class BasicScope:IScope
 	{
-		EnvTable envTable;
+		protected readonly EnvTable envTable;
+		public static BuiltInScope builtInScope;
 		public BasicScope()
 		{
 			this.envTable = new EnvTable ();
 		}
 		public int Count { get { return envTable.Count; } }
-		public DynValue Get(string name){
+		public virtual DynValue Get(string name){
 			DynValue _value;
 			if (envTable.TryGetValue (name, out _value))
 				return _value;
-			throw RuntimeException.NotDefined (name);
+			return builtInScope.Get (name);
+			//throw RuntimeException.NotDefined (name);
 		}
-		public DynValue Put (string name, DynValue value){
+		public virtual DynValue Put (string name, DynValue value){
 			return envTable[name] = value;
 		}
-		public bool HasName(string name) {
+		public virtual bool HasName(string name) {
 			return envTable.ContainsKey(name);
 		}
-		public bool TryGetValue(string name,out DynValue value){
+		public virtual bool TryGetValue(string name,out DynValue value){
 			return envTable.TryGetValue (name, out value);
 		}
 		public DynValue Get(int index){
@@ -41,6 +43,19 @@ namespace Cygni.AST.Scopes
 		}
 		public bool Delete(string name){
 			return envTable.Remove (name);
+		}
+		public void Clear( ){
+			this.envTable.Clear ();
+		}
+		public override string ToString ()
+		{
+			var s = new StringBuilder ("Scope: ");
+			s.AppendLine ();
+			foreach (var item in envTable) {
+				s.Append ('\t');
+				s.AppendLine (item.ToString ());
+			}
+			return s.ToString ();
 		}
 	}
 }

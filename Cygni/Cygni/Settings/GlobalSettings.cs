@@ -29,6 +29,7 @@ namespace Cygni.Settings
 			{ "CSharpDll",BasicLib.CSharpDll },
 			{ "dispose",BasicLib.dispose },
 			{ "throw",BasicLib.Throw },
+			{ "exit",BasicLib.exit },
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -37,6 +38,16 @@ namespace Cygni.Settings
 			{ "min",MathLib.min },
 			{ "exp",MathLib.exp },
 			{ "sign",MathLib.sign },
+			{ "sin",MathLib.sin },
+			{ "cos",MathLib.cos },
+			{ "tan",MathLib.tan },
+			{ "asin",MathLib.asin },
+			{ "acos",MathLib.acos },
+			{ "atan",MathLib.atan },
+			{ "ceiling",MathLib.ceiling },
+			{ "floor",MathLib.floor },
+			{ "round",MathLib.round },
+
 			
 			
 			{ "strcat",StrLib.strcat },
@@ -89,84 +100,75 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 
 		public static Dictionary<string,Structure> BuiltInStructures = 
 			new Dictionary<string, Structure> { {"os",new Structure(
-					new KeyValuePair<string, DynValue>("clock",BasicLib.os_clock) )
+					new StructureItem("clock",BasicLib.os_clock) )
 			},
 			{"Console",
 					new Structure (
-					new KeyValuePair<string, DynValue>( "clear",BasicLib.console_clear ),
-					new KeyValuePair<string, DynValue>( "write",BasicLib.console_write ),
-					new KeyValuePair<string, DynValue>( "read",BasicLib.console_read ),
-					new KeyValuePair<string, DynValue>( "readLine",BasicLib.console_readLine ) )
+					new StructureItem( "clear",BasicLib.console_clear ),
+					new StructureItem( "write",BasicLib.console_write ),
+					new StructureItem( "read",BasicLib.console_read ),
+					new StructureItem( "readLine",BasicLib.console_readLine ) )
 
 				}, {"string",
 					new Structure (
-					new KeyValuePair<string, DynValue>( "concat",StrLib.strcat ),
-					new KeyValuePair<string, DynValue>( "join",StrLib.strjoin ),
-					new KeyValuePair<string, DynValue>( "format",StrLib.strformat ),
-					new KeyValuePair<string, DynValue>( "len",StrLib.strlen ),
-					new KeyValuePair<string, DynValue>( "split",StrLib.strsplit ),
-					new KeyValuePair<string, DynValue>( "replace",StrLib.strrpl ),
-					new KeyValuePair<string, DynValue>( "compare",StrLib.strcmp ),
-					new KeyValuePair<string, DynValue>( "find",StrLib.strfind ),
-					new KeyValuePair<string, DynValue>( "lower",StrLib.tolower ),
-					new KeyValuePair<string, DynValue>( "upper",StrLib.toupper ),
-					new KeyValuePair<string, DynValue>( "char",StrLib._char ),
-					new KeyValuePair<string, DynValue>( "empty",string.Empty ) ,
-					new KeyValuePair<string, DynValue>( "trim",StrLib.Trim ) ,
-					new KeyValuePair<string, DynValue>( "subString",StrLib.SubString ) 
+					new StructureItem( "concat",StrLib.strcat ),
+					new StructureItem( "join",StrLib.strjoin ),
+					new StructureItem( "format",StrLib.strformat ),
+					new StructureItem( "len",StrLib.strlen ),
+					new StructureItem( "split",StrLib.strsplit ),
+					new StructureItem( "replace",StrLib.strrpl ),
+					new StructureItem( "compare",StrLib.strcmp ),
+					new StructureItem( "find",StrLib.strfind ),
+					new StructureItem( "lower",StrLib.tolower ),
+					new StructureItem( "upper",StrLib.toupper ),
+					new StructureItem( "char",StrLib._char ),
+					new StructureItem( "empty",string.Empty ) ,
+					new StructureItem( "trim",StrLib.Trim ) ,
+					new StructureItem( "subString",StrLib.SubString ) 
 				)
 				},
 			{"List",new Structure(
-					new KeyValuePair<string, DynValue>(  "append",ListLib.append ),
-					new KeyValuePair<string, DynValue>(  "len",ListLib.len ),
-					new KeyValuePair<string, DynValue>(  "removeAt",ListLib.removeAt ),
-					new KeyValuePair<string, DynValue>(  "insertAt",ListLib.insertAt ),
-					new KeyValuePair<string, DynValue>(  "sort",ListLib.sort ),
-					new KeyValuePair<string, DynValue>(  "bSearch",ListLib.bSearch ) ,
-					new KeyValuePair<string, DynValue>(  "max",ListLib.list_max ),
-					new KeyValuePair<string, DynValue>(  "min",ListLib.list_min ) 
+					new StructureItem(  "append",ListLib.append ),
+					new StructureItem(  "len",ListLib.len ),
+					new StructureItem(  "removeAt",ListLib.removeAt ),
+					new StructureItem(  "insertAt",ListLib.insertAt ),
+					new StructureItem(  "sort",ListLib.sort ),
+					new StructureItem(  "bSearch",ListLib.bSearch ) ,
+					new StructureItem(  "max",ListLib.list_max ),
+					new StructureItem(  "min",ListLib.list_min ) 
 					)
 			},
 			{"htable",
 				new Structure(
-					new KeyValuePair<string, DynValue>(  "hasKey",HashTableLib.hasKey ),
-					new KeyValuePair<string, DynValue>(  "hasValue",HashTableLib.hasValue ),
-					new KeyValuePair<string, DynValue>(  "remove",HashTableLib.ht_remove ),
-					new KeyValuePair<string, DynValue>(  "keys",HashTableLib.ht_keys ),
-					new KeyValuePair<string, DynValue>(  "values",HashTableLib.ht_values ) )
+					new StructureItem(  "hasKey",HashTableLib.hasKey ),
+					new StructureItem(  "hasValue",HashTableLib.hasValue ),
+					new StructureItem(  "remove",HashTableLib.ht_remove ),
+					new StructureItem(  "keys",HashTableLib.ht_keys ),
+					new StructureItem(  "values",HashTableLib.ht_values ) )
 			},
 			};
 
-		public static void SetBuiltInFunctions (IScope GlobalScope)
+		public static void SetBuiltInFunctions (BuiltInScope scope)
 		{
 			foreach (var element in BuiltInFunctions)
-				GlobalScope.Put (element.Key, DynValue.FromNativeFunction (new  NativeFunction (element.Value)));
+				scope.BuiltIn (element.Key, DynValue.FromNativeFunction (new  NativeFunction (element.Value)));
 		}
 
-		public static void SetBuiltInVariables (IScope GlobalScope)
+		public static void SetBuiltInVariables (BuiltInScope scope)
 		{
 			foreach (var element in BuiltInVariables)
-				GlobalScope.Put (element.Key, element.Value);
+				scope.BuiltIn (element.Key, element.Value);
 		}
 
-		public static void SetBuiltInStructures (IScope GlobalScope)
+		public static void SetBuiltInStructures (BuiltInScope scope)
 		{
 			foreach (var element in BuiltInStructures)
-				GlobalScope.Put (element.Key, DynValue.FromStructure (element.Value));
-		}
-		public static void BuiltIn (string name, Func<DynValue[],DynValue> f)
-		{
-			BuiltInFunctions.Add (name, f);
+				scope.BuiltIn (element.Key, DynValue.FromStructure (element.Value));
 		}
 
-		public static void AddVariable (string name, DynValue value)
+		public static BuiltInScope CreateBuiltInScope ()
 		{
-			BuiltInVariables.Add (name, value);
-		}
-
-		public static BasicScope CreateGlobalScope ()
-		{
-			var scope = new BasicScope ();
+			var scope = new BuiltInScope ();
 			SetBuiltInFunctions (scope);
 			SetBuiltInVariables (scope);
 			SetBuiltInStructures (scope);

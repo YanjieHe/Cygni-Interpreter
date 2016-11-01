@@ -56,8 +56,10 @@ namespace Cygni.Lexical
 			if (s.Length > 0)/* Reset the StringBuilder */
 				s.Clear ();
 			
-			while (IsSpace (Peek ()))/* Skip the white spaces */
-				GetChar ();
+			while (IsSpace (Peek ())){/* Skip the white spaces */
+				if(GetChar () == '\n')
+					lineNumber++;
+			}
 			
 			if (Peek () == '#') { /* start of comments */
 				while (Peek () != -1 && Peek () != '\n')

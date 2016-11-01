@@ -99,6 +99,7 @@
     <Compile Include="AST\Visitors\ASTVisitor.cs" />
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
     <Compile Include="AST\ForEachEx.cs" />
+    <Compile Include="AST\Scopes\BuiltInScope.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

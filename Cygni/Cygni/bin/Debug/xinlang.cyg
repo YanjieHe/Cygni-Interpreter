@@ -1,0 +1,18 @@
+import 'MySQL'
+import 'io'
+connStr = 'server=localhost;user id = root;password = 515416v;database = mydatabase"
+conn = MySQLConnection(connStr)
+conn.open()
+cmd = conn.createCommand()
+da_reader = cmd.executeReader("SELECT * FROM xinlang;")
+
+f = File.open('xinlang.csv',FileMode.Open)
+w = writer(f,'utf-8')
+
+while da_reader.read() {
+	w.writeLine(string.join('\t',da_reader.getValues()))
+}
+dispose(f)
+w.close()
+print('Finished')
+	

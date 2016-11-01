@@ -24,9 +24,7 @@ namespace Cygni.Executors
 
 		public void Initialize ()
 		{
-			GlobalSettings.SetBuiltInFunctions (globalScope);
-			GlobalSettings.SetBuiltInVariables (globalScope);
-			GlobalSettings.SetBuiltInStructures (globalScope);
+			BasicScope.builtInScope = GlobalSettings.CreateBuiltInScope ();
 		}
 
 		public static Engine CreateInstance ()

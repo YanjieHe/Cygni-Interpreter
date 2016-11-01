@@ -54,6 +54,7 @@ namespace Cygni.AST.Visitors
 			forEachEx.Collection.Accept (this);
 			forEachEx.Body.Accept (this);
 		}
+
 	}
 }
 

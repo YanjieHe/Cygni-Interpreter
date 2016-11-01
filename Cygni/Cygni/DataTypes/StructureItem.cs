@@ -10,7 +10,7 @@ namespace Cygni.DataTypes
 	{
 		internal readonly string Key;
 		internal DynValue Value;
-		public StructureItem(string Key,DynValue Value){
+		internal StructureItem(string Key,DynValue Value){
 			this.Key = Key;
 			this.Value = Value;
 		}

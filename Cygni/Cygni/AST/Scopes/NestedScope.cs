@@ -10,18 +10,15 @@ namespace Cygni.AST.Scopes
 	/// <summary>
 	/// Description of NestedScope.
 	/// </summary>
-	public sealed class NestedScope: IScope
+	public sealed class NestedScope: BasicScope
 	{
-		EnvTable envTable;
 		IScope parent;
 		public IScope Parent{ get { return parent; } }
-		public NestedScope(IScope parent = null)
+		public NestedScope(IScope parent = null):base()
 		{
-			this.envTable = new EnvTable ();
 			this.parent = parent;
 		}
-		public int Count { get { return envTable.Count; } }
-		public DynValue Get(string name){
+		public override DynValue Get(string name){
 			DynValue value;
 			if (this.envTable.TryGetValue (name, out value))
 				return value;
@@ -29,25 +26,13 @@ namespace Cygni.AST.Scopes
 				throw RuntimeException.NotDefined (name);
 			return parent.Get (name);
 		}
-		public DynValue Put(string name,DynValue value){
-			return this.envTable[name] = value;
-		}
-		public bool HasName(string name){
-			return this.envTable.ContainsKey (name);
-		}
-		public bool TryGetValue(string name, out DynValue value)
+		public override  bool TryGetValue(string name, out DynValue value)
 		{
 			if (this.envTable.TryGetValue(name, out value))
 				return true;
 			if (parent == null)
 				return false;
 			return parent.TryGetValue(name, out value);
-		}
-		public DynValue Get(int index){
-			throw new NotSupportedException ();
-		}
-		public DynValue Put(int index,DynValue value){
-			throw new NotSupportedException ();
 		}
 	}
 }

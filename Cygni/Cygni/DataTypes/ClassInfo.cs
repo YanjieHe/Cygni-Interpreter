@@ -6,13 +6,13 @@ using System;
 using Cygni.AST;
 using Cygni.Errors;
 using Cygni.AST.Scopes;
-
+using System.Collections;
 namespace Cygni.DataTypes
 {
 	/// <summary>
 	/// Description of ClassInfo.
 	/// </summary>
-	public sealed class ClassInfo: IComputable, IComparable<DynValue>, IDot,IFunction
+	public sealed class ClassInfo: IComputable,IEnumerable<DynValue>, IComparable<DynValue>, IDot,IFunction
 	{
 		readonly string name;
 		BlockEx body;
@@ -155,6 +155,27 @@ namespace Cygni.DataTypes
 			if (classScope.HasName ("this") && classScope.HasName ("__TOSTRING__"))
 				return classScope.Get ("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			return string.Concat ("(class: ", name, ")");
+		}
+
+		public IEnumerator<DynValue> GetEnumerator ()
+		{
+			if (classScope.HasName ("__COLLECTION__")) {
+				var collection = classScope.Get ("__COLLECTION__").As<Function> ().Invoke ().As<IEnumerable<DynValue>> ();
+				foreach (var item in collection) 
+					yield return item;
+			} else {
+				classScope.Get ("__ITER__").As<Function> ().Invoke ();
+				var next = classScope.Get ("__Next__").As<Function> ().AsDelegate ();
+				var current = classScope.Get ("__CURRENT__").As<Function> ().AsDelegate ();
+				while (next (new DynValue[0]).AsBoolean()) {
+					yield return current (new DynValue[0]);
+				}
+			}
+		}
+
+		System.Collections.IEnumerator  System.Collections.IEnumerable.GetEnumerator ()
+		{
+			yield return this.AsEnumerable ();
 		}
 	}
 }

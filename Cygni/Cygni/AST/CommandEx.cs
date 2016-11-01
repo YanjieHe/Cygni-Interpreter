@@ -32,6 +32,17 @@ namespace Cygni.AST
 			{"loaddll", CommandType.LoadDll},
 			{"delete", CommandType.Delete},
 			{"import", CommandType.Import},
+			{"clear", CommandType.Clear},
+			{"dispScope", CommandType.DispScope},
+		};
+		internal static readonly Dictionary<string,bool>
+		cmdDictNon_Args = new Dictionary<string, bool>(){
+			{"dofile", false},
+			{"loaddll", false},
+			{"delete", false},
+			{"import", false},
+			{"clear", true},
+			{"dispScope", true},
 
 		};
 		public CommandEx (string commandName, IList<ASTNode>parameters)
@@ -52,6 +63,10 @@ namespace Cygni.AST
 				return RunCommand (Commands.Delete, scope);
 			case CommandType.Import:
 				return RunCommand (Commands.Import, scope);
+			case CommandType.Clear:
+				return RunCommand (Commands.Clear, scope);
+			case CommandType.DispScope:
+				return RunCommand (Commands.DispScope, scope);
 			default:
 				throw new NotSupportedException (commandType.ToString ());
 			}
@@ -73,5 +88,7 @@ namespace Cygni.AST
 		LoadDll,
 		Delete,
 		Import,
+		Clear,
+		DispScope
 	}
 }

@@ -48,6 +48,21 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.String, value);
 		}
 
+		public static implicit operator DynValue (Structure value)
+		{
+			return new DynValue (DataType.Struct, value);
+		}
+
+		public static implicit operator DynValue (DynList list)
+		{
+			return new DynValue (DataType.List, list);
+		}
+
+		public static implicit operator DynValue  (DynHashTable hashTable)
+		{
+			return new DynValue (DataType.HashTable, hashTable);
+		}
+
 		public static implicit operator DynValue (Func<DynValue[],DynValue> f)
 		{
 			return new DynValue (DataType.NativeFunction, new NativeFunction (f));

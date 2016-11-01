@@ -226,7 +226,11 @@ namespace Cygni.AST
 		{
 			var name = look.ToString ();
 			Match (Tag.ID);
+			if (CommandEx.cmdDictNon_Args [name]) {
+				return ASTNode.Command (name, new ASTNode[0]);
+			}
 			var list = new List<ASTNode> ();
+
 			do {
 				list.Add (Bool ());
 				if (look.tag == Tag.Comma) {

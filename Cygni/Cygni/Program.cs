@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using Cygni.Settings;
+using System.Text;
 namespace Cygni
 {
 	class MainClass
@@ -16,13 +17,13 @@ namespace Cygni
 		{
 			var engine = Engine.CreateInstance ();
 			//GlobalSettings.CompleteErrorOutput = true;
-			/*engine.DoFile ("/home/jasonhe/MyCode/CygniCode/regex.cyg");
-			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/random.cyg");
-			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/File.cyg");
-			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/reader.cyg");
-			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
-			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/MySQL.cyg");
-*/
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/regex.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/random.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/File.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/reader.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
+			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/MySQL.cyg");
+
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/post_data.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fib.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/fibtest.cyg");
