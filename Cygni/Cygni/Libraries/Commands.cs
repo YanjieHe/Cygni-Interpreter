@@ -91,27 +91,36 @@ namespace Cygni.Libraries
 			string folderName = args [0].AsString ();
 			return DoFile (new DynValue[]{"./lib/" + folderName + "/__INIT__.cyg"},scope);
 		}
-		public static DynValue Clear (DynValue[] args, IScope scope)
+		public static DynValue Scope (DynValue[] args, IScope scope)
 		{
-			var basicScope = scope as BasicScope;
-			if (basicScope == null)
-				throw new RuntimeException ("Unable to run command 'delete' in local scope");
-			int count = basicScope.Count;
-			basicScope.Clear ();
-			if (!GlobalSettings.Quiet) {
-				if(count == 0)
-					Console.WriteLine ("There is no variable in the current scope.");
-				else if(count == 1)
-					Console.WriteLine ("1 variable has been deleted successfully.");
-				else
-				Console.WriteLine ("{0} variables have been deleted successfully.", count);
+			string cmdType = args [0].AsString ();
+			switch (cmdType) {
+			case "clear":
+				{
+					var basicScope = scope as BasicScope;
+					if (basicScope == null)
+						throw new RuntimeException ("Unable to run command 'delete' in local scope");
+					int count = basicScope.Count;
+					basicScope.Clear ();
+					if (!GlobalSettings.Quiet) {
+						if (count == 0)
+							Console.WriteLine ("There is no variable in the current scope.");
+						else if (count == 1)
+							Console.WriteLine ("1 variable has been deleted successfully.");
+						else
+							Console.WriteLine ("{0} variables have been deleted successfully.", count);
+					}
+					return DynValue.Null;
+				}
+
+			case "display":
+				{
+					Console.WriteLine (scope);
+					return DynValue.Null;
+				}
+			default :
+				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
 			}
-			return DynValue.Null;
-		}
-		public static DynValue DispScope (DynValue[] args, IScope scope)
-		{
-			Console.WriteLine (scope);
-			return DynValue.Null;
 		}
 	}
 }

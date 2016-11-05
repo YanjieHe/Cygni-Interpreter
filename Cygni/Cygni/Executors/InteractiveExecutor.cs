@@ -29,8 +29,8 @@ namespace Cygni.Executors
 			stack = new Stack<Tag> ();
 		}
 
-		static readonly Regex re_exit = new Regex (@"^[\s]*exit[\s]*$");
-/* Support 'exit' command */
+		private static readonly Regex re_exit = new Regex (@"^[\s]*exit[\s]*$");
+		/* Support 'exit' command */
 		public override DynValue Run ()
 		{
 			DynValue Result = DynValue.Null;

@@ -226,10 +226,8 @@ namespace Cygni.AST
 		{
 			var name = look.ToString ();
 			Match (Tag.ID);
-			if (CommandEx.NonArgCmd.Contains(name)) {
-				return ASTNode.Command (name, new ASTNode[0]);
-			}
-			var list = new List<ASTNode> ();
+
+			var list = new List<ASTNode> (); // command must have at least one parameter
 
 			do {
 				list.Add (Bool ());

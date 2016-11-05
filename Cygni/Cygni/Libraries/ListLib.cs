@@ -61,5 +61,11 @@ namespace Cygni.Libraries
 			list.RemoveAt (list.Count - 1);
 			return last;
 		}
+		public static DynValue list_clear (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length ==1, "clear");
+			args [0].As<DynList> ().Clear();
+			return DynValue.Null;
+		}
 	}
 }

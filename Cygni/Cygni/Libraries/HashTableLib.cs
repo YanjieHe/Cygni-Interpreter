@@ -100,5 +100,11 @@ namespace Cygni.Libraries
 			}
 			return DynValue.Null;
 		}
+		public static DynValue ht_clear (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length ==1, "clear");
+			args [0].As<DynHashTable> ().Clear();
+			return DynValue.Null;
+		}
 	}
 }

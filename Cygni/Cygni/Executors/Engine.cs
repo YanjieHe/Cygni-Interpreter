@@ -7,7 +7,8 @@ using Cygni.DataTypes;
 using Cygni.AST;
 using Cygni.Settings;
 using Cygni.AST.Scopes;
-
+using Cygni.Libraries;
+using Cygni.Errors;
 namespace Cygni.Executors
 {
 	/// <summary>
@@ -60,6 +61,25 @@ namespace Cygni.Executors
 			return (T)Convert.ChangeType (result.Value, typeof(T));
 		}
 
+		public void Import (string package)
+		{
+			Commands.Import (new DynValue[]{ package }, globalScope);
+		}
+
+		public void Import (string[] packages)
+		{
+			Commands.Import (packages.Select (i => DynValue.FromString (i)).ToArray (), globalScope);
+		}
+
+		public DynValue ExecuteFromEntryPoint(params DynValue[] args){
+			const string MainFuncName = "__MAIN__";
+			DynValue funcValue;
+			if (globalScope.TryGetValue (MainFuncName, out funcValue)) {
+				return funcValue.As<IFunction> ().DynInvoke (args);
+			}
+			throw new RuntimeException ("Missing Entry Point, expecting function '__MAIN__'");
+		}
+
 		public DynValue ExecuteInConsole ()
 		{
 			var executor = new InteractiveExecutor (globalScope);
@@ -74,7 +94,7 @@ namespace Cygni.Executors
 
 		public DynValue GetSymbol (string name)
 		{
-			return globalScope.Get(name);
+			return globalScope.Get (name);
 		}
 
 		public bool TryGetValue (string name, out DynValue value)

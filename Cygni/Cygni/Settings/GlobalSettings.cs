@@ -138,7 +138,8 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem(  "bSearch",ListLib.bSearch ) ,
 					new StructureItem(  "max",ListLib.list_max ),
 					new StructureItem(  "min",ListLib.list_min ) ,
-					new StructureItem(  "pop",ListLib.list_pop ) 
+					new StructureItem(  "pop",ListLib.list_pop ) ,
+					new StructureItem(  "clear",ListLib.list_clear ) 
 					)
 			},
 			{"htable",
@@ -148,7 +149,9 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem(  "remove",HashTableLib.ht_remove ),
 					new StructureItem(  "keys",HashTableLib.ht_keys ),
 					new StructureItem(  "values",HashTableLib.ht_values ) ,
-					new StructureItem(  "add",HashTableLib.ht_add ) )
+					new StructureItem(  "add",HashTableLib.ht_add ) ,
+					new StructureItem(  "clear",HashTableLib.ht_clear )
+				)
 			},
 			};
 
