@@ -1,0 +1,44 @@
+\chapter{Some small examples}
+Ok, if you have some programming experience before, I think maybe you don't have to go through all of the contents. Some small examples may be more helpful. Let's begin.
+
+
+\section{Factorial}
+This is a very traditional example. 
+
+
+\begin{lstlisting}
+def fact(n){
+	if n == 0 { 1 }
+	else { n * fact(n - 1) }
+}
+fact(10)
+=> 3628800
+\end{lstlisting}
+
+\section{Position}
+Have a look at another example.
+\begin{lstlisting}
+class Position{
+	def __INIT__(nx, ny){
+		this.x = nx
+		this.y = ny
+	}
+	
+	def move(nx, ny){
+		this.x = nx
+		this.y = ny
+	}
+	
+	def __TOSTRING__(){
+		printf("({0}, {1})", this.x, this.y)
+	}
+	
+}
+
+p1 = Position(10,20)
+print(p1)
+p1.move(35,47)
+print(p1)
+\end{lstlisting}	
+
+Hope you have got a feel about Cygni!

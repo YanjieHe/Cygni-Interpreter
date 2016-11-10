@@ -1,0 +1,83 @@
+\chapter{Control Flow Statements}
+\section{Condition Statement}
+Use if to start a condition statement. There are three keywords: if, else, elif.
+\begin{lstlisting}
+if x > 10 {
+	print('x is greater than 10')
+} else {
+	print('x is not greater than 10')
+}
+
+if y == 5 {
+	print(5)
+}
+elif y == 10 {
+	print(10)
+}
+elif y == 20 {
+	print(20)
+}
+else {
+	print('y is not 5, 10 and 20.')
+}
+\end{lstlisting}
+
+\section{Loop Statement}
+	There are three loop statement in Cygni: for, while, foreach.
+	The followings are three examples using different statements to print 1 to 9 in the console.
+\begin{lstlisting}
+for i = 0, 10 {
+	print(i)
+}
+
+
+i = 0
+while i < 10 {
+	print(i)
+	i = i + 1
+}
+
+foreach i in range(0,10) {
+	print(i)
+}
+\end{lstlisting}
+
+\subsection{for}
+	The 'for' statement should take two or three arguments, and it needs a named value as the iterator.
+\begin{lstlisting}
+for i in start, end {
+	# Do something
+}
+
+for i in start, end, step {
+	# Do something
+}
+\end{lstlisting}
+	If the step is positive, the iterator will increase the step at one time, and break out when the iterator is greater than or equal to the end. If the step is negative, the loop will break when the iterator is less than or equal to the end.
+\subsection{while}
+The 'while' loop will not break until the condition is false;
+\begin{lstlisting}
+while condition {
+	# Do something
+}
+\end{lstlisting}
+
+\subsection{foreach}
+'foreach' statement tranverse every element in the collection.
+\begin{lstlisting}
+foreach i in [1,2,3,4,5] {
+	# Do something
+}
+\end{lstlisting}
+
+\section{Jump statement}
+There are three jump statement in Cygni: break, continue, and return. 'break' can jump out from the current loop, 'continue' can start a new round in the loop. 'return' is used to return value from a function.
+
+\section{def}
+'def' statement is used to define a function.
+
+\section{class}
+'class' statement is used to define a class.
+
+\section{Recursion}
+
