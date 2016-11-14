@@ -223,14 +223,7 @@ namespace Cygni.Libraries
 			else
 				throw new RuntimeException (args [0].AsString (), args.SkipMap (1, i => i.Value));
 		}
-		/*public static DynValue CompleteErrorOutput(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length <= 1, "throw");
-			if (args.Length == 0)
-				GlobalSettings.CompleteErrorOutput = true;
-			else
-				GlobalSettings.CompleteErrorOutput = args[0].AsBoolean();
-			return GlobalSettings.CompleteErrorOutput;
-		}*/
+
 		public static DynValue Range (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2||args.Length == 3, "range");

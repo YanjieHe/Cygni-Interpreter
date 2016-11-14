@@ -34,5 +34,13 @@ namespace Cygni.AST.Scopes
 				return false;
 			return parent.TryGetValue(name, out value);
 		}
+		public NestedScope Clone()
+		{
+			var newScope = new NestedScope (this.parent);
+			foreach(var variable in base.envTable){
+				newScope.envTable[variable.Key] = variable.Value;
+			}
+			return newScope;
+		}
 	}
 }

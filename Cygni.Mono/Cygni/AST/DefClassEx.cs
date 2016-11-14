@@ -33,8 +33,8 @@ namespace Cygni.AST
 			var newScope = new NestedScope(scope);
 			body.Eval(newScope);
 			if (parentsName == null) {
-				var func = DynValue.FromClass(new ClassInfo(name, body, newScope));
-				return scope.Put(name, func);
+				var constructor = DynValue.FromClass(new ClassInfo(name: name,classScope: newScope,body: body,parents: null, IsInstance: false));
+				return scope.Put(name, constructor);
 			} else {
 				var parentsClasses = new ClassInfo[parentsName.Length];
 				
@@ -44,8 +44,9 @@ namespace Cygni.AST
 						throw RuntimeException.NotDefined(parentsName[i]);
 					parentsClasses[i] = _class.Value as ClassInfo;
 				}
-				var func = DynValue.FromClass(new ClassInfo(name, body, newScope, parentsClasses));
-				return scope.Put(name, func);
+
+				var constructor = DynValue.FromClass(new ClassInfo(name: name,classScope: newScope,body: body,parents: parentsClasses, IsInstance: false));
+				return scope.Put(name, constructor);
 			}
 		}
 		internal override void Accept (ASTVisitor visitor)

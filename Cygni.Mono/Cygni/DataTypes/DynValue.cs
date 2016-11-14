@@ -53,6 +53,11 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Struct, value);
 		}
 
+		public static implicit operator DynValue (ClassInfo value)
+		{
+			return new DynValue (DataType.Class, value);
+		}
+
 		public static implicit operator DynValue (DynList list)
 		{
 			return new DynValue (DataType.List, list);
@@ -61,6 +66,11 @@ namespace Cygni.DataTypes
 		public static implicit operator DynValue  (DynHashTable hashTable)
 		{
 			return new DynValue (DataType.HashTable, hashTable);
+		}
+
+		public static implicit operator DynValue (NativeFunction f)
+		{
+			return new DynValue (DataType.NativeFunction, f);
 		}
 
 		public static implicit operator DynValue (Func<DynValue[],DynValue> f)

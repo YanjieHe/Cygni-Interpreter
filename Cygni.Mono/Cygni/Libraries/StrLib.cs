@@ -45,14 +45,14 @@ namespace Cygni.Libraries
 			if (args[1].type == DataType.List){
 				DynList list = args[1].As<DynList>();
 				int n = list.Count;
-				char arr = new char[n];
+				char[] arr = new char[n];
 				for(int i = 0;i < n;i++)
 					arr[i] = char.Parse(list[i].AsString());
 				result = str.Split(arr);
 			}
 			else {
 				int n = args.Length - 1;
-				char arr = new char[n];
+				char[] arr = new char[n];
 				for(int i = 0;i < n;i++)
 					arr[i] = char.Parse(args[i+1].AsString());
 				result = str.Split(arr);

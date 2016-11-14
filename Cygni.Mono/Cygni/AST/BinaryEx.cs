@@ -40,7 +40,6 @@ namespace Cygni.AST
 				return (left as IAssignable).Assign (right.Eval (scope), scope);
 			}
 			var _left = left.Eval (scope);
-			//var _right = right.Eval(scope);
 			switch (op) {
 			case BinaryOp.Add:
 				{

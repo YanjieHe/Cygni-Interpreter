@@ -18,41 +18,41 @@ namespace Cygni.DataTypes
 		BlockEx body;
 		NestedScope classScope;
 		ClassInfo[] parents;
+		bool IsInstance;
 
-		public int ParametersCount{ get { throw new NotImplementedException (); } }
-
-		public ClassInfo (string name, BlockEx body, NestedScope classScope, ClassInfo[] parents = null)
+		public ClassInfo (string name, NestedScope classScope, BlockEx body = null, ClassInfo[] parents = null, bool IsInstance = false)
 		{
 			this.name = name;
-			this.body = body;
 			this.classScope = classScope;
 			this.parents = parents;
+			this.IsInstance = IsInstance;
+			this.body = body;
+			body.Eval (classScope); // FIX ME: 'this' keyword optimaization
 		}
 
-		public ClassInfo Init (DynValue[] parameters, bool no_arg_construct = false)
+		public ClassInfo Init (DynValue[] parameters)
 		{
-			var newScope = new NestedScope (classScope.Parent);
-			body.Eval (newScope);
-			var newClass = new ClassInfo (name, body, newScope, parents);
-			newScope.Put ("this", DynValue.FromClass (newClass));
-			newClass.InitParents ();/* initialize parents */
-			if (!no_arg_construct && newScope.HasName ("__INIT__")) /* initialize */
+			var newScope = classScope.Clone();
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: body, parents: parents, IsInstance: true);
+			newScope.Put ("this", DynValue.FromClass (newClass)); /* define 'this' */
+			if (this.HasParents)
+				newClass.InitParents ();/* initialize parents */
+			if (newScope.HasName ("__INIT__")) /* initialize */
 				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 		}
 
 		void InitParents ()
 		{
-			if (parents != null) { /* has parents */
-				for (int i = 0; i < parents.Length; i++) {
-					parents [i] = parents [i].Init (null, true);/* no-arg construct parent classes */
-					classScope.Put (parents [i].name, DynValue.FromClass (parents [i]));
-					/* add parent class pointers */
-				}
+			for (int i = 0; i < parents.Length; i++) {
+				classScope.Put (parents [i].name, DynValue.FromClass (parents [i]));
+				/* add parent class pointers */
 			}
 		}
-
-		#region IDot implementation
+		public bool HasParents {
+			get { return this.parents != null; }
+		}
+#region IDot implementation
 
 		public DynValue GetByDot (string fieldname)
 		{
@@ -64,7 +64,7 @@ namespace Cygni.DataTypes
 			return classScope.Put (fieldname, value);
 		}
 
-		#endregion
+#endregion
 
 		DynValue Search (string fieldname)
 		{
@@ -79,16 +79,16 @@ namespace Cygni.DataTypes
 			throw RuntimeException.NotDefined (fieldname);
 		}
 
-		#region IComparable implementation
+#region IComparable implementation
 
 		public int CompareTo (DynValue other)
 		{
 			return (int)classScope.Get ("__COMPARETO__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
 		}
 
-		#endregion
+#endregion
 
-		#region IComputable implementation
+#region IComputable implementation
 
 
 		public DynValue Add (DynValue other)
@@ -148,13 +148,14 @@ namespace Cygni.DataTypes
 			return (args) => DynValue.FromClass (this.Init (args));
 		}
 
-		#endregion
+#endregion
 
 		public override string ToString ()
 		{
-			if (classScope.HasName ("this") && classScope.HasName ("__TOSTRING__"))
+			if (IsInstance && classScope.HasName ("__TOSTRING__"))
 				return classScope.Get ("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
-			return string.Concat ("(class: ", name, ")");
+			else
+				return string.Concat ("(class: ", name, ")");
 		}
 
 		public IEnumerator<DynValue> GetEnumerator ()

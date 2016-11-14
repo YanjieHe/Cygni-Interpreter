@@ -1,0 +1,15 @@
+random_funcs = CSharpDll("CygniLibraries.dll", "CygniLibraries.Random.random")
+
+class random {
+	def __INIT__(seed) {
+		this.self_rnd = random_funcs.random_init(seed)
+	}
+
+	def nextInt(minValue, maxValue) {
+		random_funcs.random_nextInt(this.self_rnd, minValue, maxValue)
+	}
+
+	def nextDouble() {
+		random_funcs.random_nextDouble(this.self_rnd)
+	}
+}

@@ -16,7 +16,7 @@ namespace Cygni
 		public static void Main (string[] main_args)
 		{
 			var engine = Engine.CreateInstance ();
-			//GlobalSettings.CompleteErrorOutput = true;
+			GlobalSettings.CompleteErrorOutput = true;
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/regex.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/random.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/File.cyg");

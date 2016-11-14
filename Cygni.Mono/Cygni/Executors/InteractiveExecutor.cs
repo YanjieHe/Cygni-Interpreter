@@ -19,7 +19,7 @@ namespace Cygni.Executors
 	/// </summary>
 	public class InteractiveExecutor:Executor
 	{
-		LinkedList<string> list;
+		LinkedList<string> list; // storage of code.
 		Stack<Tag> stack;
 
 		public InteractiveExecutor (BasicScope GlobalScope)
@@ -41,7 +41,7 @@ namespace Cygni.Executors
 					Console.ForegroundColor = ConsoleColor.Gray;
 					Start:
 					string line = Console.ReadLine ();
-					if (re_exit.IsMatch (line))
+					if (re_exit.IsMatch (line)) // If user input 'exit', the interactive mode ends.
 						break;
 					list.AddLast (line);
 					string code = string.Join ("\n", list);
@@ -60,7 +60,7 @@ namespace Cygni.Executors
 					}
 					list.Clear ();
 					using (var sr = new StringReader (code)) {
-						var lexer = new Lexer (1, sr);
+						var lexer = new Lexer (1, sr); // In the interative mode, the lexer always starts at line 1.
 						var ast = new Parser (lexer);
 						/*var a = ast.Program();
 						Console.WriteLine(a);*/
@@ -93,12 +93,12 @@ namespace Cygni.Executors
 						switch (tok.tag) {
 						case Tag.LeftParenthesis:
 						case Tag.LeftBrace:
-							stack.Push (tok.tag);
+							stack.Push (tok.tag); // push '(' '['
 							break;
 						case Tag.RightParenthesis:
 							if (stack.Count == 0)
 								return InteractiveState.Error;
-							if (stack.Peek () == Tag.LeftParenthesis)
+							if (stack.Peek () == Tag.LeftParenthesis) // get ')', match '('
 								stack.Pop ();
 							else
 								return InteractiveState.Error;
@@ -106,7 +106,7 @@ namespace Cygni.Executors
 						case Tag.RightBrace:
 							if (stack.Count == 0)
 								return InteractiveState.Error;
-							if (stack.Peek () == Tag.LeftBrace)
+							if (stack.Peek () == Tag.LeftBrace) // get ']', match '['
 								stack.Pop ();
 							else
 								return InteractiveState.Error;
@@ -128,7 +128,7 @@ namespace Cygni.Executors
 			}
 		}
 
-		private enum InteractiveState
+		private enum InteractiveState: byte
 		{
 			Waiting,
 			Error,

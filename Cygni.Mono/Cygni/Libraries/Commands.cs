@@ -89,7 +89,7 @@ namespace Cygni.Libraries
 		public static DynValue Import (DynValue[] args, IScope scope)
 		{
 			string folderName = args [0].AsString ();
-			return DoFile (new DynValue[]{"./lib/" + folderName + "/__INIT__.cyg"},scope);
+			return DoFile (new DynValue[]{"./lib/" + folderName + "/__INIT__.cyg"},scope); // Module must has a '__INIT__.cyg' file.
 		}
 		public static DynValue Scope (DynValue[] args, IScope scope)
 		{
@@ -118,6 +118,7 @@ namespace Cygni.Libraries
 					Console.WriteLine (scope);
 					return DynValue.Null;
 				}
+
 			default :
 				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
 			}
