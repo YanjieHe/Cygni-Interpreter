@@ -33,7 +33,10 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			var target = obj.Eval(scope);
-			return target.As<IDot>().GetByDot(fieldname);
+			if (target.type == DataType.String) // 'string' is an exception
+				return target.GetByDot (fieldname);
+			else
+				return target.As<IDot>().GetByDot(fieldname);
 		}
 
 		#endregion

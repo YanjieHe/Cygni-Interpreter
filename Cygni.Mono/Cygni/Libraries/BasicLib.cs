@@ -240,5 +240,9 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length ==1, "collect");
 			return new DynList (args [0].As<IEnumerable<DynValue>> ());
 		}
+		public static DynValue len(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length ==1, "len");
+			return (double) args [0].As<ICollection> ().Count;
+		}
 	}
 }

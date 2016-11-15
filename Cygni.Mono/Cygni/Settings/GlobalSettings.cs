@@ -32,6 +32,7 @@ namespace Cygni.Settings
 			{ "exit",BasicLib.exit },
 			{ "range",BasicLib.Range },
 			{ "collect",BasicLib.Collect },
+			{ "len",BasicLib.len },
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -50,32 +51,7 @@ namespace Cygni.Settings
 			{ "floor",MathLib.floor },
 			{ "round",MathLib.round },
 
-			
-			
-			{ "strcat",StrLib.strcat },
-			{ "strjoin",StrLib.strjoin },
-			{ "strformat",StrLib.strformat },
-			{ "strlen",StrLib.strlen },
-			{ "strsplit",StrLib.strsplit },
-			{ "strrpl",StrLib.strrpl },
-			{ "strcmp",StrLib.strcmp },
-			{ "strfind",StrLib.strfind },
-
-
-
-/*			{ "append",ListLib.append },
-			{ "len",ListLib.len },
-			{ "removeAt",ListLib.removeAt },
-			{ "insertAt",ListLib.insertAt }, */
-
 			{ "hashtable",HashTableLib.hashtable },
-/*			{ "hasKey",HashTableLib.hasKey },
-			{ "hasValue",HashTableLib.hasValue },
-			{ "ht_remove",HashTableLib.ht_remove },
-			{ "ht_keys",HashTableLib.ht_keys },
-			{ "ht_values",HashTableLib.ht_values }, */
-			
-			
 		};
 		public static Dictionary<string,DynValue> BuiltInVariables 
 			= new Dictionary<string, DynValue> {
@@ -114,45 +90,10 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 				}, {"string",
 					new Structure (
 					new StructureItem( "concat",StrLib.strcat ),
-					new StructureItem( "join",StrLib.strjoin ),
-					new StructureItem( "format",StrLib.strformat ),
-					new StructureItem( "len",StrLib.strlen ),
-					new StructureItem( "split",StrLib.strsplit ),
-					new StructureItem( "replace",StrLib.strrpl ),
 					new StructureItem( "compare",StrLib.strcmp ),
-					new StructureItem( "find",StrLib.strfind ),
-					new StructureItem( "lower",StrLib.tolower ),
-					new StructureItem( "upper",StrLib.toupper ),
-					new StructureItem( "char",StrLib._char ),
-					new StructureItem( "empty",string.Empty ) ,
-					new StructureItem( "trim",StrLib.Trim ) ,
-					new StructureItem( "subString",StrLib.SubString ) 
+					new StructureItem( "empty",string.Empty ) 
 				)
 				},
-			/*{"List",new Structure(
-					new StructureItem(  "append",ListLib.append ),
-					new StructureItem(  "len",ListLib.len ),
-					new StructureItem(  "removeAt",ListLib.removeAt ),
-					new StructureItem(  "insertAt",ListLib.insertAt ),
-					new StructureItem(  "sort",ListLib.sort ),
-					new StructureItem(  "bSearch",ListLib.bSearch ) ,
-					new StructureItem(  "max",ListLib.list_max ),
-					new StructureItem(  "min",ListLib.list_min ) ,
-					new StructureItem(  "pop",ListLib.list_pop ) ,
-					new StructureItem(  "clear",ListLib.list_clear ) 
-					)
-			}, */
-			/* {"htable",
-				new Structure(
-					new StructureItem(  "hasKey",HashTableLib.hasKey ),
-					new StructureItem(  "hasValue",HashTableLib.hasValue ),
-					new StructureItem(  "remove",HashTableLib.ht_remove ),
-					new StructureItem(  "keys",HashTableLib.ht_keys ),
-					new StructureItem(  "values",HashTableLib.ht_values ) ,
-					new StructureItem(  "add",HashTableLib.ht_add ) ,
-					new StructureItem(  "clear",HashTableLib.ht_clear )
-				)
-			},*/
 			};
 
 		public static void SetBuiltInFunctions (BuiltInScope scope)

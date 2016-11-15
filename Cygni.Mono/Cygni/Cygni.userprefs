@@ -1,25 +1,27 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Libraries/StrLib.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/GlobalSettings.cs">
     <Files>
-      <File FileName="Program.cs" Line="25" Column="3" />
-      <File FileName="DataTypes/DynList.cs" Line="57" Column="3" />
-      <File FileName="Libraries/ListLib.cs" Line="24" Column="31" />
-      <File FileName="DataTypes/DynValue.cs" Line="306" Column="1" />
-      <File FileName="DataTypes/DynHashTable.cs" Line="111" Column="5" />
-      <File FileName="Settings/GlobalSettings.cs" Line="36" Column="26" />
-      <File FileName="Libraries/StrLib.cs" Line="63" Column="43" />
+      <File FileName="Program.cs" Line="19" Column="6" />
+      <File FileName="DataTypes/DynList.cs" Line="1" Column="1" />
+      <File FileName="Libraries/ListLib.cs" Line="1" Column="1" />
+      <File FileName="DataTypes/DynValue.cs" Line="34" Column="1" />
+      <File FileName="Libraries/StrLib.cs" Line="116" Column="23" />
+      <File FileName="Settings/GlobalSettings.cs" Line="35" Column="26" />
+      <File FileName="Libraries/BasicLib.cs" Line="245" Column="19" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Cygni" expanded="True">
             <Node name="Cygni" expanded="True">
+              <Node name="AST" expanded="True" />
               <Node name="DataTypes" expanded="True" />
-              <Node name="Libraries" expanded="True">
-                <Node name="StrLib.cs" selected="True" />
+              <Node name="Executors" expanded="True" />
+              <Node name="Libraries" expanded="True" />
+              <Node name="Settings" expanded="True">
+                <Node name="GlobalSettings.cs" selected="True" />
               </Node>
-              <Node name="Settings" expanded="True" />
             </Node>
           </Node>
         </State>

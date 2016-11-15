@@ -19,31 +19,26 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length ==  1, "strcat");
 			return string.Concat(args[0].As<DynList>().Select(i=>i.Value));
 		}
-
-		public static DynValue strjoin (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "strjoin");
-			return string.Join (args [0].AsString (), args[1].As<DynList>().Select(i=>i.Value));
+		public static DynValue concat (string str, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length ==  1, "concat");
+			return str + args[0].AsString();
 		}
-
-		public static DynValue strformat (DynValue[] args)
+		public static DynValue join (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length > 1, "strformat");
-			return string.Format (args [0].AsString (), args.SkipMap (1, i => i.Value));
+			RuntimeException.FuncArgsCheck (args.Length == 1, "join");
+			return string.Join (str, args[0].As<DynList>().Select(i=>i.Value));
 		}
-
-		public static DynValue strlen (DynValue[] args)
+		public static DynValue format (string str, DynValue[] args)
 		{
-			return (double)args [0].AsString ().Length;
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "format");
+			return string.Format (str, args.Map(i=>i.Value));
 		}
-
-		public static DynValue strsplit (DynValue[] args)
+		public static DynValue split (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length > 1, "strsplit");
-			string str = args[0].AsString();
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "strsplit");
 			string[] result;
-			if (args[1].type == DataType.List){
-				DynList list = args[1].As<DynList>();
+			if (args[0].type == DataType.List){
+				DynList list = args[0].As<DynList>();
 				int n = list.Count;
 				char[] arr = new char[n];
 				for(int i = 0;i < n;i++)
@@ -51,104 +46,84 @@ namespace Cygni.Libraries
 				result = str.Split(arr);
 			}
 			else {
-				int n = args.Length - 1;
+				int n = args.Length;
 				char[] arr = new char[n];
 				for(int i = 0;i < n;i++)
-					arr[i] = char.Parse(args[i+1].AsString());
+					arr[i] = char.Parse(args[i].AsString());
 				result = str.Split(arr);
 			}
 			return DynValue.FromList(result.ToDynList(DynValue.FromString));
 		}
-
-		public static DynValue replace (string ,DynValue[] args)
-		{/* string replace */
+		public static DynValue replace (string str, DynValue[] args)
+		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "replace");
-			return args [0].AsString ().Replace (
-				args [1].AsString (),
-				args [2].AsString ());
+			string oldValue = args [0].AsString ();
+			string newValue = args [1].AsString ();
+			return str.Replace (oldValue, newValue);
 		}
-
-		public static DynValue strrpl (DynValue[] args)
-		{/* string replace */
-			RuntimeException.FuncArgsCheck (args.Length == 3, "strrpl");
-			return args [0].AsString ().Replace (
-				args [1].AsString (),
-				args [2].AsString ());
-		}
-
 		public static DynValue strcmp (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
 			return (double)string.Compare (args [0].AsString (),
 				args [1].AsString ());
 		}
-
-		public static DynValue strfind (DynValue[] args)
+		public static DynValue find (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3 || args.Length == 4, "strcmp");
-			if (args.Length == 2)
-				return args [0].AsString ().IndexOf (args [1].AsString ());
-			else if (args.Length == 3)
-				return args [0].AsString ().IndexOf (args [1].AsString (), (int)args [2].AsNumber ());
-			else
-				return args [0].AsString ().IndexOf (args [1].AsString (), (int)args [2].AsNumber (), (int)args [3].AsNumber ());
-		}
-
-		public static DynValue tolower (DynValue[]args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "tolower");
-			return args [0].AsString ().ToLower ();
-		}
-
-		public static DynValue toupper (DynValue[]args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "toupper");
-			return args [0].AsString ().ToUpper ();
-		}
-
-		public static DynValue _char (DynValue[]args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "char");
-			return char.ToString ((char)(int)args [0].AsNumber ());
-		}
-
-		public static DynValue Trim (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "string.trim");
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2 || args.Length == 3, "find");
 			if (args.Length == 1)
-				return args [0].AsString ().Trim ();
+				return str.IndexOf (args [0].AsString ());
+			else if (args.Length == 2)
+				return str.IndexOf (args [0].AsString (), (int)args [1].AsNumber ());
 			else
-				return args [0].AsString ().Trim (args.SkipMap (1, i => char.Parse (i.AsString ())));
+				return str.IndexOf (args [0].AsString (), (int)args [1].AsNumber (), (int)args [2].AsNumber ());
 		}
-		
-		public static DynValue TrimStart (DynValue[] args)
+		public static DynValue trim(string str, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trim");
+			if (args.Length == 0)
+				return str.Trim ();
+			else {
+				DynList list = args [0].As<DynList> ();
+				int n = list.Count;
+				char[] arr = new char[n];
+				for (int i = 0; i < n; i++)
+					arr [i] = char.Parse (list [i].AsString ());
+				return str.Trim (arr);
+			}
+		}
+		public static DynValue trimStart(string str, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimStart");
+			if (args.Length == 0)
+				return str.Trim ();
+			else {
+				DynList list = args [0].As<DynList> ();
+				int n = list.Count;
+				char[] arr = new char[n];
+				for (int i = 0; i < n; i++)
+					arr [i] = char.Parse (list [i].AsString ());
+				return str.TrimStart (arr);
+			}
+		}
+		public static DynValue trimEnd(string str, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimEnd");
+			if (args.Length == 0)
+				return str.Trim ();
+			else {
+				DynList list = args [0].As<DynList> ();
+				int n = list.Count;
+				char[] arr = new char[n];
+				for (int i = 0; i < n; i++)
+					arr [i] = char.Parse (list [i].AsString ());
+				return str.TrimEnd (arr);
+			}
+		}
+		public static DynValue subString (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "string.trimStart");
-			string str = args[0].AsString();
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "subString");
 			if (args.Length == 1)
-				return str.TrimStart();
+				return str.Substring ((int)args [1].AsNumber ());
 			else
-				return str.TrimStart(args.SkipMap(1, i => char.Parse(i.AsString())));
+				return str.Substring ((int)args [1].AsNumber (), (int)args [2].AsNumber ());
 		}
-
-		public static DynValue TrimEnd (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "string.trimEnd");
-			string str = args[0].AsString();
-			if (args.Length == 1)
-				return str.TrimEnd();
-			else
-				return str.TrimEnd(args.SkipMap(1, i => char.Parse(i.AsString())));
-		}
-		public static DynValue SubString (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "string.subString");
-			if (args.Length == 2)
-				return args [0].AsString ().Substring ((int)args [1].AsNumber ());
-			else
-				return args [0].AsString ().Substring ((int)args [1].AsNumber (), (int)args [2].AsNumber ());
-		}
-
 		
 	}
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections;
 using Cygni.Errors;
-
+using Cygni.Libraries;
 namespace Cygni.DataTypes
 {
 	/// <summary>
@@ -300,9 +300,34 @@ namespace Cygni.DataTypes
 		public DynValue GetByDot (string fieldname)
 		{
 			if (type == DataType.String) { // support 'string' type
+				string str = value as string;
 				switch (fieldname) {
 				case "length":
-					return (double)(value as string).Length;
+					return (double)str.Length;
+				case "replace":
+					return DynValue.FromDelegate ((args) => StrLib.replace (str, args));
+				case "format":
+					return DynValue.FromDelegate ((args) => StrLib.format (str, args));
+				case "join":
+					return DynValue.FromDelegate ((args) => StrLib.join (str, args));
+				case "split":
+					return DynValue.FromDelegate ((args) => StrLib.split (str, args));
+				case "find":
+					return DynValue.FromDelegate ((args) => StrLib.find (str, args));
+				case "lower":
+					return DynValue.FromDelegate ((args) => str.ToLower());
+				case "upper":
+					return DynValue.FromDelegate ((args) => str.ToUpper());
+				case "trim":
+					return DynValue.FromDelegate ((args) => StrLib.trim(str,args));
+				case "trimStart":
+					return DynValue.FromDelegate ((args) => StrLib.trimStart(str,args));
+				case "trimEnd":
+					return DynValue.FromDelegate ((args) => StrLib.trimEnd(str,args));
+				case "subString":
+					return DynValue.FromDelegate ((args) => StrLib.subString(str,args));
+				case "concat":
+					return DynValue.FromDelegate ((args) => StrLib.concat(str,args));
 				default:
 					throw RuntimeException.NotDefined (fieldname);
 				}
