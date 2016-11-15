@@ -26,10 +26,11 @@ namespace Cygni.Libraries
 			}
 			throw RuntimeException.BadArgsNum ("hashtable", "even");
 		}
-		public static DynValue hasKey (DynValue[] args)
+
+		public static DynValue hasKey (DynHashTable ht, DynValue[] args)
 		{
-			var ht = args [0].As<DynHashTable> ();
-			var key = args [1];
+			RuntimeException.FuncArgsCheck (args.Length == 1, "hasKey");
+			var key = args [0];
 			switch (key.type) {
 			case DataType.Number:
 				return ht.ContainsKey ((int)(double)key.Value);
@@ -41,17 +42,17 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue hasValue (DynValue[] args)
+		public static DynValue hasValue (DynHashTable ht, DynValue[] args)
 		{
-			var ht = args [0].As<DynHashTable> ();
-			var value = args [1];
+			RuntimeException.FuncArgsCheck (args.Length == 1, "hasValue");
+			var value = args [0];
 			return ht.ContainsValue (value);
 		}
 
-		public static DynValue ht_remove (DynValue[] args)
+		public static DynValue remove (DynHashTable ht, DynValue[] args)
 		{
-			var ht = args [0].As<DynHashTable> ();
-			var key = args [1];
+			RuntimeException.FuncArgsCheck (args.Length == 1, "hasValue");
+			var key = args [0];
 			switch (key.type) {
 			case DataType.Number:
 				return ht.Remove ((int)(double)key.Value);
@@ -63,30 +64,37 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue ht_keys (DynValue[] args)
+		public static DynValue keys (DynHashTable ht, DynValue[] args)
 		{
-			var ht = args [0].As<DynHashTable> ();
 			int n = ht.Count;
-			return DynValue.FromList (ht.Keys.ToDynList (i => {
-				if (i is int)
-					return (double)(int)i;
-				if (i is bool)
-					return (bool)i;
-				return i as string;
-			}, n));
+			DynList keys = new DynList(n);
+			foreach (var key in ht.Keys){
+				if (key is int)
+					keys.Add((double)key);
+				else if (key is bool)
+					keys.Add((bool)key);
+				else if (key is string)
+					keys.Add(key as string);
+				else
+					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+			}
+			return keys;
 		}
 
-		public static DynValue ht_values (DynValue[] args)
+		public static DynValue values (DynHashTable ht, DynValue[] args)
 		{
-			var ht = args [0].As<DynHashTable> ();
 			int n = ht.Count;
-			return DynValue.FromList (ht.Values.ToDynList (i => i, n));
+			DynList values = new DynList(n);
+			foreach (var v in ht.Values){
+				values.Add(v);
+			}
+			return values;
 		}
-		public static DynValue ht_add (DynValue[] args)
+		public static DynValue add (DynHashTable ht, DynValue[] args)
 		{
-			var ht = args [0].As<DynHashTable> ();
-			var key = args [1];
-			var value = args [2];
+			RuntimeException.FuncArgsCheck (args.Length == 2, "add");
+			var key = args [0];
+			var value = args [1];
 			switch (key.type) {
 			case DataType.Number:
 				ht.Add ((int)(double)key.Value, value);
@@ -100,10 +108,9 @@ namespace Cygni.Libraries
 			}
 			return DynValue.Null;
 		}
-		public static DynValue ht_clear (DynValue[] args)
+		public static DynValue clear (DynHashTable ht, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length ==1, "clear");
-			args [0].As<DynHashTable> ().Clear();
+			ht.Clear ();
 			return DynValue.Null;
 		}
 	}

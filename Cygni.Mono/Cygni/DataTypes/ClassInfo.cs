@@ -15,25 +15,29 @@ namespace Cygni.DataTypes
 	public sealed class ClassInfo: IComputable,IEnumerable<DynValue>, IComparable<DynValue>, IDot,IFunction
 	{
 		readonly string name;
-		BlockEx body;
-		NestedScope classScope;
-		ClassInfo[] parents;
-		bool IsInstance;
+		//BlockEx body;
+		readonly NestedScope classScope;
+		readonly ClassInfo[] parents;
+		readonly bool IsInstance;
 
-		public ClassInfo (string name, NestedScope classScope, BlockEx body = null, ClassInfo[] parents = null, bool IsInstance = false)
+		public ClassInfo (string name, NestedScope classScope, 
+			BlockEx body = null, ClassInfo[] parents = null, bool IsInstance = false)
 		{
 			this.name = name;
 			this.classScope = classScope;
 			this.parents = parents;
 			this.IsInstance = IsInstance;
-			this.body = body;
-			body.Eval (classScope); // FIX ME: 'this' keyword optimaization
+			//this.body = body;
+			if(!IsInstance)
+				body.Eval (classScope); 
 		}
 
 		public ClassInfo Init (DynValue[] parameters)
 		{
 			var newScope = classScope.Clone();
-			var newClass = new ClassInfo (name: name, classScope: newScope, body: body, parents: parents, IsInstance: true);
+			//var newScope = new NestedScope(classScope.Parent);
+			//body.Eval (newScope);
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parents: parents, IsInstance: true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* define 'this' */
 			if (this.HasParents)
 				newClass.InitParents ();/* initialize parents */
@@ -52,7 +56,6 @@ namespace Cygni.DataTypes
 		public bool HasParents {
 			get { return this.parents != null; }
 		}
-#region IDot implementation
 
 		public DynValue GetByDot (string fieldname)
 		{
@@ -63,8 +66,6 @@ namespace Cygni.DataTypes
 		{
 			return classScope.Put (fieldname, value);
 		}
-
-#endregion
 
 		DynValue Search (string fieldname)
 		{
@@ -177,6 +178,13 @@ namespace Cygni.DataTypes
 		System.Collections.IEnumerator  System.Collections.IEnumerable.GetEnumerator ()
 		{
 			yield return this.AsEnumerable ();
+		}
+
+		public ClassInfo Update(IScope scope) {
+			var newScope = classScope.Clone ();
+			newScope.SetParent (scope);
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parents: parents, IsInstance: true);
+			return newClass;
 		}
 	}
 }

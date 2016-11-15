@@ -21,7 +21,9 @@ namespace Cygni
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/random.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/File.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/reader.cyg");
-			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
+//			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
+//			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/append_test.cyg");
+
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/MySQL.cyg");
 
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/post_data.cyg");

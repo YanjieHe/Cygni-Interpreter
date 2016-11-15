@@ -1,9 +1,30 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Libraries/StrLib.cs">
     <Files>
-      <File FileName="Program.cs" Line="7" Column="17" />
+      <File FileName="Program.cs" Line="25" Column="3" />
+      <File FileName="DataTypes/DynList.cs" Line="57" Column="3" />
+      <File FileName="Libraries/ListLib.cs" Line="24" Column="31" />
+      <File FileName="DataTypes/DynValue.cs" Line="306" Column="1" />
+      <File FileName="DataTypes/DynHashTable.cs" Line="111" Column="5" />
+      <File FileName="Settings/GlobalSettings.cs" Line="36" Column="26" />
+      <File FileName="Libraries/StrLib.cs" Line="63" Column="43" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Cygni" expanded="True">
+            <Node name="Cygni" expanded="True">
+              <Node name="DataTypes" expanded="True" />
+              <Node name="Libraries" expanded="True">
+                <Node name="StrLib.cs" selected="True" />
+              </Node>
+              <Node name="Settings" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

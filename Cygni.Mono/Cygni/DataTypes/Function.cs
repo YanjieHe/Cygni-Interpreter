@@ -30,11 +30,12 @@ namespace Cygni.DataTypes
 		{
 			if (nArgs != arguments.Length)
 				throw RuntimeException.BadArgsNum (name, nArgs);
-			/*var args = new DynValue[funcScope.Count];
-			Array.Copy (arguments, args, nArgs);
-			var newScope = new ArrayScope (args, funcScope.Parent); */
-			var newScope = new ArrayScope (arguments, funcScope.Parent);
+			var newScope = new ArrayScope (funcScope.Count, funcScope.Parent);
 			return new Function (name,nArgs, body, newScope);
+		}
+		public Function Update(NestedScope ClassScope){
+			var newScope = new ArrayScope (funcScope.Count, ClassScope);
+			return new Function (name, nArgs, body, newScope);
 		}
 
 		public DynValue Invoke ()

@@ -3,13 +3,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System;
-
+using Cygni.Errors;
+using Cygni.Libraries;
 namespace Cygni.DataTypes
 {
 	/// <summary>
 	/// Description of DynHashTable.
 	/// </summary>
-	public sealed class DynHashTable: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable
+	public sealed class DynHashTable: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot
 	{
 		public DynValue this [DynValue[] key] {
 			get { 
@@ -86,5 +87,34 @@ namespace Cygni.DataTypes
 			while (iterator.MoveNext()) 
 				yield return iterator.Current;
 		}
+		public DynValue GetByDot (string fieldname)
+		{
+			switch (fieldname) {
+			case "hasKey":
+				return DynValue.FromDelegate ((args) => HashTableLib.hasKey (this, args));
+			case "hasValue":
+				return DynValue.FromDelegate ((args) => HashTableLib.hasValue (this, args));
+			case "remove":
+				return DynValue.FromDelegate ((args) => HashTableLib.remove (this, args));
+			case "count":
+				return (double)this.Count;
+			case "keys":
+				return DynValue.FromDelegate ((args) => HashTableLib.keys (this, args));
+			case "values":
+				return DynValue.FromDelegate ((args) => HashTableLib.values (this, args));
+			case "add":
+				return DynValue.FromDelegate ((args) => HashTableLib.add (this, args));
+			case "clear":
+				return DynValue.FromDelegate ((args) => HashTableLib.clear (this, args));
+			default:
+				throw RuntimeException.NotDefined (fieldname);
+			}
+		}
+
+		public DynValue SetByDot (string fieldname, DynValue value)
+		{
+			throw RuntimeException.NotDefined (fieldname);
+		}
+
 	}
 }

@@ -60,6 +60,14 @@ namespace Cygni.Libraries
 			return DynValue.FromList(result.ToDynList(DynValue.FromString));
 		}
 
+		public static DynValue replace (string ,DynValue[] args)
+		{/* string replace */
+			RuntimeException.FuncArgsCheck (args.Length == 2, "replace");
+			return args [0].AsString ().Replace (
+				args [1].AsString (),
+				args [2].AsString ());
+		}
+
 		public static DynValue strrpl (DynValue[] args)
 		{/* string replace */
 			RuntimeException.FuncArgsCheck (args.Length == 3, "strrpl");

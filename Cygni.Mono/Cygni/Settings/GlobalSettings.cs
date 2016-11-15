@@ -63,17 +63,17 @@ namespace Cygni.Settings
 
 
 
-			{ "append",ListLib.append },
+/*			{ "append",ListLib.append },
 			{ "len",ListLib.len },
 			{ "removeAt",ListLib.removeAt },
-			{ "insertAt",ListLib.insertAt },
+			{ "insertAt",ListLib.insertAt }, */
 
 			{ "hashtable",HashTableLib.hashtable },
-			{ "hasKey",HashTableLib.hasKey },
+/*			{ "hasKey",HashTableLib.hasKey },
 			{ "hasValue",HashTableLib.hasValue },
 			{ "ht_remove",HashTableLib.ht_remove },
 			{ "ht_keys",HashTableLib.ht_keys },
-			{ "ht_values",HashTableLib.ht_values },
+			{ "ht_values",HashTableLib.ht_values }, */
 			
 			
 		};
@@ -129,7 +129,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem( "subString",StrLib.SubString ) 
 				)
 				},
-			{"List",new Structure(
+			/*{"List",new Structure(
 					new StructureItem(  "append",ListLib.append ),
 					new StructureItem(  "len",ListLib.len ),
 					new StructureItem(  "removeAt",ListLib.removeAt ),
@@ -141,8 +141,8 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem(  "pop",ListLib.list_pop ) ,
 					new StructureItem(  "clear",ListLib.list_clear ) 
 					)
-			},
-			{"htable",
+			}, */
+			/* {"htable",
 				new Structure(
 					new StructureItem(  "hasKey",HashTableLib.hasKey ),
 					new StructureItem(  "hasValue",HashTableLib.hasValue ),
@@ -152,7 +152,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem(  "add",HashTableLib.ht_add ) ,
 					new StructureItem(  "clear",HashTableLib.ht_clear )
 				)
-			},
+			},*/
 			};
 
 		public static void SetBuiltInFunctions (BuiltInScope scope)

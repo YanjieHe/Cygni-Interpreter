@@ -11,7 +11,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IEquatable<DynValue>
+	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IEquatable<DynValue>, IDot
 	{
 		readonly DataType _type;
 
@@ -30,7 +30,7 @@ namespace Cygni.DataTypes
 		public static readonly DynValue True = new DynValue (DataType.Boolean, true);
 		public static readonly DynValue False = new DynValue (DataType.Boolean, false);
 		public static readonly DynValue Null = new DynValue (DataType.Null, null);
-
+		public static readonly DynValue[] Empty = new DynValue[0];
 		#region implicit conversion
 
 		public static implicit operator DynValue (double value)
@@ -46,6 +46,11 @@ namespace Cygni.DataTypes
 		public static implicit operator DynValue (string value)
 		{
 			return new DynValue (DataType.String, value);
+		}
+
+		public static implicit operator DynValue (Function value)
+		{
+			return new DynValue (DataType.Function, value);
 		}
 
 		public static implicit operator DynValue (Structure value)
@@ -289,6 +294,25 @@ namespace Cygni.DataTypes
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
 		{
 			yield return this.AsEnumerable ();
+		}
+
+
+		public DynValue GetByDot (string fieldname)
+		{
+			if (type == DataType.String) { // support 'string' type
+				switch (fieldname) {
+				case "length":
+					return (double)(value as string).Length;
+				default:
+					throw RuntimeException.NotDefined (fieldname);
+				}
+			} else
+				throw new NotSupportedException ();
+		}
+
+		public DynValue SetByDot (string fieldname, DynValue value)
+		{
+			throw RuntimeException.NotDefined (fieldname);
 		}
 	}
 }

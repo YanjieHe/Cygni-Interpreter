@@ -19,7 +19,7 @@ namespace Cygni.AST
 		public BlockEx Body{ get { return body; } }
 		string[] parameters;
 		public override  NodeType type {get{return NodeType.DefFunc;}}
-		
+		public string Name{ get { return this.name; } }
 		public DefFuncEx(string name, string[] parameters, BlockEx body)
 		{
 			this.name = name;

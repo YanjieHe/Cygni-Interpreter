@@ -2,11 +2,16 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/DataTypes/ClassInfo.cs">
     <Files>
-      <File FileName="Cygni/DataTypes/ClassInfo.cs" Line="43" Column="4" />
-      <File FileName="Cygni/Program.cs" Line="11" Column="19" />
-      <File FileName="Cygni/AST/DefClassEx.cs" Line="48" Column="123" />
-      <File FileName="Cygni/AST/Scopes/NestedScope.cs" Line="42" Column="5" />
-      <File FileName="Cygni/DataTypes/Function.cs" Line="42" Column="37" />
+      <File FileName="Cygni/DataTypes/ClassInfo.cs" Line="56" Column="27" />
+      <File FileName="Cygni/Program.cs" Line="3" Column="17" />
+      <File FileName="Cygni/AST/DefClassEx.cs" Line="49" Column="41" />
+      <File FileName="Cygni/AST/Scopes/NestedScope.cs" Line="13" Column="37" />
+      <File FileName="Cygni/DataTypes/Function.cs" Line="31" Column="34" />
+      <File FileName="Cygni/AST/Scopes/BasicScope.cs" Line="60" Column="3" />
+      <File FileName="Cygni/AST/Visitors/LookUpVisitor.cs" Line="24" Column="12" />
+      <File FileName="Cygni/AST/Visitors/MethodsVisitor.cs" Line="16" Column="4" />
+      <File FileName="Cygni/AST/Visitors/ASTVisitor.cs" Line="26" Column="4" />
+      <File FileName="Cygni/AST/DefFuncEx.cs" Line="22" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,6 +20,7 @@
             <Node name="Cygni" expanded="True">
               <Node name="AST" expanded="True">
                 <Node name="Scopes" expanded="True" />
+                <Node name="Visitors" expanded="True" />
               </Node>
               <Node name="DataTypes" expanded="True">
                 <Node name="ClassInfo.cs" selected="True" />
