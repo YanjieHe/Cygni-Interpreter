@@ -1,3 +1,1 @@
-dofile "./lib/io/File"
-dofile "./lib/io/reader"
-dofile "./lib/io/writer"
+loaddll "CygniLibraries.dll","CygniLibraries.IO.io_funcs"

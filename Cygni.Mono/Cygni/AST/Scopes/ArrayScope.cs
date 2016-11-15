@@ -46,6 +46,9 @@ namespace Cygni.AST.Scopes
 		public bool TryGetValue(string name,out DynValue value){
 			throw new NotSupportedException ();
 		}
+		public void Fill(DynValue[] args){
+			Array.Copy (args, values, args.Length);
+		}
 	}
 }
 

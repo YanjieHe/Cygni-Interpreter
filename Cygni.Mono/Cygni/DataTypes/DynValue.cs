@@ -11,7 +11,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IEquatable<DynValue>, IDot
+	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>, IDot
 	{
 		readonly DataType _type;
 
@@ -209,6 +209,9 @@ namespace Cygni.DataTypes
 		}
 
 		#endregion
+		public int Compare (DynValue x, DynValue y){
+			return x.CompareTo (y);
+		}
 
 		internal static readonly DynValue Break = new DynValue (DataType.Break, null);
 

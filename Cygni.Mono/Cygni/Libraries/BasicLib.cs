@@ -55,8 +55,7 @@ namespace Cygni.Libraries
 
 		public static DynValue cast (DynValue[] args)
 		{
-			if (args.Length != 2)
-				throw RuntimeException.BadArgsNum ("cast", 2);
+			RuntimeException.FuncArgsCheck (args.Length == 2, "cast");
 			string typeName = args [1].AsString ();
 			object obj = args [0].Value;
 			switch (typeName.ToLower ()) {
@@ -99,20 +98,24 @@ namespace Cygni.Libraries
 				return DynValue.FromString (args [0].GetDynType ().Name);
 		}
 
-		public static DynValue tonumber (DynValue[] args)
+		public static DynValue toNumber (DynValue[] args)
 		{
-			if (args [0].type == DataType.Number)
-				return args [0];
+			RuntimeException.FuncArgsCheck (args.Length == 1, "toNumber");
+			var value = args [0];
+			if (value.type == DataType.Number)
+				return value;
 			else
-				return Convert.ToDouble (args [0].Value);
+				return Convert.ToDouble (value.Value);
 		}
 
-		public static DynValue tostring (DynValue[] args)
+		public static DynValue toString (DynValue[] args)
 		{
-			if (args [0].type == DataType.String)
-				return args [0];
+			RuntimeException.FuncArgsCheck (args.Length == 1, "toString");
+			var value = args [0];
+			if (value.type == DataType.String)
+				return value;
 			else
-				return Convert.ToString (args [0].Value);
+				return Convert.ToString (value.Value);
 		}
 
 		public static DynValue quiet (DynValue[] args)

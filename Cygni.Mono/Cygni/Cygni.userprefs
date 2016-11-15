@@ -1,32 +1,15 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Settings/GlobalSettings.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataTypes/Function.cs">
     <Files>
-      <File FileName="Program.cs" Line="19" Column="6" />
+      <File FileName="Program.cs" Line="1" Column="1" />
       <File FileName="DataTypes/DynList.cs" Line="1" Column="1" />
       <File FileName="Libraries/ListLib.cs" Line="1" Column="1" />
-      <File FileName="DataTypes/DynValue.cs" Line="34" Column="1" />
-      <File FileName="Libraries/StrLib.cs" Line="116" Column="23" />
-      <File FileName="Settings/GlobalSettings.cs" Line="35" Column="26" />
-      <File FileName="Libraries/BasicLib.cs" Line="245" Column="19" />
+      <File FileName="DataTypes/DynValue.cs" Line="1" Column="1" />
+      <File FileName="Libraries/StrLib.cs" Line="1" Column="1" />
+      <File FileName="Libraries/BasicLib.cs" Line="1" Column="1" />
+      <File FileName="DataTypes/Function.cs" Line="57" Column="32" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Cygni" expanded="True">
-            <Node name="Cygni" expanded="True">
-              <Node name="AST" expanded="True" />
-              <Node name="DataTypes" expanded="True" />
-              <Node name="Executors" expanded="True" />
-              <Node name="Libraries" expanded="True" />
-              <Node name="Settings" expanded="True">
-                <Node name="GlobalSettings.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

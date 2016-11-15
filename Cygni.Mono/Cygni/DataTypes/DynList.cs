@@ -30,8 +30,13 @@ namespace Cygni.DataTypes
 		}
 
 		public DynValue this [DynValue[] indexes] {
-			get{ return this [(int)indexes [0].AsNumber ()]; }
-			set{ this [(int)indexes [0].AsNumber ()] = value; }
+			get{ 
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
+				return this [(int)indexes [0].AsNumber ()]; }
+			set{ 
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
+				this [(int)indexes [0].AsNumber ()] = value; 
+			}
 		}
 
 		public DynValue GetByDot (string fieldname)
@@ -45,6 +50,16 @@ namespace Cygni.DataTypes
 				return DynValue.FromDelegate ((args) => ListLib.removeAt (this, args));
 			case "insert":
 				return DynValue.FromDelegate ((args) => ListLib.insert (this, args));
+			case "sort":
+				return DynValue.FromDelegate ((args) => ListLib.sort (this, args));
+			case "max":
+				return DynValue.FromDelegate ((args) => ListLib.max (this, args));
+			case "min":
+				return DynValue.FromDelegate ((args) => ListLib.min (this, args));
+			case "bSearch":
+				return DynValue.FromDelegate ((args) => ListLib.bSearch (this, args));
+			case "find":
+				return DynValue.FromDelegate ((args) => ListLib.find (this, args));
 			default:
 				throw RuntimeException.NotDefined (fieldname);
 			}

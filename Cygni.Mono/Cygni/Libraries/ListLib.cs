@@ -45,22 +45,39 @@ namespace Cygni.Libraries
 			list.Clear();
 			return DynValue.Null;
 		}
-		public static DynValue sort(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 1, "sort");
-			args [0].As <DynList> ().Sort ();
+		public static DynValue sort(DynList list, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 2, "sort");
+			if (args.Length == 0)
+				list.Sort ();
+			else {
+				list.Sort ((int)args [0].AsNumber (), (int)args [1].AsNumber (), DynValue.Null);
+			}
 			return DynValue.Null;
 		}
-		public static DynValue bSearch(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 2, "bSearch");
-			return (double)args [0].As <DynList> ().BinarySearch (args[1]);
+		public static DynValue bSearch(DynList list, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 3, "bSearch");
+			if (args.Length == 1)
+				return (double) list.BinarySearch (args[0]);
+			else {
+				return (double) list.BinarySearch ((int)args [1].AsNumber (), (int)args [2].AsNumber (),args[0], DynValue.Null);
+			}
 		}
-		public static DynValue list_max(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 1, "max");
-			return args [0].As<DynList> ().Max ();
+		public static DynValue max(DynList list, DynValue[] args){
+			return list.Max ();
 		}
-		public static DynValue list_min(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 1, "min");
-			return args [0].As<DynList> ().Min ();
+		public static DynValue min(DynValue list, DynValue[] args){
+			return list.Min ();
 		}
+		public static DynValue find (DynList list, DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2 || args.Length == 3, "find");
+			if (args.Length == 1)
+				return list.IndexOf (args [0]);
+			else if (args.Length == 2)
+				return list.IndexOf (args [0], (int)args [1].AsNumber ());
+			else
+				return list.IndexOf (args [0], (int)args [1].AsNumber (), (int)args [2].AsNumber ());
+		}
+
 	}
 }

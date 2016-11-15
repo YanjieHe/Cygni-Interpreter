@@ -33,6 +33,8 @@ namespace Cygni.Settings
 			{ "range",BasicLib.Range },
 			{ "collect",BasicLib.Collect },
 			{ "len",BasicLib.len },
+			{ "toNumber",BasicLib.toNumber },
+			{ "toString",BasicLib.toString},
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },

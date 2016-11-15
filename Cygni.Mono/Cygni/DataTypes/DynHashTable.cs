@@ -12,28 +12,30 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class DynHashTable: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot
 	{
-		public DynValue this [DynValue[] key] {
+		public DynValue this [DynValue[] indexes] {
 			get { 
-				var k = key [0];
-				switch (k.type) {
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "hashtable");
+				var key = indexes [0];
+				switch (key.type) {
 				case DataType.Number:
-					return this [(int)(double)k.Value];
+					return this [(int)(double)key.Value];
 				case DataType.Boolean:
 				case DataType.String:
-					return this [k.Value];
+					return this [key.Value];
 				default :
 					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
 				}
 			}
 			set { 
-				var k = key [0];
-				switch (k.type) {
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "hashtable");
+				var key = indexes [0];
+				switch (key.type) {
 				case DataType.Number:
-					this [(int)(double)k.Value] = value;
+					this [(int)(double)key.Value] = value;
 					return;
 				case DataType.Boolean:
 				case DataType.String:
-					this [k.Value] = value;
+					this [key.Value] = value;
 					return;
 				default :
 					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
