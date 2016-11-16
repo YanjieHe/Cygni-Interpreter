@@ -1,0 +1,12 @@
+﻿<Properties StartupItem="Cygni_Interpreter/Cygni_Interpreter.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni_Interpreter/Program.cs">
+    <Files>
+      <File FileName="Cygni_Interpreter/Program.cs" Line="2" Column="22" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

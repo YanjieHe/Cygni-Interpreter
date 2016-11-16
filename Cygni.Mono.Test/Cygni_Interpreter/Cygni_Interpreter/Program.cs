@@ -1,19 +1,10 @@
 ﻿using System;
 using Cygni.Executors;
-using Cygni.AST;
-using Cygni.DataTypes;
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Reflection;
-using System.Reflection.Emit;
-using Cygni.Settings;
-using System.Text;
-namespace Cygni
+namespace Cygni_Interpreter
 {
 	class MainClass
 	{
-		public static void Main (string[] main_args)
+		public static void Main (string[] args)
 		{
 			var engine = Engine.CreateInstance ();
 			//GlobalSettings.CompleteErrorOutput = true;
@@ -21,8 +12,8 @@ namespace Cygni
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/random.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/File.cyg");
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/reader.cyg");
-//			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
-//			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/append_test.cyg");
+			//			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/stopwatch.cyg");
+			//			engine.DoFile ("/home/jasonhe/MyCode/CygniCode/append_test.cyg");
 
 			//engine.DoFile ("/home/jasonhe/MyCode/CygniCode/MySQL.cyg");
 

@@ -1,10 +1,5 @@
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni/Cygni/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni/Cygni/bin/Debug/Cygni.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni/Cygni/bin/Debug/Cygni.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni/Cygni/obj/x86/Debug/Cygni.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni/Cygni/obj/x86/Debug/Cygni.exe.mdb
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/obj/x86/Debug/Cygni.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/obj/x86/Debug/Cygni.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/bin/Debug/Cygni.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/bin/Debug/Cygni.exe
+/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/bin/Debug/Cygni.dll.mdb
+/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/bin/Debug/Cygni.dll
+/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/obj/x86/Debug/Cygni.dll
+/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono/Cygni/obj/x86/Debug/Cygni.dll.mdb
