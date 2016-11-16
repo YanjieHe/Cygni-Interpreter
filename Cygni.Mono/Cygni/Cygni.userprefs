@@ -1,14 +1,12 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="DataTypes/Function.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Executors/Engine.cs">
     <Files>
-      <File FileName="Program.cs" Line="1" Column="1" />
-      <File FileName="DataTypes/DynList.cs" Line="1" Column="1" />
-      <File FileName="Libraries/ListLib.cs" Line="1" Column="1" />
-      <File FileName="DataTypes/DynValue.cs" Line="1" Column="1" />
-      <File FileName="Libraries/StrLib.cs" Line="1" Column="1" />
+      <File FileName="Settings/GlobalSettings.cs" Line="1" Column="1" />
+      <File FileName="Libraries/MathLib.cs" Line="1" Column="1" />
+      <File FileName="Executors/Engine.cs" Line="34" Column="24" />
       <File FileName="Libraries/BasicLib.cs" Line="1" Column="1" />
-      <File FileName="DataTypes/Function.cs" Line="57" Column="32" />
+      <File FileName="AST/BinaryEx.cs" Line="46" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

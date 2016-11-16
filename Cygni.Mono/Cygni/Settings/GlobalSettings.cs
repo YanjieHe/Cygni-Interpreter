@@ -31,10 +31,11 @@ namespace Cygni.Settings
 			{ "throw",BasicLib.Throw },
 			{ "exit",BasicLib.exit },
 			{ "range",BasicLib.Range },
-			{ "collect",BasicLib.Collect },
+			{ "collect",BasicLib.collect },
 			{ "len",BasicLib.len },
 			{ "toNumber",BasicLib.toNumber },
 			{ "toString",BasicLib.toString},
+			{ "tryCatch",BasicLib.tryCatch},
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },

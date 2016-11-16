@@ -19,20 +19,6 @@ namespace Cygni.DataTypes
 		{
 			contents = new StructureItem[size];
 		}
-
-		public Structure (params KeyValuePair<string,DynValue>[] collection)
-			: this (collection as ICollection<KeyValuePair<string,DynValue>>)
-		{
-		}
-
-		public Structure (ICollection<KeyValuePair<string,DynValue>> collection)
-		{
-			contents = new StructureItem[collection.Count];
-			int i = 0;
-			foreach (var item in collection)
-				contents [i++] = new StructureItem (item.Key, item.Value);
-		}
-		
 		internal Structure(params StructureItem[] contents){
 			this.contents = contents;
 		}

@@ -19,7 +19,8 @@ namespace Cygni.Executors
 	/// </summary>
 	public class InteractiveExecutor:Executor
 	{
-		LinkedList<string> list; // storage of code.
+		LinkedList<string> list;
+		// storage of code.
 		Stack<Tag> stack;
 
 		public InteractiveExecutor (BasicScope GlobalScope)
@@ -52,23 +53,24 @@ namespace Cygni.Executors
 						Console.Write ("Cygni:  ");
 						Console.ForegroundColor = ConsoleColor.Gray;
 						goto Start;
-					}
-					if (state == InteractiveState.Waiting) {
+					} else if (state == InteractiveState.Waiting) {
 						Console.ForegroundColor = ConsoleColor.Gray;
 						Console.Write ("....    ");
 						goto Start;
-					}
-					list.Clear ();
-					using (var sr = new StringReader (code)) {
-						var lexer = new Lexer (1, sr); // In the interative mode, the lexer always starts at line 1.
-						var ast = new Parser (lexer);
-						/*var a = ast.Program();
+					} else {
+						list.Clear ();
+						using (var sr = new StringReader (code)) {
+							var lexer = new Lexer (1, sr); // In the interative mode, the lexer always starts at line 1.
+							var ast = new Parser (lexer);
+							/*var a = ast.Program();
 						Console.WriteLine(a);*/
-						Result = ast.Program ().Eval (GlobalScope);
-						if (!GlobalSettings.Quiet && Result != DynValue.Null) {
-							Console.Write ("=>  ");
-							Console.WriteLine (Result);
+							Result = ast.Program ().Eval (GlobalScope);
+							if (!GlobalSettings.Quiet && Result != DynValue.Null) {
+								Console.Write ("=>  ");
+								Console.WriteLine (Result);
+							}
 						}
+							
 					}
 				} catch (Exception ex) {
 					Console.ForegroundColor = ConsoleColor.Red;

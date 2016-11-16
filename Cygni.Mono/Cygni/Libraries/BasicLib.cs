@@ -120,6 +120,7 @@ namespace Cygni.Libraries
 
 		public static DynValue quiet (DynValue[] args)
 		{
+			RuntimeException.FuncArgsCheck (args.Length <= 1, "toString");
 			if (args.Length == 0) {
 				GlobalSettings.Quiet = true;
 			} else {
@@ -154,18 +155,20 @@ namespace Cygni.Libraries
 
 			Assembly assembly = Assembly.LoadFile (filepath);
 			Type t = assembly.GetType (class_name, true, true);  //namespace.class
-			var methods = t.GetMethods ();
-			var list = new List<KeyValuePair<string,DynValue>> ();
+			MethodInfo[] methods = t.GetMethods ();
+			var list = new List<StructureItem> ();
 
-			foreach (var method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
+			foreach (MethodInfo method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
 				var parameters = method.GetParameters ();
 				if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
 					var method_name = method.Name;
-					list.Add (new KeyValuePair<string,DynValue> (method_name, DynValue.FromDelegate (
+					list.Add (new StructureItem (method_name, DynValue.FromDelegate (
 						method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>)));
 				}
 			}
-			var structure = new Structure (list);
+			var arr = new StructureItem[list.Count];
+			list.CopyTo (arr);
+			Structure structure = new Structure (arr);
 			return DynValue.FromStructure (structure);
 		}
 
@@ -238,7 +241,7 @@ namespace Cygni.Libraries
 					, (int)args [1].AsNumber ()
 					, (int)args [2].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
 		}
-		public static DynValue Collect (DynValue[] args)
+		public static DynValue collect (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length ==1, "collect");
 			return new DynList (args [0].As<IEnumerable<DynValue>> ());
@@ -246,6 +249,23 @@ namespace Cygni.Libraries
 		public static DynValue len(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length ==1, "len");
 			return (double) args [0].As<ICollection> ().Count;
+		}
+		public static DynValue tryCatch(DynValue[] args){
+			/* Inspire by Lua */
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "tryCatch");
+			var func = args [0].As<IFunction> ();
+			try {
+				DynValue[] parameters = new DynValue[args.Length - 1];
+				for (int i = 0; i < parameters.Length; i++) 
+					parameters[i] = args[i+1];
+				func.DynInvoke(parameters);
+				return true;
+			} catch (RuntimeException ex) {
+				return ex.Message;
+			}
+			catch (Exception ex){
+				return ex.Message;
+			}
 		}
 	}
 }
