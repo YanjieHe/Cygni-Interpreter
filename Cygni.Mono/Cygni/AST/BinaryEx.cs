@@ -7,6 +7,7 @@ using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.Errors;
 namespace Cygni.AST
 {
 	/// <summary>
@@ -21,7 +22,7 @@ namespace Cygni.AST
 
 		public ASTNode Right{ get { return right; } }
 
-		BinaryOp op;
+		readonly BinaryOp op;
 
 		public BinaryOp Op{ get { return op; } }
 
@@ -36,83 +37,108 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			if (op == BinaryOp.Assign) {
-				return (left as IAssignable).Assign (right.Eval (scope), scope);
-			}
-			var _left = left.Eval (scope);
 			switch (op) {
+			case BinaryOp.Assign:
+				{
+					IAssignable lvalue = left as IAssignable;
+					if (lvalue == null)
+						throw new RuntimeException("Left side {0} is not assignable.", left); 
+					return lvalue.Assign (right.Eval (scope), scope);
+				}
 			case BinaryOp.Add:
 				{
-					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number, (double)_left.Value + (double)right.Eval (scope).Value);
-					return ((IComputable)_left.Value).Add (right.Eval (scope));
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)lvalue.Value + (double)right.Eval (scope).Value);
+					return ((IComputable)lvalue.Value).Add (right.Eval (scope));
 				}
 			case BinaryOp.Sub:
 				{
-					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number, (double)_left.Value - (double)right.Eval (scope).Value);
-					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)lvalue.Value - (double)right.Eval (scope).Value);
+					return ((IComputable)lvalue.Value).Subtract (right.Eval (scope));
 				}
 			case BinaryOp.Mul:
 				{
-					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number, (double)_left.Value * (double)right.Eval (scope).Value);
-					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)lvalue.Value * (double)right.Eval (scope).Value);
+					return ((IComputable)lvalue.Value).Subtract (right.Eval (scope));
 				}
 			case BinaryOp.Div:
 				{
-					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number, (double)_left.Value / (double)right.Eval (scope).Value);
-					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)lvalue.Value / (double)right.Eval (scope).Value);
+					return ((IComputable)lvalue.Value).Subtract (right.Eval (scope));
 				}
 			case BinaryOp.Mod:
 				{
-					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number, (double)_left.Value % (double)right.Eval (scope).Value);
-					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return new DynValue (DataType.Number, (double)lvalue.Value % (double)right.Eval (scope).Value);
+					return ((IComputable)lvalue.Value).Subtract (right.Eval (scope));
 				}
 			case BinaryOp.Pow:
 				{
-					if (_left.type == DataType.Number)
-						return new DynValue (DataType.Number, Math.Pow ((double)_left.Value, (double)right.Eval (scope).Value));
-					return ((IComputable)_left.Value).Subtract (right.Eval (scope));
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, (double)right.Eval (scope).Value));
+					return ((IComputable)lvalue.Value).Subtract (right.Eval (scope));
 				}
 			case BinaryOp.And:
-				if ((bool)_left.Value)
-					return (bool)right.Eval (scope).Value;
-				return DynValue.False;/* shortcut evaluate*/
+				{
+					var lvalue = left.Eval (scope);
+					if ((bool)lvalue.Value)
+						return (bool)right.Eval (scope).Value;
+					return DynValue.False;/* shortcut evaluate*/
+				}
 			case BinaryOp.Or:
-				if ((bool)_left.Value)
-					return DynValue.True;/* shortcut evaluate*/
-				return (bool)right.Eval (scope).Value;
+				{
+					var lvalue = left.Eval (scope);
+					if ((bool)lvalue.Value)
+						return DynValue.True;/* shortcut evaluate*/
+					return (bool)right.Eval (scope).Value;
+				}
 			case BinaryOp.Less:
 				{
-					if (_left.type == DataType.Number)
-						return 	(double)_left.Value < (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
-					return _left.CompareTo (right.Eval (scope)) < 0;
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return 	(double)lvalue.Value < (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return lvalue.CompareTo (right.Eval (scope)) < 0;
 				}
 			case BinaryOp.Greater:
 				{
-					if (_left.type == DataType.Number)
-						return 	(double)_left.Value > (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
-					return _left.CompareTo (right.Eval (scope)) > 0;
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return 	(double)lvalue.Value > (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return lvalue.CompareTo (right.Eval (scope)) > 0;
 				}
 			case BinaryOp.LessOrEqual:
 				{
-					if (_left.type == DataType.Number)
-						return 	(double)_left.Value <= (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
-					return _left.CompareTo (right.Eval (scope)) <= 0;
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return 	(double)lvalue.Value <= (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return lvalue.CompareTo (right.Eval (scope)) <= 0;
 				}
 			case BinaryOp.GreaterOrEqual:
 				{
-					if (_left.type == DataType.Number)
-						return 	(double)_left.Value >= (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
-					return _left.CompareTo (right.Eval (scope)) >= 0;
+					var lvalue = left.Eval (scope);
+					if (lvalue.type == DataType.Number)
+						return 	(double)lvalue.Value >= (double)right.Eval (scope).Value ? DynValue.True : DynValue.False;
+					return lvalue.CompareTo (right.Eval (scope)) >= 0;
 				}
 			case BinaryOp.Equal:
-				return _left.Equals (right.Eval (scope)) ? DynValue.True : DynValue.False;
-			default: /* BinaryOp.NotEqual */
-				return _left.Equals (right.Eval (scope)) ? DynValue.False : DynValue.True;
+				{
+					var lvalue = left.Eval (scope);
+					return lvalue.Equals (right.Eval (scope)) ? DynValue.True : DynValue.False;
+				}
+			default:
+				{	/* BinaryOp.NotEqual */
+					var lvalue = left.Eval (scope);
+					return lvalue.Equals (right.Eval (scope)) ? DynValue.False : DynValue.True;
+				}
 			}
 		}
 
@@ -158,10 +184,14 @@ namespace Cygni.AST
 		{
 			visitor.Visit (this);
 		}
-		internal void SetLeft(ASTNode left){
+
+		internal void SetLeft (ASTNode left)
+		{
 			this.left = left;
 		}
-		internal void SetRight(ASTNode right){
+
+		internal void SetRight (ASTNode right)
+		{
 			this.right = right;
 		}
 	}

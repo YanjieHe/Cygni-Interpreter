@@ -14,7 +14,7 @@ namespace Cygni.AST
 	/// </summary>
 	public class DotEx:ASTNode,IAssignable
 	{
-		ASTNode obj;
+		readonly ASTNode obj;
 		public ASTNode Target{ get { return obj; } }
 		readonly string fieldname;
 		public override  NodeType type { get { return NodeType.Dot; } }
@@ -32,7 +32,7 @@ namespace Cygni.AST
 
 		public override DynValue Eval(IScope scope)
 		{
-			var target = obj.Eval(scope);
+			DynValue target = obj.Eval(scope);
 			if (target.type == DataType.String) // 'string' is an exception
 				return target.GetByDot (fieldname);
 			else
@@ -42,7 +42,7 @@ namespace Cygni.AST
 		#endregion
 
 		public DynValue Assign(DynValue value,IScope scope){
-			var target = obj.Eval(scope);
+			DynValue target = obj.Eval(scope);
 			return target.As<IDot> ().SetByDot (fieldname, value);
 		}
 

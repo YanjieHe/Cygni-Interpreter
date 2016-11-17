@@ -11,7 +11,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>, IDot
+	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>, IIndexable, IDot
 	{
 		readonly DataType _type;
 
@@ -302,7 +302,7 @@ namespace Cygni.DataTypes
 
 		public DynValue GetByDot (string fieldname)
 		{
-			if (type == DataType.String) { // support 'string' type
+			 // support 'string' type
 				string str = value as string;
 				switch (fieldname) {
 				case "length":
@@ -329,18 +329,25 @@ namespace Cygni.DataTypes
 					return DynValue.FromDelegate ((args) => StrLib.trimEnd(str,args));
 				case "subString":
 					return DynValue.FromDelegate ((args) => StrLib.subString(str,args));
-				case "concat":
-					return DynValue.FromDelegate ((args) => StrLib.concat(str,args));
 				default:
 					throw RuntimeException.NotDefined (fieldname);
 				}
-			} else
-				throw new NotSupportedException ();
 		}
 
 		public DynValue SetByDot (string fieldname, DynValue value)
 		{
 			throw RuntimeException.NotDefined (fieldname);
+		}
+
+
+		public DynValue this[DynValue[] indexes]{ 
+			get{
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "string");
+				return this.AsString () [(int)indexes [0].AsNumber ()].ToString();
+			} 
+			set{
+				throw new RuntimeException ("'string' is read only");
+			}
 		}
 	}
 }

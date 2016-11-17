@@ -47,6 +47,13 @@ namespace Cygni.DataTypes
 			return result;
 		}
 
+		/* public DynValue DynInvoke (IEnumerable<DynValue> args, int nArgs){
+			if (this.nArgs != nArgs)
+				throw RuntimeException.BadArgsNum (name, nArgs);
+			var newScope = new ArrayScope (funcScope.Count, funcScope.Parent);
+			newScope.Fill (args); // arguments are at the head of the array scope
+			return new Function (name,nArgs, body, newScope);
+		} */
 		public DynValue DynInvoke (DynValue[] args)
 		{
 			return this.Update (args).Invoke ();

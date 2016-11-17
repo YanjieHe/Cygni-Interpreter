@@ -14,8 +14,8 @@ namespace Cygni.AST
 	/// </summary>
 	public class WhileEx:ASTNode
 	{
-		ASTNode condition;
-		BlockEx body;
+		readonly ASTNode condition;
+		readonly BlockEx body;
 		public	ASTNode Condition{ get { return condition; } }
 		public	BlockEx Body{ get { return body; } }
 		public  override NodeType type { get { return NodeType.While; } }

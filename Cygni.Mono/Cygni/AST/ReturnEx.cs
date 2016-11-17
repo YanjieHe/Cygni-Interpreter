@@ -14,7 +14,7 @@ namespace Cygni.AST
 	/// </summary>
 	public class ReturnEx:ASTNode
 	{
-		ASTNode value;
+		readonly ASTNode value;
 		public ASTNode Value{ get { return value; } }
 
 		public override NodeType type { get { return NodeType.Return; } }
@@ -24,7 +24,7 @@ namespace Cygni.AST
 		}
 		public override DynValue Eval(IScope scope)
 		{
-			return DynValue.Return(value.Eval(scope));
+			return new DynValue (DataType.Return, value.Eval (scope));
 		}
 
 		internal override void Accept (ASTVisitor visitor)

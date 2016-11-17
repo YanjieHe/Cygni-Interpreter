@@ -16,8 +16,12 @@ namespace Cygni.Libraries
 	{
 		public static DynValue strcat (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length ==  1, "strcat");
-			return string.Concat(args[0].As<DynList>().Select(i=>i.Value));
+			int n = args.Length;
+			RuntimeException.FuncArgsCheck (n >=  1, "strcat");
+			string[] strs = new string[n];
+			for (int i = 0; i < n; i++)
+				strs [i] = args [i].AsString ();
+			return string.Concat (strs);
 		}
 		public static DynValue concat (string str, DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length ==  1, "concat");

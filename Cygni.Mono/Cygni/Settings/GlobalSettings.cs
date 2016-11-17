@@ -37,6 +37,8 @@ namespace Cygni.Settings
 			{ "toString",BasicLib.toString},
 			{ "tryCatch",BasicLib.tryCatch},
 
+			{"strcat",StrLib.strcat},
+
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
 			{ "sqrt",MathLib.sqrt },

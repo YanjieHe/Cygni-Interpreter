@@ -26,8 +26,9 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			DynValue result = DynValue.Null;
-			foreach (var element in _expressions) {
-				result = element.Eval(scope);
+			int n = expressions.Length;
+			for(int i = 0; i < n;i++){
+				result = expressions [i].Eval (scope);
 				switch (result.type) {
 					case DataType.Break:
 					case DataType.Continue:

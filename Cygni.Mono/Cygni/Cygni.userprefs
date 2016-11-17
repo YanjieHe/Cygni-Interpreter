@@ -1,12 +1,11 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Executors/Engine.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Errors/RuntimeException.cs">
     <Files>
-      <File FileName="Settings/GlobalSettings.cs" Line="1" Column="1" />
-      <File FileName="Libraries/MathLib.cs" Line="1" Column="1" />
-      <File FileName="Executors/Engine.cs" Line="35" Column="15" />
+      <File FileName="Libraries/MathLib.cs" Line="18" Column="7" />
       <File FileName="Libraries/BasicLib.cs" Line="1" Column="1" />
       <File FileName="AST/BinaryEx.cs" Line="1" Column="1" />
+      <File FileName="Errors/RuntimeException.cs" Line="53" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

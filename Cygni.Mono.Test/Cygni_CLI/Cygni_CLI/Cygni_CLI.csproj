@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{D7BB6397-3E83-42C3-A314-817A6F4D61CC}</ProjectGuid>
+    <ProjectGuid>{7EE34D8A-89A1-4353-A52A-7D90EA591F2F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Cygni_Interpreter</RootNamespace>
-    <AssemblyName>Cygni_Interpreter</AssemblyName>
+    <RootNamespace>Cygni_CLI</RootNamespace>
+    <AssemblyName>Cygni_CLI</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

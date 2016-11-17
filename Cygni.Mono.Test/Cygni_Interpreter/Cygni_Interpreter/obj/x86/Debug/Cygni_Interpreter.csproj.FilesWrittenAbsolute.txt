@@ -1,6 +1,0 @@
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_Interpreter/Cygni_Interpreter/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_Interpreter/Cygni_Interpreter/bin/Debug/Cygni_Interpreter.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_Interpreter/Cygni_Interpreter/bin/Debug/Cygni_Interpreter.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_Interpreter/Cygni_Interpreter/obj/x86/Debug/Cygni_Interpreter.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_Interpreter/Cygni_Interpreter/obj/x86/Debug/Cygni_Interpreter.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_Interpreter/Cygni_Interpreter/bin/Debug/Cygni.dll

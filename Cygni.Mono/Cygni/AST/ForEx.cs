@@ -15,16 +15,19 @@ namespace Cygni.AST
 	/// </summary>
 	public class ForEx:ASTNode
 	{
-		BlockEx body;
-		public BlockEx Body{ get { return body; } }
+		readonly BlockEx body;
 		NameEx iterator;
+		readonly ASTNode start;
+		readonly ASTNode end;
+		readonly ASTNode step;
+
+		public BlockEx Body{ get { return body; } }
 		public NameEx Iterator{ get { return iterator; } }
+
 		internal void SetIterator(NameEx iterator){
 			this.iterator = iterator;
 		}
-		ASTNode start;
-		ASTNode end;
-		ASTNode step;
+
 		public ASTNode Start{ get { return start; } }
 		public ASTNode End{ get { return end; } }
 		public ASTNode Step{ get { return step; } }

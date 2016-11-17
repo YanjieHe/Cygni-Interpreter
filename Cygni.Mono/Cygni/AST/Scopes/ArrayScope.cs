@@ -49,6 +49,13 @@ namespace Cygni.AST.Scopes
 		public void Fill(DynValue[] args){
 			Array.Copy (args, values, args.Length);
 		}
+		/* public void Fill(IEnumerable<DynValue> args){
+			int i = 0;
+			foreach(DynValue value in args){
+				values [i] = value;
+				i++;
+			}
+		} */
 	}
 }
 

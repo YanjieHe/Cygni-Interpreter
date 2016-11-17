@@ -14,11 +14,11 @@ namespace Cygni.AST
 	/// </summary>
 	public class UnaryEx:ASTNode
 	{
-		ASTNode operand;
-		UnaryOp op;
+		readonly ASTNode operand;
+		readonly UnaryOp op;
 		public ASTNode Operand{ get { return operand; } }
 		public UnaryOp Op{ get { return op; } }
-		public  override NodeType type { get { return NodeType.Unary; } }
+		public override NodeType type { get { return NodeType.Unary; } }
 		
 		public UnaryEx(UnaryOp op, ASTNode operand)
 		{
@@ -27,19 +27,19 @@ namespace Cygni.AST
 		}
 		public override DynValue Eval(IScope scope)
 		{
-			var obj = Operand.Eval(scope);
+			DynValue obj = Operand.Eval(scope);
 			switch (op) {
 			case UnaryOp.Plus:
 				{
 					if (obj.type == DataType.Number)
 						return new DynValue (DataType.Number, +(double)obj.Value);
-					return (obj.Value as IComputable).UnaryPlus ();
+					return ((IComputable)obj.Value).UnaryPlus ();
 				}
 			case UnaryOp.Minus:
 				{
 					if (obj.type == DataType.Number)
 						return new DynValue (DataType.Number, -(double)obj.Value);
-					return (obj.Value as IComputable).UnaryPlus ();
+					return ((IComputable)obj.Value).UnaryPlus ();
 				}
 				default: /* UnaryOp.Not */
 					return (bool)obj.Value ? DynValue.False : DynValue.True;
