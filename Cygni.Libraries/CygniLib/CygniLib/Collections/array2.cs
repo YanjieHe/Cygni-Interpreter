@@ -28,6 +28,11 @@ namespace CygniLib.Collections
 					(int)indexes[1].AsNumber()] = value;
 			}
 		}
+		public string[] FieldNames{get{ return new string[] {
+				"nRows","nCols" 
+			};
+			}
+		}
 		public DynValue GetByDot (string fieldname){
 			switch (fieldname) {
 			case "nRows":

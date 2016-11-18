@@ -43,9 +43,12 @@
     <Compile Include="Collections\collections_funcs.cs" />
     <Compile Include="Collections\stack.cs" />
     <Compile Include="Collections\queue.cs" />
+    <Compile Include="random\random.cs" />
+    <Compile Include="random\random_funcs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
+    <Folder Include="random\" />
   </ItemGroup>
 </Project>

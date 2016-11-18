@@ -97,9 +97,9 @@ namespace Cygni.DataTypes
 			while (iterator.MoveNext()) 
 				yield return iterator.Current;
 		}
-		public DynValue GetByDot (string fieldname)
+		public DynValue GetByDot (string fieldName)
 		{
-			switch (fieldname) {
+			switch (fieldName) {
 			case "hasKey":
 				return DynValue.FromDelegate ((args) => HashTableLib.hasKey (this, args));
 			case "hasValue":
@@ -117,13 +117,17 @@ namespace Cygni.DataTypes
 			case "clear":
 				return DynValue.FromDelegate ((args) => HashTableLib.clear (this, args));
 			default:
-				throw RuntimeException.NotDefined (fieldname);
+				throw RuntimeException.NotDefined (fieldName);
 			}
 		}
-
-		public DynValue SetByDot (string fieldname, DynValue value)
+		public string[] FieldNames{
+			get{
+				return new string[] {
+					"hasKey", "hasValue", "remove", "count", "keys", "values", "add", "clear"
+				};}}
+		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.NotDefined (fieldName);
 		}
 
 	}

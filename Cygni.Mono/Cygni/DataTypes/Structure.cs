@@ -30,23 +30,30 @@ namespace Cygni.DataTypes
 
 		#region IDot implementation
 
-		public DynValue GetByDot (string fieldname)
+		public DynValue GetByDot (string fieldName)
 		{
 			for (int i = contents.Length - 1; i >= 0; i--) {
-				if (string.Equals (contents [i].Key, fieldname))
+				if (string.Equals (contents [i].Key, fieldName))
 					return contents [i].Value;
 			}
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.NotDefined (fieldName);
 		}
 
-		public DynValue SetByDot (string fieldname, DynValue value)
+		public DynValue SetByDot (string fieldName, DynValue value)
 		{
 			for (int i = contents.Length - 1; i >= 0; i--) {
-				if (string.Equals (contents [i].Key, fieldname))
+				if (string.Equals (contents [i].Key, fieldName))
 					return contents [i].Value = value;
 			}
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.NotDefined (fieldName);
 		}
+		public string[] FieldNames{
+			get{
+				string[] names = new string[contents.Length];
+				for (int i = 0; i < names.Length; i++)
+					names [i] = contents [i].Key;
+				return names;
+				}}
 
 		#endregion
 

@@ -37,6 +37,7 @@ namespace Cygni.Settings
 			{ "toString",BasicLib.toString},
 			{ "toList",BasicLib.toList},
 			{ "tryCatch",BasicLib.tryCatch},
+			{ "names",BasicLib.names},
 
 			{"strcat",StrLib.strcat},
 

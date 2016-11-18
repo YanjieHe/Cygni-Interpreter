@@ -411,9 +411,9 @@ namespace Cygni.AST
 				}
 			
 				if (tok.tag == Tag.Dot) {
-					var fieldname = look.ToString ();
+					var fieldName = look.ToString ();
 					Match (Tag.ID);
-					x = ASTNode.Dot (x, fieldname);
+					x = ASTNode.Dot (x, fieldName);
 					continue;
 				}
 			

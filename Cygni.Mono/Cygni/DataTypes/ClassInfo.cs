@@ -57,27 +57,37 @@ namespace Cygni.DataTypes
 			get { return this.parents != null; }
 		}
 
-		public DynValue GetByDot (string fieldname)
+		public DynValue GetByDot (string fieldName)
 		{
-			return Search (fieldname);
+			return Search (fieldName);
+		}
+		public string[] FieldNames {
+			get { 
+				string[] names = new string[classScope.Count];
+				int i = 0;
+				foreach (var item in classScope.Names()) {
+					names [i] = item;
+					i++;
+				}
+				return names;
+			}
+		}
+		public DynValue SetByDot (string fieldName, DynValue value)
+		{
+			return classScope.Put (fieldName, value);
 		}
 
-		public DynValue SetByDot (string fieldname, DynValue value)
-		{
-			return classScope.Put (fieldname, value);
-		}
-
-		DynValue Search (string fieldname)
+		DynValue Search (string fieldName)
 		{
 			DynValue value;
-			if (classScope.TryGetValue (fieldname, out value))/* Find in self */
+			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
 				return value;
 			if (parents != null)
 				foreach (var parent in parents) { /* Find in parents */
-					if (parent.classScope.TryGetValue (fieldname, out value))
+					if (parent.classScope.TryGetValue (fieldName, out value))
 						return value;
 				}
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.NotDefined (fieldName);
 		}
 
 #region IComparable implementation

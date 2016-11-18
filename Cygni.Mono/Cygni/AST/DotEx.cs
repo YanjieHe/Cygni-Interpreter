@@ -16,17 +16,17 @@ namespace Cygni.AST
 	{
 		readonly ASTNode obj;
 		public ASTNode Target{ get { return obj; } }
-		readonly string fieldname;
+		readonly string fieldName;
 		public override  NodeType type { get { return NodeType.Dot; } }
 		
-		public DotEx(ASTNode obj, string fieldname)
+		public DotEx(ASTNode obj, string fieldName)
 		{
 			this.obj = obj;
-			this.fieldname = fieldname;
+			this.fieldName = fieldName;
 		}
 		public DynValue Set(IDot expression, DynValue value)
 		{
-			return expression.SetByDot(fieldname, value);
+			return expression.SetByDot(fieldName, value);
 		}
 		#region implemented abstract members of ASTNode
 
@@ -34,22 +34,22 @@ namespace Cygni.AST
 		{
 			DynValue target = obj.Eval(scope);
 			if (target.type == DataType.String) // 'string' is an exception
-				return target.GetByDot (fieldname);
+				return target.GetByDot (fieldName);
 			else
-				return target.As<IDot>().GetByDot(fieldname);
+				return target.As<IDot>().GetByDot(fieldName);
 		}
 
 		#endregion
 
 		public DynValue Assign(DynValue value,IScope scope){
 			DynValue target = obj.Eval(scope);
-			return target.As<IDot> ().SetByDot (fieldname, value);
+			return target.As<IDot> ().SetByDot (fieldName, value);
 		}
 
 
 		public override string ToString ()
 		{
-			return string.Format ("{0}.{1}", obj, fieldname);
+			return string.Format ("{0}.{1}", obj, fieldName);
 		}
 		internal override void Accept (ASTVisitor visitor)
 		{

@@ -1,1 +1,1 @@
-dofile './lib/random/random'
+loaddll 'CygniLib.dll','CygniLib.random.random_funcs'

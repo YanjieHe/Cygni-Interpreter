@@ -11,8 +11,8 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public interface IDot
 	{
-		DynValue GetByDot(string fieldname);
-		DynValue SetByDot(string fieldname, DynValue value);
-		
+		DynValue GetByDot(string fieldName);
+		DynValue SetByDot(string fieldName, DynValue value);
+		string[] FieldNames{ get; }
 	}
 }

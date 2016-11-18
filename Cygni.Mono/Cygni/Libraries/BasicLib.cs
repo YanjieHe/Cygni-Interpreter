@@ -273,5 +273,26 @@ namespace Cygni.Libraries
 				return ex.Message;
 			}
 		}
+		public static DynValue names(DynValue[] args){
+			/* Inspire by R */
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "names");
+			var obj = args [0];
+			if (obj.type == DataType.String)
+				return new DynList (obj.FieldNames.Select (DynValue.FromString));
+			else
+				return new DynList (obj.As<IDot> ().FieldNames.Select (DynValue.FromString));
+		}
+		/*public static DynValue io_open(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 2, "open");
+			string filePath = args [0].AsString ();
+
+			string fileMode = args [1].AsString ();
+
+			switch(fileMode){
+			case "r":
+				return DynValue.FromUserData (File.Open (filePath, FileMode.Open));
+			case "r+":				return DynValue.FromUserData (File.Open (filePath, FileMode.OpenOrCreate));
+				*/
+
 	}
 }

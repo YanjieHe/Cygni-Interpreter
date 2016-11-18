@@ -1,24 +1,25 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/queue.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/random/random.cs">
     <Files>
-      <File FileName="CygniLib/IO/io_funcs.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/IO/reader.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/IO/writer.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="25" Column="51" />
-      <File FileName="CygniLib/Collections/array2.cs" Line="48" Column="24" />
-      <File FileName="CygniLib/Collections/queue.cs" Line="22" Column="59" />
-      <File FileName="CygniLib/Collections/stack.cs" Line="2" Column="1" />
+      <File FileName="CygniLib/random/random.cs" Line="38" Column="27" />
+      <File FileName="CygniLib/random/random_funcs.cs" Line="13" Column="90" />
+      <File FileName="CygniLib/IO/reader.cs" Line="34" Column="8" />
+      <File FileName="CygniLib/IO/writer.cs" Line="44" Column="26" />
+      <File FileName="CygniLib/Collections/array.cs" Line="36" Column="18" />
+      <File FileName="CygniLib/Collections/array2.cs" Line="31" Column="25" />
+      <File FileName="CygniLib/Collections/stack.cs" Line="30" Column="41" />
+      <File FileName="CygniLib/Collections/queue.cs" Line="35" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="CygniLib" expanded="True">
             <Node name="CygniLib" expanded="True">
-              <Node name="Collections" expanded="True">
-                <Node name="queue.cs" selected="True" />
+              <Node name="Collections" expanded="True" />
+              <Node name="random" expanded="True">
+                <Node name="random.cs" selected="True" />
               </Node>
-              <Node name="IO" expanded="True" />
             </Node>
           </Node>
         </State>

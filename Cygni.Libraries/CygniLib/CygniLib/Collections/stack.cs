@@ -27,6 +27,11 @@ namespace CygniLib.Collections
 				throw RuntimeException.NotDefined (fieldname);
 			}
 		}
+		public string[] FieldNames{get{ return new string[] {
+					"push","pop","peek","count"
+			};
+			}
+		}
 		public DynValue SetByDot(string fieldname, DynValue value){
 			throw	RuntimeException.NotDefined (fieldname);
 		}

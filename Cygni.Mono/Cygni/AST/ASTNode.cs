@@ -185,9 +185,9 @@ namespace Cygni.AST
 		}
 
 		public static readonly ASTNode Null = new Constant(DynValue.Null);
-		public static ASTNode Dot(ASTNode obj, string fieldname)
+		public static ASTNode Dot(ASTNode obj, string fieldName)
 		{
-			return new DotEx(obj, fieldname);
+			return new DotEx(obj, fieldName);
 		}
 		
 	}

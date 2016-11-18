@@ -59,5 +59,10 @@ namespace Cygni.AST.Scopes
 			}
 			return newScope;
 		}
+		public IEnumerable<string> Names(){
+			foreach (var name in envTable.Keys)
+				yield return name;
+		}
+			
 	}
 }

@@ -300,11 +300,11 @@ namespace Cygni.DataTypes
 		}
 
 
-		public DynValue GetByDot (string fieldname)
+		public DynValue GetByDot (string fieldName)
 		{
 			 // support 'string' type
 				string str = value as string;
-				switch (fieldname) {
+				switch (fieldName) {
 				case "length":
 					return (double)str.Length;
 				case "replace":
@@ -330,13 +330,19 @@ namespace Cygni.DataTypes
 				case "subString":
 					return DynValue.FromDelegate ((args) => StrLib.subString(str,args));
 				default:
-					throw RuntimeException.NotDefined (fieldname);
+					throw RuntimeException.NotDefined (fieldName);
 				}
 		}
+		public string[] FieldNames{
+			get{
+				return new string[] {
+					"length","replace","format","join","split","find","lower","upper","trim","trimStart","trimEnd","subString"
+				};
+				}}
 
-		public DynValue SetByDot (string fieldname, DynValue value)
+		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.NotDefined (fieldName);
 		}
 
 

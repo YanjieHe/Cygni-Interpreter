@@ -39,9 +39,9 @@ namespace Cygni.DataTypes
 			}
 		}
 
-		public DynValue GetByDot (string fieldname)
+		public DynValue GetByDot (string fieldName)
 		{
-			switch (fieldname) {
+			switch (fieldName) {
 			case "append":
 				return DynValue.FromDelegate ((args) => ListLib.append (this, args));
 			case "count":
@@ -61,13 +61,19 @@ namespace Cygni.DataTypes
 			case "find":
 				return DynValue.FromDelegate ((args) => ListLib.find (this, args));
 			default:
-				throw RuntimeException.NotDefined (fieldname);
+				throw RuntimeException.NotDefined (fieldName);
 			}
 		}
 
-		public DynValue SetByDot (string fieldname, DynValue value)
+		public string[] FieldNames{
+			get{
+				return new string[] {
+					"append", "count", "removeAt", "insert", "sort", "max", "min", "bSearch", "find"
+				};
+				}}
+		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.NotDefined (fieldName);
 		}
 
 		public override string ToString ()

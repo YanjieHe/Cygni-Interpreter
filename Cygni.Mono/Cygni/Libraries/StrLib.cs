@@ -97,7 +97,7 @@ namespace Cygni.Libraries
 		public static DynValue trimStart(string str, DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimStart");
 			if (args.Length == 0)
-				return str.Trim ();
+				return str.TrimStart ();
 			else {
 				DynList list = args [0].As<DynList> ();
 				int n = list.Count;
@@ -110,7 +110,7 @@ namespace Cygni.Libraries
 		public static DynValue trimEnd(string str, DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimEnd");
 			if (args.Length == 0)
-				return str.Trim ();
+				return str.TrimEnd ();
 			else {
 				DynList list = args [0].As<DynList> ();
 				int n = list.Count;

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using Cygni.DataTypes;
@@ -41,6 +41,11 @@ namespace CygniLib.IO
 			}
 		}
 
+		public string[] FieldNames{get{ return new string[] {
+				 "write", "writeLine", "close"
+			};
+			}
+		}
 		public DynValue SetByDot (string fieldname, DynValue value)
 		{
 			throw RuntimeException.NotDefined (fieldname);
