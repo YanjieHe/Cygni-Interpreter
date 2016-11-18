@@ -8,7 +8,8 @@ using Cygni.DataTypes;
 using Cygni.Libraries;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
-
+using System.Reflection;
+using System.IO;
 namespace Cygni.Settings
 {
 	/// <summary>
@@ -38,6 +39,8 @@ namespace Cygni.Settings
 			{ "toList",BasicLib.toList},
 			{ "tryCatch",BasicLib.tryCatch},
 			{ "names",BasicLib.names},
+			{ "getwd",BasicLib.getwd},
+			{ "setwd",BasicLib.setwd},
 
 			{"strcat",StrLib.strcat},
 
@@ -70,6 +73,7 @@ namespace Cygni.Settings
 		public static bool Quiet = false;
 		//quiet output
 		public static bool CompleteErrorOutput = false;
+		public static string CurrentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 		const string warranty = 
 			@"
 Cygni, version 1.0.0

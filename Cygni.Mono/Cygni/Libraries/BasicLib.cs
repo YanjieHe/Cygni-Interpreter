@@ -275,12 +275,21 @@ namespace Cygni.Libraries
 		}
 		public static DynValue names(DynValue[] args){
 			/* Inspire by R */
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "names");
+			RuntimeException.FuncArgsCheck (args.Length == 1, "names");
 			var obj = args [0];
 			if (obj.type == DataType.String)
 				return new DynList (obj.FieldNames.Select (DynValue.FromString));
 			else
 				return new DynList (obj.As<IDot> ().FieldNames.Select (DynValue.FromString));
+		}
+		public static DynValue getwd(DynValue[] args){
+			return Directory.GetCurrentDirectory ();
+		}
+		public static DynValue setwd(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "setwd");
+			string path = args [0].AsString ();
+			Directory.SetCurrentDirectory (path);
+			return DynValue.Null;
 		}
 		/*public static DynValue io_open(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 2, "open");

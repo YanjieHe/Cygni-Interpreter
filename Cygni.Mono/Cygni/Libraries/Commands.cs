@@ -20,6 +20,7 @@ namespace Cygni.Libraries
 	{
 		public static DynValue DoFile (DynValue[] args, IScope scope)
 		{
+			RuntimeException.CmdArgsCheck (args.Length == 1 || args.Length == 2, "dofile");
 			var basicScope = scope as BasicScope;
 			if (basicScope == null)
 				throw new RuntimeException ("Unable to run command 'dofile' in local scope");
@@ -41,10 +42,13 @@ namespace Cygni.Libraries
 
 		public static DynValue LoadDll (DynValue[]args, IScope scope)
 		{
+			RuntimeException.CmdArgsCheck (args.Length == 2, "loaddll");
 			string filepath = args [0].AsString ();
 			string class_name = args [1].AsString ();
-			if (!Path.IsPathRooted (filepath))
-				filepath = Path.GetFullPath (filepath);
+			if (!Path.IsPathRooted (filepath)) {
+				filepath = GlobalSettings.CurrentDirectory + "/" + filepath;
+			}
+			//	filepath = Path.GetFullPath (filepath);
 			
 			Assembly assembly = Assembly.LoadFile (filepath);
 			Type t = assembly.GetType (class_name, true, true);  //namespace.class
@@ -88,11 +92,30 @@ namespace Cygni.Libraries
 
 		public static DynValue Import (DynValue[] args, IScope scope)
 		{
-			string folderName = args [0].AsString ();
-			return DoFile (new DynValue[]{"./lib/" + folderName + "/__INIT__.cyg"},scope); // Module must has a '__INIT__.cyg' file.
+			RuntimeException.CmdArgsCheck (args.Length == 1 || args.Length == 2, "import");
+			var basicScope = scope as BasicScope;
+			if (basicScope == null)
+				throw new RuntimeException ("Unable to run command 'import' in local scope");
+			
+			string moduleName = args [0].AsString ();
+			if (!Path.HasExtension (moduleName))
+				moduleName = Path.ChangeExtension (moduleName, "cyg");
+			string currentDir = GlobalSettings.CurrentDirectory;
+			Encoding encoding = args.Length == 2
+				? Encoding.GetEncoding (args [1].AsString ())
+				: Encoding.Default;
+			
+			bool quiet = GlobalSettings.Quiet;
+			GlobalSettings.Quiet = true;
+
+			var executor = new CodeFileExecutor (scope as BasicScope, currentDir + "/lib/" + moduleName, encoding);
+			GlobalSettings.Quiet = quiet;
+
+			return executor.Run ();
 		}
 		public static DynValue Scope (DynValue[] args, IScope scope)
 		{
+			RuntimeException.CmdArgsCheck (args.Length == 1, "scope");
 			string cmdType = args [0].AsString ();
 			switch (cmdType) {
 			case "clear":
@@ -118,7 +141,6 @@ namespace Cygni.Libraries
 					Console.WriteLine (scope);
 					return DynValue.Null;
 				}
-
 			default :
 				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
 			}

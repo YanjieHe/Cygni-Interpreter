@@ -47,6 +47,10 @@ namespace Cygni.Errors
 			if (!condition)
 				throw new RuntimeException ("bad number of arguments for indexer of '{0}'.", collectionName);
 		}
-
+		public static void CmdArgsCheck (bool condition, string cmdName)
+		{
+			if (!condition)
+				throw new RuntimeException ("bad number of arguments for command '{0}'.", cmdName);
+		}
 	}
 }
