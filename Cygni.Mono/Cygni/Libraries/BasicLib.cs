@@ -118,6 +118,12 @@ namespace Cygni.Libraries
 				return Convert.ToString (value.Value);
 		}
 
+		public static DynValue toList(DynValue [] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "toList");
+			var collection = args [0].As<IEnumerable<DynValue>> ();
+			return new DynList (collection);
+		}
+
 		public static DynValue quiet (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length <= 1, "toString");

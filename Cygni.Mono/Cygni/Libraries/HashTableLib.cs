@@ -14,19 +14,6 @@ namespace Cygni.Libraries
 	/// </summary>
 	public static class HashTableLib
 	{
-		public static DynValue hashtable (DynValue[] args)
-		{
-			var hashTable = new DynHashTable ();
-			if (args.Length == 0)
-				return DynValue.FromHashTable (hashTable);
-			if ((args.Length & 1) == 0) {/* even */
-				for (int i = 0; i < args.Length - 1; i += 2)
-					hashTable.Add (args [i], args [i + 1]);
-				return DynValue.FromHashTable (hashTable);
-			}
-			throw RuntimeException.BadArgsNum ("hashtable", "even");
-		}
-
 		public static DynValue hasKey (DynHashTable ht, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "hasKey");

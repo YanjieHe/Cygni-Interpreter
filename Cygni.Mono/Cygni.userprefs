@@ -1,12 +1,37 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Settings/GlobalSettings.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Executors/InteractiveExecutor.cs">
     <Files>
-      <File FileName="Cygni/Libraries/BasicLib.cs" Line="3" Column="1" />
-      <File FileName="Cygni/Libraries/StrLib.cs" Line="17" Column="35" />
-      <File FileName="Cygni/DataTypes/DynValue.cs" Line="332" Column="1" />
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="40" Column="28" />
+      <File FileName="Cygni/DataTypes/DynHashTable.cs" Line="16" Column="9" />
+      <File FileName="Cygni/Libraries/BasicLib.cs" Line="126" Column="1" />
+      <File FileName="Cygni/Libraries/HashTableLib.cs" Line="17" Column="1" />
+      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="28" Column="13" />
+      <File FileName="Cygni/Libraries/ListLib.cs" Line="80" Column="3" />
+      <File FileName="Cygni/Executors/Engine.cs" Line="1" Column="1" />
+      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="46" Column="55" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Cygni" expanded="True">
+            <Node name="Cygni" expanded="True">
+              <Node name="AST" expanded="True">
+                <Node name="Visitors" expanded="True" />
+              </Node>
+              <Node name="DataTypes" expanded="True" />
+              <Node name="Executors" expanded="True">
+                <Node name="InteractiveExecutor.cs" selected="True" />
+              </Node>
+              <Node name="Lexical" expanded="True">
+                <Node name="Tokens" expanded="True" />
+              </Node>
+              <Node name="Libraries" expanded="True" />
+              <Node name="Settings" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

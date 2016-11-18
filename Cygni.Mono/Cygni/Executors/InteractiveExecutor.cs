@@ -42,8 +42,10 @@ namespace Cygni.Executors
 					Console.ForegroundColor = ConsoleColor.Gray;
 					Start:
 					string line = Console.ReadLine ();
-					if (re_exit.IsMatch (line)) // If user input 'exit', the interactive mode ends.
+					if (re_exit.IsMatch (line)){ // If user input 'exit', the interactive mode ends.
+						Console.WriteLine("Good bye. Have a nice day!");
 						break;
+					}
 					list.AddLast (line);
 					string code = string.Join ("\n", list);
 					var state = TryParse (code);

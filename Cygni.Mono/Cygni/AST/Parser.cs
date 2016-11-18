@@ -386,7 +386,6 @@ namespace Cygni.AST
 						throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
 					}
 					Move ();
-					//return ASTNode.Invoke (x, list);
 					x = ASTNode.Invoke (x, list);
 					continue;
 				}
@@ -462,22 +461,45 @@ namespace Cygni.AST
 				Move ();
 				return x;
 			case Tag.LeftBracket:
-				Move ();
-				var list = new List<ASTNode> ();
-				while (look.tag != Tag.RightBracket) {
-					list.Add (Bool ());
-					if (look.tag == Tag.Comma) {
-						Move ();
-						continue;
-					}
-					if (look.tag == Tag.RightBracket)
-						break;
+				{
+					Move ();
+					var list = new List<ASTNode> ();
+					while (look.tag != Tag.RightBracket) {
+						list.Add (Bool ());
+						if (look.tag == Tag.Comma) {
+							Move ();
+							continue;
+						}
+						if (look.tag == Tag.RightBracket)
+							break;
 						
-					throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
+						throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
+					}
+					Move ();
+					x = ASTNode.ListInit (list);
+					return x;
 				}
-				Move ();
-				x = ASTNode.ListInit (list);
-				return x;
+			case Tag.LeftBrace:
+				{
+					Move ();
+					var list = new List<ASTNode> ();
+					while(look.tag != Tag.RightBrace) {
+						list.Add(Bool());
+						Match (Tag.Colon);
+						list.Add (Bool ());
+						if (look.tag == Tag.Comma) {
+							Move ();
+							continue;
+						}
+						if (look.tag == Tag.RightBrace)
+							break;
+						
+						throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
+					}
+					Move ();
+					x = ASTNode.HashTableInit (list);
+					return x;
+				}
 			default:
 				throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
 			}

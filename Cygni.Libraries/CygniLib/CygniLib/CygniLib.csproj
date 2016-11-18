@@ -2,14 +2,14 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{7EE34D8A-89A1-4353-A52A-7D90EA591F2F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Cygni_CLI</RootNamespace>
-    <AssemblyName>Cygni_CLI</AssemblyName>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{05EDB2F3-4575-4E85-BD8C-3455646BC363}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CygniLib</RootNamespace>
+    <AssemblyName>CygniLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -17,30 +17,35 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Cygni">
       <HintPath>..\..\..\Cygni.Mono\Cygni\bin\Debug\Cygni.dll</HintPath>
     </Reference>
-    <Reference Include="CygniLib">
-      <HintPath>..\..\..\Cygni.Libraries\CygniLib\CygniLib\bin\Debug\CygniLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IO\io_funcs.cs" />
+    <Compile Include="IO\reader.cs" />
+    <Compile Include="IO\writer.cs" />
+    <Compile Include="Collections\array.cs" />
+    <Compile Include="Collections\array2.cs" />
+    <Compile Include="Collections\collections_funcs.cs" />
+    <Compile Include="Collections\stack.cs" />
+    <Compile Include="Collections\queue.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="IO\" />
+  </ItemGroup>
 </Project>

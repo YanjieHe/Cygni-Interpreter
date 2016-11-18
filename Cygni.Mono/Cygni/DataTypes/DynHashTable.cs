@@ -47,11 +47,11 @@ namespace Cygni.DataTypes
 		{
 			switch (key.type) {
 			case DataType.Number:
-				Add ((int)(double)key.Value, value);
+				base.Add ((int)(double)key.Value, value);
 				return;
 			case DataType.Boolean:
 			case DataType.String:
-				Add (key.Value, value);
+				base.Add (key.Value, value);
 				return;
 			default :
 				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
@@ -62,13 +62,13 @@ namespace Cygni.DataTypes
 		{
 			StringBuilder s = new StringBuilder ();
 			var iterator = base.GetEnumerator();
-			s.Append ("[ ");
+			s.Append ("{ ");
 			if (iterator.MoveNext ())
 				s.Append (iterator.Current);
 			while (iterator.MoveNext()) {
 				s.Append (',').Append (iterator.Current);
 			}
-			s.Append (" ]");
+			s.Append (" }");
 			return s.ToString ();
 		}
 
@@ -77,7 +77,15 @@ namespace Cygni.DataTypes
 			var iterator = base.GetEnumerator();
 			while(iterator.MoveNext()){
 				var kvp = new DynList (2);
-				kvp.Add (DynValue.FromObject (iterator.Current.Key));
+				var key = iterator.Current.Key;
+				if (key is int)
+					kvp.Add ((double)(int)key);
+				else if (key is bool)
+					kvp.Add ((bool)key);
+				else if (key is string)
+					kvp.Add (key as string);
+				else
+					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
 				kvp.Add (iterator.Current.Value);
 				yield return DynValue.FromList(kvp);
 			}

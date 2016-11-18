@@ -1,0 +1,32 @@
+﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/queue.cs">
+    <Files>
+      <File FileName="CygniLib/IO/io_funcs.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/IO/reader.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/IO/writer.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="25" Column="51" />
+      <File FileName="CygniLib/Collections/array2.cs" Line="48" Column="24" />
+      <File FileName="CygniLib/Collections/queue.cs" Line="22" Column="59" />
+      <File FileName="CygniLib/Collections/stack.cs" Line="2" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CygniLib" expanded="True">
+            <Node name="CygniLib" expanded="True">
+              <Node name="Collections" expanded="True">
+                <Node name="queue.cs" selected="True" />
+              </Node>
+              <Node name="IO" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -143,6 +143,7 @@ namespace Cygni.Lexical
 			case ',':
 			case ';':
 			case '.':
+			case ':':
 				return Token.OfIdentifier (char.ToString (((char)GetChar ())));
 			case '\n':
 				lineNumber++;

@@ -35,6 +35,7 @@ namespace Cygni.Settings
 			{ "len",BasicLib.len },
 			{ "toNumber",BasicLib.toNumber },
 			{ "toString",BasicLib.toString},
+			{ "toList",BasicLib.toList},
 			{ "tryCatch",BasicLib.tryCatch},
 
 			{"strcat",StrLib.strcat},
@@ -56,7 +57,6 @@ namespace Cygni.Settings
 			{ "floor",MathLib.floor },
 			{ "round",MathLib.round },
 
-			{ "hashtable",HashTableLib.hashtable },
 		};
 		public static Dictionary<string,DynValue> BuiltInVariables 
 			= new Dictionary<string, DynValue> {

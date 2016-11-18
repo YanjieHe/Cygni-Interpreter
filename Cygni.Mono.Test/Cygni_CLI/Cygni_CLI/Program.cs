@@ -1,5 +1,6 @@
 ﻿using System;
 using Cygni.Executors;
+using Cygni.Settings;
 namespace Cygni_CLI
 {
 	class MainClass
@@ -7,6 +8,7 @@ namespace Cygni_CLI
 		public static void Main (string[] args)
 		{
 			Engine engine = Engine.CreateInstance ();
+			// GlobalSettings.CompleteErrorOutput = true;
 			engine.ExecuteInConsole ();
 		}
 	}

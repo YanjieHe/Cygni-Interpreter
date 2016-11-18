@@ -4,3 +4,4 @@
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_CLI/Cygni_CLI/obj/x86/Debug/Cygni_CLI.exe
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_CLI/Cygni_CLI/obj/x86/Debug/Cygni_CLI.exe.mdb
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_CLI/Cygni_CLI/bin/Debug/Cygni.dll
+/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/Cygni_CLI/Cygni_CLI/bin/Debug/CygniLib.dll

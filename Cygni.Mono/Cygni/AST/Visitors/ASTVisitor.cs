@@ -60,6 +60,10 @@ namespace Cygni.AST.Visitors
 			foreach (var item in listInitEx._List) 
 				item.Accept (this);
 		}
+		internal virtual void Visit(HashTableInitEx hashTableInitEx){
+			foreach (var item in hashTableInitEx._List) 
+				item.Accept (this);
+		}
 		internal virtual void Visit(NameEx nameEx){
 			return;
 		}
