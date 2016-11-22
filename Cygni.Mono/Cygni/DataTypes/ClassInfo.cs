@@ -87,7 +87,7 @@ namespace Cygni.DataTypes
 					if (parent.classScope.TryGetValue (fieldName, out value))
 						return value;
 				}
-			throw RuntimeException.NotDefined (fieldName);
+			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
 
 #region IComparable implementation

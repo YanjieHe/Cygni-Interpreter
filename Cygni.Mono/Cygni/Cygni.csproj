@@ -65,7 +65,6 @@
     <Compile Include="AST\WhileEx.cs" />
     <Compile Include="DataTypes\ClassInfo.cs" />
     <Compile Include="DataTypes\DataType.cs" />
-    <Compile Include="DataTypes\DynHashTable.cs" />
     <Compile Include="DataTypes\DynList.cs" />
     <Compile Include="DataTypes\DynValue.cs" />
     <Compile Include="DataTypes\Function.cs" />
@@ -99,7 +98,8 @@
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
     <Compile Include="AST\ForEachEx.cs" />
     <Compile Include="AST\Scopes\BuiltInScope.cs" />
-    <Compile Include="AST\HashTableInitEx.cs" />
+    <Compile Include="DataTypes\DynDictionary.cs" />
+    <Compile Include="AST\DictionaryInitEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

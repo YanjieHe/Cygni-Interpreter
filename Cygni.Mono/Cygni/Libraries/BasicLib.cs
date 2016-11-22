@@ -89,9 +89,9 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue typeinfo (DynValue[] args)
+		public static DynValue getType (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "typeinfo");
+			RuntimeException.FuncArgsCheck (args.Length == 1, "getType");
 			if (args [0].type != DataType.UserData)
 				return DynValue.FromString (args [0].type.ToString ());
 			else

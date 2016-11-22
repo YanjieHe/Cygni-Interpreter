@@ -26,7 +26,7 @@ namespace Cygni.AST
 		Return,
 		Command,
 		ListInit,
-		HashTableInit,
+		DictionaryInit,
 		Index,
 		ForEach,
 	}

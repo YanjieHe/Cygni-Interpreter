@@ -26,6 +26,9 @@ namespace Cygni.Errors
 		{
 			return new RuntimeException ("'{0}' is not defined.", name);
 		}
+		public static RuntimeException FieldNotExist(string target, string field){
+			return new RuntimeException ("'{0} does not have field '{1}'", target, field);
+		}
 
 		public static RuntimeException BadArgsNum (string funcName, int nArgs)
 		{
@@ -52,5 +55,6 @@ namespace Cygni.Errors
 			if (!condition)
 				throw new RuntimeException ("bad number of arguments for command '{0}'.", cmdName);
 		}
+
 	}
 }

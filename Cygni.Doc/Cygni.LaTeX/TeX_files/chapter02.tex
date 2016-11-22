@@ -1,7 +1,95 @@
-\chapter{Some small examples}
+\chapter{Core Cygni}
 Ok, if you have some programming experience before, I think maybe you don't have to go through all of the contents. Some small examples may be more helpful. Let's begin.
 
+\section{Your First Cygni Program}
+Here is a simple script which writes message to the screen.
 
+\subsection{The Code}
+\begin{lstlisting}
+print("Hello Cygni!")
+\end{lstlisting}
+
+\subsection{Running the Program}
+Input the previous code in the interpreter, then you will see the input "Hello Cygni!" in the screen.
+\section{Variables}
+The variables in Cygni are dynamic, which means they can be any type, such as number, boolean, string, etc.
+
+You declare variables in Cygni by simply assigning values to them:
+\begin{lstlisting}
+a = 12
+b = true
+\end{lstlisting}
+
+You may assign one value to several variables:
+\begin{lstlisting}
+a = b = 89.32
+\end{lstlisting}
+
+\section{Variable Scope}
+The scope of a variable is the region of code from which variable can be accessed. In Cygni, the scope is determined by the following rules:
+\begin{itemize}
+	\item A class, which contains fields, has its own scope.
+	\item A function, which contains local variables, has its own scope.
+	\item If a variable is not defined in a class or a scope, then it is a global variable, which stays in the global scope.
+	\item Built-in variables are in the built-in scope, which is immutable in the runtime.
+\end{itemize}
+
+The rule of finding variables is: local -> field -> global -> built-in
+
+\section{Types}
+See table \ref{predefined_types}.
+\begin{table}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Name & CTS Type & Description & Range(Approximate)  \\ 
+		\hline
+		number & System.Double & 64-bit, double precision floating point & $ \pm 4.9 \times 10 ^ {-324} \sim 1.7 \times 10 ^ {308} $ \\
+		boolean & System.Boolean & Represents true or false & true or false \\
+		string & System.String & Unicode character string & \\
+		\hline
+	\end{tabular}
+	\label{predefined_types}
+	\caption{Predefined Types}
+\end{table}
+
+\subsection{The number type}
+The number type is actually the double type in C\#.
+\subsection{The boolean type}
+The boolean type can only be true or false.
+\subsection{The string type}
+Literals of the string type should be enclosed by '' or "". Backslashes('\\') represents escape sequence. If you write symbol '@' at the beginning of the sentence, the '\\' will lose its meanning.
+\begin{lstlisting}
+s1 = "a string"
+s2 = 'another string'
+s3 = @'c:\test.txt' # If literals start with '@', the backslashes will lose its meanning
+s4 = 'c:\\test.txt' # The 's4' equals to 's3;
+\end{lstlisting}
+
+\section{Flow Control}
+\subsection{Conditional Statement: The if Statement}
+The syntax of 'if' statement is as followings:
+\begin{lstlisting}
+if condition {
+	# Do something
+} else {
+	# Do something
+}
+\end{lstlisting}
+The final 'else' statement is not a must. If you have several branches, it is convenient to use 'elif' statement for represent them. 
+\begin{lstlisting}
+if condition {
+	# Branch One 
+} elif {
+	# Branch Two 
+} elif {
+	# Branch Three
+} 
+\end{lstlisting}
+
+\subsection{Loops}
+\subsubsection{The for loop} 
+\subsubsection{The foreach loop}
+\subsubsection{The while loop}
 \section{Factorial}
 This is a very traditional example. 
 

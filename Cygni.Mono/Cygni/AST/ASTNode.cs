@@ -166,8 +166,8 @@ namespace Cygni.AST
 		{
 			return new ListInitEx(list);
 		}
-		public static ASTNode HashTableInit(List<ASTNode> list){
-			return new HashTableInitEx (list);
+		public static ASTNode DictionaryInit(List<ASTNode> list){
+			return new DictionaryInitEx (list);
 		}
 		public static ASTNode Index(ASTNode list, List<ASTNode>indexes)
 		{

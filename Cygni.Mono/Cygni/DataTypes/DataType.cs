@@ -15,7 +15,7 @@ namespace Cygni.DataTypes
 		NativeFunction,
 	
 		List,
-		HashTable,
+		Dictionary,
 		
 		Struct,
 		Class,

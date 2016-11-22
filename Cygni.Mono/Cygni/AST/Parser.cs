@@ -497,7 +497,7 @@ namespace Cygni.AST
 						throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
 					}
 					Move ();
-					x = ASTNode.HashTableInit (list);
+					x = ASTNode.DictionaryInit (list);
 					return x;
 				}
 			default:

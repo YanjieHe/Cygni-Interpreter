@@ -8,13 +8,13 @@ using Cygni.Libraries;
 namespace Cygni.DataTypes
 {
 	/// <summary>
-	/// Description of DynHashTable.
+	/// Description of DynDictionary.
 	/// </summary>
-	public sealed class DynHashTable: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot
+	public sealed class DynDictionary: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot
 	{
 		public DynValue this [DynValue[] indexes] {
 			get { 
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "hashtable");
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Dictionary");
 				var key = indexes [0];
 				switch (key.type) {
 				case DataType.Number:
@@ -23,11 +23,11 @@ namespace Cygni.DataTypes
 				case DataType.String:
 					return this [key.Value];
 				default :
-					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 				}
 			}
 			set { 
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "hashtable");
+				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Dictionary");
 				var key = indexes [0];
 				switch (key.type) {
 				case DataType.Number:
@@ -38,7 +38,7 @@ namespace Cygni.DataTypes
 					this [key.Value] = value;
 					return;
 				default :
-					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 				}
 			}
 		}
@@ -54,7 +54,7 @@ namespace Cygni.DataTypes
 				base.Add (key.Value, value);
 				return;
 			default :
-				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+				throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace Cygni.DataTypes
 				else if (key is string)
 					kvp.Add (key as string);
 				else
-					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 				kvp.Add (iterator.Current.Value);
 				yield return DynValue.FromList(kvp);
 			}
@@ -101,23 +101,23 @@ namespace Cygni.DataTypes
 		{
 			switch (fieldName) {
 			case "hasKey":
-				return DynValue.FromDelegate ((args) => HashTableLib.hasKey (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.hasKey (this, args));
 			case "hasValue":
-				return DynValue.FromDelegate ((args) => HashTableLib.hasValue (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.hasValue (this, args));
 			case "remove":
-				return DynValue.FromDelegate ((args) => HashTableLib.remove (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.remove (this, args));
 			case "count":
 				return (double)this.Count;
 			case "keys":
-				return DynValue.FromDelegate ((args) => HashTableLib.keys (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.keys (this, args));
 			case "values":
-				return DynValue.FromDelegate ((args) => HashTableLib.values (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.values (this, args));
 			case "add":
-				return DynValue.FromDelegate ((args) => HashTableLib.add (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.add (this, args));
 			case "clear":
-				return DynValue.FromDelegate ((args) => HashTableLib.clear (this, args));
+				return DynValue.FromDelegate ((args) => DictionaryLib.clear (this, args));
 			default:
-				throw RuntimeException.NotDefined (fieldName);
+				throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 			}
 		}
 		public string[] FieldNames{
@@ -127,7 +127,7 @@ namespace Cygni.DataTypes
 				};}}
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.NotDefined (fieldName);
+				throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 		}
 
 	}

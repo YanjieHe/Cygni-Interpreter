@@ -10,11 +10,11 @@ using Cygni.Extensions;
 namespace Cygni.Libraries
 {
 	/// <summary>
-	/// Description of HashTableLib.
+	/// Description of DictionaryLib.
 	/// </summary>
-	public static class HashTableLib
+	public static class DictionaryLib
 	{
-		public static DynValue hasKey (DynHashTable ht, DynValue[] args)
+		public static DynValue hasKey (DynDictionary ht, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "hasKey");
 			var key = args [0];
@@ -25,18 +25,18 @@ namespace Cygni.Libraries
 			case DataType.String:
 				return ht.ContainsKey (key.Value);
 			default:
-				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+				throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 			}
 		}
 
-		public static DynValue hasValue (DynHashTable ht, DynValue[] args)
+		public static DynValue hasValue (DynDictionary ht, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "hasValue");
 			var value = args [0];
 			return ht.ContainsValue (value);
 		}
 
-		public static DynValue remove (DynHashTable ht, DynValue[] args)
+		public static DynValue remove (DynDictionary ht, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "hasValue");
 			var key = args [0];
@@ -47,11 +47,11 @@ namespace Cygni.Libraries
 			case DataType.String:
 				return ht.Remove (key.Value);
 			default:
-				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+				throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 			}
 		}
 
-		public static DynValue keys (DynHashTable ht, DynValue[] args)
+		public static DynValue keys (DynDictionary ht, DynValue[] args)
 		{
 			int n = ht.Count;
 			DynList keys = new DynList(n);
@@ -63,12 +63,12 @@ namespace Cygni.Libraries
 				else if (key is string)
 					keys.Add(key as string);
 				else
-					throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 			}
 			return keys;
 		}
 
-		public static DynValue values (DynHashTable ht, DynValue[] args)
+		public static DynValue values (DynDictionary ht, DynValue[] args)
 		{
 			int n = ht.Count;
 			DynList values = new DynList(n);
@@ -77,7 +77,7 @@ namespace Cygni.Libraries
 			}
 			return values;
 		}
-		public static DynValue add (DynHashTable ht, DynValue[] args)
+		public static DynValue add (DynDictionary ht, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "add");
 			var key = args [0];
@@ -91,11 +91,11 @@ namespace Cygni.Libraries
 				ht.Add (key.Value, value);
 				break;
 			default:
-				throw new NotSupportedException ("HashTable only takes number, boolean and string as keys.");
+				throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 			}
 			return DynValue.Null;
 		}
-		public static DynValue clear (DynHashTable ht, DynValue[] args)
+		public static DynValue clear (DynDictionary ht, DynValue[] args)
 		{
 			ht.Clear ();
 			return DynValue.Null;

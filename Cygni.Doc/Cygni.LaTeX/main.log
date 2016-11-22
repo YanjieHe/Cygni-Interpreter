@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.10.20)  10 NOV 2016 14:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.10.20)  22 NOV 2016 23:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -393,7 +393,7 @@ Package: listings 2015/06/04 1.6 (Carsten Heinz)
  (./main.aux
 (./TeX_files/chapter01.aux) (./TeX_files/chapter02.aux)
 (./TeX_files/chapter03.aux) (./TeX_files/chapter04.aux)
-(./TeX_files/chapter05.aux))
+(./TeX_files/chapter05.aux) (./TeX_files/chapter06.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
@@ -528,20 +528,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--6
 
 ]
 Chapter 2.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 10.
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+[3]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 31.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 15.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
+Overfull \hbox (113.9062pt too wide) in paragraph at lines 42--52
+[][]
+ []
+
+[4]
+Overfull \hbox (230.39893pt too wide) in paragraph at lines 64--65
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+] 
+ []
+
+[5]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 103.
+
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 15.
- [3]) [4]
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 103.
+) [6]
 \openout2 = `./TeX_files/chapter03.aux'.
 
 
@@ -550,63 +563,65 @@ Chapter 3.
 
 Underfull \vbox (badness 1142) has occurred while \output is active []
 
- [5
+ [7
 
 
 
 ]
-[6]) [7]
+[8]) [9]
 \openout2 = `./TeX_files/chapter04.aux'.
 
- (./TeX_files/chapter04.tex [8
+ (./TeX_files/chapter04.tex [10
 
 
 
 ]
 Chapter 4.
-[9]) [10]
+[11]) [12]
 \openout2 = `./TeX_files/chapter05.aux'.
 
  (./TeX_files/chapter05.tex
 Chapter 5.
-[11
+[13
 
 
 
-] [12]) [13]
+] [14]) [15]
 \openout2 = `./TeX_files/chapter06.aux'.
 
- (./TeX_files/chapter06.tex [14
+ (./TeX_files/chapter06.tex [16
 
 
 
 ]
 Chapter 6.
-) [15] [16
+) [17] [18
 
 
 ] (./main.aux (./TeX_files/chapter01.aux) (./TeX_files/chapter02.aux) (./TeX_fi
 les/chapter03.aux) (./TeX_files/chapter04.aux)
 (./TeX_files/chapter05.aux) (./TeX_files/chapter06.aux)) ) 
 Here is how much of TeX's memory you used:
- 3497 strings out of 494497
- 46527 string characters out of 6172399
- 109897 words of memory out of 5000000
- 6848 multiletter control sequences out of 15000+600000
+ 3502 strings out of 494497
+ 46636 string characters out of 6172399
+ 113191 words of memory out of 5000000
+ 6851 multiletter control sequences out of 15000+600000
  9766 words of font info for 34 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 38i,6n,32p,283b,1545s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,10n,32p,283b,1547s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy10.pfb>
-Output written on main.pdf (20 pages, 90563 bytes).
+ic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8
+.pfb>
+Output written on main.pdf (22 pages, 110044 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 64 compressed objects within 1 object stream
+ 107 PDF objects out of 1000 (max. 8388607)
+ 74 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

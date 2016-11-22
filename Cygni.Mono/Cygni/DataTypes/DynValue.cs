@@ -68,9 +68,9 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.List, list);
 		}
 
-		public static implicit operator DynValue  (DynHashTable hashTable)
+		public static implicit operator DynValue  (DynDictionary dictionary)
 		{
-			return new DynValue (DataType.HashTable, hashTable);
+			return new DynValue (DataType.Dictionary, dictionary);
 		}
 
 		public static implicit operator DynValue (NativeFunction f)
@@ -130,9 +130,9 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.List, list);
 		}
 
-		public static DynValue FromHashTable (DynHashTable hashTable)
+		public static DynValue FromDictionary (DynDictionary dictionary)
 		{
-			return new DynValue (DataType.HashTable, hashTable);
+			return new DynValue (DataType.Dictionary, dictionary);
 		}
 
 		public static DynValue FromUserData (object value)

@@ -1,2 +1,0 @@
-loaddll "CygniLibraries.dll","CygniLibraries.Collections.collections_funcs"
-# dofile './lib/collections/stack'

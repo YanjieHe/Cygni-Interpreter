@@ -9,22 +9,22 @@ using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
-	public class HashTableInitEx:ASTNode
+	public class DictionaryInitEx:ASTNode
 	{
-		public override NodeType type { get { return NodeType.HashTableInit; } }
+		public override NodeType type { get { return NodeType.DictionaryInit; } }
 		List<ASTNode> list;
 		public List<ASTNode> _List { get { return this.list; } }
-		public HashTableInitEx (List<ASTNode> list)
+		public DictionaryInitEx (List<ASTNode> list)
 		{
 			this.list = list;
 		}
 		public override DynValue Eval (IScope scope)
 		{
-			DynHashTable ht = new DynHashTable ();
+			DynDictionary ht = new DynDictionary ();
 			int n = list.Count - 1;
 			for(int i = 0; i < n;i += 2)
 				ht.Add (list [i].Eval (scope), list [i + 1].Eval (scope));
-			return DynValue.FromHashTable (ht);
+			return DynValue.FromDictionary (ht);
 		}
 		internal override void Accept (ASTVisitor visitor)
 		{

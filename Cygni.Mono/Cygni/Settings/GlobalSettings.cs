@@ -22,7 +22,7 @@ namespace Cygni.Settings
 			{ "print",BasicLib.print },
 			{ "printf",BasicLib.printf },
 			{ "cast",BasicLib.cast },
-			{ "typeinfo",BasicLib.typeinfo },
+			{ "getType",BasicLib.getType },
 			{ "quiet",BasicLib.quiet },
 			{ "struct",BasicLib.Struct },
 			{ "scan",BasicLib.scan },

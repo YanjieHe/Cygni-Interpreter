@@ -32,6 +32,8 @@
     <Reference Include="Cygni">
       <HintPath>..\..\..\Cygni.Mono\Cygni\bin\Debug\Cygni.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -45,10 +47,13 @@
     <Compile Include="Collections\queue.cs" />
     <Compile Include="random\random.cs" />
     <Compile Include="random\random_funcs.cs" />
+    <Compile Include="data\datatable.cs" />
+    <Compile Include="data\data_funcs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
     <Folder Include="random\" />
+    <Folder Include="data\" />
   </ItemGroup>
 </Project>

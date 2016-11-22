@@ -107,8 +107,10 @@ namespace Cygni.Libraries
 			
 			bool quiet = GlobalSettings.Quiet;
 			GlobalSettings.Quiet = true;
-
-			var executor = new CodeFileExecutor (scope as BasicScope, currentDir + "/lib/" + moduleName, encoding);
+			string filePath = currentDir + "/lib/" + moduleName;
+			if (!File.Exists (filePath))
+				throw new RuntimeException ("No module named '{0}.", moduleName);
+			var executor = new CodeFileExecutor (scope as BasicScope,filePath, encoding);
 			GlobalSettings.Quiet = quiet;
 
 			return executor.Run ();
