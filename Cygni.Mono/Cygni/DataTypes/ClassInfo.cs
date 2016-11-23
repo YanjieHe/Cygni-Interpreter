@@ -17,15 +17,15 @@ namespace Cygni.DataTypes
 		readonly string name;
 		//BlockEx body;
 		readonly NestedScope classScope;
-		readonly ClassInfo[] parents;
+		readonly ClassInfo parent;
 		readonly bool IsInstance;
 
 		public ClassInfo (string name, NestedScope classScope, 
-			BlockEx body = null, ClassInfo[] parents = null, bool IsInstance = false)
+			BlockEx body = null, ClassInfo parent = null, bool IsInstance = false)
 		{
 			this.name = name;
 			this.classScope = classScope;
-			this.parents = parents;
+			this.parent = parent;
 			this.IsInstance = IsInstance;
 			//this.body = body;
 			if(!IsInstance)
@@ -37,24 +37,20 @@ namespace Cygni.DataTypes
 			var newScope = classScope.Clone();
 			//var newScope = new NestedScope(classScope.Parent);
 			//body.Eval (newScope);
-			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parents: parents, IsInstance: true);
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* define 'this' */
-			if (this.HasParents)
-				newClass.InitParents ();/* initialize parents */
+			if (this.parent != null) {
+				classScope.Put ("base", DynValue.FromClass (parent));
+				/* add parent class pointer */
+				/* initialize parent */
+			}
 			if (newScope.HasName ("__INIT__")) /* initialize */
 				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 		}
 
-		void InitParents ()
-		{
-			for (int i = 0; i < parents.Length; i++) {
-				classScope.Put (parents [i].name, DynValue.FromClass (parents [i]));
-				/* add parent class pointers */
-			}
-		}
-		public bool HasParents {
-			get { return this.parents != null; }
+		public bool HasParent {
+			get { return this.parent != null; }
 		}
 
 		public DynValue GetByDot (string fieldName)
@@ -82,11 +78,8 @@ namespace Cygni.DataTypes
 			DynValue value;
 			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
 				return value;
-			if (parents != null)
-				foreach (var parent in parents) { /* Find in parents */
-					if (parent.classScope.TryGetValue (fieldName, out value))
-						return value;
-				}
+			if (parent != null)
+				return parent.Search (fieldName);
 			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
 
@@ -193,7 +186,7 @@ namespace Cygni.DataTypes
 		public ClassInfo Update(IScope scope) {
 			var newScope = classScope.Clone ();
 			newScope.SetParent (scope);
-			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parents: parents, IsInstance: true);
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
 			return newClass;
 		}
 	}

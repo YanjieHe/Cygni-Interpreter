@@ -200,22 +200,10 @@ namespace Cygni.AST
 			Match (Tag.ID);
 			if (look.tag == Tag.Colon) { /* Inheritance */
 				Move ();
-				var parents = new List<string> ();
-				while (true) {
-					if (look.tag == Tag.ID) {
-						parents.Add (look.ToString ());
-						Move ();
-						if (look.tag == Tag.Comma) {
-							Move ();
-							continue;
-						}
-						if (look.tag == Tag.LeftBrace)
-							break;
-					}
-					throw new SyntaxException ("line {0}: Wrong parent classes for class '{1}'", lexer.LineNumber, name);
-				}
+				var parent = look.ToString ();
+				Match (Tag.ID);
 				var body = Block ();
-				return ASTNode.Class (name, body, parents.ToArray ());
+				return ASTNode.Class (name, body, parent);
 			} else {
 				var body = Block ();
 				return ASTNode.Class (name, body);

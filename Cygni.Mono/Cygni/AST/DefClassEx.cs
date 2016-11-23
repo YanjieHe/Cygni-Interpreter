@@ -19,35 +19,28 @@ namespace Cygni.AST
 		string name;
 		BlockEx body;
 		public BlockEx Body{ get { return body; } }
-		string[] parentsName;
+		string parentName;
 		public  override NodeType type { get { return NodeType.DefClass; } }
 		
-		public DefClassEx(string name, BlockEx body, string[] parentsName)
+		public DefClassEx(string name, BlockEx body, string parentName)
 		{
 			this.name = name;
 			this.body = body;
-			this.parentsName = parentsName;
+			this.parentName = parentName;
 		}
 		public override DynValue Eval(IScope scope)
 		{
 			var newScope = new NestedScope(scope);
 			body.Eval(newScope);
-			if (parentsName == null) {
-				var constructor = DynValue.FromClass(new ClassInfo(name: name,classScope: newScope,body: body,parents: null, IsInstance: false));
-				return scope.Put(name, constructor);
-			} else {
-				var parentsClasses = new ClassInfo[parentsName.Length];
-				
-				for (int i = 0; i < parentsName.Length; i++) {
-					var _class = scope.Get(parentsName[i]);
-					if (_class.type != DataType.Class)
-						throw RuntimeException.NotDefined(parentsName[i]);
-					parentsClasses[i] = _class.Value as ClassInfo;
-				}
-
-				var constructor = DynValue.FromClass(new ClassInfo(name: name,classScope: newScope,body: body,parents: parentsClasses, IsInstance: false));
-				return scope.Put(name, constructor);
+			ClassInfo parentClass = null;
+			if (parentName != null) {
+				DynValue value = scope.Get (parentName);
+				if (value.type != DataType.Class)
+					throw  RuntimeException.NotDefined (parentName);
+				parentClass = value.As<ClassInfo> ();
 			}
+			var constructor = DynValue.FromClass(new ClassInfo(name: name,classScope: newScope,body: body,parent: parentClass, IsInstance: false));
+				return scope.Put(name, constructor);
 		}
 		internal override void Accept (ASTVisitor visitor)
 		{

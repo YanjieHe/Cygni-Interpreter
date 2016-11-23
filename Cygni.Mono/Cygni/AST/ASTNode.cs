@@ -154,7 +154,7 @@ namespace Cygni.AST
 		{
 			return new DefFuncEx(name, parameters, body);
 		}
-		public static ASTNode Class(string name, BlockEx body, string[] parent = null)
+		public static ASTNode Class(string name, BlockEx body, string parent = null)
 		{
 			return new DefClassEx(name, body, parent);
 		}
