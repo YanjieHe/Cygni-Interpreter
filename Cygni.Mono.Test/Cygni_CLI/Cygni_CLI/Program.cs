@@ -8,6 +8,11 @@ namespace Cygni_CLI
 		public static void Main (string[] args)
 		{
 			Engine engine = Engine.CreateInstance ();
+			if (args.Length == 1) {
+				string filePath = args [0];
+				engine.DoFile (filePath);
+				return;
+			}
 			// GlobalSettings.CompleteErrorOutput = true;
 			engine.ExecuteInConsole ();
 		}

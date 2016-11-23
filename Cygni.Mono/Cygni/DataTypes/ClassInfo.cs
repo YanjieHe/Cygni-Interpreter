@@ -15,39 +15,66 @@ namespace Cygni.DataTypes
 	public sealed class ClassInfo: IComputable,IEnumerable<DynValue>, IComparable<DynValue>, IDot,IFunction
 	{
 		readonly string name;
-		//BlockEx body;
+		readonly BlockEx body;
 		readonly NestedScope classScope;
 		readonly ClassInfo parent;
 		readonly bool IsInstance;
 
 		public ClassInfo (string name, NestedScope classScope, 
-			BlockEx body = null, ClassInfo parent = null, bool IsInstance = false)
+				BlockEx body, ClassInfo parent = null, bool IsInstance = false)
 		{
 			this.name = name;
 			this.classScope = classScope;
 			this.parent = parent;
 			this.IsInstance = IsInstance;
-			//this.body = body;
-			if(!IsInstance)
-				body.Eval (classScope); 
+			this.body = body;
+			// if(!IsInstance)
+			// 	body.Eval (classScope); 
 		}
 
-		public ClassInfo Init (DynValue[] parameters)
+		public ClassInfo Init (DynValue[] parameters,bool NonArg = false)
 		{
-			var newScope = classScope.Clone();
-			//var newScope = new NestedScope(classScope.Parent);
-			//body.Eval (newScope);
-			var newClass = new ClassInfo (name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
-			newScope.Put ("this", DynValue.FromClass (newClass)); /* define 'this' */
+
+			var newScope = new NestedScope (classScope.Parent);
+			ClassInfo parentClass = parent;
 			if (this.parent != null) {
-				classScope.Put ("base", DynValue.FromClass (parent));
-				/* add parent class pointer */
-				/* initialize parent */
+				parentClass = this.parent.Init (null, true);
+				newScope.Put ("base", DynValue.FromClass (parentClass));
 			}
-			if (newScope.HasName ("__INIT__")) /* initialize */
+			body.Eval (newScope);
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: body, parent: parentClass, IsInstance: true);
+			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
+			if (!NonArg && newScope.HasName ("__INIT__")) /* initialize */
 				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
+
+			//var newScope = classScope.Clone();
+			/* var newScope = new NestedScope(classScope.Parent);
+			if (this.parent != null) {
+				var parentClass = parent.InitWithoutArgs (newScope);*/
+				//newScope.Put ("base", DynValue.FromClass (parentClass)); /* add parent class pointer */
+				//parent.body.Eval (newScope);
+			//}
+			/*body.Eval (newScope);
+			var newClass = new ClassInfo (name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
+			newScope.Put ("this", DynValue.FromClass (newClass)); */
+			/* define 'this' */
+//			if (newScope.HasName ("__INIT__")) /* initialize */
+/*				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
+			return newClass;*/
 		}
+
+		/* internal ClassInfo InitWithoutArgs(NestedScope scope){
+			//var newScope = new NestedScope(classScope.Parent);
+			if (this.parent != null) {
+				scope.Put("base", DynValue.FromClass(parent.InitWithoutArgs(scope)));
+				parent.body.Eval (scope);
+			}
+			body.Eval(scope);
+			var newClass = new ClassInfo(name: name, classScope: scope, body: body, parent: parent, IsInstance: true);
+			//newScope.Put("this", DynValue.FromClass(newClass));
+			return newClass;
+		} */
 
 		public bool HasParent {
 			get { return this.parent != null; }
@@ -55,7 +82,12 @@ namespace Cygni.DataTypes
 
 		public DynValue GetByDot (string fieldName)
 		{
-			return Search (fieldName);
+			DynValue value;
+			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
+				return value;
+			if (parent != null)
+				return parent.GetByDot (fieldName); /* Find in parent */
+			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
 		public string[] FieldNames {
 			get { 
@@ -73,26 +105,10 @@ namespace Cygni.DataTypes
 			return classScope.Put (fieldName, value);
 		}
 
-		DynValue Search (string fieldName)
-		{
-			DynValue value;
-			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
-				return value;
-			if (parent != null)
-				return parent.Search (fieldName);
-			throw RuntimeException.FieldNotExist (name, fieldName);
-		}
-
-#region IComparable implementation
-
 		public int CompareTo (DynValue other)
 		{
 			return (int)classScope.Get ("__COMPARETO__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
 		}
-
-#endregion
-
-#region IComputable implementation
 
 
 		public DynValue Add (DynValue other)
@@ -152,7 +168,6 @@ namespace Cygni.DataTypes
 			return (args) => DynValue.FromClass (this.Init (args));
 		}
 
-#endregion
 
 		public override string ToString ()
 		{
