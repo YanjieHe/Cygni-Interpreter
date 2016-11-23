@@ -28,8 +28,6 @@ namespace Cygni.DataTypes
 			this.parent = parent;
 			this.IsInstance = IsInstance;
 			this.body = body;
-			// if(!IsInstance)
-			// 	body.Eval (classScope); 
 		}
 
 		public ClassInfo Init (DynValue[] parameters,bool NonArg = false)
@@ -48,33 +46,8 @@ namespace Cygni.DataTypes
 				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 
-			//var newScope = classScope.Clone();
-			/* var newScope = new NestedScope(classScope.Parent);
-			if (this.parent != null) {
-				var parentClass = parent.InitWithoutArgs (newScope);*/
-				//newScope.Put ("base", DynValue.FromClass (parentClass)); /* add parent class pointer */
-				//parent.body.Eval (newScope);
-			//}
-			/*body.Eval (newScope);
-			var newClass = new ClassInfo (name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
-			newScope.Put ("this", DynValue.FromClass (newClass)); */
-			/* define 'this' */
-//			if (newScope.HasName ("__INIT__")) /* initialize */
-/*				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
-			return newClass;*/
 		}
 
-		/* internal ClassInfo InitWithoutArgs(NestedScope scope){
-			//var newScope = new NestedScope(classScope.Parent);
-			if (this.parent != null) {
-				scope.Put("base", DynValue.FromClass(parent.InitWithoutArgs(scope)));
-				parent.body.Eval (scope);
-			}
-			body.Eval(scope);
-			var newClass = new ClassInfo(name: name, classScope: scope, body: body, parent: parent, IsInstance: true);
-			//newScope.Put("this", DynValue.FromClass(newClass));
-			return newClass;
-		} */
 
 		public bool HasParent {
 			get { return this.parent != null; }
@@ -89,6 +62,7 @@ namespace Cygni.DataTypes
 				return parent.GetByDot (fieldName); /* Find in parent */
 			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
+
 		public string[] FieldNames {
 			get { 
 				string[] names = new string[classScope.Count];
@@ -100,6 +74,7 @@ namespace Cygni.DataTypes
 				return names;
 			}
 		}
+
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
 			return classScope.Put (fieldName, value);
@@ -107,55 +82,55 @@ namespace Cygni.DataTypes
 
 		public int CompareTo (DynValue other)
 		{
-			return (int)classScope.Get ("__COMPARETO__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
+			return (int)this.GetByDot("__COMPARETO__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
 		}
 
 
 		public DynValue Add (DynValue other)
 		{
-			return classScope.Get ("__ADD__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot("__ADD__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Subtract (DynValue other)
 		{
-			return classScope.Get ("__SUBTRACT__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot("__SUBTRACT__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Multiply (DynValue other)
 		{
-			return classScope.Get ("__MULTIPLY__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot("__MULTIPLY__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Divide (DynValue other)
 		{
-			return classScope.Get ("__DIVIDE__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot("__DIVIDE__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Modulo (DynValue other)
 		{
-			return classScope.Get ("__MODULO__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot("__MODULO__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Power (DynValue other)
 		{
-			return classScope.Get ("__POWER__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot("__POWER__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue UnaryPlus ()
 		{
-			return classScope.Get ("__UNARYPLUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
+			return this.GetByDot("__UNARYPLUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
 		}
 
 
 		public DynValue UnaryMinus ()
 		{
-			return classScope.Get ("__UNARYMINUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
+			return this.GetByDot("__UNARYMINUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
 		}
 
 		public DynValue DynInvoke (DynValue[] args)
@@ -172,7 +147,7 @@ namespace Cygni.DataTypes
 		public override string ToString ()
 		{
 			if (IsInstance && classScope.HasName ("__TOSTRING__"))
-				return classScope.Get ("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
+				return this.GetByDot("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			else
 				return string.Concat ("(class: ", name, ")");
 		}
@@ -180,13 +155,13 @@ namespace Cygni.DataTypes
 		public IEnumerator<DynValue> GetEnumerator ()
 		{
 			if (classScope.HasName ("__COLLECTION__")) {
-				var collection = classScope.Get ("__COLLECTION__").As<Function> ().Invoke ().As<IEnumerable<DynValue>> ();
+				var collection = this.GetByDot("__COLLECTION__").As<Function> ().Invoke ().As<IEnumerable<DynValue>> ();
 				foreach (var item in collection) 
 					yield return item;
 			} else {
-				classScope.Get ("__ITER__").As<Function> ().Invoke ();
-				var next = classScope.Get ("__Next__").As<Function> ().AsDelegate ();
-				var current = classScope.Get ("__CURRENT__").As<Function> ().AsDelegate ();
+				this.GetByDot("__ITER__").As<Function> ().Invoke ();
+				var next = this.GetByDot("__Next__").As<Function> ().AsDelegate ();
+				var current = this.GetByDot("__CURRENT__").As<Function> ().AsDelegate ();
 				while (next (new DynValue[0]).AsBoolean()) {
 					yield return current (new DynValue[0]);
 				}
