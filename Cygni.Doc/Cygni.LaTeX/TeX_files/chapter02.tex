@@ -88,20 +88,82 @@ if condition {
 
 \subsection{Loops}
 \subsubsection{The for loop} 
-\subsubsection{The foreach loop}
-\subsubsection{The while loop}
-\section{Factorial}
-This is a very traditional example. 
-
-
+Cygni for loop provides a mechanism for iterating from a given start to a given end. The syntax is
 \begin{lstlisting}
-def fact(n){
-	if n == 0 { 1 }
-	else { n * fact(n - 1) }
+for iterator = start, end {
+	# Do something
 }
-fact(10)
-=> 3628800
 \end{lstlisting}
+The iterator will increase one in performing one iteration. If you want to define the step rather than one, you may use the following syntax:
+\begin{lstlisting}
+for iterator = start, end, step {
+	# Do something
+}
+\end{lstlisting}
+If the step is negative, the negative step will be added to the iterator in every iteration. Note that the step can't be zero. Namely, the step is a non-zero integer. If the step is not an integer, it will be forced into an integer. Another important point is that you should not change the value of the iterator inside the loop.
+
+\subsubsection{The while loop}
+The syntax of while is
+\begin{lstlisting}
+while condition {
+	# Do something
+}
+\end{lstlisting}
+Unlike the for loop, the while loop are able to repeat a block of statements for a number of times that is not known before the loop begins. The condition only taks a boolean value.
+\subsubsection{The foreach loop}
+The foreach loop enables you to iterate through each item in a collection(If you don't know what is collection, don't worry. We will talk about it later). There are some built-in collections, such as lists, dictionaries, etc. The syntax is
+\begin{lstlisting}
+foreach item in collection {
+	# Do something
+}
+\end{lstlisting}
+Note that you should not change value inside the loop.
+
+\subsection{Jump Statements}
+\subsubsection{The break Statement}
+If the break statement occurs in a loop, the current loop will stop.
+\subsubsection{The continue Statement}
+The continue statement is similar to break. Nevertheless, the execution of the current loop will restart at the beginning of the next iteration of the loop, rather than stop.
+\subsubsection{The return Statement}
+The return statement is used to exit a function, returning control to the caller of the function. If the function don't return value, you may just write 'return null' instead.
+
+\section{Console I/O}
+There are two functions used to read and write in the console in most of the cases: print and input. 
+\begin{lstlisting}
+print('Always nice to see you, Waston.')
+\end{lstlisting}
+
+\section{Using Comments}
+The line comments start with symbol \#.
+\begin{lstlisting}
+# This is a line comment
+\end{lstlisting}
+
+\section{Rules for Identifiers}
+Identifiers are the names you give to variables, functions, structs, classes, and so on. Identifiers are case senstive. Here are the rules for identifiers you can use in Cygni:
+\begin{itemize}
+	\item They can contain letter , underscore or numeric characters. However, they must begin with a letter or underscore.
+	\item The Cygni keywords can't be used as identifiers.
+\end{itemize}
+
+The following list displays the Cygni reserved keywords.
+\begin{itemize}
+	\item if
+	\item else
+	\item elif
+	\item for
+	\item while
+	\item foreach
+	\item in
+	\item break
+	\item continue
+	\item return
+	\item def
+	\item class
+	\item true
+	\item false
+	\item null
+\end{itemize}
 
 \section{Position}
 Have a look at another example.

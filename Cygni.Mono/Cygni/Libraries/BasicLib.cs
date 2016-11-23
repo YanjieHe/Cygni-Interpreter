@@ -42,6 +42,19 @@ namespace Cygni.Libraries
 			return DynValue.Null;
 		}
 
+		public static DynValue input (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length <= 1, "input");
+			if (args.Length == 0){
+				return Console.ReadLine();
+			}
+			else {
+				Console.Write(args[0].Value);
+				return Console.ReadLine();
+			}
+		}
+
+
 		public static DynValue Struct (DynValue[] args)
 		{
 			if ((args.Length & 1) == 0) {/* even */

@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Errors/RuntimeException.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Libraries/BasicLib.cs">
     <Files>
-      <File FileName="Libraries/MathLib.cs" Line="18" Column="7" />
-      <File FileName="Libraries/BasicLib.cs" Line="1" Column="1" />
+      <File FileName="Libraries/MathLib.cs" Line="1" Column="1" />
+      <File FileName="Libraries/BasicLib.cs" Line="53" Column="11" />
       <File FileName="AST/BinaryEx.cs" Line="1" Column="1" />
       <File FileName="Errors/RuntimeException.cs" Line="53" Column="1" />
     </Files>

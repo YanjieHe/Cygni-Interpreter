@@ -21,6 +21,7 @@ namespace Cygni.Settings
 			= new Dictionary<string, Func<DynValue[], DynValue>> {
 			{ "print",BasicLib.print },
 			{ "printf",BasicLib.printf },
+			{ "input",BasicLib.input },
 			{ "cast",BasicLib.cast },
 			{ "getType",BasicLib.getType },
 			{ "quiet",BasicLib.quiet },

@@ -1,4 +1,12 @@
-\chapter{Built-in Types}
+\chapter{Functions}
+\section{Declaring Functions}
+In Cygni, the definition of a function consists of def keyword, followed by the function name, followed by a list of input arguments enclosed inparentheses, followed by the body of the function enclosed in curly braces:
+\begin{lstlisting}
+def FunctionName([parameters]) {
+	# Function Body
+}
+\end{lstlisting}
+The function will return the last value of the function body without the return statement. Generally, it is better to write the return statement to make the code more readable. If you don't want to return any value, just write "return null".
 \section{Basic Types}
 \subsection{Number}
 	Number can be integer or float.
