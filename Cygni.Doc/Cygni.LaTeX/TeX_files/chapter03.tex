@@ -1,6 +1,10 @@
 \chapter{Functions}
 \section{Declaring Functions}
-In Cygni, the definition of a function consists of def keyword, followed by the function name, followed by a list of input arguments enclosed inparentheses, followed by the body of the function enclosed in curly braces:
+In Cygni, the definition of a function consists of def keyword, 
+followed by the function name, 
+followed by a list of input arguments enclosed in parentheses, 
+followed by the body of the function enclosed in curly braces:
+
 \begin{lstlisting}
 def FunctionName([parameters]) {
 	# Function Body
@@ -9,27 +13,26 @@ def FunctionName([parameters]) {
 The function will return the last value of the function body without the return statement. Generally, it is better to write the return statement to make the code more readable. If you don't want to return any value, just write "return null".
 
 In Cygni, you can wrap C\# methods as Cygni functions, which are called the native functions. The usage of native functions is the same as Cygni functions.
-\section{Basic Types}
-\subsection{Number}
-	Number can be integer or float.
+\section{Invoking Functions}
 \begin{lstlisting}
-a = 10
-b = 99.2
+def square(x) {
+	return x * x
+}
+
+square(15)
 \end{lstlisting}
 
-\subsection{Boolean}
-	Boolean can be two values: true and false.
+\section{Recursion}
+A classical example is the computation of factorial.
 \begin{lstlisting}
-a = true
-b = false
-\end{lstlisting}
-
-\subsection{String}
-	You can use '' or "" to enclose a string.
-\begin{lstlisting}
-str1 = "Hello Cygni!"
-str1
-=> "Hello Cygni!"
+def fact(n) {
+	if n == 0 {
+		return 1
+	} else {
+		return n * fact(n - 1)
+	}
+}
+fact(10)
 \end{lstlisting}
 
 \section{Collection}

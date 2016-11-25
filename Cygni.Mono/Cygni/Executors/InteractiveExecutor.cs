@@ -43,7 +43,7 @@ namespace Cygni.Executors
 					Start:
 					string line = Console.ReadLine ();
 					if (re_exit.IsMatch (line)){ // If user input 'exit', the interactive mode ends.
-						Console.WriteLine("Good bye. Have a nice day!");
+						// Console.WriteLine("Good bye. Have a nice day!");
 						break;
 					}
 					list.AddLast (line);

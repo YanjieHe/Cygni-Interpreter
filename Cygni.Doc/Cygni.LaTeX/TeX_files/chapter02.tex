@@ -15,6 +15,7 @@ Input the previous code in the interpreter, then you will see the input "Hello C
 The variables in Cygni are dynamic, which means they can be any type, such as number, boolean, string, etc.
 
 You declare variables in Cygni by simply assigning values to them:
+
 \begin{lstlisting}
 a = 12
 b = true
@@ -30,7 +31,7 @@ The scope of a variable is the region of code from which variable can be accesse
 \begin{itemize}
 	\item A class, which contains fields, has its own scope.
 	\item A function, which contains local variables, has its own scope.
-	\item If a variable is not defined in a class or a scope, then it is a global variable, which stays in the global scope.
+	\item If a variable is defined in the program, but not defined in a class or a scope, then it is a global variable, which stays in the global scope.
 	\item Built-in variables are in the built-in scope, which is immutable in the runtime.
 \end{itemize}
 
@@ -39,6 +40,7 @@ The rule of finding variables is: local -> field -> global -> built-in
 \section{Types}
 See table \ref{predefined_types}.
 \begin{table}
+	\resizebox{\textwidth}{!}{
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		Name & CTS Type & Description & Range(Approximate)  \\ 
@@ -48,6 +50,7 @@ See table \ref{predefined_types}.
 		string & System.String & Unicode character string & \\
 		\hline
 	\end{tabular}
+}
 	\label{predefined_types}
 	\caption{Predefined Types}
 \end{table}
@@ -57,12 +60,14 @@ The number type is actually the double type in C\#.
 \subsection{The boolean type}
 The boolean type can only be true or false.
 \subsection{The string type}
-Literals of the string type should be enclosed by '' or "". Backslashes('\\') represents escape sequence. If you write symbol '@' at the beginning of the sentence, the '\\' will lose its meanning.
+Literals of the string type should be enclosed by '' or "". Backslashes represents escape sequence. If you write symbol @ at the beginning of the sentence, the backslashes will lose its meanning.
 \begin{lstlisting}
 s1 = "a string"
 s2 = 'another string'
-s3 = @'c:\test.txt' # If literals start with '@', the backslashes will lose its meanning
-s4 = 'c:\\test.txt' # The 's4' equals to 's3;
+s3 = @'c:\test.txt' 
+# If literals start with @, 
+# the backslashes will lose its meanning
+s4 = 'c:\\test.txt' # The 's4' equals to 's3';
 \end{lstlisting}
 
 \section{Flow Control}
@@ -84,6 +89,28 @@ if condition {
 } elif {
 	# Branch Three
 } 
+\end{lstlisting}
+
+Here is an 'if' statement example:
+\begin{lstlisting}
+if x > 10 {
+	print('x is greater than 10')
+} else {
+	print('x is not greater than 10')
+}
+
+if y == 5 {
+	print(5)
+}
+elif y == 10 {
+	print(10)
+}
+elif y == 20 {
+	print(20)
+}
+else {
+	print('y is not 5, 10 and 20.')
+}
 \end{lstlisting}
 
 \subsection{Loops}
@@ -119,7 +146,28 @@ foreach item in collection {
 \end{lstlisting}
 Note that you should not change value inside the loop.
 
+\subsection{Loop Examples}
+The followings are three examples using different statements to print 1 to 9 in the console.
+\begin{lstlisting}
+for i = 0, 10 {
+	print(i)
+}
+
+
+i = 0
+while i < 10 {
+	print(i)
+	i = i + 1
+}
+
+foreach i in range(0,10) {
+	print(i)
+}
+\end{lstlisting}
+
+
 \subsection{Jump Statements}
+There are three jump statement in Cygni: break, continue, and return. 'break' can jump out from the current loop, 'continue' can start a new round in the loop. 'return' is used to return value from a function.
 \subsubsection{The break Statement}
 If the break statement occurs in a loop, the current loop will stop.
 \subsubsection{The continue Statement}
@@ -164,31 +212,3 @@ The following list displays the Cygni reserved keywords.
 	\item false
 	\item null
 \end{itemize}
-
-\section{Position}
-Have a look at another example.
-\begin{lstlisting}
-class Position{
-	def __INIT__(nx, ny){
-		this.x = nx
-		this.y = ny
-	}
-	
-	def move(nx, ny){
-		this.x = nx
-		this.y = ny
-	}
-	
-	def __TOSTRING__(){
-		printf("({0}, {1})", this.x, this.y)
-	}
-	
-}
-
-p1 = Position(10,20)
-print(p1)
-p1.move(35,47)
-print(p1)
-\end{lstlisting}	
-
-Hope you have got a feel about Cygni!

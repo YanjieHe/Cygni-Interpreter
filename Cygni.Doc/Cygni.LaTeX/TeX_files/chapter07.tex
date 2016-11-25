@@ -1,0 +1,67 @@
+\chapter{Lists and Dictionaries}
+\section{Lists}
+\subsection{List Initialization}
+A List is declared by using the following syntax:
+\begin{lstlisting}
+myList = [1, 2, 3, 4, 5]
+\end{lstlisting}
+Once you append elements to the last of the list, the length of the list will increase. To know how many elements in the specific list, you can use function "len":
+\begin{lstlisting}
+len(myList)
+\end{lstlisting}
+Or use the field "count":
+\begin{lstlisting}
+myList.count
+\end{lstlisting}
+
+\subsection{Accessing List Elements}
+After a list is initialized, you can access the list elements using an indexer. Lists only support integer index. The index starts from zero.
+
+The lists are able to contain values from various types.
+\begin{lstlisting}
+myList = [123, 'apple', false]
+v1 = myList[0] # read first element
+v2 = myList[1] # read second element
+\end{lstlisting}
+
+Generally, there are two ways to access every element in a list.
+
+\begin{lstlisting}
+for i = 0, myList.count {
+	print(i)
+}
+
+foreach i in myList {
+	print(i)
+}
+\end{lstlisting}
+
+\section{Dictionaries}
+\subsection{Dictionary Initialization}
+A Dictionary is declared by using the following syntax:
+\begin{lstlisting}
+myDictionary = { }
+\end{lstlisting}
+Once you add key-value pairs to the dictionary, the length of the dictionary will increase. To know how many key-value pairs in the specific dictionary, you can use function "len":
+\begin{lstlisting}
+len(myDictionary)
+\end{lstlisting}
+Or use the field "count":
+\begin{lstlisting}
+myDictionary.count
+\end{lstlisting}
+
+\subsection{Accessing Dictionary Elements}
+After a Dictionary is initialized, you can access the Dictionary elements using an indexer. The type of key of Dictionaries only support integer, boolean, string. There is no limit for the types of the values of dictionaries.
+\begin{lstlisting}
+myDictionaty = {'name', 'Sam', 'age', 37}
+myDictionary['name']
+myDictionary['age']
+\end{lstlisting}
+You can go through every key-value pair in a dictionary by using "foreach" loop. Every key-value pair is returned as a list. The first in the list is the key, and another is the value.
+\begin{lstlisting}
+foreach i in myDictionary {
+	print(i)
+}
+\end{lstlisting}
+
