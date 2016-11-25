@@ -1,0 +1,66 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}What is Cygni}{1}
+\contentsline {chapter}{\numberline {2}Core Cygni}{3}
+\contentsline {section}{\numberline {2.1}Your First Cygni Program}{3}
+\contentsline {subsection}{\numberline {2.1.1}The Code}{3}
+\contentsline {subsection}{\numberline {2.1.2}Running the Program}{3}
+\contentsline {section}{\numberline {2.2}Variables}{3}
+\contentsline {section}{\numberline {2.3}Variable Scope}{4}
+\contentsline {section}{\numberline {2.4}Types}{4}
+\contentsline {subsection}{\numberline {2.4.1}The number type}{4}
+\contentsline {subsection}{\numberline {2.4.2}The boolean type}{4}
+\contentsline {subsection}{\numberline {2.4.3}The string type}{4}
+\contentsline {section}{\numberline {2.5}Flow Control}{5}
+\contentsline {subsection}{\numberline {2.5.1}Conditional Statement: The if Statement}{5}
+\contentsline {subsection}{\numberline {2.5.2}Loops}{6}
+\contentsline {subsubsection}{The for loop}{6}
+\contentsline {subsubsection}{The while loop}{6}
+\contentsline {subsubsection}{The foreach loop}{7}
+\contentsline {subsection}{\numberline {2.5.3}Loop Examples}{7}
+\contentsline {subsection}{\numberline {2.5.4}Jump Statements}{7}
+\contentsline {subsubsection}{The break Statement}{7}
+\contentsline {subsubsection}{The continue Statement}{8}
+\contentsline {subsubsection}{The return Statement}{8}
+\contentsline {section}{\numberline {2.6}Console I/O}{8}
+\contentsline {section}{\numberline {2.7}Using Comments}{8}
+\contentsline {section}{\numberline {2.8}Rules for Identifiers}{8}
+\contentsline {chapter}{\numberline {3}Functions}{11}
+\contentsline {section}{\numberline {3.1}Declaring Functions}{11}
+\contentsline {section}{\numberline {3.2}Invoking Functions}{11}
+\contentsline {section}{\numberline {3.3}Recursion}{12}
+\contentsline {section}{\numberline {3.4}Collection}{12}
+\contentsline {subsection}{\numberline {3.4.1}List}{12}
+\contentsline {subsection}{\numberline {3.4.2}HashTable}{12}
+\contentsline {section}{\numberline {3.5}Structure Array}{12}
+\contentsline {section}{\numberline {3.6}Function}{13}
+\contentsline {subsection}{\numberline {3.6.1}Cygni Function}{13}
+\contentsline {subsection}{\numberline {3.6.2}Native Function}{13}
+\contentsline {section}{\numberline {3.7}Class}{13}
+\contentsline {section}{\numberline {3.8}User Data}{14}
+\contentsline {chapter}{\numberline {4}Structures}{15}
+\contentsline {section}{\numberline {4.1}Arithmetic Operators}{16}
+\contentsline {section}{\numberline {4.2}Logical Operators}{16}
+\contentsline {section}{\numberline {4.3}Relation Operators}{17}
+\contentsline {chapter}{\numberline {5}Classes}{19}
+\contentsline {section}{\numberline {5.1}Data Members}{19}
+\contentsline {section}{\numberline {5.2}Function Members}{19}
+\contentsline {subsection}{\numberline {5.2.1}Constructors}{20}
+\contentsline {subsection}{\numberline {5.2.2}Implementation Inheritance}{20}
+\contentsline {subsection}{\numberline {5.2.3}Hiding Function Members}{20}
+\contentsline {subsection}{\numberline {5.2.4}Calling Base Versions of Functions}{20}
+\contentsline {chapter}{\numberline {6}Built-in Commands}{21}
+\contentsline {section}{\numberline {6.1}dofile}{21}
+\contentsline {section}{\numberline {6.2}import}{21}
+\contentsline {section}{\numberline {6.3}loaddll}{21}
+\contentsline {section}{\numberline {6.4}scope}{21}
+\contentsline {section}{\numberline {6.5}delete}{21}
+\contentsline {chapter}{\numberline {7}Lists and Dictionaries}{23}
+\contentsline {section}{\numberline {7.1}Lists}{23}
+\contentsline {subsection}{\numberline {7.1.1}List Initialization}{23}
+\contentsline {subsection}{\numberline {7.1.2}Accessing List Elements}{23}
+\contentsline {section}{\numberline {7.2}Dictionaries}{24}
+\contentsline {subsection}{\numberline {7.2.1}Dictionary Initialization}{24}
+\contentsline {subsection}{\numberline {7.2.2}Accessing Dictionary Elements}{24}
+\contentsline {chapter}{\numberline {8}Operators}{25}
+\contentsline {section}{\numberline {8.1}Operator Overloading}{25}
+\contentsline {chapter}{\numberline {9}Strings}{27}
