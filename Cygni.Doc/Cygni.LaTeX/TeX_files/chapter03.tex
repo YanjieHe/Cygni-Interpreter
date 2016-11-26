@@ -34,37 +34,8 @@ def fact(n) {
 }
 fact(10)
 \end{lstlisting}
-
-\section{Collection}
-\subsection{List}
-The syntax of initializing a list is the same as Python. You can put objects from various types into a list.
-
-A list can be indexed by a non-negative integer. The index starts from zero.
-\begin{lstlisting}
-list1 = [1, 2, 3, 4, 5]
-list2 = [18, false, "Judy"]
-list1[0] = 789
-\end{lstlisting}
-
-\subsection{HashTable}
-Using function 'hashtable' to initialize a hash table by key-value pairs. The key can only be integer, boolean and string.
-A hash table can be indexed by the key.
-\begin{lstlisting}
-ht1 = hashtable("key1",123,"key2",789)
-ht1["key1"]
-\end{lstlisting}
-
-\section{Structure Array}
-The stucture array type is inspired by the Matlab/Octave. You can get element from a struct by the field or by the integer index.
-\begin{lstlisting}
-s1 = struct("name","Judy","age",16)
-s1.name # The same as s1[0]
-s1.age
-\end{lstlisting}
-
-\section{Function}
-\subsection{Cygni Function}
-Cygni function should be initialized by the 'def' statement. The function can be passed as a parameter. 
+\section{Higher-order Functions}
+The function can be passed as a parameter. 
 \begin{lstlisting}
 def mul(x){
 	return x * y
@@ -75,23 +46,30 @@ def mul2(f, x){
 }
 \end{lstlisting}
 
-\subsection{Native Function}
-Native function is imported from C\#.
 
-\section{Class}
-Cygni class can be initialized by the 'class' statement. It supports inheritance. There are some built-in functions to be overrided as followings.
-\begin{itemize}
-	\item \_\_INIT\_\_: Constructor for the class. The default constructor is a non-arg constructor.
-	\item \_\_TOSTRING\_\_: Output the class instance as a string.
-	\item \_\_ADD\_\_: override '+' operator.
-	\item \_\_SUBTRACT\_\_: override '-' operator.
-	\item \_\_MULTIPLY\_\_: override '*' operator.
-	\item \_\_DIVIDE\_\_: override '/' operator.
-	\item \_\_MODULO\_\_: override '\%' operator.
-	\item \_\_POWER\_\_: override '\^' operator.
-	\item \_\_COMPARETO\_\_: return a integer to indicate the comparision result. This function will override the '>', '<', '>=', '<=' operators.
-	\item \_\_INDEXER\_\_: This function takes a list as indexes, and return an element.
-\end{itemize}
-
-\section{User Data}
-User data is a wrapper for the C\# data type.
+% \section{Collection}
+% \subsection{List}
+% The syntax of initializing a list is the same as Python. You can put objects from various types into a list.
+% 
+% A list can be indexed by a non-negative integer. The index starts from zero.
+% \begin{lstlisting}
+% list1 = [1, 2, 3, 4, 5]
+% list2 = [18, false, "Judy"]
+% list1[0] = 789
+% \end{lstlisting}
+% 
+% \subsection{HashTable}
+% Using function 'hashtable' to initialize a hash table by key-value pairs. The key can only be integer, boolean and string.
+% A hash table can be indexed by the key.
+% \begin{lstlisting}
+% ht1 = hashtable("key1",123,"key2",789)
+% ht1["key1"]
+% \end{lstlisting}
+% 
+% \section{Structure Array}
+% The stucture array type is inspired by the Matlab/Octave. You can get element from a struct by the field or by the integer index.
+% \begin{lstlisting}
+% s1 = struct("name","Judy","age",16)
+% s1.name # The same as s1[0]
+% s1.age
+% \end{lstlisting}

@@ -8,44 +8,22 @@ Data members are those members that contain data for the class.
 
 \section{Function Members}
 Functions members are functions defined within the class. The 'function members' includes not only functions, but also constructors, operators, indexers, etc. An example is as followings:
-% \begin{lstlisting}
-% class student {
-% 	def __INIT__(ID, name, age) {
-% 		this.ID = ID
-% 		this.name = name
-% 		this.age = age
-% 	}
-% 
-% 	def sayMyName() {
-% 		printf('My name is {0}.', this.name)
-% 	}
-% 
-% 	def showMyID() {
-% 		printf('My ID is {0}.', this.ID)
-% 	}
-% 
-% 	def __TOSTRING__() {
-% 		return '(ID: {0}, name: {1}, age: {2})'.format(this.ID, this.name, this.age)
-% 	}
-% }
-% \end{lstlisting}
-
 \begin{lstlisting}
 class position{
 	def __INIT__(nx, ny){
 		this.x = nx
 		this.y = ny
 	}
-	
+
 	def move(nx, ny){
 		this.x = nx
 		this.y = ny
 	}
-	
+
 	def __TOSTRING__(){
 		printf("({0}, {1})", this.x, this.y)
 	}
-	
+
 }
 p1 = position(10,20)
 print(p1)
@@ -78,11 +56,50 @@ class myDerivedClass: myBaseClass {
 
 The Cygni class does not support multiple inheritance. Namely, a class can only inherit from one class.
 
+\begin{lstlisting}
+class person {
+	def __INIT__(name, age) {
+		this.name = name
+		this.age = age
+	}
+
+	def say() {
+		print('I am a person!')
+	}
+}
+
+class employee : person {
+	def __INIT__(name, age, salary) {
+		base.__INIT__(name, age)
+		this.salary = salary
+	}
+
+	def say() {
+		print('I am an employee!')
+	}
+}
+\end{lstlisting}
+
+
 \subsection{Hiding Function Members}
 If a function with the same name is declared in both base and derived classs, the function in the derived class will hide the one in the base class.
 
 % \begin{lstlisting}
 % \end{lstlisting}
+There are some built-in functions that can be overwrited.
+\begin{itemize}
+	\item \_\_INIT\_\_: Constructor for the class. The default constructor is a non-arg constructor.
+	\item \_\_TOSTRING\_\_: Output the class instance as a string.
+	\item \_\_ADD\_\_: override '+' operator.
+	\item \_\_SUB\_\_: override '-' operator.
+	\item \_\_MUL\_\_: override '*' operator.
+	\item \_\_DIV\_\_: override '/' operator.
+	\item \_\_MOD\_\_: override '\%' operator.
+	\item \_\_POW\_\_: override '\^' operator.
+	\item \_\_CMP\_\_: return a integer to indicate the comparision result. This function will override the '>', '<', '>=', '<=' operators.
+	% \item \_\_INDEXER\_\_: This function takes a list as indexes, and return an element.
+\end{itemize}
+
 
 \subsection{Calling Base Versions of Functions}
-If you want to call functions in the base class, you can use "base" 
+The variable "base" is its parent class, you can call functions in the base class by it. 

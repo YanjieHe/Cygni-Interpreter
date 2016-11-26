@@ -31,37 +31,30 @@ namespace Cygni.DataTypes
 			this.body = body;
 		}
 
-		public ClassInfo Init (DynValue[] parameters, bool NonArg = false)
+		public ClassInfo Init (DynValue[] parameters /*, bool NonArg = false */)
 		{
 
 			var newScope = new NestedScope (classScope.Parent);
-			ClassInfo parentClass = parent;
+			// ClassInfo parentClass = parent;
 			if (this.parent != null) { /* Does this class inherit from a parent class?  */
-				parentClass = this.parent.Init (parameters: null, NonArg: true); /* Yes, it does. Initialize its parent class. */
-				newScope.Put ("base", DynValue.FromClass (parentClass)); /* set 'base' as a pointer to its parent class. */
+			//	parentClass = this.parent.Init (parameters: null, NonArg: true); 
+				/* Yes, it does. Initialize its parent class. */
+			//	newScope.Put ("base", DynValue.FromClass (parentClass)); 
+				/* set 'base' as a pointer to its parent class. */
+				parent.body.Eval(newScope);
 			}
 			body.Eval (newScope); /* Initialize the class */
-			ClassInfo newClass = new ClassInfo (name: name, classScope: newScope, body: body, parent: parentClass, IsInstance: true);
+			/* If there exists same fields in the derived class, then the field will be overwriten. */
+			ClassInfo newClass = new ClassInfo (name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
-			if (!NonArg && newScope.HasName ("__INIT__")) /* initialize */
+			if (/* !NonArg && */ newScope.HasName ("__INIT__")) /* initialize */
 				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 
 		}
 
-
 		public bool HasParent {
 			get { return this.parent != null; }
-		}
-
-		public DynValue GetByDot (string fieldName)
-		{
-			DynValue value;
-			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
-				return value;
-			if (parent != null)
-				return parent.GetByDot (fieldName); /* Find in parent */
-			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
 
 		public string[] FieldNames {
@@ -75,32 +68,43 @@ namespace Cygni.DataTypes
 				return names;
 			}
 		}
+		
+		public DynValue GetByDot (string fieldName)
+		{
+			DynValue value;
+			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
+				return value;
+			/* if (parent != null)
+				return parent.GetByDot (fieldName); /* Find in parent */ 
+			throw RuntimeException.FieldNotExist (name, fieldName);
+		}
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			if (parent == null) {
-				return this.classScope.Put (fieldName, value);
-			} else if (this.parent.HasField (fieldName)) {
-				return this.parent.SetByDot (fieldName, value);
-			} else {
-				return this.classScope.Put (fieldName, value);
-			}
+			// if (parent == null) {
+			// 	return this.classScope.Put (fieldName, value);
+			// } else if (this.parent.HasField (fieldName)) {
+			// 	return this.parent.SetByDot (fieldName, value);
+			// } else {
+			// 	return this.classScope.Put (fieldName, value);
+			// }
+			return this.classScope.Put(fieldName, value);
 		}
 
-		private bool HasField(string fieldName){
-			if (parent == null) {
-				return this.classScope.HasName (fieldName);
-			} else {
-				if (this.parent.HasField (fieldName))
-					return true;
-				else
-					return this.classScope.HasName (fieldName);
-			}
-		}
+		// private bool HasField(string fieldName){
+		// 	if (parent == null) {
+		// 		return this.classScope.HasName (fieldName);
+		// 	} else {
+		// 		if (this.parent.HasField (fieldName))
+		// 			return true;
+		// 		else
+		// 			return this.classScope.HasName (fieldName);
+		// 	}
+		// }
 
 		public int CompareTo (DynValue other)
 		{
-			return (int)this.GetByDot ("__COMPARETO__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
+			return (int)this.GetByDot ("__CMP__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
 		}
 
 
@@ -112,31 +116,31 @@ namespace Cygni.DataTypes
 
 		public DynValue Subtract (DynValue other)
 		{
-			return this.GetByDot ("__SUBTRACT__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__SUB__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Multiply (DynValue other)
 		{
-			return this.GetByDot ("__MULTIPLY__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__MUL__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Divide (DynValue other)
 		{
-			return this.GetByDot ("__DIVIDE__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__DIV__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Modulo (DynValue other)
 		{
-			return this.GetByDot ("__MODULO__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__MOD__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Power (DynValue other)
 		{
-			return this.GetByDot ("__POWER__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__POW__").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 

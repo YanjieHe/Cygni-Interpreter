@@ -1,5 +1,8 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}
 \contentsline {section}{\numberline {1.1}What is Cygni}{1}
+\contentsline {section}{\numberline {1.2}What can Cygni do}{1}
+\contentsline {section}{\numberline {1.3}The inspiration of Cygni}{1}
+\contentsline {section}{\numberline {1.4}Any Questions?}{1}
 \contentsline {chapter}{\numberline {2}Core Cygni}{3}
 \contentsline {section}{\numberline {2.1}Your First Cygni Program}{3}
 \contentsline {subsection}{\numberline {2.1.1}The Code}{3}
@@ -28,39 +31,31 @@
 \contentsline {section}{\numberline {3.1}Declaring Functions}{11}
 \contentsline {section}{\numberline {3.2}Invoking Functions}{11}
 \contentsline {section}{\numberline {3.3}Recursion}{12}
-\contentsline {section}{\numberline {3.4}Collection}{12}
-\contentsline {subsection}{\numberline {3.4.1}List}{12}
-\contentsline {subsection}{\numberline {3.4.2}HashTable}{12}
-\contentsline {section}{\numberline {3.5}Structure Array}{12}
-\contentsline {section}{\numberline {3.6}Function}{13}
-\contentsline {subsection}{\numberline {3.6.1}Cygni Function}{13}
-\contentsline {subsection}{\numberline {3.6.2}Native Function}{13}
-\contentsline {section}{\numberline {3.7}Class}{13}
-\contentsline {section}{\numberline {3.8}User Data}{14}
-\contentsline {chapter}{\numberline {4}Structures}{15}
-\contentsline {section}{\numberline {4.1}Arithmetic Operators}{16}
-\contentsline {section}{\numberline {4.2}Logical Operators}{16}
-\contentsline {section}{\numberline {4.3}Relation Operators}{17}
-\contentsline {chapter}{\numberline {5}Classes}{19}
-\contentsline {section}{\numberline {5.1}Data Members}{19}
-\contentsline {section}{\numberline {5.2}Function Members}{19}
-\contentsline {subsection}{\numberline {5.2.1}Constructors}{20}
-\contentsline {subsection}{\numberline {5.2.2}Implementation Inheritance}{20}
-\contentsline {subsection}{\numberline {5.2.3}Hiding Function Members}{20}
-\contentsline {subsection}{\numberline {5.2.4}Calling Base Versions of Functions}{20}
-\contentsline {chapter}{\numberline {6}Built-in Commands}{21}
-\contentsline {section}{\numberline {6.1}dofile}{21}
-\contentsline {section}{\numberline {6.2}import}{21}
-\contentsline {section}{\numberline {6.3}loaddll}{21}
-\contentsline {section}{\numberline {6.4}scope}{21}
-\contentsline {section}{\numberline {6.5}delete}{21}
-\contentsline {chapter}{\numberline {7}Lists and Dictionaries}{23}
-\contentsline {section}{\numberline {7.1}Lists}{23}
-\contentsline {subsection}{\numberline {7.1.1}List Initialization}{23}
-\contentsline {subsection}{\numberline {7.1.2}Accessing List Elements}{23}
-\contentsline {section}{\numberline {7.2}Dictionaries}{24}
-\contentsline {subsection}{\numberline {7.2.1}Dictionary Initialization}{24}
-\contentsline {subsection}{\numberline {7.2.2}Accessing Dictionary Elements}{24}
-\contentsline {chapter}{\numberline {8}Operators}{25}
-\contentsline {section}{\numberline {8.1}Operator Overloading}{25}
+\contentsline {section}{\numberline {3.4}Higher-order Functions}{12}
+\contentsline {chapter}{\numberline {4}Structures}{13}
+\contentsline {chapter}{\numberline {5}Classes}{15}
+\contentsline {section}{\numberline {5.1}Data Members}{15}
+\contentsline {section}{\numberline {5.2}Function Members}{15}
+\contentsline {subsection}{\numberline {5.2.1}Constructors}{16}
+\contentsline {subsection}{\numberline {5.2.2}Implementation Inheritance}{16}
+\contentsline {subsection}{\numberline {5.2.3}Hiding Function Members}{17}
+\contentsline {subsection}{\numberline {5.2.4}Calling Base Versions of Functions}{17}
+\contentsline {chapter}{\numberline {6}Built-in Commands}{19}
+\contentsline {section}{\numberline {6.1}dofile}{19}
+\contentsline {section}{\numberline {6.2}import}{19}
+\contentsline {section}{\numberline {6.3}loaddll}{19}
+\contentsline {section}{\numberline {6.4}scope}{19}
+\contentsline {section}{\numberline {6.5}delete}{20}
+\contentsline {chapter}{\numberline {7}Lists and Dictionaries}{21}
+\contentsline {section}{\numberline {7.1}Lists}{21}
+\contentsline {subsection}{\numberline {7.1.1}List Initialization}{21}
+\contentsline {subsection}{\numberline {7.1.2}Accessing List Elements}{21}
+\contentsline {section}{\numberline {7.2}Dictionaries}{22}
+\contentsline {subsection}{\numberline {7.2.1}Dictionary Initialization}{22}
+\contentsline {subsection}{\numberline {7.2.2}Accessing Dictionary Elements}{22}
+\contentsline {chapter}{\numberline {8}Operators}{23}
+\contentsline {section}{\numberline {8.1}Arithmetic Operators}{23}
+\contentsline {section}{\numberline {8.2}Logical Operators}{24}
+\contentsline {section}{\numberline {8.3}Relation Operators}{24}
+\contentsline {section}{\numberline {8.4}Operator Overloading}{25}
 \contentsline {chapter}{\numberline {9}Strings}{27}

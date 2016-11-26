@@ -9,11 +9,11 @@ See table \ref{operators}.
 		\hline
 		Category & Operator \\ 
 		\hline
-		Arithmetic & +, -, *, /, \% \\
+		Arithmetic & +, -, *, /, \%, \^{} \\
 		\hline
 		Logical & and, or, not \\
 		\hline
-		Comparison & >,<,=,>=,<=,==,!= \\
+		Comparison & $ >,<,=,>=,<=,==,!= $\\
 		\hline
 		Assignment & = \\
 		\hline
@@ -26,5 +26,56 @@ See table \ref{operators}.
 \label{operators}
 \caption{Operators}
 \end{table}
+
+\section{Arithmetic Operators}
+Cygni supports the following arithmetic operators:
+\begin{itemize}
+ 	\item Add: +
+ 	\item Subtract: -
+ 	\item Multiply: *
+ 	\item Divide: /
+ 	\item Modulo: \%
+ 	\item Power: \^{}
+ 	\item Unary Plus: +
+ 	\item Unary Minus: -
+\end{itemize}
+\begin{lstlisting}
+a = 10
+b = 99.2
+a + b
+=> 109.2
+\end{lstlisting}
+\section{Logical Operators}
+Cygni supports the following logical operators:
+\begin{itemize}
+ 	\item and
+ 	\item or
+ 	\item not
+\end{itemize}
+\begin{lstlisting}
+a and b
+=> False
+\end{lstlisting}
+\section{Relation Operators}
+The following relation operators will return a boolean value:
+\begin{itemize}
+	\item '>'
+	\item '<'
+	\item '>='
+	\item '<='
+	\item '=='
+	\item '!='
+\end{itemize}
 \section{Operator Overloading}
-TO DO:
+There are serveral functions that used to overload the operators of the classes.
+\begin{itemize}
+	\item \_\_ADD\_\_
+	\item \_\_SUB\_\_
+	\item \_\_MUL\_\_
+	\item \_\_DIV\_\_
+	\item \_\_MOD\_\_
+	\item \_\_POW\_\_
+	\item \_\_UNARYPLUS\_\_
+	\item \_\_UNARYMINUS\_\_
+	\item \_\_CMP\_\_
+\end{itemize}

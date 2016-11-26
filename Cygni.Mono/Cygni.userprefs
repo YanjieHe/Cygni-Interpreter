@@ -1,8 +1,9 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Executors/InteractiveExecutor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/DataTypes/ClassInfo.cs">
     <Files>
       <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="46" Column="10" />
+      <File FileName="Cygni/DataTypes/ClassInfo.cs" Line="91" Column="11" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
