@@ -39,7 +39,7 @@ namespace Cygni.Executors
 				try {
 					Console.ForegroundColor = ConsoleColor.Cyan;
 					Console.Write ("Cygni:  ");
-					Console.ForegroundColor = ConsoleColor.Gray;
+					Console.ForegroundColor = ConsoleColor.White;
 					Start:
 					string line = Console.ReadLine ();
 					if (re_exit.IsMatch (line)){ // If user input 'exit', the interactive mode ends.
@@ -53,10 +53,10 @@ namespace Cygni.Executors
 						list.Clear ();
 						Console.ForegroundColor = ConsoleColor.Cyan;
 						Console.Write ("Cygni:  ");
-						Console.ForegroundColor = ConsoleColor.Gray;
+						Console.ForegroundColor = ConsoleColor.White;
 						goto Start;
 					} else if (state == InteractiveState.Waiting) {
-						Console.ForegroundColor = ConsoleColor.Gray;
+						Console.ForegroundColor = ConsoleColor.White;
 						Console.Write ("....    ");
 						goto Start;
 					} else {

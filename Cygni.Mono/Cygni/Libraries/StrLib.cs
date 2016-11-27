@@ -20,12 +20,8 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (n >=  1, "strcat");
 			string[] strs = new string[n];
 			for (int i = 0; i < n; i++)
-				strs [i] = args [i].AsString ();
+				strs [i] = args [i].Value.ToString ();
 			return string.Concat (strs);
-		}
-		public static DynValue concat (string str, DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length ==  1, "concat");
-			return str + args[0].AsString();
 		}
 		public static DynValue join (string str, DynValue[] args)
 		{
@@ -68,8 +64,16 @@ namespace Cygni.Libraries
 		public static DynValue strcmp (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
-			return (double)string.Compare (args [0].AsString (),
-				args [1].AsString ());
+			return (double)string.CompareOrdinal (
+					args [0].AsString (),
+					args [1].AsString ());
+		}
+		public static DynValue compare (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 2, "compare");
+			return (double)string.Compare (
+					args [0].AsString (),
+					args [1].AsString ());
 		}
 		public static DynValue find (string str, DynValue[] args)
 		{
@@ -128,6 +132,6 @@ namespace Cygni.Libraries
 			else
 				return str.Substring ((int)args [1].AsNumber (), (int)args [2].AsNumber ());
 		}
-		
+
 	}
 }

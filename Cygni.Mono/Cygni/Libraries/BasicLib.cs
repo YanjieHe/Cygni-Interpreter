@@ -210,6 +210,19 @@ namespace Cygni.Libraries
 			}
 			return DynValue.Null;
 		}
+		public static DynValue console_writeLine (DynValue[]args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length >= 1, "console.writeLine");
+			if (args.Length == 1)
+				Console.WriteLine (args [0].Value);
+			else {
+				var arguments = new object[args.Length - 1];
+				for (int i = 0; i < arguments.Length; i++)
+					arguments [i] = args [i + 1].Value;
+				Console.WriteLine (args [0].AsString (), arguments);
+			}
+			return DynValue.Null;
+		}
 
 		public static DynValue console_read (DynValue[]args)
 		{
@@ -219,6 +232,11 @@ namespace Cygni.Libraries
 		public static DynValue console_readLine (DynValue[]args)
 		{
 			return Console.ReadLine ();
+		}
+		
+		public static DynValue console_readKey (DynValue[]args)
+		{
+			return (double)Console.ReadKey().KeyChar;
 		}
 
 		public static DynValue os_clock (DynValue[] args)
@@ -260,23 +278,17 @@ namespace Cygni.Libraries
 					, (int)args [1].AsNumber ()
 					, (int)args [2].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
 		}
-		public static DynValue collect (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length ==1, "collect");
-			return new DynList (args [0].As<IEnumerable<DynValue>> ());
-		}
 		public static DynValue len(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length ==1, "len");
 			return (double) args [0].As<ICollection> ().Count;
 		}
-		public static DynValue tryCatch(DynValue[] args){
+		public static DynValue TryCatch(DynValue[] args){
 			/* Inspire by Lua */
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "tryCatch");
-			var func = args [0].As<IFunction> ();
+			RuntimeException.FuncArgsCheck (args.Length == 2, "TryCatch");
+			IFunction func = args [0].As<IFunction> ();
+			DynList paras = args[1].As<DynList>();
 			try {
-				DynValue[] parameters = new DynValue[args.Length - 1];
-				for (int i = 0; i < parameters.Length; i++) 
-					parameters[i] = args[i+1];
+				DynValue[] parameters = paras.ToArray();
 				func.DynInvoke(parameters);
 				return true;
 			} catch (RuntimeException ex) {
@@ -304,6 +316,11 @@ namespace Cygni.Libraries
 			Directory.SetCurrentDirectory (path);
 			return DynValue.Null;
 		}
+		public static DynValue cond(DynValue [] args) {
+			RuntimeException.FuncArgsCheck (args.Length == 3, "cond");
+			return args[0].AsBoolean() ? args[1] : args[2];
+		}
+			
 		/*public static DynValue io_open(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 2, "open");
 			string filePath = args [0].AsString ();

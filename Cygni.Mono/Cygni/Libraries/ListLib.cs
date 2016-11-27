@@ -59,7 +59,7 @@ namespace Cygni.Libraries
 			if (args.Length == 1)
 				return (double) list.BinarySearch (args[0]);
 			else {
-				return (double) list.BinarySearch ((int)args [1].AsNumber (), (int)args [2].AsNumber (),args[0], DynValue.Null);
+				return (double) list.BinarySearch ((int)args [0].AsNumber (), (int)args [1].AsNumber (),args[2], DynValue.Null);
 			}
 		}
 		public static DynValue max(DynList list, DynValue[] args){
@@ -77,6 +77,16 @@ namespace Cygni.Libraries
 				return list.IndexOf (args [0], (int)args [1].AsNumber ());
 			else
 				return list.IndexOf (args [0], (int)args [1].AsNumber (), (int)args [2].AsNumber ());
+		}
+
+		public static DynValue concat(DynList list, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "concat");
+			DynList list2 = args[0].As<DynList>();
+			DynList newList = new DynList(list.Count + list2.Count);
+			foreach (DynValue item in list.Concat(list2)) {
+				newList.Add(item);
+			}
+			return newList;
 		}
 
 	}

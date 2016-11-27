@@ -35,11 +35,10 @@
 \contentsline {chapter}{\numberline {4}Structures}{13}
 \contentsline {chapter}{\numberline {5}Classes}{15}
 \contentsline {section}{\numberline {5.1}Data Members}{15}
-\contentsline {section}{\numberline {5.2}Function Members}{15}
+\contentsline {section}{\numberline {5.2}Function Members}{16}
 \contentsline {subsection}{\numberline {5.2.1}Constructors}{16}
 \contentsline {subsection}{\numberline {5.2.2}Implementation Inheritance}{16}
 \contentsline {subsection}{\numberline {5.2.3}Hiding Function Members}{17}
-\contentsline {subsection}{\numberline {5.2.4}Calling Base Versions of Functions}{17}
 \contentsline {chapter}{\numberline {6}Built-in Commands}{19}
 \contentsline {section}{\numberline {6.1}dofile}{19}
 \contentsline {section}{\numberline {6.2}import}{19}

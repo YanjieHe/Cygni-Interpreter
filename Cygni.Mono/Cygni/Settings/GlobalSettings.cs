@@ -33,17 +33,18 @@ namespace Cygni.Settings
 			{ "throw",BasicLib.Throw },
 			{ "exit",BasicLib.exit },
 			{ "range",BasicLib.Range },
-			{ "collect",BasicLib.collect },
 			{ "len",BasicLib.len },
 			{ "toNumber",BasicLib.toNumber },
 			{ "toString",BasicLib.toString},
 			{ "toList",BasicLib.toList},
-			{ "tryCatch",BasicLib.tryCatch},
+			{ "TryCatch",BasicLib.TryCatch},
 			{ "names",BasicLib.names},
 			{ "getwd",BasicLib.getwd},
 			{ "setwd",BasicLib.setwd},
+			{ "cond",BasicLib.cond},
 
 			{"strcat",StrLib.strcat},
+			{"strcmp",StrLib.strcmp},
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -91,17 +92,21 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			new Dictionary<string, Structure> { {"os",new Structure(
 					new StructureItem("clock",BasicLib.os_clock) )
 			},
-			{"Console",
+			{"console",
 					new Structure (
 					new StructureItem( "clear",BasicLib.console_clear ),
 					new StructureItem( "write",BasicLib.console_write ),
+					new StructureItem( "writeLine",BasicLib.console_writeLine ) ,
 					new StructureItem( "read",BasicLib.console_read ),
-					new StructureItem( "readLine",BasicLib.console_readLine ) )
+					new StructureItem( "readLine",BasicLib.console_readLine ),
+					new StructureItem( "readKey",BasicLib.console_readKey ) 
+
+				)
 
 				}, {"string",
 					new Structure (
 					new StructureItem( "concat",StrLib.strcat ),
-					new StructureItem( "compare",StrLib.strcmp ),
+					new StructureItem( "compare",StrLib.compare ),
 					new StructureItem( "empty",string.Empty ) 
 				)
 				},

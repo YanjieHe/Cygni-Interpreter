@@ -31,24 +31,20 @@ namespace Cygni.DataTypes
 			this.body = body;
 		}
 
-		public ClassInfo Init (DynValue[] parameters /*, bool NonArg = false */)
+		public ClassInfo Init (DynValue[] parameters)
 		{
 
 			var newScope = new NestedScope (classScope.Parent);
-			// ClassInfo parentClass = parent;
 			if (this.parent != null) { /* Does this class inherit from a parent class?  */
-			//	parentClass = this.parent.Init (parameters: null, NonArg: true); 
-				/* Yes, it does. Initialize its parent class. */
-			//	newScope.Put ("base", DynValue.FromClass (parentClass)); 
-				/* set 'base' as a pointer to its parent class. */
 				parent.body.Eval(newScope);
 			}
 			body.Eval (newScope); /* Initialize the class */
 			/* If there exists same fields in the derived class, then the field will be overwriten. */
-			ClassInfo newClass = new ClassInfo (name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
+			ClassInfo newClass = 
+				new ClassInfo (name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
-			if (/* !NonArg && */ newScope.HasName ("__INIT__")) /* initialize */
-				newScope.Get ("__INIT__").As<Function> ().Update (parameters).Invoke ();
+			if (newScope.HasName ("__INIT")) /* initialize */
+				newScope.Get ("__INIT").As<Function> ().Update (parameters).Invoke ();
 			return newClass;
 
 		}
@@ -74,85 +70,65 @@ namespace Cygni.DataTypes
 			DynValue value;
 			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
 				return value;
-			/* if (parent != null)
-				return parent.GetByDot (fieldName); /* Find in parent */ 
 			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			// if (parent == null) {
-			// 	return this.classScope.Put (fieldName, value);
-			// } else if (this.parent.HasField (fieldName)) {
-			// 	return this.parent.SetByDot (fieldName, value);
-			// } else {
-			// 	return this.classScope.Put (fieldName, value);
-			// }
 			return this.classScope.Put(fieldName, value);
 		}
 
-		// private bool HasField(string fieldName){
-		// 	if (parent == null) {
-		// 		return this.classScope.HasName (fieldName);
-		// 	} else {
-		// 		if (this.parent.HasField (fieldName))
-		// 			return true;
-		// 		else
-		// 			return this.classScope.HasName (fieldName);
-		// 	}
-		// }
-
 		public int CompareTo (DynValue other)
 		{
-			return (int)this.GetByDot ("__CMP__").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
+			return (int)this.GetByDot ("__CMP").As<Function> ().Update (new []{ other }).Invoke ().AsNumber ();
 		}
 
 
 		public DynValue Add (DynValue other)
 		{
-			return this.GetByDot ("__ADD__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__ADD").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Subtract (DynValue other)
 		{
-			return this.GetByDot ("__SUB__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__SUB").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Multiply (DynValue other)
 		{
-			return this.GetByDot ("__MUL__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__MUL").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Divide (DynValue other)
 		{
-			return this.GetByDot ("__DIV__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__DIV").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Modulo (DynValue other)
 		{
-			return this.GetByDot ("__MOD__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__MOD").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue Power (DynValue other)
 		{
-			return this.GetByDot ("__POW__").As<Function> ().Update (new []{ other }).Invoke ();
+			return this.GetByDot ("__POW").As<Function> ().Update (new []{ other }).Invoke ();
 		}
 
 
 		public DynValue UnaryPlus ()
 		{
-			return this.GetByDot ("__UNARYPLUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
+			return this.GetByDot ("__UNARYPLUS").As<Function> ().Update (new DynValue[0]).Invoke ();
 		}
 
 
 		public DynValue UnaryMinus ()
 		{
-			return this.GetByDot ("__UNARYMINUS__").As<Function> ().Update (new DynValue[0]).Invoke ();
+			return this.GetByDot ("__UNARYMINUS").As<Function> ().Update (new DynValue[0]).Invoke ();
 		}
 
 		public DynValue DynInvoke (DynValue[] args)
@@ -168,29 +144,29 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			if (IsInstance && classScope.HasName ("__TOSTRING__"))
-				return this.GetByDot ("__TOSTRING__").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
+			if (IsInstance && classScope.HasName ("__TOSTRING"))
+				return this.GetByDot ("__TOSTRING").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			else
 				return string.Concat ("(class: ", name, ")");
 		}
 
 		public IEnumerator<DynValue> GetEnumerator ()
 		{
-			if (classScope.HasName ("__COLLECTION__")) {
-				var collection = this.GetByDot ("__COLLECTION__").As<Function> ().Invoke ().As<IEnumerable<DynValue>> ();
+			if (classScope.HasName ("__COLLECTION")) {
+				var collection = this.GetByDot ("__COLLECTION").As<Function> ().Invoke ().As<IEnumerable<DynValue>> ();
 				foreach (var item in collection)
 					yield return item;
 			} else {
-				this.GetByDot ("__ITER__").As<Function> ().Invoke ();
-				var next = this.GetByDot ("__Next__").As<Function> ().AsDelegate ();
-				var current = this.GetByDot ("__CURRENT__").As<Function> ().AsDelegate ();
+				this.GetByDot ("__ITER").As<Function> ().Invoke ();
+				var next = this.GetByDot ("__NEXT").As<Function> ().AsDelegate ();
+				var current = this.GetByDot ("__CURRENT").As<Function> ().AsDelegate ();
 				while (next (new DynValue[0]).AsBoolean ()) {
 					yield return current (new DynValue[0]);
 				}
 			}
 		}
 
-		System.Collections.IEnumerator  System.Collections.IEnumerable.GetEnumerator ()
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
 		{
 			yield return this.AsEnumerable ();
 		}

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.Errors;
 using Cygni.Libraries;
+
 namespace Cygni.DataTypes
 {
 	/// <summary>
@@ -23,7 +24,7 @@ namespace Cygni.DataTypes
 				case DataType.String:
 					return this [key.Value];
 				default :
-					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
+					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 				}
 			}
 			set { 
@@ -38,7 +39,7 @@ namespace Cygni.DataTypes
 					this [key.Value] = value;
 					return;
 				default :
-					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
+					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 				}
 			}
 		}
@@ -54,18 +55,18 @@ namespace Cygni.DataTypes
 				base.Add (key.Value, value);
 				return;
 			default :
-				throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
+				throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 			}
 		}
 
 		public override string ToString ()
 		{
 			StringBuilder s = new StringBuilder ();
-			var iterator = base.GetEnumerator();
+			var iterator = base.GetEnumerator ();
 			s.Append ("{ ");
 			if (iterator.MoveNext ())
 				s.Append (iterator.Current);
-			while (iterator.MoveNext()) {
+			while (iterator.MoveNext ()) {
 				s.Append (',').Append (iterator.Current);
 			}
 			s.Append (" }");
@@ -74,29 +75,39 @@ namespace Cygni.DataTypes
 
 		public new IEnumerator<DynValue> GetEnumerator ()
 		{
-			var iterator = base.GetEnumerator();
-			while(iterator.MoveNext()){
+			var iterator = base.GetEnumerator ();
+			while (iterator.MoveNext ()) {
 				var kvp = new DynList (2);
-				var key = iterator.Current.Key;
-				if (key is int)
-					kvp.Add ((double)(int)key);
-				else if (key is bool)
-					kvp.Add ((bool)key);
-				else if (key is string)
-					kvp.Add (key as string);
-				else
-					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
-				kvp.Add (iterator.Current.Value);
-				yield return DynValue.FromList(kvp);
+				object key = iterator.Current.Key;
+				IConvertible iconv = key as IConvertible;
+				if (iconv == null) {
+					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
+				} else {
+					switch (iconv.GetTypeCode ()) {
+					case TypeCode.Int32:
+						kvp.Add ((double)(int)key);
+						break;
+					case TypeCode.Boolean:
+						kvp.Add ((bool)key);
+						break;
+					case TypeCode.String:
+						kvp.Add (key as string);
+						break;
+					default:
+						throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
+					}
+				}
+				yield return DynValue.FromList (kvp);
 			}
 		}
 
-		 System.Collections.IEnumerator  System.Collections.IEnumerable.GetEnumerator ()
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
 		{
-			var iterator = this.GetEnumerator();
-			while (iterator.MoveNext()) 
+			var iterator = this.GetEnumerator ();
+			while (iterator.MoveNext ())
 				yield return iterator.Current;
 		}
+
 		public DynValue GetByDot (string fieldName)
 		{
 			switch (fieldName) {
@@ -120,14 +131,18 @@ namespace Cygni.DataTypes
 				throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 			}
 		}
-		public string[] FieldNames{
-			get{
+
+		public string[] FieldNames {
+			get {
 				return new string[] {
 					"hasKey", "hasValue", "remove", "count", "keys", "values", "add", "clear"
-				};}}
+				};
+			}
+		}
+
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-				throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
+			throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 		}
 
 	}
