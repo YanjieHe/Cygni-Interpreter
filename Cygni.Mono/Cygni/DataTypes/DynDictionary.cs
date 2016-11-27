@@ -96,6 +96,7 @@ namespace Cygni.DataTypes
 					default:
 						throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 					}
+					kvp.Add(iterator.Current.Value);
 				}
 				yield return DynValue.FromList (kvp);
 			}
