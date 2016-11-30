@@ -4,7 +4,7 @@ using Cygni.Errors;
 using Cygni.DataTypes;
 namespace CygniLib.data
 {
-	public class datatable:DataTable,IIndexable, IDot
+	/* public class datatable:DataTable,IIndexable, IDot
 	{
 		public datatable ():base()
 		{
@@ -69,6 +69,6 @@ namespace CygniLib.data
 		{
 			return "(DataTable)";
 		}
-	}
+	}*/
 }
 

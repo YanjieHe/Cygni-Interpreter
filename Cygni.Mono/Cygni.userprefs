@@ -1,14 +1,12 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/BinaryEx.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/SingleIndexEx.cs">
     <Files>
-      <File FileName="Cygni/DataTypes/ClassInfo.cs" Line="1" Column="1" />
-      <File FileName="Cygni/DataTypes/DataType.cs" Line="1" Column="1" />
-      <File FileName="Cygni/DataTypes/DynValue.cs" Line="1" Column="1" />
-      <File FileName="Cygni/AST/SingleIndexEx.cs" Line="1" Column="1" />
-      <File FileName="Cygni/AST/AssignEx.cs" Line="1" Column="1" />
-      <File FileName="Cygni/AST/UnaryEx.cs" Line="42" Column="49" />
-      <File FileName="Cygni/AST/BinaryEx.cs" Line="99" Column="42" />
+      <File FileName="Cygni/DataTypes/IIndexable.cs" Line="19" Column="1" />
+      <File FileName="Cygni/AST/IndexEx.cs" Line="49" Column="67" />
+      <File FileName="Cygni/DataTypes/DynList.cs" Line="30" Column="4" />
+      <File FileName="Cygni/DataTypes/DynDictionary.cs" Line="64" Column="1" />
+      <File FileName="Cygni/AST/SingleIndexEx.cs" Line="35" Column="63" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

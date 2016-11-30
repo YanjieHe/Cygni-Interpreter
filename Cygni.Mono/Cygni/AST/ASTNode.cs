@@ -21,17 +21,17 @@ namespace Cygni.AST
 		{
 			return new NameEx(name);
 		}
-		
+
 		public static ASTNode Parameter(string name)
 		{
 			return new NameEx(name);
 		}
-		
+
 		public static ASTNode Assign(ASTNode left, ASTNode right)
 		{
 			return new AssignEx(left, right);
 		}
-		
+
 		public static ASTNode Or(ASTNode left, ASTNode right)
 		{
 			return new BinaryEx(BinaryOp.Or, left, right);
@@ -40,7 +40,7 @@ namespace Cygni.AST
 		{
 			return new BinaryEx(BinaryOp.And, left, right);
 		}
-		
+
 		public static ASTNode Equal(ASTNode left, ASTNode right)
 		{
 			return new BinaryEx(BinaryOp.Equal, left, right);
@@ -49,7 +49,7 @@ namespace Cygni.AST
 		{
 			return new BinaryEx(BinaryOp.NotEqual, left, right);
 		}
-		
+
 		public static ASTNode Less(ASTNode left, ASTNode right)
 		{
 			return new BinaryEx(BinaryOp.Less, left, right);
@@ -66,7 +66,7 @@ namespace Cygni.AST
 		{
 			return new BinaryEx(BinaryOp.GreaterOrEqual, left, right);
 		}
-		
+
 		public static ASTNode Add(ASTNode left, ASTNode right)
 		{
 			return new BinaryEx(BinaryOp.Add, left, right);
@@ -91,7 +91,7 @@ namespace Cygni.AST
 		{
 			return new BinaryEx(BinaryOp.Pow, left, right);
 		}
-		
+
 		public static ASTNode UnaryPlus(ASTNode value)
 		{
 			return new UnaryEx(UnaryOp.Plus, value);
@@ -104,7 +104,7 @@ namespace Cygni.AST
 		{
 			return new UnaryEx(UnaryOp.Not, value);
 		}
-		
+
 		public static ASTNode Number(double value)
 		{
 			return new Constant(DynValue.FromNumber(value));
@@ -122,7 +122,7 @@ namespace Cygni.AST
 		}
 		public static readonly ASTNode True = new Constant(DynValue.True);
 		public static readonly ASTNode False = new Constant(DynValue.False);
-		
+
 		public static BlockEx Block(ICollection<ASTNode> expressions)
 		{
 			return new BlockEx(expressions);
@@ -170,9 +170,13 @@ namespace Cygni.AST
 		public static ASTNode DictionaryInit(List<ASTNode> list){
 			return new DictionaryInitEx (list);
 		}
-		public static ASTNode Index(ASTNode list, List<ASTNode>indexes)
+		public static ASTNode IndexAccess(ASTNode collection, List<ASTNode>indexes)
 		{
-			return new IndexEx(list, indexes);
+			if (indexes.Count == 1){
+				return new SingleIndexEx(collection, indexes[0]);
+			} else {
+				return new IndexEx(collection, indexes);
+			}
 		}
 		public static ASTNode Invoke(ASTNode function, ICollection<ASTNode>arguments)
 		{
@@ -190,6 +194,6 @@ namespace Cygni.AST
 		{
 			return new DotEx(obj, fieldName);
 		}
-		
+
 	}
 }

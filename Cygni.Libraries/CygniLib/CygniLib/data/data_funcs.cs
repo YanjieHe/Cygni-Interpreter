@@ -5,9 +5,9 @@ namespace CygniLib.data
 {
 	public static class data_funcs
 	{
-		public static DynValue datatable(DynValue[] args){
+		/*public static DynValue datatable(DynValue[] args){
 			return DynValue.FromUserData (new CygniLib.data.datatable ());
-		}
+		}*/
 	}
 }
 

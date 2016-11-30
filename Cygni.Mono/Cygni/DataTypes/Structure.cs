@@ -12,18 +12,18 @@ namespace Cygni.DataTypes
 	{
 		readonly StructureItem[] contents;
 
-		public Structure (int size)
+		/*public Structure (int size)
 		{
 			contents = new StructureItem[size];
-		}
+		}*/
 		internal Structure(params StructureItem[] contents){
 			this.contents = contents;
 		}
 
-		public void SetAt (int i, string key, DynValue value)
+		/*public void SetAt (int i, string key, DynValue value)
 		{
 			contents [i] = new StructureItem (key, value);
-		}
+		}*/
 
 		public DynValue GetByDot (string fieldName)
 		{

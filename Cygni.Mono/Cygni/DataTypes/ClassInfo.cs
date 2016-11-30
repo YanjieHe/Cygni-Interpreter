@@ -13,7 +13,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of ClassInfo.
 	/// </summary>
-	public sealed class ClassInfo: IComputable,IEnumerable<DynValue>,IEquatable<ClassInfo>, IComparable<DynValue>, IDot,IFunction
+	public sealed class ClassInfo: IComputable,IEnumerable<DynValue>, IEquatable<ClassInfo>, IComparable<DynValue>, IDot,IFunction
 	{
 		readonly string name;
 		readonly BlockEx body;

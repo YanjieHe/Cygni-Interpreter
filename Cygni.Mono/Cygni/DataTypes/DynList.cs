@@ -28,16 +28,22 @@ namespace Cygni.DataTypes
 		{
 			AddRange (collection);
 		}
-
-		public DynValue this [DynValue[] indexes] {
-			get{ 
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
-				return this [(int)indexes [0].AsNumber ()]; }
-			set{ 
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
-				this [(int)indexes [0].AsNumber ()] = value; 
-			}
+		public DynValue GetByIndex(DynValue index){
+			return base [(int)index.AsNumber ()];
 		}
+		public DynValue SetByIndex(DynValue index, DynValue value){
+			return base [(int)index.AsNumber ()] = value;
+		}
+
+		public DynValue GetByIndexes(DynValue[] indexes){
+			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
+			return this [(int)indexes [0].AsNumber ()];
+		}
+		public DynValue SetByIndexes(DynValue[] indexes, DynValue value){
+			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
+			return this [(int)indexes [0].AsNumber ()] = value; 
+		}
+
 
 		public DynValue GetByDot (string fieldName)
 		{

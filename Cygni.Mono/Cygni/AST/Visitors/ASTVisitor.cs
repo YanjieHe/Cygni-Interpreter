@@ -51,9 +51,13 @@ namespace Cygni.AST.Visitors
 				ifEx.IfFalse.Accept (this);
 		}
 		internal virtual void Visit(IndexEx indexEx){
-			indexEx._List.Accept (this);
+			indexEx.Collection.Accept (this);
 			foreach (var item in indexEx.Indexes) 
 				item.Accept (this);
+		}
+		internal virtual void Visit(SingleIndexEx indexEx){
+			indexEx.Collection.Accept (this);
+			indexEx.Index.Accept(this);
 		}
 		internal virtual void Visit(InvokeEx invokeEx){
 			invokeEx.Func.Accept (this);

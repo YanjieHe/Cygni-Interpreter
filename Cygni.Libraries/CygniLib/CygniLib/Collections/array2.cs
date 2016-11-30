@@ -16,17 +16,21 @@ namespace CygniLib.Collections
 				for (int j = 0; j < col; j++)
 					values [i, j] = DynValue.Null;
 		}
-		public DynValue this [DynValue[] indexes] {
-			get {
-				RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
-				return values [(int)indexes [0].AsNumber (),
-					   (int)indexes[1].AsNumber()];
-			}
-			set {
-				RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
-				values [(int)indexes [0].AsNumber (),
-					   (int)indexes[1].AsNumber()] = value;
-			}
+		public DynValue GetByIndex (DynValue index){
+			throw new RuntimeException ("bad number of arguments for indexer of 'array2'.");
+		}
+		public DynValue SetByIndex (DynValue index, DynValue value){
+			throw new RuntimeException ("bad number of arguments for indexer of 'array2'.");
+		}
+		public DynValue GetByIndexes (DynValue[] indexes){
+			RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
+			return values [(int)indexes [0].AsNumber (),
+				   (int)indexes[1].AsNumber()];
+		}
+		public DynValue SetByIndexes (DynValue[] indexes, DynValue value){
+			RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
+			return values [(int)indexes [0].AsNumber (),
+				   (int)indexes[1].AsNumber()] = value;
 		}
 		public string[] FieldNames{get{ return new string[] {
 			"nRows","nCols" 

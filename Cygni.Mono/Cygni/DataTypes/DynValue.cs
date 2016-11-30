@@ -11,7 +11,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>, IIndexable, IDot
+	public struct DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>, IDot
 	{
 		readonly DataType _type;
 
@@ -343,17 +343,6 @@ namespace Cygni.DataTypes
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
 			throw RuntimeException.NotDefined (fieldName);
-		}
-
-
-		public DynValue this[DynValue[] indexes]{ 
-			get{
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "string");
-				return this.AsString () [(int)indexes [0].AsNumber ()].ToString();
-			} 
-			set{
-				throw new RuntimeException ("'string' is read only");
-			}
 		}
 	}
 }

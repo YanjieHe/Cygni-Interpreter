@@ -1,17 +1,9 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/data/datatable.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/array2.cs">
     <Files>
-      <File FileName="CygniLib/random/random.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/random/random_funcs.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/IO/reader.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/IO/writer.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/array.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/array2.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/stack.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/queue.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/data/datatable.cs" Line="70" Column="22" />
-      <File FileName="CygniLib/data/data_funcs.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/array.cs" Line="29" Column="10" />
+      <File FileName="CygniLib/Collections/array2.cs" Line="32" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

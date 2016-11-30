@@ -11,6 +11,10 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public interface IIndexable
 	{
-		DynValue this[DynValue[] indexes]{ get; set; }
+		DynValue GetByIndex (DynValue index);
+		DynValue SetByIndex (DynValue index, DynValue value);
+
+		DynValue GetByIndexes (DynValue[] indexes);
+		DynValue SetByIndexes (DynValue[] indexes, DynValue value);
 	}
 }

@@ -47,6 +47,9 @@ namespace Cygni.AST.Scopes
 		public void Clear( ){
 			this.envTable.Clear ();
 		}
+		public EnvTable GetTable() {
+			return this.envTable;
+		}
 		public override string ToString ()
 		{
 			var s = new StringBuilder ("Scope: ");

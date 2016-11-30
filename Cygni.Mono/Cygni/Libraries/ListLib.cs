@@ -59,7 +59,8 @@ namespace Cygni.Libraries
 			if (args.Length == 1)
 				return (double) list.BinarySearch (args[0]);
 			else {
-				return (double) list.BinarySearch ((int)args [0].AsNumber (), (int)args [1].AsNumber (),args[2], DynValue.Null);
+				return (double) list.BinarySearch (
+				(int)args [0].AsNumber (), (int)args [1].AsNumber (),args[2], DynValue.Null);
 			}
 		}
 		public static DynValue max(DynList list, DynValue[] args){

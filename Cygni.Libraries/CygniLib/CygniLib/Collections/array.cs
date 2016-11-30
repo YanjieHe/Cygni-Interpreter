@@ -15,15 +15,20 @@ namespace CygniLib.Collections
 				values [i] = DynValue.Null;
 			}
 		}
-		public DynValue this [DynValue[] indexes] {
-			get {
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "array");
-				return values [(int)indexes [0].AsNumber ()];
-			}
-			set {
-				RuntimeException.IndexerArgsCheck (indexes.Length == 1, "array");
-				values [(int)indexes [0].AsNumber ()] = value;
-			}
+		 public DynValue GetByIndex (DynValue index){
+			return values [(int)index .AsNumber ()];
+		}
+		public DynValue SetByIndex (DynValue index, DynValue value){
+			return values [(int)index.AsNumber ()] = value;
+		}
+
+		public DynValue GetByIndexes (DynValue[] indexes){
+			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "array");
+			return values [(int)indexes [0].AsNumber ()];
+		}
+		public DynValue SetByIndexes (DynValue[] indexes, DynValue value){
+			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "array");
+			return values [(int)indexes [0].AsNumber ()] = value;
 		}
 		public DynValue GetByDot (string fieldName){
 			switch (fieldName) {

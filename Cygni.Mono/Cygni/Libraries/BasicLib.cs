@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.AST;
+using Cygni.AST.Scopes;
 using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.Errors;
@@ -12,6 +13,7 @@ using System.Reflection;
 using System.IO;
 using Cygni.Settings;
 using System.Threading;
+using Cygni.Executors;
 namespace Cygni.Libraries
 {
 	/// <summary>
@@ -54,14 +56,13 @@ namespace Cygni.Libraries
 			}
 		}
 
-
 		public static DynValue Struct (DynValue[] args)
 		{
 			if ((args.Length & 1) == 0) {/* even */
-				var structure = new Structure (args.Length >> 1);
+				var structureItems = new StructureItem [args.Length >> 1];
 				for (int i = 0, j = 0; i < args.Length - 1; i += 2,j++)
-					structure.SetAt (j, args [i].AsString (), args [i + 1]);
-				return new DynValue (DataType.Struct, structure);
+					structureItems[j] =new StructureItem(args [i].AsString (), args [i + 1]);
+				return new DynValue (DataType.Struct, new Structure(structureItems));
 			} 
 			throw RuntimeException.BadArgsNum ("struct", "even");
 		}
@@ -315,6 +316,36 @@ namespace Cygni.Libraries
 			string path = args [0].AsString ();
 			Directory.SetCurrentDirectory (path);
 			return DynValue.Null;
+		}
+
+		public static DynValue require(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 1, "require");
+			var basicScope = new BasicScope();
+			
+			string moduleName = args [0].AsString ();
+			if (!Path.HasExtension (moduleName))
+				moduleName = Path.ChangeExtension (moduleName, "cyg");
+			string currentDir = GlobalSettings.CurrentDirectory;
+			Encoding encoding = args.Length == 2
+				? Encoding.GetEncoding (args [1].AsString ())
+				: Encoding.Default;
+			
+			bool quiet = GlobalSettings.Quiet;
+			GlobalSettings.Quiet = true;
+			string filePath = currentDir + "/lib/" + moduleName;
+			if (!File.Exists (filePath))
+				throw new RuntimeException ("No module named '{0}.", moduleName);
+			var executor = new CodeFileExecutor (basicScope,filePath, encoding);
+			GlobalSettings.Quiet = quiet;
+
+			executor.Run ();
+			var structureItems = new StructureItem[basicScope.Count];
+			int i = 0;
+			foreach (var variable in basicScope.GetTable()){
+				structureItems[i] = new StructureItem(variable.Key, variable.Value);
+				i++;
+			}
+			return new Structure(structureItems);
 		}
 		// public static DynValue cond(DynValue [] args) {
 		// 	RuntimeException.FuncArgsCheck (args.Length == 3, "cond");

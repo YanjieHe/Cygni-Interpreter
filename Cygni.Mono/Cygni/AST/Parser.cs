@@ -394,7 +394,7 @@ namespace Cygni.AST
 						throw new SyntaxException ("line {0}: Unexpected '{1}'", lexer.LineNumber, look);
 					}
 					Move ();
-					x = ASTNode.Index (x, indexes);
+					x = ASTNode.IndexAccess (x, indexes);
 					continue;
 				}
 			
