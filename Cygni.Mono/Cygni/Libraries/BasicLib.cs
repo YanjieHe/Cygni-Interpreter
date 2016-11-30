@@ -316,22 +316,9 @@ namespace Cygni.Libraries
 			Directory.SetCurrentDirectory (path);
 			return DynValue.Null;
 		}
-		public static DynValue cond(DynValue [] args) {
-			RuntimeException.FuncArgsCheck (args.Length == 3, "cond");
-			return args[0].AsBoolean() ? args[1] : args[2];
-		}
-			
-		/*public static DynValue io_open(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 2, "open");
-			string filePath = args [0].AsString ();
-
-			string fileMode = args [1].AsString ();
-
-			switch(fileMode){
-			case "r":
-				return DynValue.FromUserData (File.Open (filePath, FileMode.Open));
-			case "r+":				return DynValue.FromUserData (File.Open (filePath, FileMode.OpenOrCreate));
-				*/
-
+		// public static DynValue cond(DynValue [] args) {
+		// 	RuntimeException.FuncArgsCheck (args.Length == 3, "cond");
+		// 	return args[0].AsBoolean() ? args[1] : args[2];
+		// }
 	}
 }

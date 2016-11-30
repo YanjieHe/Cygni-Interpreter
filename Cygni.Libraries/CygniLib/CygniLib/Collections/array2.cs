@@ -20,32 +20,32 @@ namespace CygniLib.Collections
 			get {
 				RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
 				return values [(int)indexes [0].AsNumber (),
-					(int)indexes[1].AsNumber()];
+					   (int)indexes[1].AsNumber()];
 			}
 			set {
 				RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
 				values [(int)indexes [0].AsNumber (),
-					(int)indexes[1].AsNumber()] = value;
+					   (int)indexes[1].AsNumber()] = value;
 			}
 		}
 		public string[] FieldNames{get{ return new string[] {
-				"nRows","nCols" 
-			};
-			}
+			"nRows","nCols" 
+		};
 		}
-		public DynValue GetByDot (string fieldname){
-			switch (fieldname) {
-			case "nRows":
-				return (double)values.GetLength (0);
-			case "nCols":
-				return (double)values.GetLength (1);
-			default:
-				throw RuntimeException.NotDefined (fieldname);
+		}
+		public DynValue GetByDot (string fieldName){
+			switch (fieldName) {
+				case "nRows":
+					return (double)values.GetLength (0);
+				case "nCols":
+					return (double)values.GetLength (1);
+				default:
+					throw RuntimeException.FieldNotExist ("array2", fieldName);
 			}
 		}
 
-		public	DynValue SetByDot (string fieldname, DynValue value){
-			throw RuntimeException.NotDefined (fieldname);
+		public	DynValue SetByDot (string fieldName, DynValue value){
+			throw RuntimeException.FieldNotExist ("array2", fieldName);
 		}
 
 		public override string ToString ()

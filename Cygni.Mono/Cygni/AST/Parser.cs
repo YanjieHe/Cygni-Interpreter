@@ -133,7 +133,7 @@ namespace Cygni.AST
 		ASTNode While ()
 		{
 			Match (Tag.While);
-			ASTNode c = Bool ();
+			ASTNode c = Assign ();
 			BlockEx body = Block ();
 			return ASTNode.While (c, body);
 		}
@@ -144,12 +144,12 @@ namespace Cygni.AST
 			var iterator = look.ToString ();
 			Match (Tag.ID);
 			Match (Tag.Assign);
-			var start = Bool ();
+			var start = Assign ();
 			Match (Tag.Comma);
-			var end = Bool ();
+			var end = Assign ();
 			if (look.tag == Tag.Comma) {
 				Move ();
-				var step = Bool ();
+				var step = Assign ();
 				var body = Block ();
 				return ASTNode.For (body, iterator, start, end, step);
 			} else {
@@ -163,7 +163,7 @@ namespace Cygni.AST
 			var iterator = look.ToString ();
 			Match (Tag.ID);
 			Match (Tag.In);
-			var collection = Bool ();
+			var collection = Assign ();
 			var body = Block ();
 			return ASTNode.ForEach (body, iterator, collection);
 		}

@@ -59,6 +59,18 @@ namespace Cygni.AST.Scopes
 			}
 			return newScope;
 		}
+		public void Append(NestedScope scope) {
+			foreach (var variable in scope.envTable) {
+				DynValue value = variable.Value;
+				if (value.type == DataType.Function) {
+					this.envTable [variable.Key] = value.As<Function> ().Update (this);
+				} else if (value.type == DataType.Class) {
+					this.envTable [variable.Key] = value.As<ClassInfo> ().Update (this);
+				}
+				else
+					this.envTable [variable.Key] = variable.Value;
+			}
+		}
 		public IEnumerable<string> Names(){
 			foreach (var name in envTable.Keys)
 				yield return name;

@@ -7,6 +7,10 @@ namespace Cygni.AST.Visitors
 			binaryEx.Left.Accept (this);
 			binaryEx.Right.Accept (this);
 		}
+		internal virtual void Visit(AssignEx assignEx ){
+			assignEx.Target.Accept (this);
+			assignEx.Value.Accept (this);
+		}
 		internal virtual void Visit(BlockEx blockEx){
 			foreach (var item in blockEx.expressions) 
 				item.Accept (this);

@@ -9,7 +9,7 @@ namespace Cygni.AST.Visitors
 		{
 			this.names = names;	
 		}
-		internal override void Visit (BinaryEx binaryEx)
+		/* internal override void Visit (BinaryEx binaryEx)
 		{
 			if (binaryEx.Op == BinaryOp.Assign && binaryEx.Left.type == NodeType.Name) {
 				var nameEx = binaryEx.Left as NameEx;
@@ -24,6 +24,22 @@ namespace Cygni.AST.Visitors
 				return;
 			}
 			base.Visit (binaryEx);
+		} */
+		internal override void Visit (AssignEx assignEx)
+		{
+			if (assignEx.Target.type == NodeType.Name) {
+				var nameEx = assignEx.Target as NameEx;
+				if (names.Contains (nameEx)) {
+					nameEx.Accept(this);
+				} else {
+					var newName = new NameEx (nameEx.Name, names.Count);
+					assignEx.SetTarget (newName);
+					names.Add (newName);
+				}
+				assignEx.Value.Accept(this);
+			} else {
+				base.Visit (assignEx);
+			}
 		}
 		internal override void Visit (NameEx nameEx)
 		{

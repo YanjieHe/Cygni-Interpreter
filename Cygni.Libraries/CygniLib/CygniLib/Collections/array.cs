@@ -25,22 +25,22 @@ namespace CygniLib.Collections
 				values [(int)indexes [0].AsNumber ()] = value;
 			}
 		}
-		public DynValue GetByDot (string fieldname){
-			switch (fieldname) {
-			case "length":
-				return (double)values.Length;
-			default:
-				throw RuntimeException.NotDefined (fieldname);
+		public DynValue GetByDot (string fieldName){
+			switch (fieldName) {
+				case "length":
+					return (double)values.Length;
+				default:
+					throw RuntimeException.FieldNotExist ("array", fieldName);
 			}
 		}
 		public string[] FieldNames{get{ return new string[] {
-				"length" 
-			};
-			}
+			"length" 
+		};
+		}
 		}
 
-		public	DynValue SetByDot (string fieldname, DynValue value){
-			throw RuntimeException.NotDefined (fieldname);
+		public	DynValue SetByDot (string fieldName, DynValue value){
+			throw RuntimeException.FieldNotExist ("array", fieldName);
 		}
 		public override string ToString ()
 		{

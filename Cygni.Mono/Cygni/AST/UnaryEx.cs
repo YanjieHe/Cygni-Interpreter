@@ -39,7 +39,7 @@ namespace Cygni.AST
 				{
 					if (obj.type == DataType.Number)
 						return new DynValue (DataType.Number, -(double)obj.Value);
-					return ((IComputable)obj.Value).UnaryPlus ();
+					return ((IComputable)obj.Value).UnaryMinus  ();
 				}
 				default: /* UnaryOp.Not */
 					return (bool)obj.Value ? DynValue.False : DynValue.True;

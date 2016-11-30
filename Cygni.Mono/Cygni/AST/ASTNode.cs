@@ -16,6 +16,7 @@ namespace Cygni.AST
 		public abstract DynValue Eval(IScope scope);
 		public abstract NodeType type { get; }
 		internal abstract void Accept (ASTVisitor visitor);
+
 		public static ASTNode Variable(string name)
 		{
 			return new NameEx(name);
@@ -28,7 +29,7 @@ namespace Cygni.AST
 		
 		public static ASTNode Assign(ASTNode left, ASTNode right)
 		{
-			return new BinaryEx(BinaryOp.Assign, left, right);
+			return new AssignEx(left, right);
 		}
 		
 		public static ASTNode Or(ASTNode left, ASTNode right)

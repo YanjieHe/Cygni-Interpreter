@@ -100,6 +100,8 @@
     <Compile Include="AST\Scopes\BuiltInScope.cs" />
     <Compile Include="DataTypes\DynDictionary.cs" />
     <Compile Include="AST\DictionaryInitEx.cs" />
+    <Compile Include="AST\AssignEx.cs" />
+    <Compile Include="AST\SingleIndexEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

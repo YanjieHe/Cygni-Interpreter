@@ -41,7 +41,7 @@ namespace Cygni.Settings
 			{ "names",BasicLib.names},
 			{ "getwd",BasicLib.getwd},
 			{ "setwd",BasicLib.setwd},
-			{ "cond",BasicLib.cond},
+			// { "cond",BasicLib.cond},
 
 			{"strcat",StrLib.strcat},
 			{"strcmp",StrLib.strcmp},

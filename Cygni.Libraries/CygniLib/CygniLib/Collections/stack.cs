@@ -9,8 +9,8 @@ namespace CygniLib.Collections
 	{
 		public stack():base(){
 		}
-		public DynValue GetByDot(string fieldname){
-			switch(fieldname){
+		public DynValue GetByDot(string fieldName){
+			switch(fieldName){
 			case "push":
 				return DynValue.FromDelegate (args =>{
 					RuntimeException.FuncArgsCheck(args.Length == 1,"push");
@@ -24,7 +24,7 @@ namespace CygniLib.Collections
 			case "count":
 				return (double)this.Count;
 			default:
-				throw RuntimeException.NotDefined (fieldname);
+					throw RuntimeException.FieldNotExist ("stack", fieldName);
 			}
 		}
 		public string[] FieldNames{get{ return new string[] {
@@ -32,8 +32,8 @@ namespace CygniLib.Collections
 			};
 			}
 		}
-		public DynValue SetByDot(string fieldname, DynValue value){
-			throw	RuntimeException.NotDefined (fieldname);
+		public DynValue SetByDot(string fieldName, DynValue value){
+					throw RuntimeException.FieldNotExist ("stack", fieldName);
 		}
 		public override string ToString ()
 		{

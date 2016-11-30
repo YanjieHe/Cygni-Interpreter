@@ -12,33 +12,39 @@ namespace CygniLib.IO
 
 		}
 		public reader(string filePath, Encoding encoding):base(filePath,encoding){
+
 		}
-		public DynValue GetByDot (string fieldname)
+		public DynValue GetByDot (string fieldName)
 		{
-			switch (fieldname) {
-			case "peek":
-				return DynValue.FromDelegate (args => (double)this.Peek ());
-			case "read":
-				return DynValue.FromDelegate (args => (double)this.Read ());
-			case "readLine":
-				return DynValue.FromDelegate (args => this.ReadLine ());
-			case "close":
-				return DynValue.FromDelegate (args => {
-					this.Close ();
-					return DynValue.Null;
-				});
-			default :
-				throw  RuntimeException.NotDefined (fieldname);
+			switch (fieldName) {
+				case "peek":
+					return DynValue.FromDelegate (args => (double)this.Peek ());
+				case "read":
+					return DynValue.FromDelegate (args => (double)this.Read ());
+				case "readLine":
+					return DynValue.FromDelegate (args => this.ReadLine ());
+				case "close":
+					return DynValue.FromDelegate (args => {
+							this.Close ();
+							return DynValue.Null;
+							});
+				default :
+					throw RuntimeException.FieldNotExist ("reader", fieldName);
 			}
 		}
-		public string[] FieldNames{get{ return new string[] {
-				"peek", "read", "readLine", "close"
-			};
+		public string[] FieldNames{
+			get{ 
+				return new string[] {
+					"peek", "read", "readLine", "close"
+				};
 			}
 		}
-		public DynValue SetByDot (string fieldname, DynValue value)
+		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.NotDefined (fieldname);
+			throw RuntimeException.FieldNotExist ("reader", fieldName);
+		}
+		public override string ToString () {
+			return "Native Class: reader";
 		}
 	}
 }
