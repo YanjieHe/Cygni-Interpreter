@@ -1,10 +1,41 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/array2.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Text/regex.cs">
     <Files>
-      <File FileName="CygniLib/Collections/array.cs" Line="29" Column="10" />
-      <File FileName="CygniLib/Collections/array2.cs" Line="32" Column="10" />
+      <File FileName="CygniLib/Collections/array.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Text/regex.cs" Line="45" Column="12" />
+      <File FileName="CygniLib/Text/match.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Text/group.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Text/text_funcs.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CygniLib" expanded="True">
+            <Node name="CygniLib" expanded="True">
+              <Node name="Collections" expanded="True" />
+              <Node name="Text" expanded="True">
+                <Node name="regex.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State name="__root__">
+          <Node name="CygniLib" expanded="True">
+            <Node name="CygniLib" expanded="True">
+              <Node name="CygniLib" expanded="True">
+                <Node name="Collections" expanded="True">
+                  <Node name="CygniLib.Collections.array" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

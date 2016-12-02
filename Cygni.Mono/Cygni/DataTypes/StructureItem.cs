@@ -6,10 +6,10 @@ using System;
 using Cygni.Errors;
 namespace Cygni.DataTypes
 {
-	internal sealed class StructureItem
+	public sealed class StructureItem
 	{
-		internal readonly string Key;
-		internal DynValue Value;
+		public readonly string Key;
+		public DynValue Value;
 		internal StructureItem(string Key,DynValue Value){
 			this.Key = Key;
 			this.Value = Value;

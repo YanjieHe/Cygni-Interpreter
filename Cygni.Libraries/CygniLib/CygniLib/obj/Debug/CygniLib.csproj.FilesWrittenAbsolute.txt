@@ -1,6 +1,6 @@
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/bin/Debug/Cygni.dll
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/bin/Debug/CygniLib.dll.mdb
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/bin/Debug/CygniLib.dll
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/obj/Debug/CygniLib.dll
 /home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/obj/Debug/CygniLib.dll.mdb
+/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Libraries/CygniLib/CygniLib/bin/Debug/Cygni.dll

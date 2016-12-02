@@ -49,11 +49,16 @@
     <Compile Include="random\random_funcs.cs" />
     <Compile Include="data\datatable.cs" />
     <Compile Include="data\data_funcs.cs" />
+    <Compile Include="Text\regex.cs" />
+    <Compile Include="Text\match.cs" />
+    <Compile Include="Text\group.cs" />
+    <Compile Include="Text\text_funcs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
     <Folder Include="random\" />
     <Folder Include="data\" />
+    <Folder Include="Text\" />
   </ItemGroup>
 </Project>

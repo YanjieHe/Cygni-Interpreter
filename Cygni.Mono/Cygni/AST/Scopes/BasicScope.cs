@@ -19,6 +19,11 @@ namespace Cygni.AST.Scopes
 			this.envTable = new EnvTable ();
 		}
 		public int Count { get { return envTable.Count; } }
+		public virtual IScope Parent {
+			get {
+				return builtInScope;
+			}
+		}
 		public virtual DynValue Get(string name){
 			DynValue _value;
 			if (envTable.TryGetValue (name, out _value))
@@ -44,7 +49,7 @@ namespace Cygni.AST.Scopes
 		public bool Delete(string name){
 			return envTable.Remove (name);
 		}
-		public void Clear( ){
+		public void Clear(){
 			this.envTable.Clear ();
 		}
 		public EnvTable GetTable() {

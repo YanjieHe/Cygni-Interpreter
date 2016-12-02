@@ -1,0 +1,1 @@
+loaddll "CygniLib.dll","CygniLib.Text.text_funcs"

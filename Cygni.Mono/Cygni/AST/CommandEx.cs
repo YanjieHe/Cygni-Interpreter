@@ -36,6 +36,7 @@ namespace Cygni.AST
 			{ "delete", CommandType.Delete },
 			{ "import", CommandType.Import },
 			{ "scope", CommandType.Scope },
+			{ "setglobal", CommandType.SetGlobal },
 
 		};
 		public CommandEx (string commandName, IList<ASTNode>parameters)
@@ -58,6 +59,8 @@ namespace Cygni.AST
 				return RunCommand (Commands.Import, scope);
 			case CommandType.Scope:
 				return RunCommand (Commands.Scope, scope);
+			case CommandType.SetGlobal:
+				return RunCommand (Commands.SetGlobal, scope);
 			default:
 				throw new NotSupportedException (commandType.ToString ());
 			}
@@ -81,5 +84,6 @@ namespace Cygni.AST
 		Delete,
 		Import,
 		Scope,
+		SetGlobal,
 	}
 }

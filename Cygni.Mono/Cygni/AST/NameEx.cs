@@ -24,7 +24,6 @@ namespace Cygni.AST
 		internal void SetIndex(int index){
 			this.index = index;
 		}
-		//public int IndexInScope { get { return index; } internal set { index = value; } }
 
 		public bool IsLocal {
 			get{ return index != -1; }

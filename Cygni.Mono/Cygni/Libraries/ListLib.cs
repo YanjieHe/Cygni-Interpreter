@@ -66,7 +66,7 @@ namespace Cygni.Libraries
 		public static DynValue max(DynList list, DynValue[] args){
 			return list.Max ();
 		}
-		public static DynValue min(DynValue list, DynValue[] args){
+		public static DynValue min(DynList list, DynValue[] args){
 			return list.Min ();
 		}
 		public static DynValue find (DynList list, DynValue[] args)
@@ -86,6 +86,16 @@ namespace Cygni.Libraries
 			DynList newList = new DynList(list.Count + list2.Count);
 			foreach (DynValue item in list.Concat(list2)) {
 				newList.Add(item);
+			}
+			return newList;
+		}
+		public static DynValue slice(DynList list, DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 2, "slice");
+			int start = (int)args[0].AsNumber();
+			int count = (int)args[1].AsNumber();
+			DynList newList = new DynList(count);
+			for (int i = 0; i < count; i++) {
+				newList.Add(list[start+i]);
 			}
 			return newList;
 		}

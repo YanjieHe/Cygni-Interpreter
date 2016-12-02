@@ -59,7 +59,7 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			return "(Function)";
+			return "(Function: "+name+")";
 		}
 	}
 }

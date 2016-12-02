@@ -12,6 +12,11 @@ namespace Cygni.AST.Scopes
 		public BuiltInScope ():base()
 		{
 		}
+		public override IScope Parent {
+			get {
+				throw new RuntimeException("Built-in scope does not have a parent scope.");
+			}
+		}
 		public override DynValue Get (string name)
 		{
 			DynValue _value;

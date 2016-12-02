@@ -28,6 +28,7 @@ namespace Cygni.AST
 		ListInit,
 		DictionaryInit,
 		Index,
+		SingleIndex,
 		ForEach,
 		Assign,
 	}

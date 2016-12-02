@@ -1,13 +1,32 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/SingleIndexEx.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/DataTypes/DynDictionary.cs">
     <Files>
-      <File FileName="Cygni/DataTypes/IIndexable.cs" Line="19" Column="1" />
-      <File FileName="Cygni/AST/IndexEx.cs" Line="49" Column="67" />
-      <File FileName="Cygni/DataTypes/DynList.cs" Line="30" Column="4" />
-      <File FileName="Cygni/DataTypes/DynDictionary.cs" Line="64" Column="1" />
-      <File FileName="Cygni/AST/SingleIndexEx.cs" Line="35" Column="63" />
+      <File FileName="Cygni/AST/Scopes/ArrayScope.cs" Line="20" Column="61" />
+      <File FileName="Cygni/DataTypes/DynDictionary.cs" Line="127" Column="41" />
+      <File FileName="Cygni/DataTypes/Structure.cs" Line="35" Column="32" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Cygni" expanded="True">
+            <Node name="Cygni" expanded="True">
+              <Node name="AST" expanded="True">
+                <Node name="Scopes" expanded="True" />
+              </Node>
+              <Node name="DataTypes" expanded="True">
+                <Node name="DynDictionary.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State name="__root__">
+          <Node name="Cygni" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

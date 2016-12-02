@@ -8,52 +8,75 @@ using Cygni.Errors;
 
 namespace Cygni.DataTypes
 {
-	public sealed class Structure:IDot  // ,IIndexable
+	public sealed class Structure:IDot  
 	{
 		readonly StructureItem[] contents;
 
-		/*public Structure (int size)
+		public Structure (params StructureItem[] contents)
 		{
-			contents = new StructureItem[size];
-		}*/
-		internal Structure(params StructureItem[] contents){
 			this.contents = contents;
+			// SortByFields ();
 		}
-
-		/*public void SetAt (int i, string key, DynValue value)
-		{
-			contents [i] = new StructureItem (key, value);
-		}*/
 
 		public DynValue GetByDot (string fieldName)
 		{
-			for (int i = contents.Length - 1; i >= 0; i--) {
-				if (string.Equals (contents [i].Key, fieldName))
-					return contents [i].Value;
+			foreach (var item in contents) {
+				if(string.Equals(item.Key, fieldName))
+					return item.Value;
 			}
-			throw RuntimeException.NotDefined (fieldName);
+			throw RuntimeException.FieldNotExist ("struct", fieldName);
+			// return BinarySearch (0, contents.Length - 1, fieldName).Value;
 		}
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			for (int i = contents.Length - 1; i >= 0; i--) {
-				if (string.Equals (contents [i].Key, fieldName))
-					return contents [i].Value = value;
+			foreach (var item in contents) {
+				if(string.Equals(item.Key, fieldName))
+					return item.Value = value;
 			}
-			throw RuntimeException.NotDefined (fieldName);
+			throw RuntimeException.FieldNotExist ("struct", fieldName);
+			// return BinarySearch (0, contents.Length - 1, fieldName).Value = value;
 		}
-		public string[] FieldNames{
-			get{
+
+		public string[] FieldNames {
+			get {
 				string[] names = new string[contents.Length];
 				for (int i = 0; i < names.Length; i++)
 					names [i] = contents [i].Key;
 				return names;
-				}}
+			}
+		}
 
+		private void SortByFields ()
+		{
+			// Insertion Sort
+			for (int i = 1; i < contents.Length; i++)
+				if (string.CompareOrdinal (contents [i].Key, contents [i - 1].Key) < 0) {  
+					StructureItem t = contents [i];  
+					int j = i - 1;  
+					while (j >= 0 && string.CompareOrdinal (contents [j].Key, t.Key) > 0) {
+						contents [j + 1] = contents [j];
+						j--;
+					}
+					contents [j + 1] = t;  
+				}
+		}
 
-		// public DynValue this [DynValue[] indexes]{ 
-		// 	get { return contents [(int)indexes [0].AsNumber ()].Value; } 
-		// 	set { contents [(int)indexes [0].AsNumber ()].Value = value; } }
+		private StructureItem BinarySearch (int low, int high, string field)
+		{
+			int mid;
+			while (low <= high) {
+				mid = (low + high) >> 1;
+				int cmp = string.CompareOrdinal (contents [mid].Key, field);
+				if (cmp > 0) {
+					high = mid - 1;
+				} else if (cmp < 0) {
+					low = mid + 1;
+				} else
+					return contents [mid];
+			}
+			throw RuntimeException.FieldNotExist ("struct", field);
+		}
 
 		public override string ToString ()
 		{

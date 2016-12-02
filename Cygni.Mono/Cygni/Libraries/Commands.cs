@@ -147,5 +147,15 @@ namespace Cygni.Libraries
 				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
 			}
 		}
+		public static DynValue SetGlobal ( DynValue[] args, IScope scope ) {
+			RuntimeException.CmdArgsCheck(args.Length == 2, "setglobal");
+			string variableName = args[0].AsString();
+			DynValue value = args [1];
+			while (!(scope is BasicScope)) {
+				scope = scope.Parent;
+			}
+			scope.Put(variableName, value);
+			return DynValue.Null;
+		}
 	}
 }

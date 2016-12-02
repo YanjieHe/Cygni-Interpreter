@@ -19,7 +19,7 @@ namespace Cygni.AST
 			this.collection = collection;
 			this.index = index;
 		}
-		public override NodeType type{ get { return NodeType.Index; } }
+		public override NodeType type{ get { return NodeType.SingleIndex; } }
 		
 		public override DynValue Eval(IScope scope)
 		{

@@ -15,7 +15,7 @@ namespace Cygni.AST.Scopes
 	{
 		IScope parent;
 
-		public IScope Parent{ get { return parent; } }
+		public override IScope Parent{ get { return parent; } }
 
 		public NestedScope (IScope parent = null) : base ()
 		{

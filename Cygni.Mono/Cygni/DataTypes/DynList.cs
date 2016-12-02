@@ -68,15 +68,21 @@ namespace Cygni.DataTypes
 				return DynValue.FromDelegate ((args) => ListLib.find (this, args));
 			case "concat":
 				return DynValue.FromDelegate ((args) => ListLib.concat (this, args));
+			case "slice":
+				return DynValue.FromDelegate ((args) => ListLib.slice (this, args));
+			case "pop":
+				return DynValue.FromDelegate ((args) => ListLib.pop (this, args));
+			case "clear":
+				return DynValue.FromDelegate ((args) => ListLib.clear (this, args));
 			default:
-				throw RuntimeException.NotDefined (fieldName);
+				throw RuntimeException.FieldNotExist ("list",fieldName);
 			}
 		}
 
 		public string[] FieldNames{
 			get{
 				return new string[] {
-					"append", "count", "removeAt", "insert", "sort", "max", "min", "bSearch", "find", "concat"
+					"append", "count", "removeAt", "insert", "sort", "max", "min", "bSearch", "find", "concat","slice","pop","clear"
 				};
 				}}
 		public DynValue SetByDot (string fieldName, DynValue value)

@@ -14,31 +14,35 @@ namespace Cygni.DataTypes
 	public sealed class DynDictionary: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot
 	{
 
-		public DynValue GetByIndex(DynValue index){
+		public DynValue GetByIndex (DynValue index)
+		{
 			switch (index.type) {
 			case DataType.Number:
 				return base [(int)(double)index.Value];
 			case DataType.Boolean:
 			case DataType.String:
-				return base[index.Value];
+				return base [index.Value];
 			default:
 				throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 			}
 		}
-		public DynValue SetByIndex(DynValue index, DynValue value){
+
+		public DynValue SetByIndex (DynValue index, DynValue value)
+		{
 			switch (index.type) {
 			case DataType.Number:
 				return base [(int)(double)index.Value] = value;
 			case DataType.Boolean:
 			case DataType.String:
-				return 				base [index.Value] = value;
+				return base [index.Value] = value;
 			default:
 				throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 			}
 
 		}
 
-		public DynValue GetByIndexes(DynValue[] indexes){
+		public DynValue GetByIndexes (DynValue[] indexes)
+		{
 			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Dictionary");
 			var key = indexes [0];
 			switch (key.type) {
@@ -52,7 +56,9 @@ namespace Cygni.DataTypes
 			}
 
 		}
-		public DynValue SetByIndexes(DynValue[] indexes, DynValue value){
+
+		public DynValue SetByIndexes (DynValue[] indexes, DynValue value)
+		{
 			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Dictionary");
 			var key = indexes [0];
 			switch (key.type) {
@@ -69,15 +75,15 @@ namespace Cygni.DataTypes
 		public void Add (DynValue key, DynValue value)
 		{
 			switch (key.type) {
-				case DataType.Number:
-					base.Add ((int)(double)key.Value, value);
-					return;
-				case DataType.Boolean:
-				case DataType.String:
-					base.Add (key.Value, value);
-					return;
-				default :
-					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
+			case DataType.Number:
+				base.Add ((int)(double)key.Value, value);
+				return;
+			case DataType.Boolean:
+			case DataType.String:
+				base.Add (key.Value, value);
+				return;
+			default :
+				throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 			}
 		}
 
@@ -89,7 +95,7 @@ namespace Cygni.DataTypes
 			if (iterator.MoveNext ())
 				s.Append (iterator.Current);
 			while (iterator.MoveNext ()) {
-				s.Append (',').Append (iterator.Current);
+				s.Append (", ").Append (iterator.Current);
 			}
 			s.Append (" }");
 			return s.ToString ();
@@ -99,28 +105,28 @@ namespace Cygni.DataTypes
 		{
 			var iterator = base.GetEnumerator ();
 			while (iterator.MoveNext ()) {
-				var kvp = new DynList (2);
+				var kvp = new StructureItem [2];
 				object key = iterator.Current.Key;
 				IConvertible iconv = key as IConvertible;
 				if (iconv == null) {
 					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 				} else {
 					switch (iconv.GetTypeCode ()) {
-						case TypeCode.Int32:
-							kvp.Add ((double)(int)key);
-							break;
-						case TypeCode.Boolean:
-							kvp.Add ((bool)key);
-							break;
-						case TypeCode.String:
-							kvp.Add (key as string);
-							break;
-						default:
-							throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
+					case TypeCode.Int32:
+						kvp [0] = new StructureItem ("key", (double)(int)key);
+						break;
+					case TypeCode.Boolean:
+						kvp [0] = new StructureItem ("key", (bool)key);
+						break;
+					case TypeCode.String:
+						kvp [0] = new StructureItem ("key", key as string);
+						break;
+					default:
+						throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 					}
-					kvp.Add(iterator.Current.Value);
+					kvp [1] = new StructureItem ("value", iterator.Current.Value);
 				}
-				yield return DynValue.FromList (kvp);
+				yield return DynValue.FromStructure (new Structure (kvp));
 			}
 		}
 
@@ -134,24 +140,24 @@ namespace Cygni.DataTypes
 		public DynValue GetByDot (string fieldName)
 		{
 			switch (fieldName) {
-				case "hasKey":
-					return DynValue.FromDelegate ((args) => DictionaryLib.hasKey (this, args));
-				case "hasValue":
-					return DynValue.FromDelegate ((args) => DictionaryLib.hasValue (this, args));
-				case "remove":
-					return DynValue.FromDelegate ((args) => DictionaryLib.remove (this, args));
-				case "count":
-					return (double)this.Count;
-				case "keys":
-					return DynValue.FromDelegate ((args) => DictionaryLib.keys (this, args));
-				case "values":
-					return DynValue.FromDelegate ((args) => DictionaryLib.values (this, args));
-				case "add":
-					return DynValue.FromDelegate ((args) => DictionaryLib.add (this, args));
-				case "clear":
-					return DynValue.FromDelegate ((args) => DictionaryLib.clear (this, args));
-				default:
-					throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
+			case "hasKey":
+				return DynValue.FromDelegate ((args) => DictionaryLib.hasKey (this, args));
+			case "hasValue":
+				return DynValue.FromDelegate ((args) => DictionaryLib.hasValue (this, args));
+			case "remove":
+				return DynValue.FromDelegate ((args) => DictionaryLib.remove (this, args));
+			case "count":
+				return (double)this.Count;
+			case "keys":
+				return DynValue.FromDelegate ((args) => DictionaryLib.keys (this, args));
+			case "values":
+				return DynValue.FromDelegate ((args) => DictionaryLib.values (this, args));
+			case "add":
+				return DynValue.FromDelegate ((args) => DictionaryLib.add (this, args));
+			case "clear":
+				return DynValue.FromDelegate ((args) => DictionaryLib.clear (this, args));
+			default:
+				throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 			}
 		}
 

@@ -6,7 +6,7 @@ using System;
 
 namespace Cygni.DataTypes
 {
-	public enum DataType:byte
+	public enum DataType: byte
 	{
 		Number,
 		Boolean,
