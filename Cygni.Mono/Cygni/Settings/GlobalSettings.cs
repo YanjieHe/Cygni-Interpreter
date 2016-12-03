@@ -103,14 +103,37 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					new StructureItem( "readKey",BasicLib.console_readKey ) 
 
 				)
+			}, 
 
-				}, {"string",
+			{"string",
 					new Structure (
 					new StructureItem( "concat",StrLib.strcat ),
 					new StructureItem( "compare",StrLib.compare ),
 					new StructureItem( "empty",string.Empty ) 
 				)
-				},
+			},
+
+			{"math",
+				new Structure (
+					new StructureItem("abs",MathLib.abs),
+					new StructureItem("log",MathLib.log),
+					new StructureItem("sqrt",MathLib.sqrt),
+					new StructureItem("max",MathLib.max),
+					new StructureItem("min",MathLib.min),
+					new StructureItem("exp",MathLib.exp),
+					new StructureItem("sign",MathLib.sign),
+					new StructureItem("sin",MathLib.sin),
+					new StructureItem("cos",MathLib.cos),
+					new StructureItem("tan",MathLib.tan),
+					new StructureItem("asin",MathLib.asin),
+					new StructureItem("acos",MathLib.acos),
+					new StructureItem("atan",MathLib.atan),
+					new StructureItem("ceiling",MathLib.ceiling),
+					new StructureItem("floor",MathLib.floor),
+					new StructureItem("round",MathLib.round)
+				)
+			},
+
 			};
 
 		public static void SetBuiltInFunctions (BuiltInScope scope)

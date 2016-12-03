@@ -28,5 +28,6 @@ namespace CygniLib.IO
 				return DynValue.FromUserData (new CygniLib.IO.writer (args[0].AsString(),append, encoding));
 			}
 		}
+
 	}
 }

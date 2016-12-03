@@ -26,6 +26,8 @@ namespace Cygni.Lexical.Tokens
 				return And;
 			case "or":
 				return Or;
+			case "not":
+				return Not;
 
 			case "==":
 				return Eq;
@@ -118,6 +120,7 @@ namespace Cygni.Lexical.Tokens
 
 		public static readonly Word
 			And = new Word ("and", Tag.And), Or = new Word ("or", Tag.Or),
+			Not = new Word("not",Tag.Not),
 			Eq = new Word ("==", Tag.Equal), Neq = new Word ("!=", Tag.NotEqual),
 			Assign = new Word ("=", Tag.Assign),
 			Less = new Word ("<", Tag.Less), Greater = new Word (">", Tag.Greater),

@@ -15,7 +15,7 @@ namespace CygniLib.Collections
 				values [i] = DynValue.Null;
 			}
 		}
-		 public DynValue GetByIndex (DynValue index){
+		public DynValue GetByIndex (DynValue index){
 			return values [(int)index .AsNumber ()];
 		}
 		public DynValue SetByIndex (DynValue index, DynValue value){

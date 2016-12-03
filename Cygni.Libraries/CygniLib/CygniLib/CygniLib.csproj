@@ -53,6 +53,8 @@
     <Compile Include="Text\match.cs" />
     <Compile Include="Text\group.cs" />
     <Compile Include="Text\text_funcs.cs" />
+    <Compile Include="Collections\linkedList.cs" />
+    <Compile Include="Collections\linkedListNode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

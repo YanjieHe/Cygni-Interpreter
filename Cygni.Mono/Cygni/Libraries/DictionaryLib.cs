@@ -56,14 +56,24 @@ namespace Cygni.Libraries
 			int n = ht.Count;
 			DynList keys = new DynList(n);
 			foreach (var key in ht.Keys){
-				if (key is int)
-					keys.Add((double)key);
-				else if (key is bool)
-					keys.Add((bool)key);
-				else if (key is string)
-					keys.Add(key as string);
-				else
-					throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
+				IConvertible iconv = key as IConvertible;
+				if (iconv == null) {
+					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
+				} else {
+					switch (iconv.GetTypeCode ()) {
+					case TypeCode.Int32:
+						keys.Add((double)(int)key);
+						break;
+					case TypeCode.Boolean:
+						keys.Add((bool)key);
+						break;
+					case TypeCode.String:
+						keys.Add(key as string);
+						break;
+					default:
+						throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
+					}
+				}
 			}
 			return keys;
 		}

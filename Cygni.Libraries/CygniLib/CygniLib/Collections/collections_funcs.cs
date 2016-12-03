@@ -25,6 +25,10 @@ namespace CygniLib.Collections
 			RuntimeException.FuncArgsCheck (args.Length == 0, "queue");
 			return DynValue.FromUserData (new CygniLib.Collections.queue ());
 		}
+		public static DynValue linkedList(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 0, "linkedList");
+			return DynValue.FromUserData (new CygniLib.Collections.linkedList ());
+		}
 	}
 }
 

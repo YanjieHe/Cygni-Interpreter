@@ -47,7 +47,7 @@ namespace Cygni.DataTypes
 			}
 		}
 
-		private void SortByFields ()
+		/* private void SortByFields ()
 		{
 			// Insertion Sort
 			for (int i = 1; i < contents.Length; i++)
@@ -76,7 +76,7 @@ namespace Cygni.DataTypes
 					return contents [mid];
 			}
 			throw RuntimeException.FieldNotExist ("struct", field);
-		}
+		} */
 
 		public override string ToString ()
 		{

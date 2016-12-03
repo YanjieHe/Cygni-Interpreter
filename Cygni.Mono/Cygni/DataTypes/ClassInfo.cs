@@ -13,7 +13,9 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of ClassInfo.
 	/// </summary>
-	public sealed class ClassInfo: IComputable,IEnumerable<DynValue>, IEquatable<ClassInfo>, IComparable<DynValue>, IDot,IFunction
+	public sealed class ClassInfo: 
+	IComputable,IEnumerable<DynValue>, IEnumerator<DynValue>,
+	IEquatable<ClassInfo>, IComparable<DynValue>, IDot,IFunction
 	{
 		readonly string name;
 		readonly BlockEx body;
@@ -22,7 +24,7 @@ namespace Cygni.DataTypes
 		readonly bool IsInstance;
 
 		public ClassInfo (string name, NestedScope classScope, 
-				BlockEx body, ClassInfo parent = null, bool IsInstance = false)
+		                  BlockEx body, ClassInfo parent = null, bool IsInstance = false)
 		{
 			this.name = name;
 			this.classScope = classScope;
@@ -30,7 +32,7 @@ namespace Cygni.DataTypes
 			this.IsInstance = IsInstance;
 			this.body = body;
 			if (!this.IsInstance) {
-				this.body.Eval(this.classScope);
+				this.body.Eval (this.classScope);
 			}
 		}
 
@@ -39,14 +41,12 @@ namespace Cygni.DataTypes
 
 			var newScope = new NestedScope (classScope.Parent);
 			if (this.parent != null) { /* Does this class inherit from a parent class?  */
-				// parent.body.Eval(newScope);
 				newScope.Append (parent.classScope);
 			}
-			// body.Eval (newScope); 
 			newScope.Append (this.classScope);/* Initialize the class */
-			/* If there exists same fields in the derived class, then the field will be overwriten. */
+			/* If there exists same fields in the derived class, then the fields will be overwriten. */
 			ClassInfo newClass = new ClassInfo (
-					name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
+				                     name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
 			if (newScope.HasName ("__init")) /* initialize */
 				newScope.Get ("__init").As<Function> ().Update (parameters).Invoke ();
@@ -80,7 +80,7 @@ namespace Cygni.DataTypes
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			return this.classScope.Put(fieldName, value);
+			return this.classScope.Put (fieldName, value);
 		}
 
 		public int CompareTo (DynValue other)
@@ -146,9 +146,11 @@ namespace Cygni.DataTypes
 			return (args) => DynValue.FromClass (this.Init (args));
 		}
 
-		public bool Equals (ClassInfo other){
-			if (IsInstance && classScope.HasName ("__equals")) {
-				return this.GetByDot ("__equals").As<Function> ().Update (new DynValue[]{ DynValue.FromClass (other) }).Invoke ().AsBoolean();
+		public bool Equals (ClassInfo other)
+		{
+			DynValue func;
+			if (IsInstance && classScope.TryGetValue ("__equals", out func)) {
+				return func.As<Function> ().Update (new DynValue[]{ DynValue.FromClass (other) }).Invoke ().AsBoolean ();
 			}
 			throw RuntimeException.FieldNotExist (name, "__equals");
 		}
@@ -171,25 +173,21 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			if (IsInstance && classScope.HasName ("__toStr"))
-				return this.GetByDot ("__toStr").As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
+			DynValue func;
+			if (IsInstance && classScope.TryGetValue ("__toStr", out func))
+				return func.As<Function> ().Update (new DynValue[0]).Invoke ().AsString ();
 			else
 				return string.Concat ("(class: ", name, ")");
 		}
 
 		public IEnumerator<DynValue> GetEnumerator ()
 		{
-			if (classScope.HasName ("__COLLECTION")) {
-				var collection = this.GetByDot ("__COLLECTION").As<Function> ().Invoke ().As<IEnumerable<DynValue>> ();
-				foreach (var item in collection)
-					yield return item;
-			} else {
-				this.GetByDot ("__ITER").As<Function> ().Invoke ();
-				var next = this.GetByDot ("__NEXT").As<Function> ().AsDelegate ();
-				var current = this.GetByDot ("__CURRENT").As<Function> ().AsDelegate ();
-				while (next (new DynValue[0]).AsBoolean ()) {
-					yield return current (new DynValue[0]);
-				}
+			IEnumerator<DynValue> iterator = 
+				this.GetByDot ("__iter")
+				.As<Function> ().DynInvoke(DynValue.Empty)
+				.As<IEnumerator<DynValue>>();
+			while (iterator.MoveNext()) {
+				yield return iterator.Current;
 			}
 		}
 
@@ -203,8 +201,55 @@ namespace Cygni.DataTypes
 			var newScope = classScope.Clone ();
 			newScope.SetParent (scope);
 			var newClass = new ClassInfo (
-					name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
+				               name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
 			return newClass;
 		}
+
+		public void Dispose ()
+		{
+			GC.SuppressFinalize (this);
+		}
+
+		public DynValue Current {
+			get {
+				DynValue current;
+				if (classScope.TryGetValue ("__current", out current)) {
+					return current;
+				}
+				throw RuntimeException.FieldNotExist (name, "__current");
+			}
+		}
+
+		object System.Collections.IEnumerator.Current {
+			get {
+				DynValue current;
+				if (classScope.TryGetValue ("__current", out current)) {
+					return current;
+				}
+				throw RuntimeException.FieldNotExist (name, "__current");
+			}
+		}
+		//
+		// Methods
+		//
+		public bool MoveNext ()
+		{
+			DynValue func;
+			if (classScope.TryGetValue ("__next", out func)) {
+				return func.As<Function> ().DynInvoke (DynValue.Empty).AsBoolean ();
+			}
+			throw RuntimeException.FieldNotExist (name, "__next");
+		}
+
+		public void Reset ()
+		{
+			DynValue func;
+			if (classScope.TryGetValue ("__reset", out func)) {
+				func.As<Function> ().DynInvoke (DynValue.Empty);
+			}
+			throw RuntimeException.FieldNotExist (name, "__reset");
+		}
+
+
 	}
 }

@@ -34,6 +34,7 @@ namespace Cygni.DataTypes
 			newScope.Fill (arguments); // arguments are at the head of the array scope
 			return new Function (name,nArgs, body, newScope);
 		}
+
 		public Function Update(NestedScope ClassScope){
 			var newScope = new ArrayScope (funcScope.Count, ClassScope);
 			return new Function (name, nArgs, body, newScope);

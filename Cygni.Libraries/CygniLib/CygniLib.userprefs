@@ -1,41 +1,13 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Text/regex.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/collections_funcs.cs">
     <Files>
-      <File FileName="CygniLib/Collections/array.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Text/regex.cs" Line="45" Column="12" />
-      <File FileName="CygniLib/Text/match.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Text/group.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Text/text_funcs.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/IO/io_funcs.cs" Line="14" Column="40" />
+      <File FileName="CygniLib/Collections/linkedList.cs" Line="60" Column="67" />
+      <File FileName="CygniLib/Collections/array.cs" Line="49" Column="4" />
+      <File FileName="CygniLib/Collections/linkedListNode.cs" Line="28" Column="64" />
+      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="28" Column="54" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="CygniLib" expanded="True">
-            <Node name="CygniLib" expanded="True">
-              <Node name="Collections" expanded="True" />
-              <Node name="Text" expanded="True">
-                <Node name="regex.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State name="__root__">
-          <Node name="CygniLib" expanded="True">
-            <Node name="CygniLib" expanded="True">
-              <Node name="CygniLib" expanded="True">
-                <Node name="Collections" expanded="True">
-                  <Node name="CygniLib.Collections.array" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

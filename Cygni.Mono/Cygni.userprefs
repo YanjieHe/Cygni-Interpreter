@@ -1,29 +1,18 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/DataTypes/DynDictionary.cs">
-    <Files>
-      <File FileName="Cygni/AST/Scopes/ArrayScope.cs" Line="20" Column="61" />
-      <File FileName="Cygni/DataTypes/DynDictionary.cs" Line="127" Column="41" />
-      <File FileName="Cygni/DataTypes/Structure.cs" Line="35" Column="32" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Cygni" expanded="True">
             <Node name="Cygni" expanded="True">
-              <Node name="AST" expanded="True">
-                <Node name="Scopes" expanded="True" />
-              </Node>
-              <Node name="DataTypes" expanded="True">
-                <Node name="DynDictionary.cs" selected="True" />
+              <Node name="Lexical" expanded="True">
+                <Node name="Tokens" expanded="True">
+                  <Node name="Word.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State name="__root__">
-          <Node name="Cygni" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
