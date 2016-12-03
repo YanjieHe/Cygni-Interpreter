@@ -37,8 +37,8 @@ for i = 0, myList.count {
 	print(i)
 }
 
-foreach i in myList {
-	print(i)
+foreach item in myList {
+	print(item)
 }
 \end{lstlisting}
 
@@ -66,16 +66,17 @@ myDictionary.count
 After a Dictionary is initialized, you can access the Dictionary elements using an indexer. The type of key of Dictionaries only support integer, boolean, string. There is no limit for the types of the values of dictionaries.
 
 \begin{lstlisting}
-myDictionaty = {'name', 'Sam', 'age', 37}
-myDictionary['name']
-myDictionary['age']
+myDictionaty = {'key1', 123, 'key2', 456}
+myDictionary['key1']
+myDictionary['key2']
 \end{lstlisting}
 
-You can go through every key-value pair in a dictionary by using "foreach" loop. Every key-value pair is returned as a list. The first in the list is the key, and another is the value.
+You can go through every key-value pair in a dictionary by using "foreach" loop. Every key-value pair is returned as a structure with two fields: key and value.
 
 \begin{lstlisting}
-foreach i in myDictionary {
-	print(i)
+foreach item in myDictionary {
+	print(item.key)
+	print(item.value)
 }
 \end{lstlisting}
 

@@ -30,7 +30,7 @@
 \contentsline {chapter}{\numberline {3}Functions}{11}
 \contentsline {section}{\numberline {3.1}Declaring Functions}{11}
 \contentsline {section}{\numberline {3.2}Invoking Functions}{11}
-\contentsline {section}{\numberline {3.3}Recursion}{12}
+\contentsline {section}{\numberline {3.3}Recursion}{11}
 \contentsline {section}{\numberline {3.4}Higher-order Functions}{12}
 \contentsline {chapter}{\numberline {4}Structures}{13}
 \contentsline {chapter}{\numberline {5}Classes}{15}
@@ -39,22 +39,25 @@
 \contentsline {subsection}{\numberline {5.2.1}Constructors}{16}
 \contentsline {subsection}{\numberline {5.2.2}Implementation Inheritance}{16}
 \contentsline {subsection}{\numberline {5.2.3}Hiding Function Members}{17}
-\contentsline {chapter}{\numberline {6}Built-in Commands}{19}
-\contentsline {section}{\numberline {6.1}dofile}{19}
-\contentsline {section}{\numberline {6.2}import}{19}
-\contentsline {section}{\numberline {6.3}loaddll}{19}
-\contentsline {section}{\numberline {6.4}scope}{19}
-\contentsline {section}{\numberline {6.5}delete}{20}
-\contentsline {chapter}{\numberline {7}Lists and Dictionaries}{21}
-\contentsline {section}{\numberline {7.1}Lists}{21}
-\contentsline {subsection}{\numberline {7.1.1}List Initialization}{21}
-\contentsline {subsection}{\numberline {7.1.2}Accessing List Elements}{21}
-\contentsline {section}{\numberline {7.2}Dictionaries}{22}
-\contentsline {subsection}{\numberline {7.2.1}Dictionary Initialization}{22}
-\contentsline {subsection}{\numberline {7.2.2}Accessing Dictionary Elements}{22}
-\contentsline {chapter}{\numberline {8}Operators}{23}
-\contentsline {section}{\numberline {8.1}Arithmetic Operators}{23}
-\contentsline {section}{\numberline {8.2}Logical Operators}{24}
-\contentsline {section}{\numberline {8.3}Relation Operators}{24}
-\contentsline {section}{\numberline {8.4}Operator Overloading}{25}
-\contentsline {chapter}{\numberline {9}Strings}{27}
+\contentsline {subsection}{\numberline {5.2.4}Example: vector}{18}
+\contentsline {chapter}{\numberline {6}Built-in Commands}{21}
+\contentsline {section}{\numberline {6.1}dofile}{21}
+\contentsline {section}{\numberline {6.2}import}{21}
+\contentsline {section}{\numberline {6.3}loaddll}{21}
+\contentsline {section}{\numberline {6.4}scope}{21}
+\contentsline {section}{\numberline {6.5}delete}{22}
+\contentsline {section}{\numberline {6.6}setglobal}{22}
+\contentsline {chapter}{\numberline {7}Lists and Dictionaries}{23}
+\contentsline {section}{\numberline {7.1}Lists}{23}
+\contentsline {subsection}{\numberline {7.1.1}List Initialization}{23}
+\contentsline {subsection}{\numberline {7.1.2}Accessing List Elements}{23}
+\contentsline {section}{\numberline {7.2}Dictionaries}{24}
+\contentsline {subsection}{\numberline {7.2.1}Dictionary Initialization}{24}
+\contentsline {subsection}{\numberline {7.2.2}Accessing Dictionary Elements}{24}
+\contentsline {chapter}{\numberline {8}Operators}{25}
+\contentsline {section}{\numberline {8.1}Arithmetic Operators}{25}
+\contentsline {section}{\numberline {8.2}Logical Operators}{26}
+\contentsline {section}{\numberline {8.3}Relation Operators}{26}
+\contentsline {section}{\numberline {8.4}Operator Overloading}{27}
+\contentsline {chapter}{\numberline {9}Strings}{29}
+\contentsline {section}{\numberline {9.1}String Functions}{29}

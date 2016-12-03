@@ -10,7 +10,7 @@ def FunctionName([parameters]) {
 	# Function Body
 }
 \end{lstlisting}
-The function will return the last value of the function body without the return statement. Generally, it is better to write the return statement to make the code more readable. If you don't want to return any value, just write "return null".
+The function will return the last value of the function body without the return statement. If you write a function without "return" statement, the execution of the function will return null value.
 
 In Cygni, you can wrap C\# methods as Cygni functions, which are called the native functions. The usage of native functions is the same as Cygni functions.
 \section{Invoking Functions}
@@ -45,31 +45,3 @@ def mul2(f, x){
 	return f(x, 2)
 }
 \end{lstlisting}
-
-
-% \section{Collection}
-% \subsection{List}
-% The syntax of initializing a list is the same as Python. You can put objects from various types into a list.
-% 
-% A list can be indexed by a non-negative integer. The index starts from zero.
-% \begin{lstlisting}
-% list1 = [1, 2, 3, 4, 5]
-% list2 = [18, false, "Judy"]
-% list1[0] = 789
-% \end{lstlisting}
-% 
-% \subsection{HashTable}
-% Using function 'hashtable' to initialize a hash table by key-value pairs. The key can only be integer, boolean and string.
-% A hash table can be indexed by the key.
-% \begin{lstlisting}
-% ht1 = hashtable("key1",123,"key2",789)
-% ht1["key1"]
-% \end{lstlisting}
-% 
-% \section{Structure Array}
-% The stucture array type is inspired by the Matlab/Octave. You can get element from a struct by the field or by the integer index.
-% \begin{lstlisting}
-% s1 = struct("name","Judy","age",16)
-% s1.name # The same as s1[0]
-% s1.age
-% \end{lstlisting}

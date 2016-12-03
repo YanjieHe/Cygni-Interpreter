@@ -4,7 +4,7 @@ The following example displays the usage of the cygni class.
 
 \begin{lstlisting}
 class position{
-	def __INIT(nx, ny){
+	def __init(nx, ny){
 		this.x = nx
 		this.y = ny
 	}
@@ -14,7 +14,7 @@ class position{
 		this.y = ny
 	}
 
-	def __TOSTRING(){
+	def __toStr(){
 		printf("({0}, {1})", this.x, this.y)
 	}
 
@@ -37,7 +37,7 @@ The default constructor is a non-arg function, which will only initialize the al
 
 \begin{lstlisting}
 class MyClass {
-	def __INIT([arguments]) {
+	def __init([arguments]) {
 		# initialzze the class
 	}
 }
@@ -58,7 +58,7 @@ The Cygni class does not support multiple inheritance. Namely, a class can only 
 
 \begin{lstlisting}
 class person {
-	def __INIT(name, age) {
+	def __init(name, age) {
 		this.name = name
 		this.age = age
 	}
@@ -69,7 +69,7 @@ class person {
 }
 
 class employee : person {
-	def __INIT(name, age, salary) {
+	def __init(name, age, salary) {
 		this.name = name
 		this.age = age
 		this.salary = salary
@@ -87,18 +87,75 @@ If a function with the same name is declared in both base and derived classs, th
 
 There are some built-in functions that can be overwrited.
 \begin{itemize}
-	\item \_\_INIT: Constructor for the class. The default constructor is a non-arg constructor.
-	\item \_\_TOSTRING: Output the class instance as a string.
-	\item \_\_ADD: override '+' operator.
-	\item \_\_SUB: override '-' operator.
-	\item \_\_MUL: override '*' operator.
-	\item \_\_DIV: override '/' operator.
-	\item \_\_MOD: override '\%' operator.
-	\item \_\_POW: override '\^' operator.
-	\item \_\_CMP: return a integer to indicate the comparision result. This function will override the $'>', '<', '>=', '<='$ operators.
+	\item \_\_init: Constructor for the class. The default constructor is a non-arg constructor.
+	\item \_\_toStr: Output the class instance as a string.
+	\item \_\_add: override '+' operator.
+	\item \_\_sub: override '-' operator.
+	\item \_\_mul: override '*' operator.
+	\item \_\_div: override '/' operator.
+	\item \_\_mod: override '\%' operator.
+	\item \_\_pow: override '\^' operator.
+	\item \_\_unaryPlus: override '+' operator.
+	\item \_\_unaryMinus: override '-' operator.
+	\item \_\_cmp: return a integer to indicate the comparision result. This function will override the $'>', '<', '>=', '<='$ operators.
+	\item \_\_equals: return a bool value to indicate whether two objects are the same. The function will over load the '==','!=' operators.
 	% \item \_\_INDEXER\_\_: This function takes a list as indexes, and return an element.
 \end{itemize}
+\subsection{Example: vector}
+\begin{lstlisting}
+class vector {
+	def __init(values) {
+		this.values = values
+	}
 
+	def __add(other) {
+		if this.values.count != other.values.count {
+			throw ("vector length error")
+		}
+		result = [] 
+		for i = 0, this.values.count {
+			result.append(this.values[i] + other.values[i])
+		}
+		return vector(result)
+	}
 
-% \subsection{Calling Base Versions of Functions}
-% The variable "base" is its parent class, you can call functions in the base class by it. 
+	def __unaryMinus() {
+		result = [] 
+		for i = 0, this.values.count {
+			result.append(-this.values[i])
+		}
+		return vector(result)
+	}
+
+	def __sub(other) {
+		return this.__add(other.__unaryMinus())
+	}
+
+	def __mul(other) {
+		if this.values.count != other.values.count {
+			throw ("vector length error")
+		}
+		sum = 0
+		for i = 0, this.value.count {
+			sum = sum + this.values[i] * other.values[i]
+		}
+		return sum
+	}
+
+	def __equals(other) {
+		if this.values.count != other.values.count {
+			return false
+		}
+		for i = 0, this.values.count {
+			if this.values[i] != other.values[i] {
+				return false
+			}
+		}
+		return true
+	}
+		
+	def __toStr() {
+		return strcat("vector(", toString(this.values), ")")
+	}
+}
+\end{lstlisting}
