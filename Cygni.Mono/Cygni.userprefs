@@ -1,21 +1,10 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Cygni" expanded="True">
-            <Node name="Cygni" expanded="True">
-              <Node name="Lexical" expanded="True">
-                <Node name="Tokens" expanded="True">
-                  <Node name="Word.cs" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Parser.cs">
+    <Files>
+      <File FileName="Cygni/AST/IfEx.cs" Line="10" Column="20" />
+      <File FileName="Cygni/AST/Parser.cs" Line="513" Column="5" />
+    </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

@@ -4,17 +4,6 @@
     <Files>
       <File FileName="Cygni_CLI/Program.cs" Line="15" Column="5" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Cygni_CLI" expanded="True">
-            <Node name="Cygni_CLI" expanded="True">
-              <Node name="Program.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

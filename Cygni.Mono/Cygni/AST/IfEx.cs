@@ -21,7 +21,7 @@ namespace Cygni.AST
 		public ASTNode IfTrue { get { return ifTrue; } }
 		public ASTNode IfFalse { get { return ifFalse; } }
 
-		public  override NodeType type { get { return NodeType.If; } }
+		public override NodeType type { get { return NodeType.If; } }
 		
 		public IfEx(ASTNode condition, ASTNode ifTrue, ASTNode ifFalse)
 		{

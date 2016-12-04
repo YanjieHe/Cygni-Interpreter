@@ -19,5 +19,11 @@ namespace Cygni.Errors
 			: base(" [Syntax error] " + format, args)
 		{
 		}
+		public static SyntaxException Unexpected (int LineNumber, string name) {
+			return new SyntaxException ("line {0}: Unexpected '{1}'.", LineNumber, name);
+		}
+		public static SyntaxException Expecting (int LineNumber, string name) {
+			return new SyntaxException ("line {0}: Expecting '{1}'.", LineNumber, name);
+		}
 	}
 }

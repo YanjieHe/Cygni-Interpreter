@@ -67,8 +67,6 @@ Start:
 							var lexer = new Lexer (1, sr); 
 							/* In the interative mode, the lexer always starts at line 1. */
 							var ast = new Parser (lexer);
-							/*var a = ast.Program();
-							  Console.WriteLine(a);*/
 							Result = ast.Program ().Eval (GlobalScope);
 							if (!GlobalSettings.Quiet && Result != DynValue.Null) {
 								Console.ForegroundColor = ConsoleColor.White;
@@ -76,7 +74,6 @@ Start:
 								Console.WriteLine (Result);
 							}
 						}
-
 					}
 				} catch (Exception ex) {
 					Console.ForegroundColor = ConsoleColor.Red;
@@ -106,31 +103,28 @@ Start:
 								stack.Push (tok.tag); /* push '(' '[' '{' */
 								break;
 							case Tag.RightParenthesis:
-								if (stack.Count == 0)
-									return InteractiveState.Error;
-								if (stack.Peek () == Tag.LeftParenthesis) // get '(', match ')'
+								if (stack.Peek () == Tag.LeftParenthesis) { // get '(', match ')'
 									stack.Pop ();
-								else
-									return InteractiveState.Error;
-								break;
-							case Tag.RightBracket:
-								if (stack.Count == 0) {
+									break;
+								}
+								else {
 									return InteractiveState.Error;
 								}
+							case Tag.RightBracket:
 								if (stack.Peek() == Tag.LeftBracket) { // get '[', match ']'
 									stack.Pop();
+									break;
 								} else {
 									return InteractiveState.Error;
 								}
-								break;
 							case Tag.RightBrace:
-								if (stack.Count == 0)
-									return InteractiveState.Error;
-								if (stack.Peek () == Tag.LeftBrace) // get '{', match '}'
+								if (stack.Peek () == Tag.LeftBrace) { // get '{', match '}'
 									stack.Pop ();
-								else
+									break;
+								}
+								else {
 									return InteractiveState.Error;
-								break;
+								}
 							case Tag.EOF:
 								goto Finish;
 						}
