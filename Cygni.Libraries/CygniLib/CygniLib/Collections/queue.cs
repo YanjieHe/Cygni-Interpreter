@@ -16,7 +16,7 @@ namespace CygniLib.Collections
 					return DynValue.FromDelegate (args =>{
 							RuntimeException.FuncArgsCheck(args.Length == 1,"push");
 							this.Enqueue (args [0]);
-							return DynValue.Null;
+							return DynValue.Nil;
 							});
 				case "pop":
 					return DynValue.FromDelegate (args => this.Dequeue ());

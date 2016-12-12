@@ -140,7 +140,9 @@ namespace Cygni.DataTypes
 		{
 			return DynValue.FromClass (this.Init (args));
 		}
-
+		public DynValue DynEval (ASTNode[]args,IScope scope){
+			throw new NotImplementedException();
+		}
 		public Func<DynValue[],DynValue> AsDelegate ()
 		{
 			return (args) => DynValue.FromClass (this.Init (args));

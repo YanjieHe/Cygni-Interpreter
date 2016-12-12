@@ -102,6 +102,10 @@
     <Compile Include="AST\AssignEx.cs" />
     <Compile Include="AST\SingleIndexEx.cs" />
     <Compile Include="Libraries\DictionaryLib.cs" />
+    <Compile Include="AST\Visitors\CompilerVisitor.cs" />
+    <Compile Include="Executors\CompilerExecutor.cs" />
+    <Compile Include="AST\GlobalEx.cs" />
+    <Compile Include="AST\Scopes\ScopeType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

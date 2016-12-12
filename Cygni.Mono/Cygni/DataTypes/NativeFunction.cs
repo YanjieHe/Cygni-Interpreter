@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System;
 using Cygni.Libraries;
 using System.Reflection;
+using Cygni.AST;
+using Cygni.AST.Scopes;
+
 namespace Cygni.DataTypes
 {
 	/// <summary>
@@ -13,24 +16,37 @@ namespace Cygni.DataTypes
 	public sealed class NativeFunction:IFunction
 	{
 		readonly Func<DynValue[],DynValue> func;
-		public NativeFunction(Func<DynValue[],DynValue> func)
+
+		public NativeFunction (Func<DynValue[],DynValue> func)
 		{
 			this.func = func;
 		}
-		public DynValue Invoke(DynValue[] args)
+
+		public DynValue Invoke (DynValue[] args)
 		{
-			return func(args);
+			return func (args);
 		}
+
 		public DynValue DynInvoke (DynValue[] args)
 		{
 			return func (args);
+		}
+
+		public DynValue DynEval (ASTNode[]args, IScope scope)
+		{
+			DynValue[] arguments = new DynValue[args.Length];
+			for (int i = 0; i < args.Length; i++) {
+				arguments [i] = args [i].Eval (scope);
+			}
+			return func (arguments);
 		}
 
 		public Func<DynValue[],DynValue> AsDelegate ()
 		{
 			return func;
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
 			return "(Native Function)";
 		}

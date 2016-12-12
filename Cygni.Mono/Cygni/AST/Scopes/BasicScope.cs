@@ -12,6 +12,8 @@ namespace Cygni.AST.Scopes
 	/// </summary>
 	public class BasicScope:IScope
 	{
+		public ScopeType type { get { return ScopeType.Basic; } }
+
 		protected readonly EnvTable envTable;
 		public static BuiltInScope builtInScope;
 		public BasicScope()

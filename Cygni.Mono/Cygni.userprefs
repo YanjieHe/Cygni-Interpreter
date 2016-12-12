@@ -1,9 +1,12 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Parser.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/DataTypes/NativeFunction.cs">
     <Files>
-      <File FileName="Cygni/AST/IfEx.cs" Line="10" Column="20" />
-      <File FileName="Cygni/AST/Parser.cs" Line="513" Column="5" />
+      <File FileName="Cygni/DataTypes/IFunction.cs" Line="4" Column="17" />
+      <File FileName="Cygni/DataTypes/Function.cs" Line="64" Column="61" />
+      <File FileName="Cygni/AST/Scopes/ArrayScope.cs" Line="22" Column="3" />
+      <File FileName="Cygni/DataTypes/ClassInfo.cs" Line="143" Column="35" />
+      <File FileName="Cygni/DataTypes/NativeFunction.cs" Line="42" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

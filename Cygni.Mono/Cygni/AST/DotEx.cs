@@ -17,6 +17,8 @@ namespace Cygni.AST
 		readonly ASTNode obj;
 		public ASTNode Target{ get { return obj; } }
 		readonly string fieldName;
+		public string FieldName{ get { return fieldName; } }
+
 		public override  NodeType type { get { return NodeType.Dot; } }
 		
 		public DotEx(ASTNode obj, string fieldName)

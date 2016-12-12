@@ -9,6 +9,8 @@ namespace Cygni.AST.Scopes
 {
 	public sealed class ArrayScope:IScope
 	{
+		public ScopeType type { get { return ScopeType.Array; } }
+
 		readonly DynValue[] values;
 		readonly IScope parent;
 		public IScope Parent{ get { return parent; } }

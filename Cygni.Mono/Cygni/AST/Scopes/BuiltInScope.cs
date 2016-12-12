@@ -9,6 +9,8 @@ namespace Cygni.AST.Scopes
 {
 	public class BuiltInScope :BasicScope
 	{
+		public new ScopeType type { get { return ScopeType.BuiltIn; } }
+
 		public BuiltInScope ():base()
 		{
 		}

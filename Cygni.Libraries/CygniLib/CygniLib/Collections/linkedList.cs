@@ -23,7 +23,7 @@ namespace CygniLib.Collections
 					args => {
 						RuntimeException.FuncArgsCheck (args.Length == 1, "addFirst");
 						this.AddFirst (args [0]);
-						return DynValue.Null;
+						return DynValue.Nil;
 					}
 				);
 			case "addLast":
@@ -31,20 +31,20 @@ namespace CygniLib.Collections
 					args => {
 						RuntimeException.FuncArgsCheck (args.Length == 1, "addLast");
 						this.AddLast (args [0]);
-						return DynValue.Null;
+						return DynValue.Nil;
 					}
 				);
 			case "removeFirst":
 				return DynValue.FromDelegate (
 					args => {
 						this.RemoveFirst ();
-						return DynValue.Null;
+						return DynValue.Nil;
 					});
 			case "removeLast":
 				return DynValue.FromDelegate (
 					args => {
 						this.RemoveLast ();
-						return DynValue.Null;
+						return DynValue.Nil;
 					});
 			default:
 				throw RuntimeException.FieldNotExist ("linkedList", fieldName);

@@ -35,7 +35,7 @@ namespace Cygni.Executors
 
 		public override DynValue Run ()
 		{
-			DynValue Result = DynValue.Null;
+			DynValue Result = DynValue.Nil;
 			for (;;) {
 				try {
 					Console.ForegroundColor = ConsoleColor.Cyan;
@@ -68,7 +68,7 @@ Start:
 							/* In the interative mode, the lexer always starts at line 1. */
 							var ast = new Parser (lexer);
 							Result = ast.Program ().Eval (GlobalScope);
-							if (!GlobalSettings.Quiet && Result != DynValue.Null) {
+							if (!GlobalSettings.Quiet && Result != DynValue.Nil) {
 								Console.ForegroundColor = ConsoleColor.White;
 								Console.Write ("=> ");
 								Console.WriteLine (Result);

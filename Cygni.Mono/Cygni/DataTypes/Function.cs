@@ -28,7 +28,7 @@ namespace Cygni.DataTypes
 
 		public Function Update (DynValue[] arguments)
 		{
-			if (nArgs != arguments.Length)
+			if (arguments.Length > nArgs)
 				throw RuntimeException.BadArgsNum (name, nArgs);
 			var newScope = new ArrayScope (funcScope.Count, funcScope.Parent);
 			newScope.Fill (arguments); // arguments are at the head of the array scope
@@ -45,12 +45,23 @@ namespace Cygni.DataTypes
 			var result = body.Eval (funcScope);
 			return result.type == DataType.Return
 				? (DynValue)result.Value
-				: DynValue.Null;
+				: DynValue.Nil;
 		}
 
 		public DynValue DynInvoke (DynValue[] args)
 		{
 			return this.Update (args).Invoke ();
+		}
+
+		public DynValue DynEval (ASTNode [] args, IScope scope){
+			if (args.Length > nArgs)
+				throw RuntimeException.BadArgsNum (name, nArgs);
+			DynValue[] values = new DynValue[funcScope.Count];
+			for (int i = 0; i < args.Length; i++) {
+				values [i] = args [i].Eval (scope);
+			}
+			var newScope = new ArrayScope (values, funcScope.Parent);
+			return new Function (name,nArgs, body, newScope).Invoke();
 		}
 
 		public Func<DynValue[],DynValue> AsDelegate ()

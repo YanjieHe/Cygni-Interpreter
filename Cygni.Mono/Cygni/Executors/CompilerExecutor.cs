@@ -9,15 +9,14 @@ using System.IO;
 using Cygni.Lexical;
 using Cygni.AST.Scopes;
 using Cygni.Settings;
+using Cygni.AST.Visitors;
+using System.Linq.Expressions;
 namespace Cygni.Executors
 {
-	/// <summary>
-	/// Description of CodeStringExecutor.
-	/// </summary>
-	public class CodeStringExecutor:Executor
+	public class CompilerExecutor:Executor
 	{
 		string Code;
-		public CodeStringExecutor(BasicScope GlobalScope, string Code)
+		public CompilerExecutor(BasicScope GlobalScope, string Code)
 			: base(GlobalScope)
 		{
 			this.Code = Code;
@@ -32,7 +31,12 @@ namespace Cygni.Executors
 				using (var sr = new StringReader(Code)) {
 					var lexer = new Lexer(1, sr);
 					var ast = new Parser(lexer);
-					Result = ast.Program().Eval(GlobalScope);
+					BlockEx program = ast.Program();
+					CompilerVisitor visitor = new CompilerVisitor();
+					BlockExpression block = visitor.Load(program);
+					Func<DynValue> f = Expression.Lambda<Func<DynValue>>(block).Compile();
+					Console.WriteLine("result = {0}",f());
+					//Result = ast.Program().Eval(GlobalScope);
 				}
 			} catch (Exception ex) {
 				Console.ForegroundColor = ConsoleColor.Red;
@@ -48,3 +52,4 @@ namespace Cygni.Executors
 		#endregion
 	}
 }
+

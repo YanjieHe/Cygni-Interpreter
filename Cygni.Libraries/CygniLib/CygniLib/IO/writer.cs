@@ -22,7 +22,7 @@ namespace CygniLib.IO
 							{
 							RuntimeException.FuncArgsCheck(args.Length == 1,"write");
 							this.Write(args[0].Value);
-							return DynValue.Null;
+							return DynValue.Nil;
 							}
 							);
 				case "writeLine":
@@ -30,14 +30,14 @@ namespace CygniLib.IO
 							args => {
 							RuntimeException.FuncArgsCheck (args.Length == 1, "writeLine");
 							this.WriteLine (args [0].Value);
-							return DynValue.Null;
+							return DynValue.Nil;
 							}
 							);
 				case "close":
 					return DynValue.FromDelegate (
 							args => {
 							this.Close ();
-							return DynValue.Null;
+							return DynValue.Nil;
 							});
 				default :
 					throw RuntimeException.FieldNotExist ("writer", fieldName);

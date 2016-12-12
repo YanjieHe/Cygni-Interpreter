@@ -44,7 +44,7 @@ namespace Cygni.AST
 		public override DynValue Eval(IScope scope)
 		{
 			
-			var result = DynValue.Null;
+			var result = DynValue.Nil;
 			int istart = (int)start.Eval(scope).AsNumber();
 			int iend = (int)end.Eval(scope).AsNumber();
 			var iter_var = new DynValue(DataType.Number, (double)istart);
@@ -61,7 +61,7 @@ namespace Cygni.AST
 					result = body.Eval(scope);
 					switch (result.type) {
 						case DataType.Break:
-							return DynValue.Null;
+							return DynValue.Nil;
 						case DataType.Continue:
 							continue;
 						case DataType.Return:
@@ -81,7 +81,7 @@ namespace Cygni.AST
 						result = body.Eval(scope);
 						switch (result.type) {
 							case DataType.Break:
-								return DynValue.Null;
+								return DynValue.Nil;
 							case DataType.Continue:
 								continue;
 							case DataType.Return:
@@ -95,7 +95,7 @@ namespace Cygni.AST
 						result = body.Eval(scope);
 						switch (result.type) {
 							case DataType.Break:
-								return DynValue.Null;
+								return DynValue.Nil;
 							case DataType.Continue:
 								continue;
 							case DataType.Return:

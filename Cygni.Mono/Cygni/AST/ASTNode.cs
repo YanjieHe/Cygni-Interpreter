@@ -32,6 +32,11 @@ namespace Cygni.AST
 			return new AssignEx(left, right);
 		}
 
+		public static ASTNode Global(string name, ASTNode value)
+		{
+			return new GlobalEx(name, value);
+		}
+
 		public static ASTNode Or(ASTNode left, ASTNode right)
 		{
 			return new BinaryEx(BinaryOp.Or, left, right);
@@ -189,7 +194,7 @@ namespace Cygni.AST
 			return new ReturnEx(value);
 		}
 
-		public static readonly ASTNode Null = new Constant(DynValue.Null);
+		public static readonly ASTNode Nil = new Constant(DynValue.Nil);
 		public static ASTNode Dot(ASTNode obj, string fieldName)
 		{
 			return new DotEx(obj, fieldName);

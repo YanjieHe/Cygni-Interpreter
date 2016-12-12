@@ -29,14 +29,11 @@ namespace Cygni.Lexical.Tokens
 			case "not":
 				return Not;
 
+				/* relation */
 			case "==":
 				return Eq;
 			case "!=":
 				return Neq;
-			case "=":
-				return Assign;
-
-				/* relation */
 			case "<":
 				return Less;
 			case ">":
@@ -45,10 +42,6 @@ namespace Cygni.Lexical.Tokens
 				return LessOrEqual;
 			case ">=":
 				return GreaterOrEqual;
-			case "true":
-				return True;
-			case "false":
-				return False;
 
 				/* arithmetic */
 			case "+":
@@ -63,7 +56,10 @@ namespace Cygni.Lexical.Tokens
 				return Mod;
 			case "^":
 				return Pow;
+			case "=":
+				return Assign;
 
+			/* keywords */
 			case "if":
 				return If;
 			case "else":
@@ -76,10 +72,28 @@ namespace Cygni.Lexical.Tokens
 				return For;
 			case "foreach":
 				return ForEach;
+			case "in":
+				return In;
+			case "break":
+				return Break;
+			case "continue":
+				return Continue;
+			case "return":
+				return Return;
 			case "def":
 				return Define;
 			case "class":
 				return Class;
+			case "global":
+				return Global;
+
+			/* constants */
+			case "true":
+				return True;
+			case "false":
+				return False;
+			case "nil":
+				return Nil;
 
 			case ",":
 				return Comma;
@@ -99,18 +113,8 @@ namespace Cygni.Lexical.Tokens
 				return LBrace;
 			case "}":
 				return RBrace;
-			case "break":
-				return Break;
-			case "continue":
-				return Continue;
-			case "return":
-				return Return;
 			case ".":
 				return Dot;
-			case "in":
-				return In;
-			case "null":
-				return Null;
 			case "\\n":
 				return EOL;
 			default:
@@ -138,6 +142,7 @@ namespace Cygni.Lexical.Tokens
 			ForEach = new Word ("foreach", Tag.ForEach),
 			Define = new Word ("def", Tag.Define),
 			Class = new Word ("class", Tag.Class),
+			Global = new Word ("global", Tag.Global),
 				
 
 
@@ -155,7 +160,7 @@ namespace Cygni.Lexical.Tokens
 			Return = new Word ("return", Tag.Return),
 			Dot = new Word (".", Tag.Dot),
 			In = new Word ("in", Tag.In),
-			Null = new Word ("null", Tag.Null),
+			Nil = new Word ("null", Tag.Nil),
 			EOL = new Word ("\\n", Tag.EOL);
 
 		public override string ToString ()

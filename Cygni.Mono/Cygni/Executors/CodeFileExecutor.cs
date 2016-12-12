@@ -31,7 +31,7 @@ namespace Cygni.Executors
 
 		public override DynValue Run ()
 		{
-			DynValue Result = DynValue.Null;
+			DynValue Result = DynValue.Nil;
 			try {
 				using (var sr = new StreamReader (FilePath, encoding)) {
 					var lexer = new Lexer (1, sr);

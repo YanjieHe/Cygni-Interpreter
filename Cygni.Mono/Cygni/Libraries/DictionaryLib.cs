@@ -103,12 +103,12 @@ namespace Cygni.Libraries
 			default:
 				throw new NotSupportedException ("Dictionary only takes number, boolean and string as keys.");
 			}
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 		public static DynValue clear (DynDictionary ht, DynValue[] args)
 		{
 			ht.Clear ();
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 	}
 }

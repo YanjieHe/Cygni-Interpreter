@@ -99,8 +99,11 @@ namespace Cygni.AST
 						list.Add (DefClass ());
 						break;
 					case Tag.Return:
-						Move ();
+						Match (Tag.Return);
 						list.Add (ASTNode.Return (Statement ()));
+						break;
+					case Tag.Global:
+						list.Add (Global ());
 						break;
 					case Tag.EOF:
 						if (matchBrackets)
@@ -128,7 +131,7 @@ Finish:
 		ASTNode If ()
 		{
 			Match (Tag.If, Tag.ElseIf);
-			ASTNode c = Assign ();
+			ASTNode c = Bool ();
 			BlockEx body = Block ();
 			if (look.tag == Tag.Else) {
 				Move ();
@@ -143,7 +146,7 @@ Finish:
 		ASTNode While ()
 		{
 			Match (Tag.While);
-			ASTNode c = Assign ();
+			ASTNode c = Bool ();
 			BlockEx body = Block ();
 			return ASTNode.While (c, body);
 		}
@@ -153,16 +156,13 @@ Finish:
 			Match (Tag.For);
 			var iterator = look.ToString ();
 			MatchOrThrows (Tag.ID, "for loop requires a iterator"); 
-			// Match (Tag.ID);
-			// Match (Tag.Assign);
 			MatchOrThrows (Tag.Assign, "for loop requires '=' after the iterator"); 
-			var start = Assign ();
+			var start = Bool ();
 			MatchOrThrows (Tag.Comma, "for loop requires ',' after the initial value"); 
-			// Match (Tag.Comma);
-			var end = Assign ();
+			var end = Bool ();
 			if (look.tag == Tag.Comma) {
 				Move ();
-				var step = Assign ();
+				var step = Bool ();
 				var body = Block ();
 				return ASTNode.For (body, iterator, start, end, step);
 			} else {
@@ -176,9 +176,7 @@ Finish:
 			var iterator = look.ToString ();
 			MatchOrThrows (Tag.ID, "foreach loop requires a iterator"); 
 			MatchOrThrows (Tag.In, "foreach loop requires 'in after the iterator"); 
-			// Match (Tag.ID);
-			// Match (Tag.In);
-			var collection = Assign ();
+			var collection = Bool ();
 			var body = Block ();
 			return ASTNode.ForEach (body, iterator, collection);
 		}
@@ -189,8 +187,6 @@ Finish:
 			string name = look.ToString ();
 			MatchOrThrows (Tag.ID, "function definition requires a function name"); 
 			MatchOrThrows (Tag.LeftParenthesis, "function definition requires '(' after function name"); 
-			// Match (Tag.ID);
-			// Match (Tag.LeftParenthesis);
 			var list = new List<string> ();
 			while (look.tag != Tag.RightParenthesis) {
 				if (look.tag == Tag.ID) {
@@ -215,18 +211,26 @@ Finish:
 			Match (Tag.Class);
 			string name = look.ToString ();
 			MatchOrThrows (Tag.ID, "class definition requires a class name"); 
-			// Match (Tag.ID);
 			if (look.tag == Tag.Colon) { /* Inheritance */
 				Move ();
 				var parent = look.ToString ();
 				MatchOrThrows (Tag.ID, "Missing parent class in the class definition"); 
-				// Match (Tag.ID);
 				var body = Block ();
 				return ASTNode.Class (name, body, parent);
 			} else {
 				var body = Block ();
 				return ASTNode.Class (name, body);
 			}
+		}
+
+		ASTNode Global()
+		{
+			Match (Tag.Global);
+			string name = look.ToString ();
+			Match (Tag.ID);
+			Match (Tag.Assign);
+			ASTNode value = Bool ();
+			return ASTNode.Global (name, value);
 		}
 
 		ASTNode Command ()
@@ -458,9 +462,9 @@ Finish:
 				case Tag.Continue:
 					Move ();
 					return ASTNode.Continue;
-				case Tag.Null:
+				case Tag.Nil:
 					Move ();
-					return ASTNode.Null;
+					return ASTNode.Nil;
 				case Tag.ID:
 					string name = look.ToString ();
 					x = ASTNode.Variable (name);

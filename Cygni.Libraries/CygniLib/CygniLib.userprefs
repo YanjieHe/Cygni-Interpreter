@@ -2,11 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/collections_funcs.cs">
     <Files>
-      <File FileName="CygniLib/IO/io_funcs.cs" Line="14" Column="40" />
-      <File FileName="CygniLib/Collections/linkedList.cs" Line="60" Column="67" />
-      <File FileName="CygniLib/Collections/array.cs" Line="49" Column="4" />
-      <File FileName="CygniLib/Collections/linkedListNode.cs" Line="28" Column="64" />
-      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="28" Column="54" />
+      <File FileName="CygniLib/IO/io_funcs.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/linkedList.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/array.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/linkedListNode.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="20" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

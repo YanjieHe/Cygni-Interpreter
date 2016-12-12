@@ -20,7 +20,7 @@ namespace Cygni.DataTypes
 		Struct,
 		Class,
 		
-		Null,
+		Nil,
 		
 		Break,
 		Continue,

@@ -24,14 +24,14 @@ namespace Cygni.Libraries
 		public static DynValue print (DynValue[] args)
 		{
 			if (args == null || args.Length == 0)
-				return DynValue.Null;
+				return DynValue.Nil;
 			Console.Write (args [0].Value);
 			for (int i = 1; i < args.Length; i++) {
 				Console.Write ('\t');
 				Console.Write (args [i].Value);
 			}
 			Console.WriteLine ();
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue printf (DynValue[] args)
@@ -41,7 +41,7 @@ namespace Cygni.Libraries
 			for (int i = 0; i < arguments.Length; i++)
 				arguments [i] = args [i + 1].Value;
 			Console.WriteLine (args [0].AsString (), arguments);
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue input (DynValue[] args)
@@ -195,7 +195,7 @@ namespace Cygni.Libraries
 		public static DynValue console_clear (DynValue[]args)
 		{
 			Console.Clear ();
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue console_write (DynValue[]args)
@@ -209,7 +209,7 @@ namespace Cygni.Libraries
 					arguments [i] = args [i + 1].Value;
 				Console.Write (args [0].AsString (), arguments);
 			}
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 		public static DynValue console_writeLine (DynValue[]args)
 		{
@@ -222,7 +222,7 @@ namespace Cygni.Libraries
 					arguments [i] = args [i + 1].Value;
 				Console.WriteLine (args [0].AsString (), arguments);
 			}
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue console_read (DynValue[]args)
@@ -250,13 +250,13 @@ namespace Cygni.Libraries
 			for (int i = 0; i < args.Length; i++) {
 				args [i].As<IDisposable> ().Dispose ();
 			}
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue exit (DynValue[] args)
 		{
 			Environment.Exit ((int)args [0].AsNumber ());
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue Throw (DynValue[] args)
@@ -315,7 +315,7 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "setwd");
 			string path = args [0].AsString ();
 			Directory.SetCurrentDirectory (path);
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue require(DynValue[] args){

@@ -26,7 +26,7 @@ namespace CygniLib.IO
 				case "close":
 					return DynValue.FromDelegate (args => {
 							this.Close ();
-							return DynValue.Null;
+							return DynValue.Nil;
 							});
 				default :
 					throw RuntimeException.FieldNotExist ("reader", fieldName);

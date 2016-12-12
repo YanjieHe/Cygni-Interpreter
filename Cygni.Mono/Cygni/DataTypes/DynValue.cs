@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using Cygni.Errors;
 using Cygni.Libraries;
+
 namespace Cygni.DataTypes
 {
 	/// <summary>
@@ -29,8 +30,9 @@ namespace Cygni.DataTypes
 
 		public static readonly DynValue True = new DynValue (DataType.Boolean, true);
 		public static readonly DynValue False = new DynValue (DataType.Boolean, false);
-		public static readonly DynValue Null = new DynValue (DataType.Null, null);
+		public static readonly DynValue Nil = new DynValue (DataType.Nil, null);
 		public static readonly DynValue[] Empty = new DynValue[0];
+
 		#region implicit conversion
 
 		public static implicit operator DynValue (double value)
@@ -68,7 +70,7 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.List, list);
 		}
 
-		public static implicit operator DynValue  (DynDictionary dictionary)
+		public static implicit operator DynValue (DynDictionary dictionary)
 		{
 			return new DynValue (DataType.Dictionary, dictionary);
 		}
@@ -84,6 +86,21 @@ namespace Cygni.DataTypes
 		}
 
 		#endregion
+
+		public static explicit operator double (DynValue value)
+		{
+			return (double)value.value;
+		}
+
+		public static explicit operator bool (DynValue value)
+		{
+			return (bool)value.value;
+		}
+
+		public static explicit operator string (DynValue value)
+		{
+			return (string)value.value;
+		}
 
 		public static DynValue FromNumber (double value)
 		{
@@ -143,7 +160,7 @@ namespace Cygni.DataTypes
 		public static DynValue FromObject (object value)
 		{
 			if (value == null)
-				return DynValue.Null;
+				return DynValue.Nil;
 			var iconv = value as IConvertible;
 			if (iconv != null)
 				switch (iconv.GetTypeCode ()) {
@@ -209,7 +226,9 @@ namespace Cygni.DataTypes
 		}
 
 		#endregion
-		public int Compare (DynValue x, DynValue y){
+
+		public int Compare (DynValue x, DynValue y)
+		{
 			return x.CompareTo (y);
 		}
 
@@ -302,43 +321,45 @@ namespace Cygni.DataTypes
 
 		public DynValue GetByDot (string fieldName)
 		{
-			 // support 'string' type
-				string str = value as string;
-				switch (fieldName) {
-				case "length":
-					return (double)str.Length;
-				case "replace":
-					return DynValue.FromDelegate ((args) => StrLib.replace (str, args));
-				case "format":
-					return DynValue.FromDelegate ((args) => StrLib.format (str, args));
-				case "join":
-					return DynValue.FromDelegate ((args) => StrLib.join (str, args));
-				case "split":
-					return DynValue.FromDelegate ((args) => StrLib.split (str, args));
-				case "find":
-					return DynValue.FromDelegate ((args) => StrLib.find (str, args));
-				case "lower":
-					return DynValue.FromDelegate ((args) => str.ToLower());
-				case "upper":
-					return DynValue.FromDelegate ((args) => str.ToUpper());
-				case "trim":
-					return DynValue.FromDelegate ((args) => StrLib.trim(str,args));
-				case "trimStart":
-					return DynValue.FromDelegate ((args) => StrLib.trimStart(str,args));
-				case "trimEnd":
-					return DynValue.FromDelegate ((args) => StrLib.trimEnd(str,args));
-				case "subString":
-					return DynValue.FromDelegate ((args) => StrLib.subString(str,args));
-				default:
-					throw RuntimeException.NotDefined (fieldName);
-				}
+			// support 'string' type
+			string str = value as string;
+			switch (fieldName) {
+			case "length":
+				return (double)str.Length;
+			case "replace":
+				return DynValue.FromDelegate ((args) => StrLib.replace (str, args));
+			case "format":
+				return DynValue.FromDelegate ((args) => StrLib.format (str, args));
+			case "join":
+				return DynValue.FromDelegate ((args) => StrLib.join (str, args));
+			case "split":
+				return DynValue.FromDelegate ((args) => StrLib.split (str, args));
+			case "find":
+				return DynValue.FromDelegate ((args) => StrLib.find (str, args));
+			case "lower":
+				return DynValue.FromDelegate ((args) => str.ToLower ());
+			case "upper":
+				return DynValue.FromDelegate ((args) => str.ToUpper ());
+			case "trim":
+				return DynValue.FromDelegate ((args) => StrLib.trim (str, args));
+			case "trimStart":
+				return DynValue.FromDelegate ((args) => StrLib.trimStart (str, args));
+			case "trimEnd":
+				return DynValue.FromDelegate ((args) => StrLib.trimEnd (str, args));
+			case "subString":
+				return DynValue.FromDelegate ((args) => StrLib.subString (str, args));
+			default:
+				throw RuntimeException.NotDefined (fieldName);
+			}
 		}
-		public string[] FieldNames{
-			get{
+
+		public string[] FieldNames {
+			get {
 				return new string[] {
-					"length","replace","format","join","split","find","lower","upper","trim","trimStart","trimEnd","subString"
+					"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "subString"
 				};
-				}}
+			}
+		}
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{

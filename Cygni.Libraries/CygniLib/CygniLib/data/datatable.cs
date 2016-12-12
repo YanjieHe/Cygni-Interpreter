@@ -42,7 +42,7 @@ namespace CygniLib.data
 						for(int i = 0;i<objs.Length;i++)
 							objs[i]=list[i].Value;
 						this.Rows.Add(objs);
-						return DynValue.Null;
+						return DynValue.Nil;
 					});
 			case "addColumn":
 				return DynValue.FromDelegate (
@@ -51,7 +51,7 @@ namespace CygniLib.data
 						string name = args [0].AsString ();
 						Type type = Type.GetType (args [1].AsString ());
 						this.Columns.Add (name, type);
-						return DynValue.Null;
+						return DynValue.Nil;
 					});
 			default:
 				throw RuntimeException.NotDefined (fieldname);

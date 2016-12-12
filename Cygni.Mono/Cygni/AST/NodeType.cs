@@ -31,5 +31,6 @@ namespace Cygni.AST
 		SingleIndex,
 		ForEach,
 		Assign,
+		Global,
 	}
 }

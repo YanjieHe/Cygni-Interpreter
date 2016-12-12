@@ -19,6 +19,9 @@ namespace Cygni.AST.Visitors
 			foreach (var item in commandEx.Parameters) 
 				item.Accept (this);
 		}
+		internal virtual void Visit(GlobalEx globalEx) {
+			globalEx.Value.Accept (this);
+		}
 		internal virtual void Visit(Constant constant){
 			return;
 		}

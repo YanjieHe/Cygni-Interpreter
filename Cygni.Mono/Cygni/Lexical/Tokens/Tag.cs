@@ -47,6 +47,7 @@ namespace Cygni.Lexical.Tokens
 		ForEach,
 		Define,
 		Class,
+		Global,
 
 
 		Number,
@@ -70,7 +71,7 @@ namespace Cygni.Lexical.Tokens
 
 		Dot,
 		In,
-		Null,
+		Nil,
 		EOF,
 		EOL,
 	}

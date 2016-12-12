@@ -13,6 +13,7 @@ namespace Cygni.AST.Scopes
 	/// </summary>
 	public sealed class NestedScope: BasicScope
 	{
+		public new ScopeType type { get { return ScopeType.Nested; } }
 		IScope parent;
 
 		public override IScope Parent{ get { return parent; } }

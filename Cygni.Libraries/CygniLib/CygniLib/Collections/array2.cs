@@ -14,7 +14,7 @@ namespace CygniLib.Collections
 			values = new DynValue[row,col];
 			for (int i = 0; i < row; i++)
 				for (int j = 0; j < col; j++)
-					values [i, j] = DynValue.Null;
+					values [i, j] = DynValue.Nil;
 		}
 		public DynValue GetByIndex (DynValue index){
 			throw new RuntimeException ("bad number of arguments for indexer of 'array2'.");

@@ -24,7 +24,7 @@ namespace Cygni.Lexical
 		{
 			this.lineNumber = lineNumber;
 			if (reader == null)
-				throw new ArgumentNullException ();
+				throw new ArgumentNullException ("TextReader cannot be null.");
 			this.reader = reader;
 			s = new StringBuilder ();
 		}
@@ -53,8 +53,9 @@ namespace Cygni.Lexical
 
 		public Token Scan ()
 		{
-			if (s.Length > 0)/* Reset the StringBuilder */
+			if (s.Length > 0){/* Reset the StringBuilder */
 				s.Clear ();
+			}
 			
 			while (IsSpace (Peek ())){/* Skip the white spaces */
 				if(GetChar () == '\n')
@@ -128,18 +129,21 @@ namespace Cygni.Lexical
 				return ReadCompare ('>');
 			case '<':
 				return ReadCompare ('<');
+			/* arithmetic operators */
 			case '+':
 			case '-':
 			case '*':
 			case '/':
 			case '%':
 			case '^':
+
 			case '(':
 			case ')':
 			case '[':
 			case ']':
 			case '{':
 			case '}':
+
 			case ',':
 			case ';':
 			case '.':

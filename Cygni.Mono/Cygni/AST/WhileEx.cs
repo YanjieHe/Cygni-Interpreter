@@ -27,13 +27,13 @@ namespace Cygni.AST
 		}
 		public override DynValue Eval(IScope scope)
 		{
-			DynValue result = DynValue.Null;
+			DynValue result = DynValue.Nil;
 			for (;;) {
 				if ((bool)condition.Eval(scope).Value) {
 					result = body.Eval(scope);
 					switch (result.type) {
 						case DataType.Break:
-							return DynValue.Null;
+							return DynValue.Nil;
 						case DataType.Continue:
 							continue;
 						case DataType.Return:

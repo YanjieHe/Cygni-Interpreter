@@ -19,5 +19,6 @@ namespace Cygni.AST.Scopes
 		bool HasName(string name);
 		bool TryGetValue(string name,out DynValue value);
 		IScope Parent { get; }
+		ScopeType type { get; }
 	}
 }

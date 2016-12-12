@@ -87,7 +87,7 @@ namespace Cygni.Libraries
 						Console.WriteLine ("Unable to delete variable '{0}'.", name);
 				}
 			}
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 
 		public static DynValue Import (DynValue[] args, IScope scope)
@@ -135,13 +135,13 @@ namespace Cygni.Libraries
 						else
 							Console.WriteLine ("{0} variables have been deleted successfully.", count);
 					}
-					return DynValue.Null;
+					return DynValue.Nil;
 				}
 
 			case "display":
 				{
 					Console.WriteLine (scope);
-					return DynValue.Null;
+					return DynValue.Nil;
 				}
 			default :
 				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
@@ -155,7 +155,7 @@ namespace Cygni.Libraries
 				scope = scope.Parent;
 			}
 			scope.Put(variableName, value);
-			return DynValue.Null;
+			return DynValue.Nil;
 		}
 	}
 }

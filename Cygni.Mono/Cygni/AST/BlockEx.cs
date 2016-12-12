@@ -25,7 +25,7 @@ namespace Cygni.AST
 		public static BlockEx EmptyBlock = new BlockEx (new ASTNode[0]);
 		public override DynValue Eval(IScope scope)
 		{
-			DynValue result = DynValue.Null;
+			DynValue result = DynValue.Nil;
 			int n = expressions.Length;
 			for(int i = 0; i < n;i++){
 				result = expressions [i].Eval (scope);

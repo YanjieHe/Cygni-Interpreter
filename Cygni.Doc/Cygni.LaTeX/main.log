@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.11.25)  4 DEC 2016 00:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.11.25)  5 DEC 2016 16:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -637,10 +637,10 @@ les/chapter03.aux) (./TeX_files/chapter04.aux)
 (./TeX_files/chapter07.aux) (./TeX_files/chapter08.aux)
 (./TeX_files/chapter09.aux)) ) 
 Here is how much of TeX's memory you used:
- 3527 strings out of 494497
- 47196 string characters out of 6172399
- 121050 words of memory out of 5000000
- 6855 multiletter control sequences out of 15000+600000
+ 3528 strings out of 494497
+ 47207 string characters out of 6172399
+ 121061 words of memory out of 5000000
+ 6856 multiletter control sequences out of 15000+600000
  9766 words of font info for 34 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
  38i,11n,32p,372b,1553s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -652,7 +652,7 @@ pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (34 pages, 127040 bytes).
+Output written on main.pdf (34 pages, 128035 bytes).
 PDF statistics:
  145 PDF objects out of 1000 (max. 8388607)
  100 compressed objects within 1 object stream

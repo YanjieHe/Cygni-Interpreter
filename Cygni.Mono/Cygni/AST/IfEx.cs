@@ -33,7 +33,7 @@ namespace Cygni.AST
 		{
 			if ((bool)condition.Eval(scope).Value)
 				return ifTrue.Eval(scope);
-			return ifFalse == null ? DynValue.Null : ifFalse.Eval(scope);
+			return ifFalse == null ? DynValue.Nil : ifFalse.Eval(scope);
 		}
 		public override string ToString()
 		{
