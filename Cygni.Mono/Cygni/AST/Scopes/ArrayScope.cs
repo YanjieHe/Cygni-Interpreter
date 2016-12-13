@@ -12,8 +12,10 @@ namespace Cygni.AST.Scopes
 		public ScopeType type { get { return ScopeType.Array; } }
 
 		readonly DynValue[] values;
+
 		readonly IScope parent;
 		public IScope Parent{ get { return parent; } }
+
 		public ArrayScope (int capacity, IScope parent = null)
 		{
 			this.values = new DynValue[capacity];
@@ -48,16 +50,6 @@ namespace Cygni.AST.Scopes
 		public bool TryGetValue(string name,out DynValue value){
 			throw new NotSupportedException ();
 		}
-		public void Fill(DynValue[] args){
-			Array.Copy (args, values, args.Length);
-		}
-		/* public void Fill(IEnumerable<DynValue> args){
-			int i = 0;
-			foreach(DynValue value in args){
-				values [i] = value;
-				i++;
-			}
-		} */
 	}
 }
 

@@ -1,1 +1,1 @@
-loaddll "CygniLib.dll","CygniLib.Collections.collections_funcs"
+loadLibrary("CygniLib.dll", "CygniLib.Collections.collections_funcs")

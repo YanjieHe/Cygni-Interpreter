@@ -15,10 +15,12 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class NativeFunction:IFunction
 	{
+		readonly string name;
 		readonly Func<DynValue[],DynValue> func;
 
-		public NativeFunction (Func<DynValue[],DynValue> func)
+		public NativeFunction (string name, Func<DynValue[],DynValue> func)
 		{
+			this.name = name;
 			this.func = func;
 		}
 
@@ -48,7 +50,7 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			return "(Native Function)";
+			return string.Concat("(Native Function: ", name, ")");
 		}
 	}
 }

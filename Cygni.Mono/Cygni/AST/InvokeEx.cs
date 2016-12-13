@@ -17,8 +17,10 @@ namespace Cygni.AST
 	{
 		readonly ASTNode func;
 		public ASTNode Func{ get { return func; } }
+
 		readonly ASTNode[] arguments;
 		public ASTNode[] Arguments{ get { return arguments; } }
+
 		public override  NodeType type { get { return NodeType.Invoke; } }
 		
 		public InvokeEx(ASTNode func, ICollection<ASTNode> arguments)
@@ -30,14 +32,11 @@ namespace Cygni.AST
 		
 		public override DynValue Eval(IScope scope)
 		{
-			var f = func.Eval(scope);
-			int n = arguments.Length;
-			var args = new DynValue[n];
-			
-			for (int i = 0; i < n; i++)
-				args[i] = arguments[i].Eval(scope);
-			
-			return f.As<IFunction> ().DynInvoke (args);
+			IFunction f = func.Eval(scope).Value as IFunction;
+			if (f == null) {
+				throw new RuntimeException("'{0}' is not a function.", func);
+			}
+			return f.DynEval (arguments, scope);
 		}
 		public override string ToString()
 		{

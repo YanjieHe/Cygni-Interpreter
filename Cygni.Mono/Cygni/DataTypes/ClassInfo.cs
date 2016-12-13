@@ -140,8 +140,18 @@ namespace Cygni.DataTypes
 		{
 			return DynValue.FromClass (this.Init (args));
 		}
-		public DynValue DynEval (ASTNode[]args,IScope scope){
-			throw new NotImplementedException();
+
+		public DynValue DynEval (ASTNode[] args, IScope scope){
+			var newScope = new NestedScope (classScope.Parent);
+			if (this.parent != null) { /* Does this class inherit from a parent class?  */
+				newScope.Append (parent.classScope);
+			}
+			newScope.Append (this.classScope);/* Initialize the class */
+			ClassInfo newClass = new ClassInfo (name, newScope, body, parent, true);
+			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
+			if (newScope.HasName ("__init")) /* initialize */
+				newScope.Get ("__init").As<Function> ().DynEval (args, scope);
+			return newClass;
 		}
 		public Func<DynValue[],DynValue> AsDelegate ()
 		{

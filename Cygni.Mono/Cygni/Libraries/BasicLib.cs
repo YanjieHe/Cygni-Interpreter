@@ -73,33 +73,33 @@ namespace Cygni.Libraries
 			string typeName = args [1].AsString ();
 			object obj = args [0].Value;
 			switch (typeName.ToLower ()) {
-			case "int16":
-				return DynValue.FromUserData (Convert.ToInt16 (obj));
-			case "int":
-			case "int32":
-				return DynValue.FromUserData (Convert.ToInt32 (obj));
-			case "long":
-			case "int64":
-				return DynValue.FromUserData (Convert.ToInt64 (obj));
-			case "float":
-			case "single":
-				return DynValue.FromUserData (Convert.ToSingle (obj));
-			case "double":
-			case "number":
-				return DynValue.FromNumber (Convert.ToDouble (obj));
-			case "bool":
-			case "boolean":
-				return DynValue.FromBoolean (Convert.ToBoolean (obj));
-			case "string":
-				return DynValue.FromString (Convert.ToString (obj));
-			case "char":
-				return DynValue.FromUserData (Convert.ToChar (obj));
-			case "datetime":
-			case "date":
-			case "time":
-				return DynValue.FromUserData (Convert.ToDateTime (obj));
-			default:
-				return DynValue.FromObject (Convert.ChangeType (obj, Type.GetType (typeName)));
+				case "int16":
+					return DynValue.FromUserData (Convert.ToInt16 (obj));
+				case "int":
+				case "int32":
+					return DynValue.FromUserData (Convert.ToInt32 (obj));
+				case "long":
+				case "int64":
+					return DynValue.FromUserData (Convert.ToInt64 (obj));
+				case "float":
+				case "single":
+					return DynValue.FromUserData (Convert.ToSingle (obj));
+				case "double":
+				case "number":
+					return DynValue.FromNumber (Convert.ToDouble (obj));
+				case "bool":
+				case "boolean":
+					return DynValue.FromBoolean (Convert.ToBoolean (obj));
+				case "string":
+					return DynValue.FromString (Convert.ToString (obj));
+				case "char":
+					return DynValue.FromUserData (Convert.ToChar (obj));
+				case "datetime":
+				case "date":
+				case "time":
+					return DynValue.FromUserData (Convert.ToDateTime (obj));
+				default:
+					return DynValue.FromObject (Convert.ChangeType (obj, Type.GetType (typeName)));
 			}
 		}
 
@@ -183,7 +183,7 @@ namespace Cygni.Libraries
 				if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
 					var method_name = method.Name;
 					list.Add (new StructureItem (method_name, DynValue.FromDelegate (
-						method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>)));
+									method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>)));
 				}
 			}
 			var arr = new StructureItem[list.Count];
@@ -234,7 +234,7 @@ namespace Cygni.Libraries
 		{
 			return Console.ReadLine ();
 		}
-		
+
 		public static DynValue console_readKey (DynValue[]args)
 		{
 			return (double)Console.ReadKey().KeyChar;
@@ -273,11 +273,11 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 2||args.Length == 3, "range");
 			if (args.Length == 2)
 				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber (), 
-					(int)args [1].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
+							(int)args [1].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
 			else
 				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber ()
-					, (int)args [1].AsNumber ()
-					, (int)args [2].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
+							, (int)args [1].AsNumber ()
+							, (int)args [2].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
 		}
 		public static DynValue len(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length ==1, "len");
@@ -299,12 +299,17 @@ namespace Cygni.Libraries
 				return ex.Message;
 			}
 		}
+		static readonly string[] StrFieldNames = new string[] {
+			"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "subString"
+		};
+
 		public static DynValue names(DynValue[] args){
 			/* Inspire by R */
 			RuntimeException.FuncArgsCheck (args.Length == 1, "names");
 			var obj = args [0];
-			if (obj.type == DataType.String)
-				return new DynList (obj.FieldNames.Select (DynValue.FromString));
+			if (obj.type == DataType.String) {
+				return new DynList (StrFieldNames.Select (DynValue.FromString));
+			}
 			else
 				return new DynList (obj.As<IDot> ().FieldNames.Select (DynValue.FromString));
 		}
@@ -321,7 +326,7 @@ namespace Cygni.Libraries
 		public static DynValue require(DynValue[] args){
 			RuntimeException.FuncArgsCheck (args.Length == 1, "require");
 			var basicScope = new BasicScope();
-			
+
 			string moduleName = args [0].AsString ();
 			if (!Path.HasExtension (moduleName))
 				moduleName = Path.ChangeExtension (moduleName, "cyg");
@@ -329,7 +334,7 @@ namespace Cygni.Libraries
 			Encoding encoding = args.Length == 2
 				? Encoding.GetEncoding (args [1].AsString ())
 				: Encoding.Default;
-			
+
 			bool quiet = GlobalSettings.Quiet;
 			GlobalSettings.Quiet = true;
 			string filePath = currentDir + "/lib/" + moduleName;
@@ -347,9 +352,5 @@ namespace Cygni.Libraries
 			}
 			return new Structure(structureItems);
 		}
-		// public static DynValue cond(DynValue [] args) {
-		// 	RuntimeException.FuncArgsCheck (args.Length == 3, "cond");
-		// 	return args[0].AsBoolean() ? args[1] : args[2];
-		// }
 	}
 }

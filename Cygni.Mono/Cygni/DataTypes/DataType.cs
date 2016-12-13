@@ -11,8 +11,10 @@ namespace Cygni.DataTypes
 		Number,
 		Boolean,
 		String,
+
 		Function,
 		NativeFunction,
+		Command,
 	
 		List,
 		Dictionary,

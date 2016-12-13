@@ -6,7 +6,8 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
-
+using Cygni.Libraries;
+using Cygni.Errors;
 namespace Cygni.AST
 {
 	/// <summary>
@@ -14,16 +15,16 @@ namespace Cygni.AST
 	/// </summary>
 	public class DotEx:ASTNode,IAssignable
 	{
-		readonly ASTNode obj;
-		public ASTNode Target{ get { return obj; } }
+		readonly ASTNode target;
+		public ASTNode Target{ get { return target; } }
 		readonly string fieldName;
 		public string FieldName{ get { return fieldName; } }
 
 		public override  NodeType type { get { return NodeType.Dot; } }
 		
-		public DotEx(ASTNode obj, string fieldName)
+		public DotEx(ASTNode target, string fieldName)
 		{
-			this.obj = obj;
+			this.target = target;
 			this.fieldName = fieldName;
 		}
 		public DynValue Set(IDot expression, DynValue value)
@@ -34,28 +35,72 @@ namespace Cygni.AST
 
 		public override DynValue Eval(IScope scope)
 		{
-			DynValue target = obj.Eval(scope);
-			if (target.type == DataType.String) // 'string' is an exception
-				return target.GetByDot (fieldName);
-			else
-				return target.As<IDot>().GetByDot(fieldName);
+			DynValue target_value = target.Eval(scope);
+			if (target_value.type == DataType.String) {
+				string str = target_value.Value as string;
+				return StrGetByDot(str, fieldName);
+			} else {
+				IDot value = target_value.Value as IDot;
+				if (value == null) {
+					throw new RuntimeException("target '{0}' doesn't have any fields. Apparently it does not have field '{1}'.", target, fieldName);
+				} else {
+					return value.GetByDot(fieldName);
+				}
+			}
 		}
 
 		#endregion
 
 		public DynValue Assign(DynValue value,IScope scope){
-			DynValue target = obj.Eval(scope);
-			return target.As<IDot> ().SetByDot (fieldName, value);
+			DynValue target_value = target.Eval(scope);
+			IDot t_value = target_value.Value as IDot;
+			if (t_value == null) {
+				throw new RuntimeException("target '{0}' doesn't have assignable fields. Apparently it does not have assignable field '{1}'.",target, fieldName);
+			} else {
+				return t_value.SetByDot (fieldName, value);
+			}
 		}
 
 
 		public override string ToString ()
 		{
-			return string.Format ("{0}.{1}", obj, fieldName);
+			return string.Format ("{0}.{1}", target, fieldName);
 		}
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);
 		}
+		static DynValue StrGetByDot (string str, string fieldName)
+		{
+			switch (fieldName) {
+			case "length":
+				return (double)str.Length;
+			case "replace":
+				return DynValue.FromDelegate ((args) => StrLib.replace (str, args));
+			case "format":
+				return DynValue.FromDelegate ((args) => StrLib.format (str, args));
+			case "join":
+				return DynValue.FromDelegate ((args) => StrLib.join (str, args));
+			case "split":
+				return DynValue.FromDelegate ((args) => StrLib.split (str, args));
+			case "find":
+				return DynValue.FromDelegate ((args) => StrLib.find (str, args));
+			case "lower":
+				return DynValue.FromDelegate ((args) => str.ToLower ());
+			case "upper":
+				return DynValue.FromDelegate ((args) => str.ToUpper ());
+			case "trim":
+				return DynValue.FromDelegate ((args) => StrLib.trim (str, args));
+			case "trimStart":
+				return DynValue.FromDelegate ((args) => StrLib.trimStart (str, args));
+			case "trimEnd":
+				return DynValue.FromDelegate ((args) => StrLib.trimEnd (str, args));
+			case "subString":
+				return DynValue.FromDelegate ((args) => StrLib.subString (str, args));
+			default:
+				throw RuntimeException.NotDefined (fieldName);
+			}
+		}
+
 	}
 }

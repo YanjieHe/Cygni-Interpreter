@@ -10,6 +10,7 @@ using Cygni.Extensions;
 using Cygni.AST.Scopes;
 using System.Reflection;
 using System.IO;
+
 namespace Cygni.Settings
 {
 	/// <summary>
@@ -35,17 +36,17 @@ namespace Cygni.Settings
 			{ "range",BasicLib.Range },
 			{ "len",BasicLib.len },
 			{ "toNumber",BasicLib.toNumber },
-			{ "toString",BasicLib.toString},
-			{ "toList",BasicLib.toList},
-			{ "TryCatch",BasicLib.TryCatch},
-			{ "names",BasicLib.names},
-			{ "getwd",BasicLib.getwd},
-			{ "setwd",BasicLib.setwd},
-			{ "require",BasicLib.require},
+			{ "toString",BasicLib.toString },
+			{ "toList",BasicLib.toList },
+			{ "TryCatch",BasicLib.TryCatch },
+			{ "names",BasicLib.names },
+			{ "getwd",BasicLib.getwd },
+			{ "setwd",BasicLib.setwd },
+			{ "require",BasicLib.require },
 			// { "cond",BasicLib.cond},
 
-			{"strcat",StrLib.strcat},
-			{"strcmp",StrLib.strcmp},
+			{ "strcat",StrLib.strcat },
+			{ "strcmp",StrLib.strcmp },
 
 			{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
@@ -76,7 +77,8 @@ namespace Cygni.Settings
 		public static bool Quiet = false;
 		//quiet output
 		public static bool CompleteErrorOutput = false;
-		public static string CurrentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+		public static bool IsDebug = true;
+		public static string CurrentDirectory = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location);
 		const string warranty = 
 			@"
 Cygni, version 1.0.0
@@ -90,10 +92,9 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 ";
 
 		public static Dictionary<string,Structure> BuiltInStructures = 
-			new Dictionary<string, Structure> { {"os",new Structure(
-					new StructureItem("clock",BasicLib.os_clock) )
-			},
-			{"console",
+			new Dictionary<string, Structure> { {"os",new Structure (
+						new StructureItem ("clock", BasicLib.os_clock))
+				}, {"console",
 					new Structure (
 					new StructureItem( "clear",BasicLib.console_clear ),
 					new StructureItem( "write",BasicLib.console_write ),
@@ -135,11 +136,17 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			},
 
 			};
-
+		public static Dictionary<string,Func<ASTNode[],IScope,DynValue>> BuiltInCommands 
+		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>>{
+			{"source", Commands.source},
+			{"cond", Commands.cond},
+			{"loadLibrary", Commands.LoadLibrary},
+			{"assert", Commands.assert},
+		};
 		public static void SetBuiltInFunctions (BuiltInScope scope)
 		{
 			foreach (var element in BuiltInFunctions)
-				scope.BuiltIn (element.Key, DynValue.FromNativeFunction (new  NativeFunction (element.Value)));
+				scope.BuiltIn (element.Key, DynValue.FromNativeFunction (new  NativeFunction (element.Key, element.Value)));
 		}
 
 		public static void SetBuiltInVariables (BuiltInScope scope)
@@ -154,12 +161,19 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 				scope.BuiltIn (element.Key, DynValue.FromStructure (element.Value));
 		}
 
+		public static void SetBuiltInCommands (BuiltInScope scope)
+		{
+			foreach (var element in BuiltInCommands)
+				scope.BuiltIn (element.Key, DynValue.FromDelegate (element.Value, element.Key));
+		}
+
 		public static BuiltInScope CreateBuiltInScope ()
 		{
 			var scope = new BuiltInScope ();
 			SetBuiltInFunctions (scope);
 			SetBuiltInVariables (scope);
 			SetBuiltInStructures (scope);
+			SetBuiltInCommands (scope);
 			return scope;
 		}
 

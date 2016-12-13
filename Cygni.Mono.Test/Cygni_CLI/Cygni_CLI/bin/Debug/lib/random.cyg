@@ -1,1 +1,1 @@
-loaddll 'CygniLib.dll','CygniLib.random.random_funcs'
+loadLibrary('CygniLib.dll', 'CygniLib.random.random_funcs')

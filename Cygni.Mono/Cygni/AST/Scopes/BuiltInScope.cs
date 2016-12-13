@@ -37,7 +37,7 @@ namespace Cygni.AST.Scopes
 			this.envTable[name] = DynValue.FromStructure(value);
 		}
 		public void BuiltIn(string name, Func<DynValue[],DynValue> f){
-			this.envTable [name] = DynValue.FromNativeFunction (new NativeFunction (f));
+			this.envTable [name] = DynValue.FromNativeFunction (new NativeFunction (name, f));
 		}
 
 	}
