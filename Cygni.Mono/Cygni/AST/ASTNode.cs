@@ -164,10 +164,6 @@ namespace Cygni.AST
 		{
 			return new DefClassEx(name, body, parent);
 		}
-		public static ASTNode Command(string name, IList<ASTNode> parameters)
-		{
-			return new CommandEx(name, parameters);
-		}
 		public static ASTNode ListInit(List<ASTNode> list)
 		{
 			return new ListInitEx(list);

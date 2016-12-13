@@ -65,7 +65,6 @@ namespace Cygni.AST
 			return block;
 		}
 
-		private static readonly string[] commands = CommandEx.cmdDict.Keys.ToArray ();
 
 		ASTNode Statement ()
 		{
@@ -112,12 +111,12 @@ namespace Cygni.AST
 					case Tag.EOL:
 						Move ();
 						break;
-					case Tag.ID:
+					/* case Tag.ID:
 						if (commands.Contains (look.ToString ())) {
 							list.Add (Command ());
 							break;
 						} else
-							goto default;
+							goto default; */
 					default:
 						list.Add (Statement ());
 						break;
@@ -231,23 +230,6 @@ Finish:
 			Match (Tag.Assign);
 			ASTNode value = Bool ();
 			return ASTNode.Global (name, value);
-		}
-
-		ASTNode Command ()
-		{
-			var name = look.ToString ();
-			Match (Tag.ID);
-
-			var list = new List<ASTNode> (); // command must have at least one parameter
-
-			do {
-				list.Add (Assign ());
-				if (look.tag == Tag.Comma) {
-					Move ();
-				} else
-					break;
-			} while (true);
-			return ASTNode.Command (name, list);
 		}
 
 		ASTNode Assign ()

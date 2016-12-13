@@ -1,1 +1,1 @@
-loadLibrary("CygniLib.dll", "CygniLib.data.data_funcs")
+return LoadLibrary("CygniLib.dll", "CygniLib.data.data_funcs")

@@ -60,12 +60,6 @@ namespace Cygni.AST.Visitors
 			this.expression = Expression.Block (lines);
 		}
 
-		internal override void Visit (CommandEx commandEx)
-		{
-			foreach (var item in commandEx.Parameters)
-				item.Accept (this);
-		}
-
 		internal override void Visit (Constant constant)
 		{
 			this.expression = Expression.Constant (constant.Value, typeof(DynValue));

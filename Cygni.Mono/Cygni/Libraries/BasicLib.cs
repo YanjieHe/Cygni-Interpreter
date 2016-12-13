@@ -14,6 +14,7 @@ using System.IO;
 using Cygni.Settings;
 using System.Threading;
 using Cygni.Executors;
+
 namespace Cygni.Libraries
 {
 	/// <summary>
@@ -47,12 +48,11 @@ namespace Cygni.Libraries
 		public static DynValue input (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length <= 1, "input");
-			if (args.Length == 0){
-				return Console.ReadLine();
-			}
-			else {
-				Console.Write(args[0].Value);
-				return Console.ReadLine();
+			if (args.Length == 0) {
+				return Console.ReadLine ();
+			} else {
+				Console.Write (args [0].Value);
+				return Console.ReadLine ();
 			}
 		}
 
@@ -61,8 +61,8 @@ namespace Cygni.Libraries
 			if ((args.Length & 1) == 0) {/* even */
 				var structureItems = new StructureItem [args.Length >> 1];
 				for (int i = 0, j = 0; i < args.Length - 1; i += 2,j++)
-					structureItems[j] =new StructureItem(args [i].AsString (), args [i + 1]);
-				return new DynValue (DataType.Struct, new Structure(structureItems));
+					structureItems [j] = new StructureItem (args [i].AsString (), args [i + 1]);
+				return new DynValue (DataType.Struct, new Structure (structureItems));
 			} 
 			throw RuntimeException.BadArgsNum ("struct", "even");
 		}
@@ -132,7 +132,8 @@ namespace Cygni.Libraries
 				return Convert.ToString (value.Value);
 		}
 
-		public static DynValue toList(DynValue [] args){
+		public static DynValue toList (DynValue[] args)
+		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "toList");
 			var collection = args [0].As<IEnumerable<DynValue>> ();
 			return new DynList (collection);
@@ -165,13 +166,16 @@ namespace Cygni.Libraries
 			return (double)value;
 		}
 
-		public static DynValue CSharpDll (DynValue[]args)
+		public static DynValue LoadLibrary (DynValue[]args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "CSharpDll");
 			string filepath = args [0].AsString ();
 			string class_name = args [1].AsString ();
-			if (!Path.IsPathRooted (filepath))
-				filepath = Path.GetFullPath (filepath);
+
+
+			if (!Path.IsPathRooted (filepath)) {
+				filepath = GlobalSettings.CurrentDirectory + "/" + filepath;
+			}
 
 			Assembly assembly = Assembly.LoadFile (filepath);
 			Type t = assembly.GetType (class_name, true, true);  //namespace.class
@@ -179,11 +183,12 @@ namespace Cygni.Libraries
 			var list = new List<StructureItem> ();
 
 			foreach (MethodInfo method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
-				var parameters = method.GetParameters ();
+				ParameterInfo[] parameters = method.GetParameters ();
 				if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
-					var method_name = method.Name;
-					list.Add (new StructureItem (method_name, DynValue.FromDelegate (
-									method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>)));
+					string method_name = method.Name;
+					Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
+					StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (f, method_name));
+					list.Add (item);
 				}
 			}
 			var arr = new StructureItem[list.Count];
@@ -211,6 +216,7 @@ namespace Cygni.Libraries
 			}
 			return DynValue.Nil;
 		}
+
 		public static DynValue console_writeLine (DynValue[]args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length >= 1, "console.writeLine");
@@ -237,7 +243,7 @@ namespace Cygni.Libraries
 
 		public static DynValue console_readKey (DynValue[]args)
 		{
-			return (double)Console.ReadKey().KeyChar;
+			return (double)Console.ReadKey ().KeyChar;
 		}
 
 		public static DynValue os_clock (DynValue[] args)
@@ -270,87 +276,109 @@ namespace Cygni.Libraries
 
 		public static DynValue Range (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2||args.Length == 3, "range");
+			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "range");
 			if (args.Length == 2)
 				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber (), 
-							(int)args [1].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
+							(int)args [1].AsNumber ()).Select (i => DynValue.FromNumber (i)));
 			else
 				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber ()
 							, (int)args [1].AsNumber ()
-							, (int)args [2].AsNumber ()).Select (i=>DynValue.FromNumber(i)));
+							, (int)args [2].AsNumber ()).Select (i => DynValue.FromNumber (i)));
 		}
-		public static DynValue len(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length ==1, "len");
-			return (double) args [0].As<ICollection> ().Count;
+
+		public static DynValue len (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1, "len");
+			return (double)args [0].As<ICollection> ().Count;
 		}
-		public static DynValue TryCatch(DynValue[] args){
+
+		public static DynValue TryCatch (DynValue[] args)
+		{
 			/* Inspire by Lua */
 			RuntimeException.FuncArgsCheck (args.Length == 2, "TryCatch");
 			IFunction func = args [0].As<IFunction> ();
-			DynList paras = args[1].As<DynList>();
+			DynList paras = args [1].As<DynList> ();
 			try {
-				DynValue[] parameters = paras.ToArray();
-				func.DynInvoke(parameters);
+				DynValue[] parameters = paras.ToArray ();
+				func.DynInvoke (parameters);
 				return true;
 			} catch (RuntimeException ex) {
 				return ex.Message;
-			}
-			catch (Exception ex){
+			} catch (Exception ex) {
 				return ex.Message;
 			}
 		}
+
 		static readonly string[] StrFieldNames = new string[] {
 			"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "subString"
 		};
 
-		public static DynValue names(DynValue[] args){
+		public static DynValue names (DynValue[] args)
+		{
 			/* Inspire by R */
 			RuntimeException.FuncArgsCheck (args.Length == 1, "names");
 			var obj = args [0];
 			if (obj.type == DataType.String) {
 				return new DynList (StrFieldNames.Select (DynValue.FromString));
-			}
-			else
+			} else
 				return new DynList (obj.As<IDot> ().FieldNames.Select (DynValue.FromString));
 		}
-		public static DynValue getwd(DynValue[] args){
+
+		public static DynValue getwd (DynValue[] args)
+		{
 			return Directory.GetCurrentDirectory ();
 		}
-		public static DynValue setwd(DynValue[] args){
+
+		public static DynValue setwd (DynValue[] args)
+		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "setwd");
 			string path = args [0].AsString ();
 			Directory.SetCurrentDirectory (path);
 			return DynValue.Nil;
 		}
 
-		public static DynValue require(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 1, "require");
-			var basicScope = new BasicScope();
-
+		private static readonly Dictionary<string, DynValue> ModulesCache = new Dictionary<string, DynValue>();
+		public static DynValue import (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "import");
 			string moduleName = args [0].AsString ();
+			Encoding encoding;
+			if (args.Length == 2) {
+				encoding = Encoding.GetEncoding (args [1].AsString ());
+			} else {
+				encoding = Encoding.Default;
+			}
+			string currentDir = GlobalSettings.CurrentDirectory;
+
+
 			if (!Path.HasExtension (moduleName))
 				moduleName = Path.ChangeExtension (moduleName, "cyg");
-			string currentDir = GlobalSettings.CurrentDirectory;
-			Encoding encoding = args.Length == 2
-				? Encoding.GetEncoding (args [1].AsString ())
-				: Encoding.Default;
 
-			bool quiet = GlobalSettings.Quiet;
-			GlobalSettings.Quiet = true;
 			string filePath = currentDir + "/lib/" + moduleName;
-			if (!File.Exists (filePath))
-				throw new RuntimeException ("No module named '{0}.", moduleName);
-			var executor = new CodeFileExecutor (basicScope,filePath, encoding);
-			GlobalSettings.Quiet = quiet;
+			DynValue Result;
+			if (ModulesCache.TryGetValue(filePath, out Result)) {
+				return Result;
+			} else {
 
-			executor.Run ();
-			var structureItems = new StructureItem[basicScope.Count];
-			int i = 0;
-			foreach (var variable in basicScope.GetTable()){
-				structureItems[i] = new StructureItem(variable.Key, variable.Value);
-				i++;
+				bool quiet = GlobalSettings.Quiet;
+				GlobalSettings.Quiet = true;
+
+				if (!File.Exists (filePath))
+					throw new RuntimeException ("No module named '{0}.", moduleName);
+
+				BasicScope basicScope = new BasicScope ();
+				CodeFileExecutor executor = new CodeFileExecutor (basicScope, filePath, encoding);
+				GlobalSettings.Quiet = quiet;
+
+				DynValue value = executor.Run ();
+				if (value.type != DataType.Return) {
+					throw new RuntimeException ("Module file should return value at the end of the file");
+				} else {
+					Result = (DynValue)value.Value;
+					ModulesCache.Add (filePath, Result);
+					return Result;
+				}
 			}
-			return new Structure(structureItems);
 		}
 	}
 }

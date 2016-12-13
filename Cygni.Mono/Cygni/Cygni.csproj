@@ -47,7 +47,6 @@
     <Compile Include="AST\ASTNode.cs" />
     <Compile Include="AST\BinaryEx.cs" />
     <Compile Include="AST\BlockEx.cs" />
-    <Compile Include="AST\CommandEx.cs" />
     <Compile Include="AST\Constant.cs" />
     <Compile Include="AST\DefClassEx.cs" />
     <Compile Include="AST\DefFuncEx.cs" />

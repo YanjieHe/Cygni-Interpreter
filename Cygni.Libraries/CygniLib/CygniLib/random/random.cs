@@ -17,33 +17,34 @@ namespace CygniLib.random
 		public DynValue GetByDot (string fieldName)
 		{
 			switch (fieldName) {
-				case "nextInt":
-					return DynValue.FromDelegate (
-							args => {
-							RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 2, "nextInt");
-							if (args.Length == 0)
+			case "nextInt":
+				return DynValue.FromDelegate (
+					args => {
+						RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 2, "nextInt");
+						if (args.Length == 0)
 							return this.Next ();
-							else
+						else
 							return this.Next (
-									(int)args [0].AsNumber (), (int)args [1].AsNumber ());
-							});
-				case "nextDouble":
-					return DynValue.FromDelegate (args => this.NextDouble ());
-				default:
-					throw RuntimeException.FieldNotExist ("random", fieldName);
+								(int)args [0].AsNumber (), (int)args [1].AsNumber ());
+					}, "nextInt");
+			case "nextDouble":
+				return DynValue.FromDelegate (args => this.NextDouble (), "nextDouble");
+			default:
+				throw RuntimeException.FieldNotExist ("random", fieldName);
 			}
 		}
 
-		public string[] FieldNames{get{ return new string[] {
-			"nextInt","nextDouble"
-		};
-		}
-		}
+		public string[] FieldNames{ get { return new string[] {
+				"nextInt", "nextDouble"
+			}; } }
+
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
 			throw RuntimeException.FieldNotExist ("random", fieldName);
 		}
-		public override string ToString() {
+
+		public override string ToString ()
+		{
 			return "(Native Class: random)";
 		}
 

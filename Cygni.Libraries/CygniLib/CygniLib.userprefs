@@ -1,13 +1,25 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/collections_funcs.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/random/random.cs">
     <Files>
-      <File FileName="CygniLib/IO/io_funcs.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/linkedList.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/array.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/linkedListNode.cs" Line="1" Column="1" />
-      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="20" Column="22" />
+      <File FileName="CygniLib/random/random_funcs.cs" Line="1" Column="1" />
+      <File FileName="CygniLib/random/random.cs" Line="42" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CygniLib" expanded="True">
+            <Node name="CygniLib" expanded="True">
+              <Node name="Collections" expanded="True" />
+              <Node name="IO" expanded="True" />
+              <Node name="random" expanded="True">
+                <Node name="random.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
