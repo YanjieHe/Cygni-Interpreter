@@ -9,22 +9,6 @@ namespace Cygni.AST.Visitors
 		{
 			this.names = names;	
 		}
-		/* internal override void Visit (BinaryEx binaryEx)
-		{
-			if (binaryEx.Op == BinaryOp.Assign && binaryEx.Left.type == NodeType.Name) {
-				var nameEx = binaryEx.Left as NameEx;
-				if (names.Contains (nameEx)) {
-					nameEx.Accept(this);
-				} else {
-					var newName = new NameEx (nameEx.Name, names.Count);
-					binaryEx.SetLeft (newName);
-					names.Add (newName);
-				}
-				binaryEx.Right.Accept (this);
-				return;
-			}
-			base.Visit (binaryEx);
-		} */
 		internal override void Visit (AssignEx assignEx)
 		{
 			if (assignEx.Target.type == NodeType.Name) {

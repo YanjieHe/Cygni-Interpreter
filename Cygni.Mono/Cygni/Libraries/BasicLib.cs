@@ -292,14 +292,16 @@ namespace Cygni.Libraries
 			return (double)args [0].As<ICollection> ().Count;
 		}
 
-		public static DynValue TryCatch (DynValue[] args)
+		public static DynValue pCall (DynValue[] args)
 		{
 			/* Inspire by Lua */
-			RuntimeException.FuncArgsCheck (args.Length == 2, "TryCatch");
+			/* protected call */
+			RuntimeException.FuncArgsCheck (args.Length == 2, "pCall");
 			IFunction func = args [0].As<IFunction> ();
 			DynList paras = args [1].As<DynList> ();
 			try {
-				DynValue[] parameters = paras.ToArray ();
+				DynValue[] parameters =new DynValue[paras.Count];
+				paras.CopyTo(parameters);
 				func.DynInvoke (parameters);
 				return true;
 			} catch (RuntimeException ex) {
@@ -379,6 +381,41 @@ namespace Cygni.Libraries
 					return Result;
 				}
 			}
+		}
+
+		public static DynValue exec (DynValue[] args)
+		{
+			RuntimeException.CmdArgsCheck (args.Length == 1 || args.Length == 2, "exec");
+			string filepath = args [0].AsString ();
+			Encoding encoding;
+
+			if (args.Length == 2) {
+				encoding = Encoding.GetEncoding (args [1].AsString ());
+			} else {
+				encoding = Encoding.Default;
+			}
+
+			BasicScope basicScope = new BasicScope();
+
+			if (!Path.HasExtension (filepath))
+				filepath = Path.ChangeExtension (filepath, "cyg");
+
+			bool quiet = GlobalSettings.Quiet;
+			GlobalSettings.Quiet = true;
+
+			var executor = new CodeFileExecutor (basicScope, filepath, encoding);
+			GlobalSettings.Quiet = quiet;
+			return executor.Run ();
+		}
+
+		public static DynValue parallel_invoke(DynValue[]args){
+			Action[] actions = new Action[args.Length];
+			for (int i = 0; i < args.Length; i++) {
+				IFunction function = args [i].As<IFunction> ();
+				actions [i] = () => function.DynInvoke (DynValue.Empty);
+			}
+			Parallel.Invoke (actions);
+			return DynValue.Nil;
 		}
 	}
 }

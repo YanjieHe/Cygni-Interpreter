@@ -18,7 +18,7 @@ namespace Cygni.Settings
 	/// </summary>
 	public static class GlobalSettings
 	{
-		public static Dictionary<string,Func<DynValue[],DynValue>> BuiltInFunctions 
+		private static readonly Dictionary<string,Func<DynValue[],DynValue>> BuiltInFunctions 
 			= new Dictionary<string, Func<DynValue[], DynValue>> {
 			{ "print",BasicLib.print },
 			{ "printf",BasicLib.printf },
@@ -29,7 +29,6 @@ namespace Cygni.Settings
 			{ "struct",BasicLib.Struct },
 			{ "scan",BasicLib.scan },
 			{ "bit_or",BasicLib.bit_or },
-			// { "CSharpDll",BasicLib.CSharpDll },
 			{ "LoadLibrary",BasicLib.LoadLibrary },
 			{ "dispose",BasicLib.dispose },
 			{ "throw",BasicLib.Throw },
@@ -39,11 +38,13 @@ namespace Cygni.Settings
 			{ "toNumber",BasicLib.toNumber },
 			{ "toString",BasicLib.toString },
 			{ "toList",BasicLib.toList },
-			{ "TryCatch",BasicLib.TryCatch },
+			{ "pCall",BasicLib.pCall },
 			{ "names",BasicLib.names },
 			{ "getwd",BasicLib.getwd },
 			{ "setwd",BasicLib.setwd },
 			{ "import",BasicLib.import },
+			{ "exec",BasicLib.exec },
+			{ "parallel_invoke",BasicLib.parallel_invoke },
 
 			{ "strcat",StrLib.strcat },
 			{ "strcmp",StrLib.strcmp },
@@ -66,7 +67,7 @@ namespace Cygni.Settings
 			{ "round",MathLib.round },
 
 		};
-		public static Dictionary<string,DynValue> BuiltInVariables 
+		private static readonly Dictionary<string,DynValue> BuiltInVariables 
 			= new Dictionary<string, DynValue> {
 			{ "pi",Math.PI },
 			{ "inf",double.PositiveInfinity },
@@ -79,7 +80,7 @@ namespace Cygni.Settings
 		public static bool CompleteErrorOutput = false;
 		public static bool IsDebug = true;
 		public static string CurrentDirectory = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location);
-		const string warranty = 
+		public const string warranty = 
 			@"
 Cygni, version 1.0.0
 Copyright (C) <2016> <He Yanjie>
@@ -91,7 +92,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ";
 
-		public static Dictionary<string,Structure> BuiltInStructures = 
+		private static readonly Dictionary<string,Structure> BuiltInStructures = 
 			new Dictionary<string, Structure> { {"os",new Structure (
 						new StructureItem ("clock", BasicLib.os_clock))
 				}, {"console",
@@ -136,7 +137,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			},
 
 			};
-		public static Dictionary<string,Func<ASTNode[],IScope,DynValue>> BuiltInCommands 
+		private static readonly Dictionary<string,Func<ASTNode[],IScope,DynValue>> BuiltInCommands 
 		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>>{
 			{"source", Commands.source},
 			{"cond", Commands.cond},

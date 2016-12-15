@@ -32,9 +32,9 @@ namespace Cygni.Executors
 					var lexer = new Lexer(1, sr);
 					var ast = new Parser(lexer);
 					BlockEx program = ast.Program();
-					CompilerVisitor visitor = new CompilerVisitor();
-					BlockExpression block = visitor.Load(program);
-					Func<DynValue> f = Expression.Lambda<Func<DynValue>>(block).Compile();
+					CompilerVisitor visitor = new CompilerVisitor(GlobalScope);
+					Expression runner = visitor.Load(program);
+					Func<DynValue> f = Expression.Lambda<Func<DynValue>>(runner).Compile();
 					Console.WriteLine("result = {0}",f());
 					//Result = ast.Program().Eval(GlobalScope);
 				}

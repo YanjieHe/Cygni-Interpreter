@@ -18,6 +18,8 @@ namespace Cygni.AST
 		BlockEx body;
 		public BlockEx Body{ get { return body; } }
 		string[] parameters;
+		public string[] Parameters{ get { return parameters; } }
+
 		public override  NodeType type {get{return NodeType.DefFunc;}}
 		public string Name{ get { return this.name; } }
 		public DefFuncEx(string name, string[] parameters, BlockEx body)
@@ -32,7 +34,6 @@ namespace Cygni.AST
 			var names = new List<NameEx> ();
 			for (int i = 0; i < parameters.Length; i++) 
 				names.Add (new NameEx (parameters [i],  i));
-			//body.LookUpForLocalVariable (list);
 			LookUpVisitor visitor = new LookUpVisitor(names);
 			body.Accept (visitor);
 			var arrayScope = new ArrayScope (names.Count,scope);
