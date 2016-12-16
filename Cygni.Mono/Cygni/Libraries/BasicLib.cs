@@ -67,39 +67,49 @@ namespace Cygni.Libraries
 			throw RuntimeException.BadArgsNum ("struct", "even");
 		}
 
+		public static DynValue tuple (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length > 0, "tuple");
+			DynValue[] items = new DynValue[args.Length];
+			for (int i = 0; i < args.Length; i++) {
+				items [i] = args [i];
+			}
+			return DynValue.FromTuple (new DynTuple (items));
+		}
+
 		public static DynValue cast (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "cast");
 			string typeName = args [1].AsString ();
 			object obj = args [0].Value;
 			switch (typeName.ToLower ()) {
-				case "int16":
-					return DynValue.FromUserData (Convert.ToInt16 (obj));
-				case "int":
-				case "int32":
-					return DynValue.FromUserData (Convert.ToInt32 (obj));
-				case "long":
-				case "int64":
-					return DynValue.FromUserData (Convert.ToInt64 (obj));
-				case "float":
-				case "single":
-					return DynValue.FromUserData (Convert.ToSingle (obj));
-				case "double":
-				case "number":
-					return DynValue.FromNumber (Convert.ToDouble (obj));
-				case "bool":
-				case "boolean":
-					return DynValue.FromBoolean (Convert.ToBoolean (obj));
-				case "string":
-					return DynValue.FromString (Convert.ToString (obj));
-				case "char":
-					return DynValue.FromUserData (Convert.ToChar (obj));
-				case "datetime":
-				case "date":
-				case "time":
-					return DynValue.FromUserData (Convert.ToDateTime (obj));
-				default:
-					return DynValue.FromObject (Convert.ChangeType (obj, Type.GetType (typeName)));
+			case "int16":
+				return DynValue.FromUserData (Convert.ToInt16 (obj));
+			case "int":
+			case "int32":
+				return DynValue.FromUserData (Convert.ToInt32 (obj));
+			case "long":
+			case "int64":
+				return DynValue.FromUserData (Convert.ToInt64 (obj));
+			case "float":
+			case "single":
+				return DynValue.FromUserData (Convert.ToSingle (obj));
+			case "double":
+			case "number":
+				return DynValue.FromNumber (Convert.ToDouble (obj));
+			case "bool":
+			case "boolean":
+				return DynValue.FromBoolean (Convert.ToBoolean (obj));
+			case "string":
+				return DynValue.FromString (Convert.ToString (obj));
+			case "char":
+				return DynValue.FromUserData (Convert.ToChar (obj));
+			case "datetime":
+			case "date":
+			case "time":
+				return DynValue.FromUserData (Convert.ToDateTime (obj));
+			default:
+				return DynValue.FromObject (Convert.ChangeType (obj, Type.GetType (typeName)));
 			}
 		}
 
@@ -187,7 +197,7 @@ namespace Cygni.Libraries
 				if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
 					string method_name = method.Name;
 					Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
-					StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (f, method_name));
+					StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (method_name, f));
 					list.Add (item);
 				}
 			}
@@ -279,7 +289,7 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "range");
 			if (args.Length == 2)
 				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber (), 
-							(int)args [1].AsNumber ()).Select (i => DynValue.FromNumber (i)));
+					(int)args [1].AsNumber ()).Select (i => DynValue.FromNumber (i)));
 			else
 				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber ()
 							, (int)args [1].AsNumber ()
@@ -300,8 +310,8 @@ namespace Cygni.Libraries
 			IFunction func = args [0].As<IFunction> ();
 			DynList paras = args [1].As<DynList> ();
 			try {
-				DynValue[] parameters =new DynValue[paras.Count];
-				paras.CopyTo(parameters);
+				DynValue[] parameters = new DynValue[paras.Count];
+				paras.CopyTo (parameters);
 				func.DynInvoke (parameters);
 				return true;
 			} catch (RuntimeException ex) {
@@ -312,7 +322,7 @@ namespace Cygni.Libraries
 		}
 
 		static readonly string[] StrFieldNames = new string[] {
-			"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "subString"
+			"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "slice"
 		};
 
 		public static DynValue names (DynValue[] args)
@@ -339,7 +349,8 @@ namespace Cygni.Libraries
 			return DynValue.Nil;
 		}
 
-		private static readonly Dictionary<string, DynValue> ModulesCache = new Dictionary<string, DynValue>();
+		private static readonly Dictionary<string, DynValue> ModulesCache = new Dictionary<string, DynValue> ();
+
 		public static DynValue import (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "import");
@@ -358,7 +369,7 @@ namespace Cygni.Libraries
 
 			string filePath = currentDir + "/lib/" + moduleName;
 			DynValue Result;
-			if (ModulesCache.TryGetValue(filePath, out Result)) {
+			if (ModulesCache.TryGetValue (filePath, out Result)) {
 				return Result;
 			} else {
 
@@ -395,7 +406,7 @@ namespace Cygni.Libraries
 				encoding = Encoding.Default;
 			}
 
-			BasicScope basicScope = new BasicScope();
+			BasicScope basicScope = new BasicScope ();
 
 			if (!Path.HasExtension (filepath))
 				filepath = Path.ChangeExtension (filepath, "cyg");
@@ -408,7 +419,8 @@ namespace Cygni.Libraries
 			return executor.Run ();
 		}
 
-		public static DynValue parallel_invoke(DynValue[]args){
+		public static DynValue parallel_invoke (DynValue[]args)
+		{
 			Action[] actions = new Action[args.Length];
 			for (int i = 0; i < args.Length; i++) {
 				IFunction function = args [i].As<IFunction> ();

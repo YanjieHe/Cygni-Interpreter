@@ -49,31 +49,33 @@ namespace Cygni.DataTypes
 		{
 			switch (fieldName) {
 			case "append":
-				return DynValue.FromDelegate ((args) => ListLib.append (this, args));
+				return DynValue.FromDelegate ("append",(args) => ListLib.append (this, args));
 			case "count":
 				return (double)this.Count;
 			case "removeAt":
-				return DynValue.FromDelegate ((args) => ListLib.removeAt (this, args));
+				return DynValue.FromDelegate ("removeAt",(args) => ListLib.removeAt (this, args));
 			case "insert":
-				return DynValue.FromDelegate ((args) => ListLib.insert (this, args));
+				return DynValue.FromDelegate ("insert",(args) => ListLib.insert (this, args));
 			case "sort":
-				return DynValue.FromDelegate ((args) => ListLib.sort (this, args));
+				return DynValue.FromDelegate ("sort",(args) => ListLib.sort (this, args));
 			case "max":
-				return DynValue.FromDelegate ((args) => ListLib.max (this, args));
+				return DynValue.FromDelegate ("max",(args) => ListLib.max (this, args));
 			case "min":
-				return DynValue.FromDelegate ((args) => ListLib.min (this, args));
+				return DynValue.FromDelegate ("min",(args) => ListLib.min (this, args));
 			case "bSearch":
-				return DynValue.FromDelegate ((args) => ListLib.bSearch (this, args));
+				return DynValue.FromDelegate ("bSearch",(args) => ListLib.bSearch (this, args));
 			case "find":
-				return DynValue.FromDelegate ((args) => ListLib.find (this, args));
+				return DynValue.FromDelegate ("find",(args) => ListLib.find (this, args));
 			case "concat":
-				return DynValue.FromDelegate ((args) => ListLib.concat (this, args));
+				return DynValue.FromDelegate ("concat",(args) => ListLib.concat (this, args));
 			case "slice":
-				return DynValue.FromDelegate ((args) => ListLib.slice (this, args));
+				return DynValue.FromDelegate ("slice",(args) => ListLib.slice (this, args));
+			case "copy":
+				return DynValue.FromDelegate ("copy",(args) => ListLib.copy (this, args));
 			case "pop":
-				return DynValue.FromDelegate ((args) => ListLib.pop (this, args));
+				return DynValue.FromDelegate ("pop",(args) => ListLib.pop (this, args));
 			case "clear":
-				return DynValue.FromDelegate ((args) => ListLib.clear (this, args));
+				return DynValue.FromDelegate ("clear",(args) => ListLib.clear (this, args));
 			default:
 				throw RuntimeException.FieldNotExist ("list",fieldName);
 			}
@@ -82,7 +84,7 @@ namespace Cygni.DataTypes
 		public string[] FieldNames{
 			get{
 				return new string[] {
-					"append", "count", "removeAt", "insert", "sort", "max", "min", "bSearch", "find", "concat","slice","pop","clear"
+					"append", "count", "removeAt", "insert", "sort", "max", "min", "bSearch", "find", "concat","slice","copy","pop","clear"
 				};
 				}}
 		public DynValue SetByDot (string fieldName, DynValue value)

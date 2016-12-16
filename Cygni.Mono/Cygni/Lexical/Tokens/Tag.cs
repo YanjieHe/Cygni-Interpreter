@@ -48,6 +48,8 @@ namespace Cygni.Lexical.Tokens
 		Define,
 		Class,
 		Global,
+		Set,
+		Unpack,
 
 
 		Number,

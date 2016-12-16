@@ -27,6 +27,7 @@ namespace Cygni.Settings
 			{ "getType",BasicLib.getType },
 			{ "quiet",BasicLib.quiet },
 			{ "struct",BasicLib.Struct },
+			{ "tuple",BasicLib.tuple },
 			{ "scan",BasicLib.scan },
 			{ "bit_or",BasicLib.bit_or },
 			{ "LoadLibrary",BasicLib.LoadLibrary },
@@ -93,46 +94,45 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 ";
 
 		private static readonly Dictionary<string,Structure> BuiltInStructures = 
-			new Dictionary<string, Structure> { {"os",new Structure (
-						new StructureItem ("clock", BasicLib.os_clock))
-				}, {"console",
+			new Dictionary<string, Structure> { {"console",
 					new Structure (
-					new StructureItem( "clear",BasicLib.console_clear ),
-					new StructureItem( "write",BasicLib.console_write ),
-					new StructureItem( "writeLine",BasicLib.console_writeLine ) ,
-					new StructureItem( "read",BasicLib.console_read ),
-					new StructureItem( "readLine",BasicLib.console_readLine ),
-					new StructureItem( "readKey",BasicLib.console_readKey ) 
+						new StructureItem ("clear", DynValue.FromDelegate ("clear", BasicLib.console_clear)),
+						new StructureItem ("write", DynValue.FromDelegate ("write", BasicLib.console_write)),
+						new StructureItem ("writeLine", DynValue.FromDelegate ("writeLine", BasicLib.console_writeLine)),
+						new StructureItem ("read", DynValue.FromDelegate ("read", BasicLib.console_read)),
+						new StructureItem ("readLine", DynValue.FromDelegate ("readLine", BasicLib.console_readLine)),
+						new StructureItem ("readKey", DynValue.FromDelegate ("readKey", BasicLib.console_readKey)) 
 
-				)
-			}, 
-
-			{"string",
+					)
+				}, {"string",
 					new Structure (
-					new StructureItem( "concat",StrLib.strcat ),
-					new StructureItem( "compare",StrLib.compare ),
+					new StructureItem( "concat",DynValue.FromDelegate("concat",StrLib.strcat )),
+						new StructureItem( "compare",DynValue.FromDelegate("compare",StrLib.compare )),
 					new StructureItem( "empty",string.Empty ) 
 				)
 			},
 
 			{"math",
 				new Structure (
-					new StructureItem("abs",MathLib.abs),
-					new StructureItem("log",MathLib.log),
-					new StructureItem("sqrt",MathLib.sqrt),
-					new StructureItem("max",MathLib.max),
-					new StructureItem("min",MathLib.min),
-					new StructureItem("exp",MathLib.exp),
-					new StructureItem("sign",MathLib.sign),
-					new StructureItem("sin",MathLib.sin),
-					new StructureItem("cos",MathLib.cos),
-					new StructureItem("tan",MathLib.tan),
-					new StructureItem("asin",MathLib.asin),
-					new StructureItem("acos",MathLib.acos),
-					new StructureItem("atan",MathLib.atan),
-					new StructureItem("ceiling",MathLib.ceiling),
-					new StructureItem("floor",MathLib.floor),
-					new StructureItem("round",MathLib.round)
+					new StructureItem("abs",DynValue.FromDelegate("abs",MathLib.abs)),
+					new StructureItem("log",DynValue.FromDelegate("log",MathLib.log)),
+					new StructureItem("sqrt",DynValue.FromDelegate("sqrt",MathLib.sqrt)),
+					new StructureItem("max",DynValue.FromDelegate("max",MathLib.max)),
+					new StructureItem("min",DynValue.FromDelegate("min",MathLib.min)),
+					new StructureItem("exp",DynValue.FromDelegate("exp",MathLib.exp)),
+					new StructureItem("sign",DynValue.FromDelegate("sign",MathLib.sign)),
+					new StructureItem("sin",DynValue.FromDelegate("sin",MathLib.sin)),
+					new StructureItem("cos",DynValue.FromDelegate("cos",MathLib.cos)),
+					new StructureItem("tan",DynValue.FromDelegate("tan",MathLib.tan)),
+					new StructureItem("asin",DynValue.FromDelegate("asin",MathLib.asin)),
+					new StructureItem("acos",DynValue.FromDelegate("acos",MathLib.acos)),
+					new StructureItem("atan",DynValue.FromDelegate("atab",MathLib.atan)),
+					new StructureItem("ceiling",DynValue.FromDelegate("ceiling",MathLib.ceiling)),
+					new StructureItem("floor",DynValue.FromDelegate("floor",MathLib.floor)),
+					new StructureItem("round",DynValue.FromDelegate("round",MathLib.round)),
+					new StructureItem( "e",Math.E ) ,
+					new StructureItem( "pi",Math.PI ) 
+
 				)
 			},
 
@@ -141,7 +141,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>>{
 			{"source", Commands.source},
 			{"cond", Commands.cond},
-			{"loadLibrary", Commands.LoadLibrary},
+			// {"loadLibrary", Commands.LoadLibrary},
 			{"assert", Commands.assert},
 		};
 		public static void SetBuiltInFunctions (BuiltInScope scope)
@@ -165,7 +165,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 		public static void SetBuiltInCommands (BuiltInScope scope)
 		{
 			foreach (var element in BuiltInCommands)
-				scope.BuiltIn (element.Key, DynValue.FromDelegate (element.Value, element.Key));
+				scope.BuiltIn (element.Key, DynValue.FromDelegate (element.Key, element.Value));
 		}
 
 		public static BuiltInScope CreateBuiltInScope ()

@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Libraries/Commands.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Executors/InteractiveExecutor.cs">
     <Files>
-      <File FileName="Cygni/Libraries/BasicLib.cs" Line="415" Column="61" />
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="1" Column="1" />
-      <File FileName="Cygni/Libraries/Commands.cs" Line="154" Column="14" />
+      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="134" Column="37" />
+      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="49" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

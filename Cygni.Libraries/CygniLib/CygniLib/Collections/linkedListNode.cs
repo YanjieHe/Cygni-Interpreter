@@ -41,7 +41,7 @@ namespace CygniLib.Collections
 			case "value":
 				return this.node.Value = value;
 			default:
-				throw RuntimeException.FieldNotExist ("linkedListNode", fieldName);
+				throw RuntimeException.FieldNotExist ("LinkedListNode", fieldName);
 			}
 		}
 	}

@@ -49,12 +49,12 @@ namespace CygniLib.Collections
 		}
 
 		public	DynValue SetByDot (string fieldName, DynValue value){
-			throw RuntimeException.FieldNotExist ("array2", fieldName);
+			throw RuntimeException.FieldNotExist ("Array2", fieldName);
 		}
 
 		public override string ToString ()
 		{
-			var s = new StringBuilder ("array2([");
+			var s = new StringBuilder ("Array2([");
 			s.AppendLine ();
 			int nRows = values.GetLength (0);
 			int nCols = values.GetLength (1);

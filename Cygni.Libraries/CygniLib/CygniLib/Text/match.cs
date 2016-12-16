@@ -20,7 +20,7 @@ namespace CygniLib.Text
 			case "index":
 				return this._match.Index;
 			case "groups":
-				return DynValue.FromDelegate ((args) => {
+				return DynValue.FromDelegate ("groups",(args) => {
 					RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "group");
 					if (args.Length == 1) {
 						int index = (int)args [0].AsNumber ();
@@ -34,9 +34,9 @@ namespace CygniLib.Text
 					}
 				});
 			case "nextMatch":
-				return DynValue.FromDelegate ((args) =>  DynValue.FromObject( new match(this._match.NextMatch () )));
+				return DynValue.FromDelegate ("nextMatch",(args) =>  DynValue.FromObject( new match(this._match.NextMatch () )));
 			default:
-				throw RuntimeException.FieldNotExist ("match", fieldName);
+				throw RuntimeException.FieldNotExist ("Match", fieldName);
 			}
 		}
 
@@ -46,11 +46,11 @@ namespace CygniLib.Text
 
 		public	DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.FieldNotExist ("match", fieldName);
+			throw RuntimeException.FieldNotExist ("Match", fieldName);
 		}
 		public override string ToString ()
 		{
-			return "(Native Class: match)";
+			return "(Native Class: Match)";
 		}
 	}
 }

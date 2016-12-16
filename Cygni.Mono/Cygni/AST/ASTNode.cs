@@ -32,11 +32,20 @@ namespace Cygni.AST
 			return new AssignEx(left, right);
 		}
 
-		public static ASTNode Global(string name, ASTNode value)
+		public static ASTNode Global(string[] names, ASTNode[] values)
 		{
-			return new GlobalEx(name, value);
+			return new GlobalEx(names, values);
 		}
 
+		public static ASTNode Set(ASTNode[] targets, ASTNode[] values)
+		{
+			return new SetEx(targets, values);
+		}
+
+		public static ASTNode Unpack(ASTNode[] items, ASTNode tuple)
+		{
+			return new UnpackEx(items, tuple);
+		}
 		public static ASTNode Or(ASTNode left, ASTNode right)
 		{
 			return new BinaryEx(BinaryOp.Or, left, right);

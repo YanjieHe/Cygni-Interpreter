@@ -18,18 +18,18 @@ namespace CygniLib.IO
 		{
 			switch (fieldName) {
 				case "peek":
-					return DynValue.FromDelegate (args => (double)this.Peek ());
+					return DynValue.FromDelegate ("peek",args => (double)this.Peek ());
 				case "read":
-					return DynValue.FromDelegate (args => (double)this.Read ());
+				return DynValue.FromDelegate ("read",args => (double)this.Read ());
 				case "readLine":
-					return DynValue.FromDelegate (args => this.ReadLine ());
+				return DynValue.FromDelegate ("readLine",args => this.ReadLine ());
 				case "close":
-					return DynValue.FromDelegate (args => {
+				return DynValue.FromDelegate ("close",args => {
 							this.Close ();
 							return DynValue.Nil;
 							});
 				default :
-					throw RuntimeException.FieldNotExist ("reader", fieldName);
+					throw RuntimeException.FieldNotExist ("Reader", fieldName);
 			}
 		}
 		public string[] FieldNames{
@@ -41,10 +41,10 @@ namespace CygniLib.IO
 		}
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.FieldNotExist ("reader", fieldName);
+			throw RuntimeException.FieldNotExist ("Reader", fieldName);
 		}
 		public override string ToString () {
-			return "Native Class: reader";
+			return "Native Class: Reader";
 		}
 	}
 }

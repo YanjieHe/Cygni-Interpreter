@@ -13,17 +13,17 @@ namespace Cygni.AST.Visitors
 		Expression expression;
 		Stack<Dictionary<string, ParameterExpression>> scopes;
 		LabelTarget ReturnTarget;
-		LabelTarget BreakTarget;
-		LabelTarget ContinueTarget;
+		// LabelTarget BreakTarget;
+		// LabelTarget ContinueTarget;
 
 		private static readonly MethodInfo FromNumber = typeof(DynValue).GetMethod ("FromNumber");
 		private static readonly MethodInfo FromBoolean = typeof(DynValue).GetMethod ("FromBoolean");
-		private static readonly MethodInfo FromString = typeof(DynValue).GetMethod ("FromString");
+		// private static readonly MethodInfo FromString = typeof(DynValue).GetMethod ("FromString");
 		private static readonly MethodInfo FromList = typeof(DynValue).GetMethod ("FromList");
 		private static readonly MethodInfo FromDelegate = typeof(DynValue).GetMethod ("FromDelegate",
 			                                                  new []{ typeof(Func<DynValue[],DynValue>), typeof(string) });
 
-		private static readonly MethodInfo Return = typeof(DynValue).GetMethod ("Return");
+		// private static readonly MethodInfo Return = typeof(DynValue).GetMethod ("Return");
 		private static readonly MethodInfo GetByDot = typeof(IDot).GetMethod ("GetByDot");
 
 		private static readonly ConstantExpression Nil = Expression.Constant (DynValue.Nil, typeof(DynValue));

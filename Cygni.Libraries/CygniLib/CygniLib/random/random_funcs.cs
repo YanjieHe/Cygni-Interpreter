@@ -5,8 +5,8 @@ namespace CygniLib.random
 {
 	public static class random_funcs
 	{
-		public static DynValue random(DynValue[] args){
-			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "random");
+		public static DynValue Random(DynValue[] args){
+			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "Random");
 			if (args.Length == 0)
 				return DynValue.FromUserData( new CygniLib.random.random ());
 			else

@@ -104,6 +104,12 @@ namespace Cygni.AST
 					case Tag.Global:
 						list.Add (Global ());
 						break;
+					case Tag.Set:
+						list.Add (Set ());
+						break;
+					case Tag.Unpack:
+						list.Add (Unpack ());
+						break;
 					case Tag.EOF:
 						if (matchBrackets)
 							throw new SyntaxException ("line {0}: Missing '}'", lexer.LineNumber);
@@ -225,13 +231,93 @@ Finish:
 		ASTNode Global()
 		{
 			Match (Tag.Global);
-			string name = look.ToString ();
-			Match (Tag.ID);
+			var names_list = new List<string>();
+			do {
+				string name = look.ToString();
+				Match(Tag.ID);
+				names_list.Add(name);
+				if (look.tag == Tag.Comma) {
+					Match(Tag.Comma);
+				} else {
+					break;
+				}
+			} while (true);
 			Match (Tag.Assign);
-			ASTNode value = Bool ();
-			return ASTNode.Global (name, value);
+
+			var values_list = new List<ASTNode>();
+			do {
+				ASTNode value = Bool();
+				values_list.Add(value);
+				if (look.tag == Tag.Comma) {
+					Match(Tag.Comma);
+				} else {
+					break;
+				}
+			} while (true);
+			var names = new string[names_list.Count];
+			var values = new ASTNode[values_list.Count];
+			names_list.CopyTo(names);
+			values_list.CopyTo(values);
+			return ASTNode.Global (names, values);
 		}
 
+		ASTNode Set()
+		{
+			Match (Tag.Set);
+			List<ASTNode> targets_list = new List<ASTNode>();
+			do {
+				targets_list.Add (Bool ());	
+				if (look.tag == Tag.Comma) {
+					Match (Tag.Comma);
+				} else {
+					break;
+				}
+			} while (true);
+
+			Match (Tag.Assign);
+
+			List<ASTNode> values_list = new List<ASTNode>();
+			do {
+				values_list.Add (Bool ());	
+				if (look.tag == Tag.Comma) {
+					Match (Tag.Comma);
+				} else {
+					break;
+				}
+			} while (true);
+
+			if (targets_list.Count != values_list.Count) {
+				throw new SyntaxException ("line {0}: 'set' statement requires the number of targets is the same as the number of values.", lexer.LineNumber);
+			}
+
+			ASTNode[] targets = new ASTNode[targets_list.Count];
+			targets_list.CopyTo(targets);
+
+			ASTNode[] values = new ASTNode[values_list.Count];
+			values_list.CopyTo(values);
+
+			return ASTNode.Set(targets, values);
+		}
+
+		ASTNode Unpack (){
+			Match(Tag.Unpack);
+			var items_list = new List<ASTNode>();
+			do {
+				items_list.Add(Bool());
+				if (look.tag == Tag.Comma) {
+					Match(Tag.Comma);
+				} else {
+					break;
+				}
+			} while (true);
+			Match(Tag.Assign);
+			ASTNode tuple = Bool();
+			ASTNode[] items = new ASTNode[items_list.Count];
+			items_list.CopyTo(items);
+			return ASTNode.Unpack(items,tuple);
+		}
+
+		
 		ASTNode Assign ()
 		{
 			ASTNode x = Bool ();

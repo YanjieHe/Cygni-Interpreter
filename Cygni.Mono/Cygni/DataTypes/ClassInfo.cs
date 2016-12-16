@@ -36,27 +36,6 @@ namespace Cygni.DataTypes
 			}
 		}
 
-		public ClassInfo Init (DynValue[] parameters)
-		{
-			if (this.IsInstance) {
-				throw new RuntimeException("Instance of class '{0}' cannot be invoked as a function.", this.name);
-			}
-
-			var newScope = new NestedScope (classScope.Parent);
-			if (this.parent != null) { /* Does this class inherit from a parent class?  */
-				newScope.Append (parent.classScope);
-			}
-			newScope.Append (this.classScope);/* Initialize the class */
-			/* If there exists same fields in the derived class, then the fields will be overwriten. */
-			ClassInfo newClass = new ClassInfo (
-				                     name: name, classScope: newScope, body: body, parent: parent, IsInstance: true);
-			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
-			if (newScope.HasName ("__init")) /* initialize */
-				newScope.Get ("__init").As<Function> ().Update (parameters).Invoke ();
-			return newClass;
-
-		}
-
 		public bool HasParent {
 			get { return this.parent != null; }
 		}
@@ -72,11 +51,11 @@ namespace Cygni.DataTypes
 				return names;
 			}
 		}
-
+		#region IDot
 		public DynValue GetByDot (string fieldName)
 		{
 			DynValue value;
-			if (classScope.TryGetValue (fieldName, out value))/* Find in self */
+			if (classScope.TryGetValue (fieldName, out value))
 				return value;
 			throw RuntimeException.FieldNotExist (name, fieldName);
 		}
@@ -85,13 +64,14 @@ namespace Cygni.DataTypes
 		{
 			return this.classScope.Put (fieldName, value);
 		}
+		#endregion
 
 		public int CompareTo (DynValue other)
 		{
 			return (int)this.GetByDot ("__cmp").As<Function> ().DynInvoke (new []{ other }).AsNumber ();
 		}
 
-
+		#region IComputable
 		public DynValue Add (DynValue other)
 		{
 			return this.GetByDot ("__add").As<Function> ().DynInvoke (new []{ other });
@@ -139,6 +119,8 @@ namespace Cygni.DataTypes
 			return this.GetByDot ("__unaryMinus").As<Function> ().DynInvoke (DynValue.Empty);
 		}
 
+		#endregion
+
 		public DynValue DynInvoke (DynValue[] args)
 		{
 			NestedScope newScope = new NestedScope (classScope.Parent);
@@ -174,7 +156,7 @@ namespace Cygni.DataTypes
 		{
 			DynValue func;
 			if (IsInstance && classScope.TryGetValue ("__equals", out func)) {
-				return func.As<Function> ().DynInvoke (new DynValue[]{ DynValue.FromClass (other) }).AsBoolean ();
+				return func.As<Function> ().DynInvoke (new []{ DynValue.FromClass (other) }).AsBoolean ();
 			}
 			throw RuntimeException.FieldNotExist (name, "__equals");
 		}

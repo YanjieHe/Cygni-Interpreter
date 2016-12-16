@@ -77,15 +77,21 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Dictionary, dictionary);
 		}
 
+		public static implicit operator DynValue (DynTuple tuple)
+		{
+			return new DynValue (DataType.Tuple, tuple);
+		}
+
+
 		public static implicit operator DynValue (NativeFunction f)
 		{
 			return new DynValue (DataType.NativeFunction, f);
 		}
 
-		public static implicit operator DynValue (Func<DynValue[],DynValue> f)
+		/*	public static implicit operator DynValue (Func<DynValue[],DynValue> f)
 		{
-			return new DynValue (DataType.NativeFunction, new NativeFunction ("Anonymous Function",f));
-		}
+			return new DynValue (DataType.NativeFunction, new NativeFunction ("Anonymous Function", f));
+		} */
 
 
 		#endregion
@@ -130,15 +136,15 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.NativeFunction, value);
 		}
 
-		public static DynValue FromDelegate (Func<DynValue[],DynValue> f, string name = "Anonymous Function")
+		public static DynValue FromDelegate (string name, Func<DynValue[],DynValue> f/*, string name = "Anonymous Function"*/)
 		{
 			return new DynValue (DataType.NativeFunction, new NativeFunction (name, f));
 		}
 
 
-		public static DynValue FromDelegate (Func<ASTNode[], IScope, DynValue> f, string name)
+		public static DynValue FromDelegate (string name, Func<ASTNode[], IScope, DynValue> f)
 		{
-			return new DynValue (DataType.Command, new Command (name,f));
+			return new DynValue (DataType.Command, new Command (name, f));
 		}
 
 		public static DynValue FromStructure (Structure value)
@@ -159,6 +165,11 @@ namespace Cygni.DataTypes
 		public static DynValue FromDictionary (DynDictionary dictionary)
 		{
 			return new DynValue (DataType.Dictionary, dictionary);
+		}
+
+		public static DynValue FromTuple (DynTuple tuple)
+		{
+			return new DynValue (DataType.Tuple, tuple);
 		}
 
 		public static DynValue FromUserData (object value)
@@ -212,9 +223,14 @@ namespace Cygni.DataTypes
 			return (string)value;
 		}
 
-		public TValue As<TValue> ()
+		public TValue As<TValue> () where TValue:class
 		{
-			return (TValue)value;
+			TValue v = value as TValue;
+			if (v == null) {
+				throw new RuntimeException ("Cast from '{0}' to '{1}' is invalid.", value.GetType ().Name, typeof(TValue).Name);
+			} else {
+				return v;
+			}
 		}
 
 		#region IComparable implementation
@@ -277,7 +293,16 @@ namespace Cygni.DataTypes
 
 		public override int GetHashCode ()
 		{
-			return value.GetHashCode ();
+			switch (type) {
+			case DataType.Number:
+				return (int)(double)this.value;
+			case DataType.Boolean:
+				return !(bool)this.value ? 0 : 1;
+			case DataType.String:
+				return (this.value as string).GetHashCode ();
+			default:
+				throw new Exception ();
+			}
 		}
 
 		public static bool operator == (DynValue lhs, DynValue rhs)

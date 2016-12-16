@@ -58,7 +58,7 @@ Start:
 						goto Start;
 					} else if (state == InteractiveState.Waiting) {
 						Console.ForegroundColor = ConsoleColor.Cyan;
-						Console.Write ("    -> ");
+						Console.Write ("     -> ");
 						Console.ForegroundColor = ConsoleColor.White;
 						goto Start;
 					} else {

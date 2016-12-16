@@ -18,7 +18,8 @@ namespace Cygni.DataTypes
 	
 		List,
 		Dictionary,
-		
+		Tuple,
+
 		Struct,
 		Class,
 		

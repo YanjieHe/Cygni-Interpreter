@@ -147,21 +147,21 @@ namespace Cygni.DataTypes
 		{
 			switch (fieldName) {
 				case "hasKey":
-					return DynValue.FromDelegate ((args) => DictionaryLib.hasKey (this, args));
+					return DynValue.FromDelegate ("hasKey",(args) => DictionaryLib.hasKey (this, args));
 				case "hasValue":
-					return DynValue.FromDelegate ((args) => DictionaryLib.hasValue (this, args));
+				return DynValue.FromDelegate ("hasValue",(args) => DictionaryLib.hasValue (this, args));
 				case "remove":
-					return DynValue.FromDelegate ((args) => DictionaryLib.remove (this, args));
+				return DynValue.FromDelegate ("remove",(args) => DictionaryLib.remove (this, args));
 				case "count":
 					return (double)this.Count;
 				case "keys":
-					return DynValue.FromDelegate ((args) => DictionaryLib.keys (this, args));
+				return DynValue.FromDelegate ("keys",(args) => DictionaryLib.keys (this, args));
 				case "values":
-					return DynValue.FromDelegate ((args) => DictionaryLib.values (this, args));
+				return DynValue.FromDelegate ("values",(args) => DictionaryLib.values (this, args));
 				case "add":
-					return DynValue.FromDelegate ((args) => DictionaryLib.add (this, args));
+				return DynValue.FromDelegate ("add",(args) => DictionaryLib.add (this, args));
 				case "clear":
-					return DynValue.FromDelegate ((args) => DictionaryLib.clear (this, args));
+				return DynValue.FromDelegate ("clear",(args) => DictionaryLib.clear (this, args));
 				default:
 					throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 			}

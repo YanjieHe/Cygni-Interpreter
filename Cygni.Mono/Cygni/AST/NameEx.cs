@@ -21,6 +21,7 @@ namespace Cygni.AST
 		public  override NodeType type { get { return NodeType.Name; } }
 
 		int index;
+
 		internal void SetIndex(int index){
 			this.index = index;
 		}
@@ -37,16 +38,20 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			return index == (-1)
-				? scope.Get (name)
-					: scope.Get (index);
+			if (index == (-1)) {
+				return scope.Get (name);		
+			} else {
+				return scope.Get (index);
+			}
 		}
 
 		public DynValue Assign (DynValue value, IScope scope)
 		{
-			return index == (-1)
-				? scope.Put (name, value)
-					: scope.Put (index, value);
+			if (index == (-1)) {
+				return scope.Put (name, value);		
+			} else {
+				return scope.Put (index, value);
+			}
 		}
 
 		public override string ToString ()

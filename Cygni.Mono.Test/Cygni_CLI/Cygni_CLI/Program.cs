@@ -3,6 +3,7 @@ using Cygni.Executors;
 using Cygni.Settings;
 using Cygni.AST.Scopes;
 using System.IO;
+
 namespace Cygni_CLI
 {
 	class MainClass
@@ -16,17 +17,15 @@ namespace Cygni_CLI
 			var executor = new CompilerExecutor (scope, str);
 			executor.Run (); */
 
-
-
 			Engine engine = Engine.CreateInstance ();
 			if (args.Length == 1) {
 				string filePath = args [0];
 				engine.DoFile (filePath);
-				return;
+			} else {
+				GlobalSettings.IsDebug = true;
+				// GlobalSettings.CompleteErrorOutput = true;
+				engine.ExecuteInConsole (); 
 			}
-			GlobalSettings.IsDebug = true;
-			// GlobalSettings.CompleteErrorOutput = true;
-			engine.ExecuteInConsole (); 
 		}
 	}
 }

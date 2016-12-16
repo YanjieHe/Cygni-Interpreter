@@ -86,6 +86,10 @@ namespace Cygni.Lexical.Tokens
 				return Class;
 			case "global":
 				return Global;
+			case "set":
+				return Set;
+			case "unpack":
+				return Unpack;
 
 			/* constants */
 			case "true":
@@ -143,6 +147,8 @@ namespace Cygni.Lexical.Tokens
 			Define = new Word ("def", Tag.Define),
 			Class = new Word ("class", Tag.Class),
 			Global = new Word ("global", Tag.Global),
+			Set = new Word ("set", Tag.Set),
+			Unpack = new Word ("unpack", Tag.Unpack),
 				
 
 

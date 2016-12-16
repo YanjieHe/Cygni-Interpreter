@@ -17,7 +17,7 @@ namespace CygniLib.IO
 			switch (fieldName) {
 
 				case "write":
-					return DynValue.FromDelegate (
+				return DynValue.FromDelegate ("write",
 							args => 
 							{
 							RuntimeException.FuncArgsCheck(args.Length == 1,"write");
@@ -26,7 +26,7 @@ namespace CygniLib.IO
 							}
 							);
 				case "writeLine":
-					return DynValue.FromDelegate (
+				return DynValue.FromDelegate ("writeLine",
 							args => {
 							RuntimeException.FuncArgsCheck (args.Length == 1, "writeLine");
 							this.WriteLine (args [0].Value);
@@ -34,13 +34,13 @@ namespace CygniLib.IO
 							}
 							);
 				case "close":
-					return DynValue.FromDelegate (
+				return DynValue.FromDelegate ("close",
 							args => {
 							this.Close ();
 							return DynValue.Nil;
 							});
 				default :
-					throw RuntimeException.FieldNotExist ("writer", fieldName);
+					throw RuntimeException.FieldNotExist ("Writer", fieldName);
 			}
 		}
 
@@ -53,10 +53,10 @@ namespace CygniLib.IO
 		}
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.FieldNotExist ("writer", fieldName);
+			throw RuntimeException.FieldNotExist ("Writer", fieldName);
 		}
 		public override string ToString () {
-			return "Native Class: writer";
+			return "Native Class: Writer";
 		}
 	}
 }

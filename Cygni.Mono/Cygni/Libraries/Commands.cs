@@ -11,6 +11,7 @@ using System.Reflection;
 using System.IO;
 using Cygni.Errors;
 using Cygni.AST.Scopes;
+
 namespace Cygni.Libraries
 {
 	/// <summary>
@@ -21,7 +22,7 @@ namespace Cygni.Libraries
 		public static DynValue source (ASTNode[] args, IScope scope)
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 1 || args.Length == 2, "source");
-			string filepath = args [0].Eval(scope).AsString ();
+			string filepath = args [0].Eval (scope).AsString ();
 			Encoding encoding;
 			if (args.Length == 2) {
 				encoding = Encoding.GetEncoding (args [1].Eval (scope).AsString ());
@@ -44,17 +45,20 @@ namespace Cygni.Libraries
 			return executor.Run ();
 		}
 
-		public static DynValue cond(ASTNode[] args, IScope scope) {
+		public static DynValue cond (ASTNode[] args, IScope scope)
+		{
 			RuntimeException.CmdArgsCheck (args.Length == 3, "cond");
-			return args[0].Eval (scope).AsBoolean() ? args[1].Eval (scope) : args[2].Eval(scope);
+			return args [0].Eval (scope).AsBoolean () ? args [1].Eval (scope) : args [2].Eval (scope);
 		}
 
-		public static DynValue assert(ASTNode[] args, IScope scope) {
+		public static DynValue assert (ASTNode[] args, IScope scope)
+		{
 			if (GlobalSettings.IsDebug) {
-				bool test = args[0].Eval (scope).AsBoolean ();
+				RuntimeException.CmdArgsCheck (args.Length == 2, "assert");
+				bool test = args [0].Eval (scope).AsBoolean ();
 				if (!test) {
-					string message = args[1].Eval(scope).AsString ();
-					throw new RuntimeException(message);
+					string message = args [1].Eval (scope).AsString ();
+					throw new RuntimeException (message);
 				} else {
 					return DynValue.Nil;
 				}
@@ -62,7 +66,8 @@ namespace Cygni.Libraries
 				return DynValue.Nil;
 			}
 		}
-		public static DynValue LoadLibrary (ASTNode[] args, IScope scope)
+
+		/* public static DynValue LoadLibrary (ASTNode[] args, IScope scope)
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 2, "loadLibrary");
 			string filepath = args [0].Eval (scope).AsString ();
@@ -73,7 +78,7 @@ namespace Cygni.Libraries
 			}
 
 			Assembly assembly = Assembly.LoadFile (filepath);
-			Type t = assembly.GetType (class_name, true, true);  //namespace.class
+			Type t = assembly.GetType (name: class_name, throwOnError: true, ignoreCase: true);  //namespace.class
 			var methods = t.GetMethods ();
 			var names = new List<string> ();
 
@@ -86,13 +91,13 @@ namespace Cygni.Libraries
 						Console.WriteLine ("overwriting method '{0}'", method_name);
 					}
 					scope.Put (method_name, DynValue.FromDelegate (
-								method.CreateDelegate (typeof(Func<DynValue[],DynValue>))
+						method.CreateDelegate (typeof(Func<DynValue[],DynValue>))
 								as Func<DynValue[],DynValue>));
 					names.Add (method_name);
 				}
 			}
 			return DynValue.FromList (new DynList (names.Select (DynValue.FromString), names.Count));
-		}
+		}*/
 
 		public static DynValue DoFile (DynValue[] args, IScope scope)
 		{
@@ -116,7 +121,7 @@ namespace Cygni.Libraries
 			return executor.Run ();
 		}
 
-		public static DynValue LoadDll (DynValue[]args, IScope scope)
+		/* public static DynValue LoadDll (DynValue[]args, IScope scope)
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 2, "loaddll");
 			string filepath = args [0].AsString ();
@@ -139,12 +144,12 @@ namespace Cygni.Libraries
 						Console.WriteLine ("overwriting method '{0}'", method_name);
 					}
 					scope.Put (method_name, DynValue.FromDelegate (
-								method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>));
+						method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>));
 					names.Add (method_name);
 				}
 			}
 			return DynValue.FromList (new DynList (names.Select (DynValue.FromString), names.Count));
-		}
+		}*/
 
 		public static DynValue Delete (DynValue[] args, IScope scope)
 		{
@@ -186,51 +191,54 @@ namespace Cygni.Libraries
 			string filePath = currentDir + "/lib/" + moduleName;
 			if (!File.Exists (filePath))
 				throw new RuntimeException ("No module named '{0}.", moduleName);
-			var executor = new CodeFileExecutor (scope as BasicScope,filePath, encoding);
+			var executor = new CodeFileExecutor (scope as BasicScope, filePath, encoding);
 			GlobalSettings.Quiet = quiet;
 
 			return executor.Run ();
 		}
+
 		public static DynValue Scope (DynValue[] args, IScope scope)
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 1, "scope");
 			string cmdType = args [0].AsString ();
 			switch (cmdType) {
-				case "clear":
-					{
-						var basicScope = scope as BasicScope;
-						if (basicScope == null)
-							throw new RuntimeException ("Unable to run command 'delete' in local scope");
-						int count = basicScope.Count;
-						basicScope.Clear ();
-						if (!GlobalSettings.Quiet) {
-							if (count == 0)
-								Console.WriteLine ("There is no variable in the current scope.");
-							else if (count == 1)
-								Console.WriteLine ("1 variable has been deleted successfully.");
-							else
-								Console.WriteLine ("{0} variables have been deleted successfully.", count);
-						}
-						return DynValue.Nil;
+			case "clear":
+				{
+					var basicScope = scope as BasicScope;
+					if (basicScope == null)
+						throw new RuntimeException ("Unable to run command 'delete' in local scope");
+					int count = basicScope.Count;
+					basicScope.Clear ();
+					if (!GlobalSettings.Quiet) {
+						if (count == 0)
+							Console.WriteLine ("There is no variable in the current scope.");
+						else if (count == 1)
+							Console.WriteLine ("1 variable has been deleted successfully.");
+						else
+							Console.WriteLine ("{0} variables have been deleted successfully.", count);
 					}
+					return DynValue.Nil;
+				}
 
-				case "display":
-					{
-						Console.WriteLine (scope);
-						return DynValue.Nil;
-					}
-				default :
-					throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
+			case "display":
+				{
+					Console.WriteLine (scope);
+					return DynValue.Nil;
+				}
+			default :
+				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
 			}
 		}
-		public static DynValue SetGlobal ( DynValue[] args, IScope scope ) {
-			RuntimeException.CmdArgsCheck(args.Length == 2, "setglobal");
-			string variableName = args[0].AsString();
+
+		public static DynValue SetGlobal (DynValue[] args, IScope scope)
+		{
+			RuntimeException.CmdArgsCheck (args.Length == 2, "setglobal");
+			string variableName = args [0].AsString ();
 			DynValue value = args [1];
 			while (!(scope is BasicScope)) {
 				scope = scope.Parent;
 			}
-			scope.Put(variableName, value);
+			scope.Put (variableName, value);
 			return DynValue.Nil;
 		}
 	}

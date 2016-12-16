@@ -18,6 +18,7 @@ namespace Cygni.DataTypes
 		readonly BlockEx body;
 		readonly ArrayScope funcScope;
 		readonly int nArgs;
+
 		public Function (string name, int nArgs, BlockEx body, ArrayScope funcScope)
 		{
 			this.name = name;
@@ -26,27 +27,8 @@ namespace Cygni.DataTypes
 			this.nArgs = nArgs;
 		}
 
-		public Function Update (DynValue[] args)
+		public Function Update (NestedScope ClassScope)
 		{
-			if (args.Length > nArgs)
-				throw RuntimeException.BadArgsNum (name, nArgs);
-
-			DynValue[] values = new DynValue[funcScope.Count];
-			int i = 0;
-			while (i < args.Length) {
-				values[i] = args[i];
-				i++;
-			}
-			while (i < nArgs) {
-				values[i] = DynValue.Nil;
-				i++;
-			}
-			var newScope = new ArrayScope (funcScope.Count, funcScope.Parent);
-
-			return new Function (name,nArgs, body, newScope);
-		}
-
-		public Function Update(NestedScope ClassScope){
 			var newScope = new ArrayScope (funcScope.Count, ClassScope);
 			return new Function (name, nArgs, body, newScope);
 		}
@@ -67,42 +49,43 @@ namespace Cygni.DataTypes
 			DynValue[] values = new DynValue[funcScope.Count];
 			int i = 0;
 			while (i < args.Length) {
-				values[i] = args[i];
+				values [i] = args [i];
 				i++;
 			}
 			while (i < nArgs) {
-				values[i] = DynValue.Nil;
+				values [i] = DynValue.Nil;
 				i++;
 			}
 			var newScope = new ArrayScope (values, funcScope.Parent);
-			return new Function (name,nArgs, body, newScope).Invoke();
+			return new Function (name, nArgs, body, newScope).Invoke ();
 		}
 
-		public DynValue DynEval (ASTNode [] args, IScope scope){
+		public DynValue DynEval (ASTNode[] args, IScope scope)
+		{
 			if (args.Length > nArgs)
 				throw RuntimeException.BadArgsNum (name, nArgs);
 			DynValue[] values = new DynValue[funcScope.Count];
 			int i = 0;
 			while (i < args.Length) {
-				values[i] = args[i].Eval (scope);
+				values [i] = args [i].Eval (scope);
 				i++;
 			}
 			while (i < nArgs) {
-				values[i] = DynValue.Nil;
+				values [i] = DynValue.Nil;
 				i++;
 			}
 			var newScope = new ArrayScope (values, funcScope.Parent);
-			return new Function (name,nArgs, body, newScope).Invoke();
+			return new Function (name, nArgs, body, newScope).Invoke ();
 		}
 
 		public Func<DynValue[],DynValue> AsDelegate ()
 		{
-			return (args) => this.Update (args).Invoke ();
+			return this.DynInvoke;
 		}
 
 		public override string ToString ()
 		{
-			return "(Function: "+name+")";
+			return "(Function: " + name + ")";
 		}
 	}
 }

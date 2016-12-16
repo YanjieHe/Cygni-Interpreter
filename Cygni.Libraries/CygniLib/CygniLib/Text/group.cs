@@ -24,7 +24,7 @@ namespace CygniLib.Text
 			case "value":
 				return this._group.Value;
 			default:
-				throw RuntimeException.FieldNotExist ("group", fieldName);
+				throw RuntimeException.FieldNotExist ("Group", fieldName);
 			}
 		}
 
@@ -34,11 +34,11 @@ namespace CygniLib.Text
 
 		public	DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.FieldNotExist ("group", fieldName);
+			throw RuntimeException.FieldNotExist ("Group", fieldName);
 		}
 		public override string ToString ()
 		{
-			return "(Native Class: group)";
+			return "(Native Class: Group)";
 		}
 	}
 }

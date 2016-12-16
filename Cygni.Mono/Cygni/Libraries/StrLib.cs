@@ -124,13 +124,45 @@ namespace Cygni.Libraries
 				return str.TrimEnd (arr);
 			}
 		}
-		public static DynValue subString (string str, DynValue[] args)
+		public static DynValue slice (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "subString");
-			if (args.Length == 1)
-				return str.Substring ((int)args [1].AsNumber ());
-			else
-				return str.Substring ((int)args [1].AsNumber (), (int)args [2].AsNumber ());
+			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "slice");
+			int start = (int)args [0].AsNumber ();
+			int end = (int)args [1].AsNumber ();
+			int step;
+			if (args.Length == 2) {
+				step = 1;
+			} else {
+				step = (int)args [2].AsNumber ();
+			}
+			char[] chArr;
+			if (step > 0) {
+				if (end < start) {
+					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is positive.");
+				} else {
+					chArr = new char [(end - start + 1) / step];
+					int j = 0;
+					for (int i = start; i < end; i += step) {
+						chArr[j] = (str [i]);
+						j++;
+					}
+				}
+					
+			} else if (step < 0) {
+				if (end > start) {
+					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is negative.");
+				} else {
+					chArr = new char [(end - start + 1) / step];
+					int j = 0;
+					for (int i = start; i > end; i += step) {
+						chArr[j] = (str [i]);
+						j++;
+					}
+				}
+			} else {
+				throw new RuntimeException ("'step' of 'slice' function cannot be zero");
+			}
+			return new string(chArr);
 		}
 
 	}

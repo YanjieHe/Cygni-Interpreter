@@ -32,5 +32,7 @@ namespace Cygni.AST
 		ForEach,
 		Assign,
 		Global,
+		Set,
+		Unpack,
 	}
 }

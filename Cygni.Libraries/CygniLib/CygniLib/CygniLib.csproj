@@ -55,6 +55,8 @@
     <Compile Include="Text\text_funcs.cs" />
     <Compile Include="Collections\linkedList.cs" />
     <Compile Include="Collections\linkedListNode.cs" />
+    <Compile Include="stopWatch\stopWatch.cs" />
+    <Compile Include="stopWatch\stopWatch_funcs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -62,5 +64,6 @@
     <Folder Include="random\" />
     <Folder Include="data\" />
     <Folder Include="Text\" />
+    <Folder Include="stopWatch\" />
   </ItemGroup>
 </Project>

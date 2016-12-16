@@ -8,10 +8,10 @@ namespace Cygni.AST
 {
 	public class GlobalEx:ASTNode
 	{
-		string name;
-		ASTNode value;
-		public string Name { get { return this.name; } }
-		public ASTNode Value { get { return this.value; } }
+		string[] names;
+		ASTNode[] values;
+		public string[] Names { get { return this.names; } }
+		public ASTNode[] Values { get { return this.values; } }
 
 		public override NodeType type {
 			get {
@@ -19,10 +19,10 @@ namespace Cygni.AST
 			}
 		}
 
-		public GlobalEx (string name, ASTNode value)
+		public GlobalEx (string[] names, ASTNode[] values)
 		{
-			this.name = name;
-			this.value = value;
+			this.names = names;
+			this.values = values;
 		}
 		internal override void Accept (ASTVisitor visitor)
 		{
@@ -30,11 +30,13 @@ namespace Cygni.AST
 		}
 		public override DynValue Eval (IScope scope)
 		{
-			DynValue v = value.Eval (scope);
 			while (scope.type != ScopeType.Basic) {
 				scope = scope.Parent;
 			}
-			return scope.Put (name, v);
+			for (int i = 0; i < names.Length; i++) {
+				scope.Put (names[i], values[i].Eval(scope));
+			}
+			return DynValue.Nil;
 		}
 	}
 }

@@ -106,6 +106,10 @@
     <Compile Include="AST\GlobalEx.cs" />
     <Compile Include="AST\Scopes\ScopeType.cs" />
     <Compile Include="DataTypes\Command.cs" />
+    <Compile Include="AST\Scopes\ResizableArrayScope.cs" />
+    <Compile Include="AST\SetEx.cs" />
+    <Compile Include="AST\UnpackEx.cs" />
+    <Compile Include="DataTypes\DynTuple.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

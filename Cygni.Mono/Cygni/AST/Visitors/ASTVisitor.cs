@@ -11,12 +11,28 @@ namespace Cygni.AST.Visitors
 			assignEx.Target.Accept (this);
 			assignEx.Value.Accept (this);
 		}
+		internal virtual void Visit(SetEx setEx ){
+			foreach (var item in setEx.Targets) {
+				item.Accept (this);
+			}
+			foreach (var item in setEx.Values) {
+				item.Accept (this);
+			}
+		}
+		internal virtual void Visit(UnpackEx unpackEx ){
+			foreach (var item in unpackEx.Items) {
+				item.Accept(this);
+			}
+			unpackEx.Tuple.Accept (this);
+		}
 		internal virtual void Visit(BlockEx blockEx){
 			foreach (var item in blockEx.expressions) 
 				item.Accept (this);
 		}
 		internal virtual void Visit(GlobalEx globalEx) {
-			globalEx.Value.Accept (this);
+			foreach (var value in globalEx.Values) {
+				value.Accept(this);
+			}
 		}
 		internal virtual void Visit(Constant constant){
 			return;
