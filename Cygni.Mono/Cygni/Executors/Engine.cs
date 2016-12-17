@@ -16,16 +16,16 @@ namespace Cygni.Executors
 	/// </summary>
 	public class Engine
 	{
-		BasicScope globalScope;
+		ResizableArrayScope globalScope;
 
 		public Engine ()
 		{
-			globalScope = new BasicScope ();
+			globalScope = new ResizableArrayScope ();
 		}
 
 		public void Initialize ()
 		{
-			BasicScope.builtInScope = GlobalSettings.CreateBuiltInScope ();
+			GlobalSettings.BuiltIn (globalScope);
 		}
 
 		public static Engine CreateInstance ()

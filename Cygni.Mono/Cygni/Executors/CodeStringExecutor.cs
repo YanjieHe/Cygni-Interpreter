@@ -17,7 +17,7 @@ namespace Cygni.Executors
 	public class CodeStringExecutor:Executor
 	{
 		string Code;
-		public CodeStringExecutor(BasicScope GlobalScope, string Code)
+		public CodeStringExecutor(IScope GlobalScope, string Code)
 			: base(GlobalScope)
 		{
 			this.Code = Code;

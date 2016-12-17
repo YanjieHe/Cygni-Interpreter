@@ -26,7 +26,7 @@ namespace Cygni.Executors
 
 		public override DynValue Run()
 		{
-			DynValue Result = DynValue.Nil;
+		/*	DynValue Result = DynValue.Nil;
 			try {
 				using (var sr = new StringReader(Code)) {
 					var lexer = new Lexer(1, sr);
@@ -46,7 +46,8 @@ namespace Cygni.Executors
 					Console.WriteLine ("error: {0}", ex.Message);
 
 			}
-			return Result;
+			return Result;*/
+			return DynValue.Nil;
 		}
 
 		#endregion

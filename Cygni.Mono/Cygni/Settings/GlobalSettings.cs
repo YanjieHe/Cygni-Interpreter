@@ -106,13 +106,11 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 					)
 				}, {"string",
 					new Structure (
-					new StructureItem( "concat",DynValue.FromDelegate("concat",StrLib.strcat )),
-						new StructureItem( "compare",DynValue.FromDelegate("compare",StrLib.compare )),
-					new StructureItem( "empty",string.Empty ) 
-				)
-			},
-
-			{"math",
+						new StructureItem ("concat", DynValue.FromDelegate ("concat", StrLib.strcat)),
+						new StructureItem ("compare", DynValue.FromDelegate ("compare", StrLib.compare)),
+						new StructureItem ("empty", string.Empty) 
+					)
+				}, {"math",
 				new Structure (
 					new StructureItem("abs",DynValue.FromDelegate("abs",MathLib.abs)),
 					new StructureItem("log",DynValue.FromDelegate("log",MathLib.log)),
@@ -141,9 +139,9 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>>{
 			{"source", Commands.source},
 			{"cond", Commands.cond},
-			// {"loadLibrary", Commands.LoadLibrary},
 			{"assert", Commands.assert},
 		};
+
 		public static void SetBuiltInFunctions (BuiltInScope scope)
 		{
 			foreach (var element in BuiltInFunctions)
@@ -177,6 +175,15 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			SetBuiltInCommands (scope);
 			return scope;
 		}
-
+		public static void BuiltIn(ResizableArrayScope scope){
+			foreach (var element in BuiltInFunctions)
+				scope.Put (element.Key, DynValue.FromDelegate (element.Key, element.Value));
+			foreach (var element in BuiltInVariables)
+				scope.Put (element.Key, element.Value);
+			foreach (var element in BuiltInStructures)
+				scope.Put (element.Key, DynValue.FromStructure (element.Value));
+			foreach (var element in BuiltInCommands)
+				scope.Put (element.Key, DynValue.FromDelegate (element.Key, element.Value));
+		}
 	}
 }

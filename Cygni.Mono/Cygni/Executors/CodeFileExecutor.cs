@@ -20,7 +20,7 @@ namespace Cygni.Executors
 		string FilePath;
 		Encoding encoding;
 
-		public CodeFileExecutor (BasicScope GlobalScope, string FilePath, Encoding encoding)
+		public CodeFileExecutor (IScope GlobalScope, string FilePath, Encoding encoding)
 			: base (GlobalScope)
 		{
 			this.FilePath = FilePath;

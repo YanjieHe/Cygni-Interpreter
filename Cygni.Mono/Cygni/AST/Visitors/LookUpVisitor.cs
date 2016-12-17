@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cygni.AST.Scopes;
 
 namespace Cygni.AST.Visitors
 {
 	internal class LookUpVisitor:ASTVisitor
 	{
 		List<NameEx> names;
+		IScope parentScope;
 
-		internal LookUpVisitor (List<NameEx> names)
+		internal LookUpVisitor (List<NameEx> names, IScope parentScope)
 		{
 			this.names = names;	
+			this.parentScope = parentScope;
 		}
 
 		internal override void Visit (AssignEx assignEx)
@@ -59,7 +62,7 @@ namespace Cygni.AST.Visitors
 						nameEx.Accept (this);
 					} else {
 						var newName = new NameEx (nameEx.Name, names.Count);
-						unpackEx.Items[i] = newName;
+						unpackEx.Items [i] = newName;
 						names.Add (newName);
 					}
 					unpackEx.Tuple.Accept (this);
@@ -72,8 +75,21 @@ namespace Cygni.AST.Visitors
 		internal override void Visit (NameEx nameEx)
 		{
 			int i =	names.IndexOf (nameEx);
-			if (i >= 0)
-				nameEx.SetIndex (i);
+			if (i >= 0) {
+				nameEx.Nest = 0;
+				nameEx.Index = i;
+			} else if (nameEx.IsUnknown) {
+				if (parentScope.type != ScopeType.ResizableArray) {
+					throw new Exception ("Scope Error");
+				} else {
+					ResizableArrayScope scope = parentScope as ResizableArrayScope;
+					int index = scope.Find (nameEx.Name);
+					nameEx.Nest = 1;
+					nameEx.Index = index;
+					return;
+				}
+			}
+					
 		}
 
 		internal override void Visit (ForEx forEx)

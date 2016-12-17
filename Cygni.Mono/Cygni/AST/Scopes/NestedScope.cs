@@ -45,7 +45,7 @@ namespace Cygni.AST.Scopes
 		public void SetParent(IScope scope){
 			this.parent = scope;
 		}
-		public NestedScope Clone ()
+		/*public NestedScope Clone ()
 		{
 			var newScope = new NestedScope (this.parent);
 			foreach (var variable in base.envTable) {
@@ -59,9 +59,9 @@ namespace Cygni.AST.Scopes
 					newScope.envTable [variable.Key] = variable.Value;
 			}
 			return newScope;
-		}
+		}*/
 		public void Append(NestedScope scope) {
-			foreach (var variable in scope.envTable) {
+			/*foreach (var variable in scope.envTable) {
 				DynValue value = variable.Value;
 				if (value.type == DataType.Function) {
 					this.envTable [variable.Key] = value.As<Function> ().Update (this);
@@ -70,7 +70,7 @@ namespace Cygni.AST.Scopes
 				}
 				else
 					this.envTable [variable.Key] = variable.Value;
-			}
+			}*/
 		}
 		public IEnumerable<string> Names(){
 			foreach (var name in envTable.Keys)

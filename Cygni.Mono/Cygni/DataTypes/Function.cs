@@ -27,11 +27,11 @@ namespace Cygni.DataTypes
 			this.nArgs = nArgs;
 		}
 
-		public Function Update (NestedScope ClassScope)
+		/*public Function Update (NestedScope ClassScope)
 		{
-			var newScope = new ArrayScope (funcScope.Count, ClassScope);
+			var newScope = new ArrayScope (new DynValue[funcScope.Count], ClassScope);
 			return new Function (name, nArgs, body, newScope);
-		}
+		}*/
 
 		public DynValue Invoke ()
 		{
@@ -56,7 +56,7 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (values, funcScope.Parent);
+			var newScope = new ArrayScope ( values, funcScope.Parent);
 			return new Function (name, nArgs, body, newScope).Invoke ();
 		}
 

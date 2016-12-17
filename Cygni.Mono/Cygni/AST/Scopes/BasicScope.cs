@@ -16,11 +16,14 @@ namespace Cygni.AST.Scopes
 
 		protected readonly EnvTable envTable;
 		public static BuiltInScope builtInScope;
+		public int Nest{ get { throw new Exception (); } }
 		public BasicScope()
 		{
 			this.envTable = new EnvTable ();
 		}
+
 		public int Count { get { return envTable.Count; } }
+
 		public virtual IScope Parent {
 			get {
 				return builtInScope;
@@ -42,10 +45,10 @@ namespace Cygni.AST.Scopes
 		public virtual bool TryGetValue(string name,out DynValue value){
 			return envTable.TryGetValue (name, out value);
 		}
-		public DynValue Get(int index){
+		public DynValue Get(int nest, int index){
 			throw new NotSupportedException ();
 		}
-		public DynValue Put(int index,DynValue value){
+		public DynValue Put(int nest, int index,DynValue value){
 			throw new NotSupportedException ();
 		}
 		public bool Delete(string name){

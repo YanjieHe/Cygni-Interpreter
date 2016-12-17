@@ -16,37 +16,47 @@ namespace Cygni.AST
 	{
 		string name;
 		BlockEx body;
+
 		public BlockEx Body{ get { return body; } }
+
 		string[] parameters;
+
 		public string[] Parameters{ get { return parameters; } }
 
-		public override  NodeType type {get{return NodeType.DefFunc;}}
+		public override  NodeType type { get { return NodeType.DefFunc; } }
+
 		public string Name{ get { return this.name; } }
-		public DefFuncEx(string name, string[] parameters, BlockEx body)
+
+		public DefFuncEx (string name, string[] parameters, BlockEx body)
 		{
 			this.name = name;
 			this.parameters = parameters;
 			this.body = body;
 		}
-		
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
+			scope.Put (name, DynValue.Nil);
+
 			var names = new List<NameEx> ();
-			for (int i = 0; i < parameters.Length; i++) 
-				names.Add (new NameEx (parameters [i],  i));
-			LookUpVisitor visitor = new LookUpVisitor(names);
+			for (int i = 0; i < parameters.Length; i++)
+				names.Add (new NameEx (parameters [i], i));
+			
+			LookUpVisitor visitor = new LookUpVisitor (names, scope);
 			body.Accept (visitor);
-			var arrayScope = new ArrayScope (names.Count,scope);
-			var func = DynValue.FromFunction(new Function(name,parameters.Length, body, arrayScope));
-			return scope.Put(name, func);
+			var arrayScope = new ArrayScope ( new DynValue[names.Count], scope);
+			var func = DynValue.FromFunction (new Function (name, parameters.Length, body, arrayScope));
+			return scope.Put (name, func);
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
-			return string.Concat(" def ", name, "(", string.Join(", ", parameters), ")", body);
+			return string.Concat (" def ", name, "(", string.Join (", ", parameters), ")", body);
 		}
+
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);
-		}		
+		}
 	}
 }

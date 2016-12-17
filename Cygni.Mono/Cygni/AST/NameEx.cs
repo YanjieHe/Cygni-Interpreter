@@ -14,22 +14,19 @@ namespace Cygni.AST
 	/// </summary>
 	public sealed class NameEx:ASTNode,IAssignable
 	{
-		string name;
+		private string name;
+		private int nest;
+		private int index;
 
 		public string Name{ get { return name; } }
 
+		public int Nest{ get { return this.nest; } internal set { this.nest = value; } }
+
+		public int Index{ get { return this.index; } internal set { this.index = value; } }
+
 		public  override NodeType type { get { return NodeType.Name; } }
 
-		int index;
-
-		internal void SetIndex(int index){
-			this.index = index;
-		}
-
-		public bool IsLocal {
-			get{ return index != -1; }
-		}
-
+		public bool IsUnknown { get { return this.index == -1; }}
 		public NameEx (string name, int index = -1)
 		{
 			this.name = name;
@@ -38,19 +35,19 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			if (index == (-1)) {
+			if (IsUnknown) {
 				return scope.Get (name);		
 			} else {
-				return scope.Get (index);
+				return scope.Get (nest, index);
 			}
 		}
 
 		public DynValue Assign (DynValue value, IScope scope)
 		{
-			if (index == (-1)) {
+			if (IsUnknown) {
 				return scope.Put (name, value);		
 			} else {
-				return scope.Put (index, value);
+				return scope.Put (nest, index, value);
 			}
 		}
 
@@ -71,7 +68,7 @@ namespace Cygni.AST
 		{
 			return name.GetHashCode ();
 		}
-			
+
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);

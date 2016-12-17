@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
+
 namespace Cygni.AST.Scopes
 {
 	/// <summary>
@@ -11,15 +12,22 @@ namespace Cygni.AST.Scopes
 	/// </summary>
 	public interface IScope
 	{
-		DynValue Get(string name);
-		DynValue Put (string name, DynValue value);
-		DynValue Get(int index);
-		DynValue Put(int index,DynValue value);
+		DynValue Get (string name);
 
-		int Count { get; }
-		bool HasName(string name);
-		bool TryGetValue(string name,out DynValue value);
+		DynValue Put (string name, DynValue value);
+
+		DynValue Get (int nest, int index);
+
+		DynValue Put (int nest, int index, DynValue value);
+
+		// int Count { get; }
+
+		bool HasName (string name);
+
+		bool TryGetValue (string name, out DynValue value);
+
 		IScope Parent { get; }
+
 		ScopeType type { get; }
 	}
 }

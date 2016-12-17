@@ -203,14 +203,14 @@ namespace Cygni.DataTypes
 			yield return this.AsEnumerable ();
 		}
 
-		public ClassInfo Update (IScope scope)
+	/*	public ClassInfo Update (IScope scope)
 		{
 			var newScope = classScope.Clone ();
 			newScope.SetParent (scope);
 			var newClass = new ClassInfo (
 				               name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
 			return newClass;
-		}
+		}*/
 
 		public void Dispose ()
 		{

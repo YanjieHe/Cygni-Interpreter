@@ -15,8 +15,8 @@ namespace Cygni.Executors
 	public abstract class Executor
 	{
 		public abstract DynValue Run();
-		protected BasicScope GlobalScope;
-		protected Executor(BasicScope GlobalScope){
+		protected IScope GlobalScope;
+		protected Executor(IScope GlobalScope){
 			this.GlobalScope = GlobalScope;
 		}
 	}

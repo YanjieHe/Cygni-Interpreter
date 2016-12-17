@@ -23,7 +23,7 @@ namespace Cygni.Executors
 		/* storage of code. */
 		readonly Stack<Tag> stack;
 
-		public InteractiveExecutor (BasicScope GlobalScope)
+		public InteractiveExecutor (IScope GlobalScope)
 			: base (GlobalScope)
 		{
 			list = new LinkedList<string> ();
