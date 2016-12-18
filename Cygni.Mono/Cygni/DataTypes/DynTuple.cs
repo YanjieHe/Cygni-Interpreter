@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.Errors;
 using Cygni.Libraries;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.DataTypes
 {
@@ -19,40 +20,46 @@ namespace Cygni.DataTypes
 			this.values = values;
 		}
 
-		public DynValue GetByDot (string fieldName){
-			if (fieldName.Length > 1 && fieldName[0] == '_') {
+		public DynValue GetByDot (string fieldName)
+		{
+			if (fieldName.Length > 1 && fieldName [0] == '_') {
 				int index = 0;
-				char ch = fieldName[1];
+				char ch = fieldName [1];
 				if (ch == '0') {
-				throw RuntimeException.FieldNotExist("tuple", fieldName);
+					throw RuntimeException.FieldNotExist ("tuple", fieldName);
 				} else {
-						index = ch - '0';
-						for (int i = 2; i < fieldName.Length; i++) {
-							index = index * 10 + fieldName[i];
-						}
-						return this.values[index - 1];
+					index = ch - '0';
+					for (int i = 2; i < fieldName.Length; i++) {
+						index = index * 10 + fieldName [i];
 					}
+					return this.values [index - 1];
+				}
 			} else {
-				throw RuntimeException.FieldNotExist("tuple", fieldName);
+				throw RuntimeException.FieldNotExist ("tuple", fieldName);
 			}
 		}
 
 
-		public DynValue SetByDot (string fieldName, DynValue value){
-				throw RuntimeException.FieldNotExist("tuple", fieldName);
+		public DynValue SetByDot (string fieldName, DynValue value)
+		{
+			throw RuntimeException.FieldNotExist ("tuple", fieldName);
 		}
 
 
-		public string[] FieldNames{ get{
-			var names = new string[this.values.Length];
-			for (int i = 0; i < this.values.Length; i++) {
-				names[i] = "_"+(i+1);
+		public string[] FieldNames {
+			get {
+				var names = new string[this.values.Length];
+				for (int i = 0; i < this.values.Length; i++) {
+					names [i] = "_" + (i + 1);
+				}
+				return names;
 			}
-			return names;
-		}}
-		public override string ToString(){
-			return "Tuple("+string.Join(", ",this.values)+")";
-		}	
+		}
+
+		public override string ToString ()
+		{
+			return "Tuple(" + string.Join<DynValue> (", ", this.values) + ")";
+		}
 	}
 }
 

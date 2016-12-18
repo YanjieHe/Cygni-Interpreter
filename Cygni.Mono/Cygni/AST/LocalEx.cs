@@ -4,38 +4,40 @@ using Cygni.Extensions;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
 using Cygni.Errors;
+using Cygni.AST.Interfaces;
+
 namespace Cygni.AST
 {
-	public class GlobalEx:ASTNode
+	public class LocalEx:ASTNode
 	{
-		string[] names;
+		NameEx[] variables;
 		ASTNode[] values;
-		public string[] Names { get { return this.names; } }
+
+		public NameEx[] Variables { get { return this.variables; } }
+
 		public ASTNode[] Values { get { return this.values; } }
 
 		public override NodeType type {
 			get {
-				return NodeType.Global;
+				return NodeType.Local;
 			}
 		}
 
-		public GlobalEx (string[] names, ASTNode[] values)
+		public LocalEx (NameEx[] variables, ASTNode[] values)
 		{
-			this.names = names;
+			this.variables = variables;
 			this.values = values;
 		}
+
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);
 		}
+
 		public override DynValue Eval (IScope scope)
 		{
-			IScope GlobalScope = scope;
-			while (GlobalScope.type != ScopeType.ResizableArray) {
-				GlobalScope = GlobalScope.Parent;
-			}
-			for (int i = 0; i < names.Length; i++) {
-				GlobalScope.Put (names[i], values[i].Eval(scope));
+			for (int i = 0; i < values.Length; i++) {
+				this.variables [i].Assign (this.values [i].Eval (scope), scope);
 			}
 			return DynValue.Nil;
 		}

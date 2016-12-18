@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Cygni.AST.Scopes;
 using Cygni.AST;
-namespace Cygni.DataTypes
+namespace Cygni.DataTypes.Interfaces
 {
 	public interface IFunction
 	{

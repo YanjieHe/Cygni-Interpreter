@@ -2,6 +2,7 @@
 using Cygni.DataTypes;
 using Cygni.Errors;
 using System.Diagnostics;
+using Cygni.DataTypes.Interfaces;
 namespace CygniLib.random
 {
 	public class random:Random,IDot

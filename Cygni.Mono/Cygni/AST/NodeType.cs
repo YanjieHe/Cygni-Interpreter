@@ -31,6 +31,7 @@ namespace Cygni.AST
 		SingleIndex,
 		ForEach,
 		Assign,
+		Local,
 		Global,
 		Set,
 		Unpack,

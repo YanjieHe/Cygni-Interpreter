@@ -14,6 +14,7 @@ using System.IO;
 using Cygni.Settings;
 using System.Threading;
 using Cygni.Executors;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.Libraries
 {
@@ -167,15 +168,6 @@ namespace Cygni.Libraries
 			return Console.ReadLine ();
 		}
 
-		public static DynValue bit_or (DynValue[] args)
-		{
-			int value = (int)args [0].AsNumber ();
-			for (int i = 1; i < args.Length; i++) {
-				value |= (int)args [i].AsNumber ();
-			}
-			return (double)value;
-		}
-
 		public static DynValue LoadLibrary (DynValue[]args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "CSharpDll");
@@ -256,11 +248,6 @@ namespace Cygni.Libraries
 			return (double)Console.ReadKey ().KeyChar;
 		}
 
-		public static DynValue os_clock (DynValue[] args)
-		{
-			return (double)DateTime.Now.Ticks;
-		}
-
 		public static DynValue dispose (DynValue[] args)
 		{
 			for (int i = 0; i < args.Length; i++) {
@@ -271,7 +258,12 @@ namespace Cygni.Libraries
 
 		public static DynValue exit (DynValue[] args)
 		{
-			Environment.Exit ((int)args [0].AsNumber ());
+			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "exit");
+			if (args.Length == 0) {
+				Environment.Exit (0);
+			} else {
+				Environment.Exit ((int)args [0].AsNumber ());
+			}
 			return DynValue.Nil;
 		}
 
@@ -321,6 +313,24 @@ namespace Cygni.Libraries
 			}
 		}
 
+		public static DynValue xpCall (DynValue[] args)
+		{
+			/* Inspire by Lua */
+			/* protected call */
+			RuntimeException.FuncArgsCheck (args.Length == 2, "xpCall");
+			IFunction func = args [0].As<IFunction> ();
+			IFunction errorHandler = args [1].As<IFunction> ();
+			try {
+				func.DynInvoke (DynValue.Empty);
+				return true;
+			} catch (RuntimeException ex) {
+				errorHandler.DynInvoke (new DynValue[]{ ex.Message });
+				return DynValue.False;
+			} catch (Exception ex) {
+				errorHandler.DynInvoke (new DynValue[]{ ex.Message });
+				return DynValue.False;
+			}
+		}
 		static readonly string[] StrFieldNames = new string[] {
 			"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "slice"
 		};
@@ -349,7 +359,8 @@ namespace Cygni.Libraries
 			return DynValue.Nil;
 		}
 
-		private static readonly Dictionary<string, DynValue> ModulesCache = new Dictionary<string, DynValue> ();
+		private static readonly Dictionary<string, DynValue> ModulesCache 
+		= new Dictionary<string, DynValue> ();
 
 		public static DynValue import (DynValue[] args)
 		{
@@ -379,11 +390,12 @@ namespace Cygni.Libraries
 				if (!File.Exists (filePath))
 					throw new RuntimeException ("No module named '{0}.", moduleName);
 
-				BasicScope basicScope = new BasicScope ();
-				CodeFileExecutor executor = new CodeFileExecutor (basicScope, filePath, encoding);
+				ResizableArrayScope globalScope = new ResizableArrayScope ();
+				globalScope.BuiltIn ();
+				CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
 				GlobalSettings.Quiet = quiet;
-
-				DynValue value = executor.Run ();
+				executor.Run ();
+				DynValue value = executor.Result; 
 				if (value.type != DataType.Return) {
 					throw new RuntimeException ("Module file should return value at the end of the file");
 				} else {
@@ -394,40 +406,5 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue exec (DynValue[] args)
-		{
-			RuntimeException.CmdArgsCheck (args.Length == 1 || args.Length == 2, "exec");
-			string filepath = args [0].AsString ();
-			Encoding encoding;
-
-			if (args.Length == 2) {
-				encoding = Encoding.GetEncoding (args [1].AsString ());
-			} else {
-				encoding = Encoding.Default;
-			}
-
-			BasicScope basicScope = new BasicScope ();
-
-			if (!Path.HasExtension (filepath))
-				filepath = Path.ChangeExtension (filepath, "cyg");
-
-			bool quiet = GlobalSettings.Quiet;
-			GlobalSettings.Quiet = true;
-
-			var executor = new CodeFileExecutor (basicScope, filepath, encoding);
-			GlobalSettings.Quiet = quiet;
-			return executor.Run ();
-		}
-
-		public static DynValue parallel_invoke (DynValue[]args)
-		{
-			Action[] actions = new Action[args.Length];
-			for (int i = 0; i < args.Length; i++) {
-				IFunction function = args [i].As<IFunction> ();
-				actions [i] = () => function.DynInvoke (DynValue.Empty);
-			}
-			Parallel.Invoke (actions);
-			return DynValue.Nil;
-		}
 	}
 }

@@ -84,6 +84,8 @@ namespace Cygni.Lexical.Tokens
 				return Define;
 			case "class":
 				return Class;
+			case "local":
+				return Local;
 			case "global":
 				return Global;
 			case "set":
@@ -146,6 +148,7 @@ namespace Cygni.Lexical.Tokens
 			ForEach = new Word ("foreach", Tag.ForEach),
 			Define = new Word ("def", Tag.Define),
 			Class = new Word ("class", Tag.Class),
+			Local = new Word ("local", Tag.Local),
 			Global = new Word ("global", Tag.Global),
 			Set = new Word ("set", Tag.Set),
 			Unpack = new Word ("unpack", Tag.Unpack),

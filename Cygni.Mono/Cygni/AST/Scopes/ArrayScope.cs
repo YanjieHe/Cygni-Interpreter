@@ -38,7 +38,7 @@ namespace Cygni.AST.Scopes
 		public DynValue Put (int nest, int index, DynValue value)
 		{
 			if (nest == 0) {
-				return this.values [index] = value;
+				return this.values [index] = value;	
 			} else {
 				return this.parent.Put (nest - 1, index, value);
 			}
@@ -55,7 +55,6 @@ namespace Cygni.AST.Scopes
 		{
 			throw new NotSupportedException (name);
 		}
-
 
 		public bool HasName (string name)
 		{

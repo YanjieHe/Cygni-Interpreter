@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 
-namespace Cygni.DataTypes
+namespace Cygni.DataTypes.Interfaces
 {
 	/// <summary>
 	/// Description of IIndexable.
@@ -12,9 +12,11 @@ namespace Cygni.DataTypes
 	public interface IIndexable
 	{
 		DynValue GetByIndex (DynValue index);
+
 		DynValue SetByIndex (DynValue index, DynValue value);
 
 		DynValue GetByIndexes (DynValue[] indexes);
+
 		DynValue SetByIndexes (DynValue[] indexes, DynValue value);
 	}
 }

@@ -4,7 +4,7 @@ using Cygni.Extensions;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
 using Cygni.Errors;
-
+using Cygni.AST.Interfaces;
 namespace Cygni.AST
 {
 	public class SetEx:ASTNode

@@ -22,7 +22,12 @@ namespace Cygni.Executors
 		readonly LinkedList<string> list;
 		/* storage of code. */
 		readonly Stack<Tag> stack;
-
+		private DynValue result;
+		public override DynValue Result {
+			get {
+				return this.result;
+			}
+		}
 		public InteractiveExecutor (IScope GlobalScope)
 			: base (GlobalScope)
 		{
@@ -30,12 +35,9 @@ namespace Cygni.Executors
 			stack = new Stack<Tag> ();
 		}
 
-		private static readonly Regex re_exit = new Regex (@"^[\s]*exit[\s]*$");
-		/* Support 'exit' command */
-
-		public override DynValue Run ()
+		public override void Run ()
 		{
-			DynValue Result = DynValue.Nil;
+			this.result = DynValue.Nil;
 			for (;;) {
 				try {
 					Console.ForegroundColor = ConsoleColor.Cyan;
@@ -43,10 +45,6 @@ namespace Cygni.Executors
 					Console.ForegroundColor = ConsoleColor.White;
 Start:
 					string line = Console.ReadLine ();
-					if (re_exit.IsMatch (line)){ 
-						/* If user input 'exit', the interactive mode ends. */
-						break;
-					}
 					list.AddLast (line);
 					string code = string.Join ("\n", list);
 					var state = TryParse (code);
@@ -67,7 +65,7 @@ Start:
 							var lexer = new Lexer (1, sr); 
 							/* In the interative mode, the lexer always starts at line 1. */
 							var ast = new Parser (lexer);
-							Result = ast.Program ().Eval (GlobalScope);
+							this.result = ast.Program ().Eval (GlobalScope);
 							if (!GlobalSettings.Quiet && Result != DynValue.Nil) {
 								Console.ForegroundColor = ConsoleColor.White;
 								Console.Write ("=> ");
@@ -83,7 +81,6 @@ Start:
 						Console.WriteLine ("error: {0}", ex.Message);
 				}
 			}
-			return Result;
 		}
 
 		InteractiveState TryParse (string code)

@@ -9,6 +9,8 @@ using Cygni.Settings;
 using Cygni.AST.Scopes;
 using Cygni.Libraries;
 using Cygni.Errors;
+using Cygni.DataTypes.Interfaces;
+
 namespace Cygni.Executors
 {
 	/// <summary>
@@ -25,7 +27,7 @@ namespace Cygni.Executors
 
 		public void Initialize ()
 		{
-			GlobalSettings.BuiltIn (globalScope);
+			globalScope.BuiltIn ();
 		}
 
 		public static Engine CreateInstance ()
@@ -38,52 +40,47 @@ namespace Cygni.Executors
 		public DynValue Evaluate (string code)
 		{
 			var executor = new CodeStringExecutor (globalScope, code);
-			return executor.Run ();
+			executor.Run ();
+			return executor.Result;
 		}
 
 		public T Evaluate<T> (string code)
 		{
 			var executor = new CodeStringExecutor (globalScope, code);
-			var result = executor.Run ();
+			executor.Run ();
+			var result = executor.Result;
 			return (T)Convert.ChangeType (result.Value, typeof(T));
 		}
 
-		public DynValue DoFile (string filepath, Encoding encoding = null)
+		public DynValue ExecuteFile (string filepath, Encoding encoding = null)
 		{
 			var executor = new CodeFileExecutor (globalScope, filepath, encoding ?? Encoding.Default);
-			return executor.Run ();
+			executor.Run ();
+			return executor.Result;
 		}
 
-		public T DoFile<T> (string filepath, Encoding encoding = null)
+		public T ExecuteFile<T> (string filepath, Encoding encoding = null)
 		{
 			var executor = new CodeFileExecutor (globalScope, filepath, encoding ?? Encoding.Default);
-			var result = executor.Run ();
+			executor.Run ();
+			var result = executor.Result;
 			return (T)Convert.ChangeType (result.Value, typeof(T));
 		}
 
-		public void Import (string package)
+		public DynValue ExecuteFromEntryPoint (params DynValue[] args)
 		{
-			Commands.Import (new DynValue[]{ package }, globalScope);
-		}
-
-		public void Import (string[] packages)
-		{
-			Commands.Import (packages.Select (i => DynValue.FromString (i)).ToArray (), globalScope);
-		}
-
-		public DynValue ExecuteFromEntryPoint(params DynValue[] args){
-			const string MainFuncName = "__MAIN__";
+			const string MainFuncName = "main";
 			DynValue funcValue;
 			if (globalScope.TryGetValue (MainFuncName, out funcValue)) {
 				return funcValue.As<IFunction> ().DynInvoke (args);
 			}
-			throw new RuntimeException ("Missing Entry Point, expecting function '__MAIN__'");
+			throw new RuntimeException ("Missing Entry Point, expecting function '{0}'", MainFuncName);
 		}
 
-		public DynValue ExecuteInConsole ()
+		public void ExecuteInConsole ()
 		{
 			var executor = new InteractiveExecutor (globalScope);
-			return executor.Run ();
+			executor.Run ();
 		}
 
 		public Engine SetSymbol (string name, DynValue value)

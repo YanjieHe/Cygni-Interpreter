@@ -1,19 +1,6 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Visitors/LookUpVisitor.cs">
-    <Files>
-      <File FileName="Cygni/Executors/Engine.cs" Line="1" Column="1" />
-      <File FileName="Cygni/Settings/GlobalSettings.cs" Line="1" Column="1" />
-      <File FileName="Cygni/AST/Scopes/ResizableArrayScope.cs" Line="11" Column="37" />
-      <File FileName="Cygni/AST/DefFuncEx.cs" Line="47" Column="37" />
-      <File FileName="Cygni/AST/Visitors/LookUpVisitor.cs" Line="87" Column="21" />
-      <File FileName="Cygni/AST/Scopes/ArrayScope.cs" Line="11" Column="35" />
-      <File FileName="Cygni/Executors/CompilerExecutor.cs" Line="1" Column="1" />
-      <File FileName="Cygni/Executors/InteractiveExecutor.cs" Line="1" Column="1" />
-      <File FileName="Cygni/AST/Scopes/IScope.cs" Line="15" Column="1" />
-      <File FileName="Cygni/DataTypes/Function.cs" Line="77" Column="35" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.Errors;
 using Cygni.Libraries;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.DataTypes
 {
@@ -18,7 +19,7 @@ namespace Cygni.DataTypes
 		{
 			switch (index.type) {
 				case DataType.Number:
-					return base [(int)(double)index.Value];
+					return base [(long)(double)index.Value];
 				case DataType.Boolean:
 				case DataType.String:
 					return base [index.Value];
@@ -31,7 +32,7 @@ namespace Cygni.DataTypes
 		{
 			switch (index.type) {
 				case DataType.Number:
-					return base [(int)(double)index.Value] = value;
+					return base [(long)(double)index.Value] = value;
 				case DataType.Boolean:
 				case DataType.String:
 					return base [index.Value] = value;
@@ -47,7 +48,7 @@ namespace Cygni.DataTypes
 			var key = indexes [0];
 			switch (key.type) {
 				case DataType.Number:
-					return base [(int)(double)key.Value];
+					return base [(long)(double)key.Value];
 				case DataType.Boolean:
 				case DataType.String:
 					return base [key.Value];
@@ -63,7 +64,7 @@ namespace Cygni.DataTypes
 			var key = indexes [0];
 			switch (key.type) {
 				case DataType.Number:
-					return base [(int)(double)key.Value] = value;
+					return base [(long)(double)key.Value] = value;
 				case DataType.Boolean:
 				case DataType.String:
 					return base [key.Value] = value;
@@ -76,7 +77,7 @@ namespace Cygni.DataTypes
 		{
 			switch (key.type) {
 				case DataType.Number:
-					base.Add ((int)(double)key.Value, value);
+					base.Add ((long)(double)key.Value, value);
 					return;
 				case DataType.Boolean:
 				case DataType.String:
@@ -118,8 +119,8 @@ namespace Cygni.DataTypes
 					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 				} else {
 					switch (iconv.GetTypeCode ()) {
-						case TypeCode.Int32:
-							kvp [0] = new StructureItem ("key", (double)(int)key);
+						case TypeCode.Int64:
+							kvp [0] = new StructureItem ("key", (double)(long)key);
 							break;
 						case TypeCode.Boolean:
 							kvp [0] = new StructureItem ("key", (bool)key);

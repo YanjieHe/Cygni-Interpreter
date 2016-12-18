@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.AST.Interfaces;
 
 namespace Cygni.AST
 {
@@ -54,19 +55,6 @@ namespace Cygni.AST
 		public override string ToString ()
 		{
 			return name;
-		}
-
-		public override bool Equals (object obj)
-		{
-			var a = obj as NameEx;
-			if (a == null)
-				return false;
-			return name == a.name;
-		}
-
-		public override int GetHashCode ()
-		{
-			return name.GetHashCode ();
 		}
 
 		internal override void Accept (ASTVisitor visitor)

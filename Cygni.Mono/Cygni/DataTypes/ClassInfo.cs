@@ -7,6 +7,7 @@ using Cygni.AST;
 using Cygni.Errors;
 using Cygni.AST.Scopes;
 using System.Collections;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.DataTypes
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using Cygni.DataTypes;
 using Cygni.Errors;
 using System.Collections.Generic;
+using Cygni.DataTypes.Interfaces;
 namespace CygniLib.Collections
 {
 	public class queue:Queue<DynValue>,IDot

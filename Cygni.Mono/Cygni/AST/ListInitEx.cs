@@ -15,15 +15,23 @@ namespace Cygni.AST
 	public class ListInitEx:ASTNode
 	{
 		public override NodeType type { get { return NodeType.ListInit; } }
-		List<ASTNode> list;
-		public List<ASTNode>_List{ get { return list; } }
-		public ListInitEx(List<ASTNode>list)
+
+		ASTNode[] initializers;
+
+		public ASTNode[]Initializers{ get { return this.initializers; } }
+
+		public ListInitEx (ASTNode[] initializers)
 		{
-			this.list = list;
+			this.initializers = initializers;
 		}
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
-			return DynValue.FromList(new DynList(list.Select(i => i.Eval(scope)), list.Count));
+			DynList newList = new DynList (initializers.Length);
+			foreach (var item in this.initializers) {
+				newList.Add (item.Eval(scope));
+			}
+			return newList;
 		}
 
 		internal override void Accept (ASTVisitor visitor)

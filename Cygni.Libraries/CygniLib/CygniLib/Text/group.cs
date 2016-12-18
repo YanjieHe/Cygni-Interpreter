@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Cygni.DataTypes;
 using Cygni.Errors;
+using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Text
 {

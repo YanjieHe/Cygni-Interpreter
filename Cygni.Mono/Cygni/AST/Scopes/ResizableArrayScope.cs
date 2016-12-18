@@ -5,25 +5,25 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.Errors;
+using Cygni.Libraries;
+using Cygni.AST.Optimizers;
 
 namespace Cygni.AST.Scopes
 {
 	public class ResizableArrayScope:IScope
 	{
-
-		private readonly List<DynValue> values;
+		private int count;
+		private DynValue[] values;
 		private readonly Dictionary<string, int> table;
-
 		public ScopeType type { get { return ScopeType.ResizableArray; } }
-
-		public int Count { get { return this.values.Count; } }
 
 		public IScope Parent { get { return null; } }
 
 		public ResizableArrayScope ()
 		{
 			this.table = new Dictionary<string,int> ();
-			this.values = new List<DynValue> ();
+			this.values = new DynValue[4];
+			this.count = 0;
 		}
 
 		public int Find (string name)
@@ -34,6 +34,14 @@ namespace Cygni.AST.Scopes
 			} else {
 				throw RuntimeException.NotDefined (name);
 			}
+		}
+
+		internal Symbols GetSymbols(){
+			Symbols symbols = new Symbols ();
+			foreach (var item in table) {
+				symbols.AddSymbol (item.Key, item.Value);
+			}
+			return symbols;
 		}
 
 		public DynValue Get (string name)
@@ -52,9 +60,10 @@ namespace Cygni.AST.Scopes
 			if (this.table.TryGetValue (name, out index)) {
 				return this.values [index] = value;
 			} else {
-				index = this.values.Count;
-				this.values.Add (value);
-				this.table.Add (name, index);
+				EnsureCapacity ();
+				this.values [this.count] = value;
+				this.table.Add (name, this.count);
+				this.count++;
 				return value;
 			}
 		}
@@ -94,6 +103,16 @@ namespace Cygni.AST.Scopes
 			}
 		}
 
+		private void EnsureCapacity ()
+		{
+			if (this.count == this.values.Length) {
+				Array.Resize (ref values, this.count * 2);
+			}
+		}
+
+		public void BuiltIn(){
+			BuiltInLibrary.BuiltIn (this);
+		}
 	}
 }
 

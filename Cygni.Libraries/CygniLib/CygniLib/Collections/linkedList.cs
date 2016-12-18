@@ -3,6 +3,7 @@ using Cygni.DataTypes;
 using Cygni.Errors;
 using System.Collections.Generic;
 using System.Linq;
+using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Collections
 {

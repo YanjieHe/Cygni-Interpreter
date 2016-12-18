@@ -67,9 +67,6 @@
     <Compile Include="DataTypes\DynList.cs" />
     <Compile Include="DataTypes\DynValue.cs" />
     <Compile Include="DataTypes\Function.cs" />
-    <Compile Include="DataTypes\IComputable.cs" />
-    <Compile Include="DataTypes\IDot.cs" />
-    <Compile Include="DataTypes\IIndexable.cs" />
     <Compile Include="DataTypes\NativeFunction.cs" />
     <Compile Include="DataTypes\Structure.cs" />
     <Compile Include="Executors\CodeFileExecutor.cs" />
@@ -84,11 +81,9 @@
     <Compile Include="Libraries\MathLib.cs" />
     <Compile Include="Libraries\StrLib.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
-    <Compile Include="DataTypes\IFunction.cs" />
     <Compile Include="AST\Scopes\BasicScope.cs" />
     <Compile Include="AST\Scopes\NestedScope.cs" />
     <Compile Include="AST\Scopes\IScope.cs" />
-    <Compile Include="AST\IAssignable.cs" />
     <Compile Include="AST\Scopes\ArrayScope.cs" />
     <Compile Include="AST\Scopes\EnvTable.cs" />
     <Compile Include="DataTypes\StructureItem.cs" />
@@ -101,8 +96,6 @@
     <Compile Include="AST\AssignEx.cs" />
     <Compile Include="AST\SingleIndexEx.cs" />
     <Compile Include="Libraries\DictionaryLib.cs" />
-    <Compile Include="AST\Visitors\CompilerVisitor.cs" />
-    <Compile Include="Executors\CompilerExecutor.cs" />
     <Compile Include="AST\GlobalEx.cs" />
     <Compile Include="AST\Scopes\ScopeType.cs" />
     <Compile Include="DataTypes\Command.cs" />
@@ -110,11 +103,23 @@
     <Compile Include="AST\SetEx.cs" />
     <Compile Include="AST\UnpackEx.cs" />
     <Compile Include="DataTypes\DynTuple.cs" />
+    <Compile Include="Libraries\BuiltInLibrary.cs" />
+    <Compile Include="AST\Interfaces\IAssignable.cs" />
+    <Compile Include="DataTypes\Interfaces\IComputable.cs" />
+    <Compile Include="DataTypes\Interfaces\IDot.cs" />
+    <Compile Include="DataTypes\Interfaces\IFunction.cs" />
+    <Compile Include="DataTypes\Interfaces\IIndexable.cs" />
+    <Compile Include="AST\Optimizers\Location.cs" />
+    <Compile Include="AST\Optimizers\Symbols.cs" />
+    <Compile Include="AST\LocalEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Lexical\" />
     <Folder Include="AST\Scopes\" />
     <Folder Include="AST\Visitors\" />
+    <Folder Include="AST\Interfaces\" />
+    <Folder Include="DataTypes\Interfaces\" />
+    <Folder Include="AST\Optimizers\" />
   </ItemGroup>
 </Project>

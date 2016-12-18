@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Cygni.DataTypes;
+using Cygni.DataTypes.Interfaces;
 using Cygni.Errors;
 namespace CygniLib.IO
 {

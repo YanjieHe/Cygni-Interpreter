@@ -12,18 +12,18 @@ namespace Cygni.AST
 	public class DictionaryInitEx:ASTNode
 	{
 		public override NodeType type { get { return NodeType.DictionaryInit; } }
-		List<ASTNode> list;
-		public List<ASTNode> _List { get { return this.list; } }
-		public DictionaryInitEx (List<ASTNode> list)
+		ASTNode[] initializers;
+		public ASTNode[] Initializers { get { return this.initializers; } }
+		public DictionaryInitEx (ASTNode[] initializers)
 		{
-			this.list = list;
+			this.initializers = initializers;
 		}
 		public override DynValue Eval (IScope scope)
 		{
 			DynDictionary ht = new DynDictionary ();
-			int n = list.Count - 1;
+			int n = initializers.Length - 1;
 			for(int i = 0; i < n;i += 2)
-				ht.Add (list [i].Eval (scope), list [i + 1].Eval (scope));
+				ht.Add (initializers [i].Eval (scope), initializers [i + 1].Eval (scope));
 			return DynValue.FromDictionary (ht);
 		}
 		internal override void Accept (ASTVisitor visitor)

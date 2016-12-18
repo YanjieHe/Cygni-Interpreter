@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.Errors;
 using Cygni.Libraries;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.DataTypes
 {

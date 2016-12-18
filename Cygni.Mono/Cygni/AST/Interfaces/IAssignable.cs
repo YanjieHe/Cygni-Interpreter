@@ -6,11 +6,11 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 
-namespace Cygni.AST
+namespace Cygni.AST.Interfaces
 {
 	public interface IAssignable
 	{
-		DynValue Assign (DynValue value,IScope scope);
+		DynValue Assign (DynValue value, IScope scope);
 	}
 }
 

@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.AST
 {

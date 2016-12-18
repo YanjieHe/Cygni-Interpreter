@@ -19,6 +19,12 @@ namespace Cygni.Executors
 	{
 		string FilePath;
 		Encoding encoding;
+		private DynValue result;
+		public override DynValue Result {
+			get {
+				return this.result;
+			}
+		}
 
 		public CodeFileExecutor (IScope GlobalScope, string FilePath, Encoding encoding)
 			: base (GlobalScope)
@@ -29,14 +35,14 @@ namespace Cygni.Executors
 
 		#region implemented abstract members of Executor
 
-		public override DynValue Run ()
+		public override void Run ()
 		{
-			DynValue Result = DynValue.Nil;
+			this.result = DynValue.Nil;
 			try {
 				using (var sr = new StreamReader (FilePath, encoding)) {
 					var lexer = new Lexer (1, sr);
 					var ast = new Parser (lexer);
-					Result = ast.Program ().Eval (GlobalScope);
+					this.result = ast.Program ().Eval (GlobalScope);
 				}
 			} catch (Exception ex) {
 				Console.ForegroundColor = ConsoleColor.Red;
@@ -45,7 +51,6 @@ namespace Cygni.Executors
 				else
 					Console.WriteLine ("error: {0}", ex.Message);
 			}
-			return Result;
 		}
 
 		#endregion

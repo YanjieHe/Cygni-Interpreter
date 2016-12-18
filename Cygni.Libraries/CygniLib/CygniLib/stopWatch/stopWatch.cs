@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Cygni.DataTypes;
 using Cygni.Errors;
+using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.stopWatch
 {

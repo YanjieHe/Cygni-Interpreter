@@ -20,7 +20,7 @@ namespace Cygni.Libraries
 			var key = args [0];
 			switch (key.type) {
 			case DataType.Number:
-				return ht.ContainsKey ((int)(double)key.Value);
+				return ht.ContainsKey ((long)(double)key.Value);
 			case DataType.Boolean:
 			case DataType.String:
 				return ht.ContainsKey (key.Value);
@@ -42,7 +42,7 @@ namespace Cygni.Libraries
 			var key = args [0];
 			switch (key.type) {
 			case DataType.Number:
-				return ht.Remove ((int)(double)key.Value);
+				return ht.Remove ((long)(double)key.Value);
 			case DataType.Boolean:
 			case DataType.String:
 				return ht.Remove (key.Value);
@@ -61,8 +61,8 @@ namespace Cygni.Libraries
 					throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
 				} else {
 					switch (iconv.GetTypeCode ()) {
-					case TypeCode.Int32:
-						keys.Add((double)(int)key);
+					case TypeCode.Int64:
+						keys.Add((double)(long)key);
 						break;
 					case TypeCode.Boolean:
 						keys.Add((bool)key);
@@ -94,7 +94,7 @@ namespace Cygni.Libraries
 			var value = args [1];
 			switch (key.type) {
 			case DataType.Number:
-				ht.Add ((int)(double)key.Value, value);
+				ht.Add ((long)(double)key.Value, value);
 				break;
 			case DataType.Boolean:
 			case DataType.String:

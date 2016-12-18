@@ -7,6 +7,8 @@ using Cygni.DataTypes;
 using Cygni.Errors;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.AST.Interfaces;
+using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.AST
 {

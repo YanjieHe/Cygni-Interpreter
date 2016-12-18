@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 
-namespace Cygni.DataTypes
+namespace Cygni.DataTypes.Interfaces
 {
 	/// <summary>
 	/// Description of IComputable.

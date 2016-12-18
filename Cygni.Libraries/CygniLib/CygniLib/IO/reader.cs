@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using Cygni.DataTypes;
 using Cygni.Errors;
+using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.IO
 {

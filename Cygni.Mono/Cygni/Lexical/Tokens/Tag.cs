@@ -47,6 +47,7 @@ namespace Cygni.Lexical.Tokens
 		ForEach,
 		Define,
 		Class,
+		Local,
 		Global,
 		Set,
 		Unpack,

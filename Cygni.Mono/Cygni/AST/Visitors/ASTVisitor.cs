@@ -29,6 +29,16 @@ namespace Cygni.AST.Visitors
 			foreach (var item in blockEx.expressions) 
 				item.Accept (this);
 		}
+
+		internal virtual void Visit(LocalEx localEx) {
+			foreach (var variable in localEx.Variables) {
+				variable.Accept(this);
+			}
+			foreach (var value in localEx.Values) {
+				value.Accept(this);
+			}
+		}
+
 		internal virtual void Visit(GlobalEx globalEx) {
 			foreach (var value in globalEx.Values) {
 				value.Accept(this);
@@ -80,14 +90,15 @@ namespace Cygni.AST.Visitors
 				item.Accept (this);
 		}
 		internal virtual void Visit(ListInitEx listInitEx){
-			foreach (var item in listInitEx._List) 
+			foreach (var item in listInitEx.Initializers) 
 				item.Accept (this);
 		}
 		internal virtual void Visit(DictionaryInitEx dictionaryInitEx){
-			foreach (var item in dictionaryInitEx._List) 
+			foreach (var item in dictionaryInitEx.Initializers) 
 				item.Accept (this);
 		}
 		internal virtual void Visit(NameEx nameEx){
+			nameEx.Accept (this);
 			return;
 		}
 		internal virtual void Visit(ReturnEx returnEx){

@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.AST.Optimizers;
 
 namespace Cygni.AST
 {
@@ -36,17 +37,23 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			scope.Put (name, DynValue.Nil);
+			if (!scope.HasName (name)) {
+				scope.Put (name, DynValue.Nil);
+			}
+			if (scope.type != ScopeType.ResizableArray) {
+				throw new Exception ("Scope Error");
+			} else {
+				ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
+				Symbols symbols = new Symbols (GlobalScope.GetSymbols ());
+				LookUpVisitor visitor = new LookUpVisitor (symbols);
+				this.Accept (visitor);
+				ArrayScope arrayScope = new ArrayScope (new DynValue[symbols.Count], scope);
 
-			var names = new List<NameEx> ();
-			for (int i = 0; i < parameters.Length; i++)
-				names.Add (new NameEx (parameters [i], i));
-			
-			LookUpVisitor visitor = new LookUpVisitor (names, scope);
-			body.Accept (visitor);
-			var arrayScope = new ArrayScope ( new DynValue[names.Count], scope);
-			var func = DynValue.FromFunction (new Function (name, parameters.Length, body, arrayScope));
-			return scope.Put (name, func);
+				DynValue func = DynValue.FromFunction (
+					                new Function (name, parameters.Length, body, arrayScope));
+				return scope.Put (name, func);
+			}
+		
 		}
 
 		public override string ToString ()

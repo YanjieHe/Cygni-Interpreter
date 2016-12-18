@@ -17,7 +17,7 @@ namespace Cygni.AST
 		public abstract NodeType type { get; }
 		internal abstract void Accept (ASTVisitor visitor);
 
-		public static ASTNode Variable(string name)
+		public static NameEx Variable(string name)
 		{
 			return new NameEx(name);
 		}
@@ -30,6 +30,11 @@ namespace Cygni.AST
 		public static ASTNode Assign(ASTNode left, ASTNode right)
 		{
 			return new AssignEx(left, right);
+		}
+
+		public static ASTNode Local(NameEx[] names, ASTNode[] values)
+		{
+			return new LocalEx(names, values);
 		}
 
 		public static ASTNode Global(string[] names, ASTNode[] values)
@@ -173,12 +178,12 @@ namespace Cygni.AST
 		{
 			return new DefClassEx(name, body, parent);
 		}
-		public static ASTNode ListInit(List<ASTNode> list)
+		public static ASTNode ListInit(ASTNode[] initializers)
 		{
-			return new ListInitEx(list);
+			return new ListInitEx(initializers);
 		}
-		public static ASTNode DictionaryInit(List<ASTNode> list){
-			return new DictionaryInitEx (list);
+		public static ASTNode DictionaryInit(ASTNode[] initializers){
+			return new DictionaryInitEx (initializers);
 		}
 		public static ASTNode IndexAccess(ASTNode collection, List<ASTNode>indexes)
 		{
