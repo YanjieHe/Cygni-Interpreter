@@ -25,6 +25,7 @@ namespace Cygni.Lexical.Tokens
 		Not,
 
 		Assign,
+		GoesTo,
 
 		/* Relation Operators */
 		Equal,
@@ -46,6 +47,7 @@ namespace Cygni.Lexical.Tokens
 		For,
 		ForEach,
 		Define,
+		Lambda,
 		Class,
 		Local,
 		Global,

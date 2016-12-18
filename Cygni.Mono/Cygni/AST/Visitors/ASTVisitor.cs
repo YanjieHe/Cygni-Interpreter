@@ -53,6 +53,9 @@ namespace Cygni.AST.Visitors
 		internal virtual void Visit(DefFuncEx defFuncEx){
 			defFuncEx.Body.Accept (this);
 		}
+		internal virtual void Visit(DefClosureEx defClosureEx){
+			defClosureEx.Body.Accept (this);
+		}
 		internal virtual void Visit(DotEx dotEx){
 			dotEx.Target.Accept (this);
 		}

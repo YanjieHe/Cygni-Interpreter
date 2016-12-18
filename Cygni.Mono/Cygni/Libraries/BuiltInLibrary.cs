@@ -53,6 +53,11 @@ namespace Cygni.Libraries
 			{ "strcat",StrLib.strcat },
 			{ "strcmp",StrLib.strcmp },
 
+			{ "map",FunctionalProgrammingLibrary.Map },
+			{ "filter",FunctionalProgrammingLibrary.Filter },
+			{ "reduce",FunctionalProgrammingLibrary.Reduce },
+
+
 			/*{ "abs",MathLib.abs },
 			{ "log",MathLib.log },
 			{ "log10",MathLib.log10 },

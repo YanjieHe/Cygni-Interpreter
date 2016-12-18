@@ -202,11 +202,44 @@ namespace Cygni.AST
 					else
 						throw new SyntaxException ("line {0}: function definition Expecting ',' or ')'", lexer.LineNumber);
 				} else
-					throw new SyntaxException ("line {0}: Wrong arguments for function definition", lexer.LineNumber);
+					throw new SyntaxException ("line {0}: Wrong argument for function definition", lexer.LineNumber);
 			}
 			Move ();
 			var body = Block ();
 			return ASTNode.Define (name, list.ToArray (), body);
+		}
+
+		public ASTNode DefClosure ()
+		{
+			Match (Tag.Lambda);
+			var list = new List<NameEx> ();
+			Match (Tag.LeftParenthesis);
+			while (look.tag != Tag.RightParenthesis) {
+				if (look.tag == Tag.ID) {
+					list.Add (ASTNode.Variable (look.ToString ()));
+					Match (Tag.ID);
+					if (look.tag == Tag.Comma) {
+						Move ();
+					} else if (look.tag == Tag.RightParenthesis) {
+						break;
+					} else {
+						throw new SyntaxException ("line {0}: lambda definition Expecting ',' or ')'", lexer.LineNumber);
+					}
+				} else {
+					throw new SyntaxException ("line {0}: Wrong argument for lambda definition", lexer.LineNumber);
+				}
+			}
+			Match (Tag.RightParenthesis);
+			NameEx[] parameters = new NameEx[list.Count];
+			list.CopyTo (parameters);
+			if (look.tag == Tag.GoesTo) {
+				Match (Tag.GoesTo);
+				ASTNode statement = ASTNode.Return (Bool ());
+				return ASTNode.DefineClosure (parameters, statement);
+			} else {
+				ASTNode body = Block ();
+				return ASTNode.DefineClosure (parameters, body);
+			}
 		}
 
 		public ASTNode DefClass ()
@@ -228,32 +261,32 @@ namespace Cygni.AST
 
 		ASTNode Local ()
 		{
-			Match(Tag.Local);
-			var names_list = new List<NameEx>();
-			var values_list = new List<ASTNode>();
+			Match (Tag.Local);
+			var names_list = new List<NameEx> ();
+			var values_list = new List<ASTNode> ();
 			do {
-				string name = look.ToString();
-				Match(Tag.ID);
-				names_list.Add(ASTNode.Variable(name));
+				string name = look.ToString ();
+				Match (Tag.ID);
+				names_list.Add (ASTNode.Variable (name));
 
 				if (look.tag == Tag.Assign) {
-					Match(Tag.Assign);
-					values_list.Add(Bool());
+					Match (Tag.Assign);
+					values_list.Add (Bool ());
 				} else {
-					values_list.Add(ASTNode.Nil);
+					values_list.Add (ASTNode.Nil);
 				}
 
 				if (look.tag == Tag.Comma) {
-					Match(Tag.Comma);
+					Match (Tag.Comma);
 				} else {
 					break;
 				}
 			} while (true);
 			NameEx[] names = new NameEx[names_list.Count];
 			ASTNode[] values = new ASTNode[values_list.Count];
-			names_list.CopyTo(names);
-			values_list.CopyTo(values);
-			return ASTNode.Local(names,values);
+			names_list.CopyTo (names);
+			values_list.CopyTo (values);
+			return ASTNode.Local (names, values);
 		}
 
 		ASTNode Global ()
@@ -599,6 +632,9 @@ namespace Cygni.AST
 					x = ASTNode.DictionaryInit (initializers);
 					return x;
 				}
+			case Tag.Lambda:
+				x = DefClosure ();
+				return x;
 			default:
 				throw SyntaxException.Unexpected (lexer.LineNumber, look.ToString ());
 			}

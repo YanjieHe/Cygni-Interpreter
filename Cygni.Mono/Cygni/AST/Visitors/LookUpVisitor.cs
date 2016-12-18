@@ -119,6 +119,19 @@ namespace Cygni.AST.Visitors
 			}
 			defFuncEx.Body.Accept (this);
 		}
+
+		internal override void Visit (DefClosureEx defClosureEx)
+		{
+			Symbols outerSymbols = this.symbols;
+			Symbols newSymbols = new Symbols(this.symbols);
+			this.symbols = newSymbols;
+			for (int i = 0; i < defClosureEx.Parameters.Length; i++) {
+				symbols.PutLocal (defClosureEx.Parameters [i].Name);
+			}
+			defClosureEx.Body.Accept (this);
+			defClosureEx.Size = this.symbols.Count;
+			this.symbols = outerSymbols;
+		}
 	}
 }
 

@@ -1,6 +1,15 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Libraries/BuiltInLibrary.cs">
+    <Files>
+      <File FileName="Cygni/AST/Parser.cs" Line="1" Column="1" />
+      <File FileName="Cygni/Libraries/FunctionalProgrammingLibrary.cs" Line="34" Column="4" />
+      <File FileName="Cygni/Libraries/BasicLib.cs" Line="1" Column="1" />
+      <File FileName="Cygni/Libraries/BuiltInLibrary.cs" Line="58" Column="50" />
+      <File FileName="Cygni/DataTypes/DynValue.cs" Line="241" Column="12" />
+      <File FileName="Cygni/DataTypes/DataType.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

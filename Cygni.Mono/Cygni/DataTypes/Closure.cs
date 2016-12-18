@@ -10,24 +10,17 @@ using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.DataTypes
 {
-	/// <summary>
-	/// Description of Function.
-	/// </summary>
-	public sealed class Function:IFunction
+	public sealed class Closure:IFunction
 	{
-		readonly string name;
-		readonly BlockEx body;
-		readonly ArrayScope funcScope;
 		readonly int nArgs;
-
-		public Function (string name, int nArgs, BlockEx body, ArrayScope funcScope)
+		readonly ArrayScope funcScope;
+		readonly ASTNode body;
+		public Closure (int nArgs, ASTNode body, ArrayScope funcScope)
 		{
-			this.name = name;
+			this.nArgs = nArgs;
 			this.body = body;
 			this.funcScope = funcScope;
-			this.nArgs = nArgs;
 		}
-
 		public DynValue Invoke ()
 		{
 			DynValue result = body.Eval (funcScope);
@@ -39,7 +32,7 @@ namespace Cygni.DataTypes
 		public DynValue DynInvoke (DynValue[] args)
 		{
 			if (args.Length > nArgs) {
-				throw RuntimeException.BadArgsNum (name, nArgs);
+				throw RuntimeException.BadArgsNum ("Anonymous Function", nArgs);
 			}
 			DynValue[] values = new DynValue[funcScope.Count];
 			int i = 0;
@@ -52,13 +45,13 @@ namespace Cygni.DataTypes
 				i++;
 			}
 			var newScope = new ArrayScope ( values, funcScope.Parent);
-			return new Function (name, nArgs, body, newScope).Invoke ();
+			return new Closure (nArgs, body, newScope).Invoke ();
 		}
 
 		public DynValue DynEval (ASTNode[] args, IScope scope)
 		{
 			if (args.Length > nArgs)
-				throw RuntimeException.BadArgsNum (name, nArgs);
+				throw RuntimeException.BadArgsNum ("Anonymous Function", nArgs);
 			DynValue[] values = new DynValue[funcScope.Count];
 			int i = 0;
 			while (i < args.Length) {
@@ -70,12 +63,12 @@ namespace Cygni.DataTypes
 				i++;
 			}
 			var newScope = new ArrayScope (values, funcScope.Parent);
-			return new Function (name, nArgs, body, newScope).Invoke ();
+			return new Closure (nArgs, body, newScope).Invoke ();
 		}
-
 		public override string ToString ()
 		{
-			return "(Function: " + name + ")";
+			return "(Anonymous Function)";
 		}
 	}
 }
+

@@ -16,11 +16,11 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
 	{
-		readonly DataType _type;
+		private readonly DataType _type;
 
 		public DataType type { get { return _type; } }
 
-		readonly object value;
+		private readonly object value;
 
 		public object Value{ get { return value; } }
 
@@ -82,34 +82,12 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Tuple, tuple);
 		}
 
-
 		public static implicit operator DynValue (NativeFunction f)
 		{
 			return new DynValue (DataType.NativeFunction, f);
 		}
 
-		/*	public static implicit operator DynValue (Func<DynValue[],DynValue> f)
-		{
-			return new DynValue (DataType.NativeFunction, new NativeFunction ("Anonymous Function", f));
-		} */
-
-
 		#endregion
-
-		public static explicit operator double (DynValue value)
-		{
-			return (double)value.value;
-		}
-
-		public static explicit operator bool (DynValue value)
-		{
-			return (bool)value.value;
-		}
-
-		public static explicit operator string (DynValue value)
-		{
-			return (string)value.value;
-		}
 
 		public static DynValue FromNumber (double value)
 		{
@@ -131,16 +109,20 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Function, value);
 		}
 
+		public static DynValue FromClosure (Closure value)
+		{
+			return new DynValue (DataType.Closure, value);
+		}
+
 		public static DynValue FromNativeFunction (NativeFunction value)
 		{
 			return new DynValue (DataType.NativeFunction, value);
 		}
 
-		public static DynValue FromDelegate (string name, Func<DynValue[],DynValue> f/*, string name = "Anonymous Function"*/)
+		public static DynValue FromDelegate (string name, Func<DynValue[],DynValue> f)
 		{
 			return new DynValue (DataType.NativeFunction, new NativeFunction (name, f));
 		}
-
 
 		public static DynValue FromDelegate (string name, Func<ASTNode[], IScope, DynValue> f)
 		{
@@ -210,17 +192,29 @@ namespace Cygni.DataTypes
 
 		public double AsNumber ()
 		{
-			return (double)value;
+			if (this.type == DataType.Number) {
+				return (double)value;
+			} else {
+				throw new RuntimeException ("Cast from '{0}' to number is invalid.", value.GetType ().Name);
+			}
 		}
 
 		public bool AsBoolean ()
 		{
-			return (bool)value;
+			if (this.type == DataType.Boolean) {
+				return (bool)value;
+			} else {
+				throw new RuntimeException ("Cast from '{0}' to boolean is invalid.", value.GetType ().Name);
+			}
 		}
 
 		public string AsString ()
 		{
-			return (string)value;
+			if (this.type == DataType.String) {
+				return value as string;
+			} else {
+				throw new RuntimeException ("Cast from '{0}' to string is invalid.", value.GetType ().Name);
+			}
 		}
 
 		public TValue As<TValue> () where TValue:class
@@ -235,7 +229,6 @@ namespace Cygni.DataTypes
 
 		#region IComparable implementation
 
-
 		public int CompareTo (DynValue other)
 		{
 			switch (type) {
@@ -244,7 +237,7 @@ namespace Cygni.DataTypes
 			case DataType.Boolean:
 				return ((bool)value).CompareTo ((bool)other.value);
 			case DataType.String:
-				return ((string)value).CompareTo ((string)other.value);
+				return (value as string).CompareTo ((string)other.value);
 			default:
 				return (value as IComparable<DynValue>).CompareTo (other);
 			}
@@ -339,6 +332,7 @@ namespace Cygni.DataTypes
 				}
 			} else {
 				var collection = value as IEnumerable<DynValue>;
+				throw new exce
 				if (collection == null)
 					throw new RuntimeException ("Target is not enumerable");
 				foreach (var item in collection) {

@@ -174,6 +174,10 @@ namespace Cygni.AST
 		{
 			return new DefFuncEx(name, parameters, body);
 		}
+		public static ASTNode DefineClosure(NameEx[] parameters, ASTNode body)
+		{
+			return new DefClosureEx(parameters, body);
+		}
 		public static ASTNode Class(string name, BlockEx body, string parent = null)
 		{
 			return new DefClassEx(name, body, parent);

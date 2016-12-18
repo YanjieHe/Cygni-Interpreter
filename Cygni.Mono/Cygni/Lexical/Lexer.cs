@@ -124,7 +124,18 @@ namespace Cygni.Lexical
 			}
 			switch (ch) {
 			case '=':
-				return ReadCompare ('=');
+				{
+					GetChar ();
+					if (Peek () == '=') {
+						GetChar ();
+						return Word.FromString ("==");
+					} else if (Peek () == '>') {
+						GetChar ();
+						return Word.FromString ("=>");
+					} else {
+						return Word.FromString ("=");
+					}
+				}
 			case '>':
 				return ReadCompare ('>');
 			case '<':
@@ -217,8 +228,9 @@ namespace Cygni.Lexical
 			if (Peek () == '=') {
 				GetChar ();
 				return Word.FromString (new string (new []{ cmp, '=' }));
+			} else {
+				return Word.FromString (char.ToString (cmp));
 			}
-			return Word.FromString (char.ToString (cmp));
 		}
 
 		static bool IsLetterOrUnderline (int ch)

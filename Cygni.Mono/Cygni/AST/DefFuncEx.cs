@@ -15,18 +15,17 @@ namespace Cygni.AST
 	/// </summary>
 	public class DefFuncEx:ASTNode
 	{
-		string name;
-		BlockEx body;
+		readonly string name;
+		readonly BlockEx body;
+		readonly string[] parameters;
+
+		public string Name{ get { return this.name; } }
 
 		public BlockEx Body{ get { return body; } }
 
-		string[] parameters;
-
 		public string[] Parameters{ get { return parameters; } }
 
-		public override  NodeType type { get { return NodeType.DefFunc; } }
-
-		public string Name{ get { return this.name; } }
+		public override NodeType type { get { return NodeType.DefFunc; } }
 
 		public DefFuncEx (string name, string[] parameters, BlockEx body)
 		{

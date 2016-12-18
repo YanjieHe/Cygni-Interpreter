@@ -13,6 +13,7 @@ namespace Cygni.DataTypes
 		String,
 
 		Function,
+		Closure,
 		NativeFunction,
 		Command,
 	
@@ -28,7 +29,7 @@ namespace Cygni.DataTypes
 		Break,
 		Continue,
 		Return,
-		
+
 		UserData,
 	}
 }

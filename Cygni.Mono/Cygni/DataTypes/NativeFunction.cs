@@ -44,11 +44,6 @@ namespace Cygni.DataTypes
 			return func (arguments);
 		}
 
-		public Func<DynValue[],DynValue> AsDelegate ()
-		{
-			return func;
-		}
-
 		public override string ToString ()
 		{
 			return string.Concat("(Native Function: ", name, ")");

@@ -16,6 +16,7 @@ namespace Cygni.AST
 		Constant,
 		DefClass,
 		DefFunc,
+		DefClosure,
 		Dot,
 		If,
 		Invoke,

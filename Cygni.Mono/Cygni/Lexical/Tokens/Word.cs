@@ -29,7 +29,7 @@ namespace Cygni.Lexical.Tokens
 			case "not":
 				return Not;
 
-				/* relation */
+			/* relation */
 			case "==":
 				return Eq;
 			case "!=":
@@ -43,7 +43,7 @@ namespace Cygni.Lexical.Tokens
 			case ">=":
 				return GreaterOrEqual;
 
-				/* arithmetic */
+			/* arithmetic */
 			case "+":
 				return Add;
 			case "-":
@@ -56,8 +56,12 @@ namespace Cygni.Lexical.Tokens
 				return Mod;
 			case "^":
 				return Pow;
+
+
 			case "=":
 				return Assign;
+			case "=>":
+				return GoesTo;
 
 			/* keywords */
 			case "if":
@@ -82,6 +86,8 @@ namespace Cygni.Lexical.Tokens
 				return Return;
 			case "def":
 				return Define;
+			case "lambda":
+				return Lambda;
 			case "class":
 				return Class;
 			case "local":
@@ -130,9 +136,10 @@ namespace Cygni.Lexical.Tokens
 
 		public static readonly Word
 			And = new Word ("and", Tag.And), Or = new Word ("or", Tag.Or),
-			Not = new Word("not",Tag.Not),
+			Not = new Word ("not", Tag.Not),
 			Eq = new Word ("==", Tag.Equal), Neq = new Word ("!=", Tag.NotEqual),
 			Assign = new Word ("=", Tag.Assign),
+			GoesTo = new Word ("=>", Tag.GoesTo),
 			Less = new Word ("<", Tag.Less), Greater = new Word (">", Tag.Greater),
 			LessOrEqual = new Word ("<=", Tag.LessOrEqual), GreaterOrEqual = new Word (">=", Tag.GreaterOrEqual),
 			True = new Word ("true", Tag.True), False = new Word ("false", Tag.False),
@@ -147,6 +154,7 @@ namespace Cygni.Lexical.Tokens
 			For = new Word ("for", Tag.For),
 			ForEach = new Word ("foreach", Tag.ForEach),
 			Define = new Word ("def", Tag.Define),
+			Lambda = new Word ("lambda", Tag.Lambda),
 			Class = new Word ("class", Tag.Class),
 			Local = new Word ("local", Tag.Local),
 			Global = new Word ("global", Tag.Global),

@@ -112,6 +112,9 @@
     <Compile Include="AST\Optimizers\Location.cs" />
     <Compile Include="AST\Optimizers\Symbols.cs" />
     <Compile Include="AST\LocalEx.cs" />
+    <Compile Include="DataTypes\Closure.cs" />
+    <Compile Include="AST\DefClosureEx.cs" />
+    <Compile Include="Libraries\FunctionalProgrammingLibrary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
