@@ -20,7 +20,7 @@ namespace Cygni.AST.Scopes
 
 		DynValue Put (int nest, int index, DynValue value);
 
-		bool HasName (string name);
+		//bool HasName (string name);
 
 		bool TryGetValue (string name, out DynValue value);
 

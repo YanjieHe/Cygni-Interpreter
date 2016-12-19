@@ -7,7 +7,6 @@ namespace Cygni.DataTypes.Interfaces
 	public interface IFunction
 	{
 		DynValue DynInvoke (DynValue[] args);
-		// Func<DynValue[],DynValue> AsDelegate();
 		DynValue DynEval (ASTNode[] args, IScope scope);
 	}
 }

@@ -22,7 +22,7 @@ namespace Cygni.AST
 			return new NameEx(name);
 		}
 
-		public static ASTNode Parameter(string name)
+		public static NameEx Parameter(string name)
 		{
 			return new NameEx(name);
 		}
@@ -170,7 +170,7 @@ namespace Cygni.AST
 		{
 			return new ForEachEx(body, iterator, collection);
 		}
-		public static ASTNode Define(string name, string[] parameters, BlockEx body)
+		public static ASTNode Define(string name, NameEx[] parameters, BlockEx body)
 		{
 			return new DefFuncEx(name, parameters, body);
 		}

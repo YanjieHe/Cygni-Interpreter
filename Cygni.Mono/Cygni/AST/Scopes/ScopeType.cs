@@ -14,6 +14,7 @@ namespace Cygni.AST.Scopes
 		Nested,
 		Array,
 		ResizableArray,
+		Class,
 	}
 }
 

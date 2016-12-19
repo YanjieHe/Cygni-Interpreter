@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
+using Cygni.Errors;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
 using Cygni.AST.Optimizers;
@@ -17,17 +18,20 @@ namespace Cygni.AST
 	{
 		readonly string name;
 		readonly BlockEx body;
-		readonly string[] parameters;
+		readonly NameEx[] parameters;
+		int size;
 
 		public string Name{ get { return this.name; } }
 
 		public BlockEx Body{ get { return body; } }
 
-		public string[] Parameters{ get { return parameters; } }
+		public NameEx[] Parameters{ get { return parameters; } }
+
+		internal int Size{ get { return this.size; } set { this.size = value; } }
 
 		public override NodeType type { get { return NodeType.DefFunc; } }
 
-		public DefFuncEx (string name, string[] parameters, BlockEx body)
+		public DefFuncEx (string name, NameEx[] parameters, BlockEx body)
 		{
 			this.name = name;
 			this.parameters = parameters;
@@ -36,28 +40,32 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			if (!scope.HasName (name)) {
-				scope.Put (name, DynValue.Nil);
-			}
-			if (scope.type != ScopeType.ResizableArray) {
-				throw new Exception ("Scope Error");
-			} else {
+			if (scope.type == ScopeType.ResizableArray) {
 				ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
-				Symbols symbols = new Symbols (GlobalScope.GetSymbols ());
+				if (GlobalScope.HasName (name)) {
+					GlobalScope.Put (name, DynValue.Nil);
+				}
+				Symbols symbols = GlobalScope.GetSymbols ();
 				LookUpVisitor visitor = new LookUpVisitor (symbols);
 				this.Accept (visitor);
-				ArrayScope arrayScope = new ArrayScope (new DynValue[symbols.Count], scope);
 
-				DynValue func = DynValue.FromFunction (
-					                new Function (name, parameters.Length, body, arrayScope));
+				ArrayScope arrayScope = new ArrayScope (this.name, new DynValue[this.size], scope);
+				DynValue func = new Function (parameters.Length, body, arrayScope);
 				return scope.Put (name, func);
+
+			} else if (scope.type == ScopeType.Class) {
+				ArrayScope arrayScope = new ArrayScope (this.name, new DynValue[this.size], scope);
+				DynValue func = new Function (parameters.Length, body, arrayScope);
+
+				return scope.Put (name, func);
+			} else {
+				throw new RuntimeException("Function '{0}' can only be declared in global scope or in a class.", name);
 			}
-		
 		}
 
 		public override string ToString ()
 		{
-			return string.Concat (" def ", name, "(", string.Join (", ", parameters), ")", body);
+			return string.Concat (" def ", name, "(", string.Join<NameEx> (", ", parameters), ")", body);
 		}
 
 		internal override void Accept (ASTVisitor visitor)

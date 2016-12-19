@@ -62,7 +62,7 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Struct, value);
 		}
 
-		public static implicit operator DynValue (ClassInfo value)
+		public static implicit operator DynValue (DynObject value)
 		{
 			return new DynValue (DataType.Class, value);
 		}
@@ -134,7 +134,7 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Struct, value);
 		}
 
-		public static DynValue FromClass (ClassInfo value)
+		public static DynValue FromClass (DynObject value)
 		{
 			return new DynValue (DataType.Class, value);
 		}
@@ -298,7 +298,7 @@ namespace Cygni.DataTypes
 			}
 		}
 
-		public static bool operator == (DynValue lhs, DynValue rhs)
+		/*public static bool operator == (DynValue lhs, DynValue rhs)
 		{
 			return lhs.Equals (rhs);
 		}
@@ -306,7 +306,7 @@ namespace Cygni.DataTypes
 		public static bool operator != (DynValue lhs, DynValue rhs)
 		{
 			return !(lhs == rhs);
-		}
+		}*/
 
 		#endregion
 
@@ -332,7 +332,6 @@ namespace Cygni.DataTypes
 				}
 			} else {
 				var collection = value as IEnumerable<DynValue>;
-				throw new exce
 				if (collection == null)
 					throw new RuntimeException ("Target is not enumerable");
 				foreach (var item in collection) {

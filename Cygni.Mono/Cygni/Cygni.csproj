@@ -115,6 +115,9 @@
     <Compile Include="DataTypes\Closure.cs" />
     <Compile Include="AST\DefClosureEx.cs" />
     <Compile Include="Libraries\FunctionalProgrammingLibrary.cs" />
+    <Compile Include="DataTypes\DynObject.cs" />
+    <Compile Include="AST\Scopes\ClassScope.cs" />
+    <Compile Include="AST\Visitors\ClassLookUpVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

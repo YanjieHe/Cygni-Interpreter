@@ -15,6 +15,7 @@ namespace Cygni.AST.Scopes
 		private int count;
 		private DynValue[] values;
 		private readonly Dictionary<string, int> table;
+
 		public ScopeType type { get { return ScopeType.ResizableArray; } }
 
 		public IScope Parent { get { return null; } }
@@ -36,7 +37,8 @@ namespace Cygni.AST.Scopes
 			}
 		}
 
-		internal Symbols GetSymbols(){
+		internal Symbols GetSymbols ()
+		{
 			Symbols symbols = new Symbols ();
 			foreach (var item in table) {
 				symbols.AddSymbol (item.Key, item.Value);
@@ -110,7 +112,8 @@ namespace Cygni.AST.Scopes
 			}
 		}
 
-		public void BuiltIn(){
+		public void BuiltIn ()
+		{
 			BuiltInLibrary.BuiltIn (this);
 		}
 	}

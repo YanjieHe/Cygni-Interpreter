@@ -8,6 +8,7 @@ using Cygni.DataTypes;
 using Cygni.Extensions;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.AST.Optimizers;
 
 namespace Cygni.AST
 {
@@ -18,30 +19,46 @@ namespace Cygni.AST
 	{
 		string name;
 		BlockEx body;
+
 		public BlockEx Body{ get { return body; } }
+
 		string parentName;
+		Symbols fields;
+
+		internal Symbols Fields { get { return this.fields; } set { this.fields = value; } }
+
 		public  override NodeType type { get { return NodeType.DefClass; } }
-		
-		public DefClassEx(string name, BlockEx body, string parentName)
+
+		public DefClassEx (string name, BlockEx body, string parentName)
 		{
 			this.name = name;
 			this.body = body;
 			this.parentName = parentName;
 		}
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
-			var newScope = new NestedScope(scope);
-			body.Eval(newScope);
-			ClassInfo parentClass = null;
-			if (parentName != null) {
-				DynValue value = scope.Get (parentName);
-				if (value.type != DataType.Class)
-					throw  RuntimeException.NotDefined (parentName);
-				parentClass = value.As<ClassInfo> ();
+			if (scope.type != ScopeType.ResizableArray) {
+				throw new Exception ("Scope Error");
 			}
-			var constructor = DynValue.FromClass(new ClassInfo(name: name,classScope: newScope,body: body,parent: parentClass, IsInstance: false));
-				return scope.Put(name, constructor);
+			ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
+			if (GlobalScope.HasName (name)) {
+				GlobalScope.Put (name, DynValue.Nil);
+			}
+			Symbols symbols = GlobalScope.GetSymbols ();
+			ClassLookUpVisitor visitor = new ClassLookUpVisitor (symbols);
+			this.Accept (visitor);
+			DynValue[] values = new DynValue[this.fields.Count];
+			for (int i = 0; i < values.Length; i++) {
+				values [i] = DynValue.Nil;
+			}
+			ClassScope classScope = new ClassScope (name, 
+				                        this.fields.GetTable (), values, scope);
+			this.body.Eval (classScope);
+			DynValue newClass = new DynObject (classScope, false, null);
+			return GlobalScope.Put (name, newClass);
 		}
+
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);

@@ -8,7 +8,7 @@ namespace Cygni.AST.Visitors
 {
 	internal class LookUpVisitor:ASTVisitor
 	{
-		Symbols symbols;
+		protected Symbols symbols;
 
 		internal LookUpVisitor (Symbols symbols)
 		{
@@ -114,10 +114,15 @@ namespace Cygni.AST.Visitors
 
 		internal override void Visit (DefFuncEx defFuncEx)
 		{
+			Symbols outerSymbols = this.symbols;
+			Symbols newSymbols = new Symbols(this.symbols);
+			this.symbols = newSymbols;
 			for (int i = 0; i < defFuncEx.Parameters.Length; i++) {
-				symbols.PutLocal (defFuncEx.Parameters [i]);
+				symbols.PutLocal (defFuncEx.Parameters [i].Name);
 			}
 			defFuncEx.Body.Accept (this);
+			defFuncEx.Size = this.symbols.Count;
+			this.symbols = outerSymbols;
 		}
 
 		internal override void Visit (DefClosureEx defClosureEx)

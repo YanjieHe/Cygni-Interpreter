@@ -20,6 +20,11 @@ namespace Cygni.AST.Optimizers
 			this.table = new Dictionary<string, int> ();
 		}
 
+		public Dictionary<string,int> GetTable ()
+		{
+			return this.table;
+		}
+
 		public Location Get (string name, int nest = 0)
 		{
 			int index;
@@ -53,6 +58,7 @@ namespace Cygni.AST.Optimizers
 				return loc;
 			}
 		}
+
 		public Location PutLocal (string name)
 		{
 			int index;

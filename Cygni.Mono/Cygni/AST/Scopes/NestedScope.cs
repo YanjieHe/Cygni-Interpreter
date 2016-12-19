@@ -11,12 +11,15 @@ namespace Cygni.AST.Scopes
 	/// <summary>
 	/// Description of NestedScope.
 	/// </summary>
-	public sealed class NestedScope: BasicScope
+	public sealed class NestedScope      : BasicScope
 	{
 		public new ScopeType type { get { return ScopeType.Nested; } }
+
 		IScope parent;
 
 		public override IScope Parent{ get { return parent; } }
+
+		//private readonly Dictionary<string,DynValue> envTable;
 
 		public NestedScope (IScope parent = null) : base ()
 		{
@@ -42,9 +45,11 @@ namespace Cygni.AST.Scopes
 			return parent.TryGetValue (name, out value);
 		}
 
-		public void SetParent(IScope scope){
+		public void SetParent (IScope scope)
+		{
 			this.parent = scope;
 		}
+
 		/*public NestedScope Clone ()
 		{
 			var newScope = new NestedScope (this.parent);
@@ -60,7 +65,8 @@ namespace Cygni.AST.Scopes
 			}
 			return newScope;
 		}*/
-		public void Append(NestedScope scope) {
+		public void Append (NestedScope scope)
+		{
 			/*foreach (var variable in scope.envTable) {
 				DynValue value = variable.Value;
 				if (value.type == DataType.Function) {
@@ -72,10 +78,12 @@ namespace Cygni.AST.Scopes
 					this.envTable [variable.Key] = variable.Value;
 			}*/
 		}
-		public IEnumerable<string> Names(){
+
+		public IEnumerable<string> Names ()
+		{
 			foreach (var name in envTable.Keys)
 				yield return name;
 		}
-			
+	
 	}
 }

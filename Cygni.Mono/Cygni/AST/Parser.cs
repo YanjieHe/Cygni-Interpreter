@@ -190,10 +190,10 @@ namespace Cygni.AST
 			string name = look.ToString ();
 			MatchOrThrows (Tag.ID, "function definition requires a function name"); 
 			MatchOrThrows (Tag.LeftParenthesis, "function definition requires '(' after function name"); 
-			var list = new List<string> ();
+			var list = new List<NameEx> ();
 			while (look.tag != Tag.RightParenthesis) {
 				if (look.tag == Tag.ID) {
-					list.Add (look.ToString ());
+					list.Add (ASTNode.Parameter(look.ToString ()));
 					Move ();
 					if (look.tag == Tag.Comma)
 						Move ();
@@ -206,7 +206,9 @@ namespace Cygni.AST
 			}
 			Move ();
 			var body = Block ();
-			return ASTNode.Define (name, list.ToArray (), body);
+			NameEx[] parameters = new NameEx[list.Count];
+			list.CopyTo(parameters);
+			return ASTNode.Define (name, parameters, body);
 		}
 
 		public ASTNode DefClosure ()
@@ -524,8 +526,9 @@ namespace Cygni.AST
 							throw SyntaxException.Expecting (lexer.LineNumber, ")");
 						}
 					}
-					Move ();
+					Match (Tag.RightParenthesis);
 					x = ASTNode.Invoke (x, list);
+
 				} else if (tok.tag == Tag.LeftBracket) {
 					var indexes = new List<ASTNode> ();
 					while (look.tag != Tag.RightBracket) {
@@ -538,12 +541,12 @@ namespace Cygni.AST
 							throw SyntaxException.Expecting (lexer.LineNumber, "]");
 						}
 					}
-					Move ();
+					Match (Tag.RightBracket);
 					x = ASTNode.IndexAccess (x, indexes);
+
 				} else { /* if (tok.tag == Tag.Dot) */
 					var fieldName = look.ToString ();
 					MatchOrThrows (Tag.ID, "Missing field");
-					// Match (Tag.ID);
 					x = ASTNode.Dot (x, fieldName);
 				}
 

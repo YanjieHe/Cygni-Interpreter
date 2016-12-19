@@ -14,11 +14,12 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of ClassInfo.
 	/// </summary>
-	public sealed class ClassInfo: 
-	IComputable,IEnumerable<DynValue>, IEnumerator<DynValue>,
-	IEquatable<ClassInfo>, IComparable<DynValue>, IDot,IFunction
+	public sealed class ClassInfo
+	//IComputable,IEnumerable<DynValue>, IEnumerator<DynValue>,
+	//IEquatable<ClassInfo>, IComparable<DynValue>, IDot,IFunction
 	{
-		readonly string name;
+		
+		/*	readonly string name;
 		readonly BlockEx body;
 		readonly NestedScope classScope;
 		readonly ClassInfo parent;
@@ -126,26 +127,26 @@ namespace Cygni.DataTypes
 		{
 			NestedScope newScope = new NestedScope (classScope.Parent);
 			if (this.parent != null) { /* Does this class inherit from a parent class?  */
-				newScope.Append (parent.classScope);
+		/*				newScope.Append (parent.classScope);
 			}
 			newScope.Append (this.classScope);/* Initialize the class */
-			ClassInfo newClass = new ClassInfo (name, newScope, body, parent, true);
+		/*			ClassInfo newClass = new ClassInfo (name, newScope, body, parent, true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
-			if (newScope.HasName ("__init")) /* initialize */
-				newScope.Get ("__init").As<Function> ().DynInvoke (args);
+		/*			if (newScope.HasName ("__init")) /* initialize */
+		/*				newScope.Get ("__init").As<Function> ().DynInvoke (args);
 			return DynValue.FromClass (newClass);
 		}
 
 		public DynValue DynEval (ASTNode[] args, IScope scope){
 			NestedScope newScope = new NestedScope (classScope.Parent);
 			if (this.parent != null) { /* Does this class inherit from a parent class?  */
-				newScope.Append (parent.classScope);
+		/*				newScope.Append (parent.classScope);
 			}
 			newScope.Append (this.classScope);/* Initialize the class */
-			ClassInfo newClass = new ClassInfo (name, newScope, body, parent, true);
+		/*		ClassInfo newClass = new ClassInfo (name, newScope, body, parent, true);
 			newScope.Put ("this", DynValue.FromClass (newClass)); /* pointer to self */
-			if (newScope.HasName ("__init")) /* initialize */
-				newScope.Get ("__init").As<Function> ().DynEval (args, scope);
+		/*		if (newScope.HasName ("__init")) /* initialize */
+		/*				newScope.Get ("__init").As<Function> ().DynEval (args, scope);
 			return DynValue.FromClass (newClass);
 		}
 		public Func<DynValue[],DynValue> AsDelegate ()
@@ -204,15 +205,6 @@ namespace Cygni.DataTypes
 			yield return this.AsEnumerable ();
 		}
 
-	/*	public ClassInfo Update (IScope scope)
-		{
-			var newScope = classScope.Clone ();
-			newScope.SetParent (scope);
-			var newClass = new ClassInfo (
-				               name: name, classScope: newScope, body: null, parent: parent, IsInstance: true);
-			return newClass;
-		}*/
-
 		public void Dispose ()
 		{
 			GC.SuppressFinalize (this);
@@ -254,7 +246,7 @@ namespace Cygni.DataTypes
 			}
 			throw RuntimeException.FieldNotExist (name, "__reset");
 		}
-
+*/
 
 	}
 }
