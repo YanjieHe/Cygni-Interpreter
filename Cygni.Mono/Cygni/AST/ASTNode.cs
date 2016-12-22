@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+
 namespace Cygni.AST
 {
 	/// <summary>
@@ -13,205 +14,247 @@ namespace Cygni.AST
 	/// </summary>
 	public abstract class ASTNode
 	{
-		public abstract DynValue Eval(IScope scope);
+		public abstract DynValue Eval (IScope scope);
+
 		public abstract NodeType type { get; }
+
 		internal abstract void Accept (ASTVisitor visitor);
 
-		public static NameEx Variable(string name)
+		public static NameEx Variable (string name)
 		{
-			return new NameEx(name);
+			return new NameEx (name);
 		}
 
-		public static NameEx Parameter(string name)
+		public static NameEx Parameter (string name)
 		{
-			return new NameEx(name);
+			return new NameEx (name);
 		}
 
-		public static ASTNode Assign(ASTNode left, ASTNode right)
+		public static ASTNode Assign (ASTNode left, ASTNode right)
 		{
-			return new AssignEx(left, right);
+			return new AssignEx (left, right);
 		}
 
-		public static ASTNode Local(NameEx[] names, ASTNode[] values)
+		public static ASTNode Local (NameEx[] names, ASTNode[] values)
 		{
-			return new LocalEx(names, values);
+			return new LocalEx (names, values);
 		}
 
-		public static ASTNode Global(string[] names, ASTNode[] values)
+		public static ASTNode Unpack (ASTNode[] items, ASTNode tuple)
 		{
-			return new GlobalEx(names, values);
+			return new UnpackEx (items, tuple);
 		}
 
-		public static ASTNode Set(ASTNode[] targets, ASTNode[] values)
+		public static ASTNode Or (ASTNode left, ASTNode right)
 		{
-			return new SetEx(targets, values);
+			return new BinaryEx (BinaryOp.Or, left, right);
 		}
 
-		public static ASTNode Unpack(ASTNode[] items, ASTNode tuple)
+		public static ASTNode And (ASTNode left, ASTNode right)
 		{
-			return new UnpackEx(items, tuple);
-		}
-		public static ASTNode Or(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Or, left, right);
-		}
-		public static ASTNode And(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.And, left, right);
+			return new BinaryEx  (  BinaryOp.And, left, right);
 		}
 
-		public static ASTNode Equal(ASTNode left, ASTNode right)
+		public static ASTNode Equal (ASTNode left, ASTNode right)
 		{
-			return new BinaryEx(BinaryOp.Equal, left, right);
-		}
-		public static ASTNode NotEqual(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.NotEqual, left, right);
+			return new BinaryEx (BinaryOp.Equal, left, right);
 		}
 
-		public static ASTNode Less(ASTNode left, ASTNode right)
+		public static ASTNode NotEqual (ASTNode left, ASTNode right)
 		{
-			return new BinaryEx(BinaryOp.Less, left, right);
-		}
-		public static ASTNode Greater(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Greater, left, right);
-		}
-		public static ASTNode LessOrEqual(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.LessOrEqual, left, right);
-		}
-		public static ASTNode GreaterOrEqual(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.GreaterOrEqual, left, right);
+			return new BinaryEx (BinaryOp.NotEqual, left, right);
 		}
 
-		public static ASTNode Add(ASTNode left, ASTNode right)
+		public static ASTNode Less (ASTNode left, ASTNode right)
 		{
-			return new BinaryEx(BinaryOp.Add, left, right);
-		}
-		public static ASTNode Subtract(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Sub, left, right);
-		}
-		public static ASTNode Multiply(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Mul, left, right);
-		}
-		public static ASTNode Divide(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Div, left, right);
-		}
-		public static ASTNode Modulo(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Mod, left, right);
-		}
-		public static ASTNode Power(ASTNode left, ASTNode right)
-		{
-			return new BinaryEx(BinaryOp.Pow, left, right);
+			return new BinaryEx (BinaryOp.Less, left, right);
 		}
 
-		public static ASTNode UnaryPlus(ASTNode value)
+		public static ASTNode Greater (ASTNode left, ASTNode right)
 		{
-			return new UnaryEx(UnaryOp.Plus, value);
-		}
-		public static ASTNode UnaryMinus(ASTNode value)
-		{
-			return new UnaryEx(UnaryOp.Minus, value);
-		}
-		public static ASTNode Negate(ASTNode value)
-		{
-			return new UnaryEx(UnaryOp.Not, value);
+			return new BinaryEx (BinaryOp.Greater, left, right);
 		}
 
-		public static ASTNode Number(double value)
+		public static ASTNode LessOrEqual (ASTNode left, ASTNode right)
 		{
-			return new Constant(DynValue.FromNumber(value));
+			return new BinaryEx (BinaryOp.LessOrEqual, left, right);
 		}
-		public static ASTNode Boolean(bool value)
+
+		public static ASTNode GreaterOrEqual (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.GreaterOrEqual, left, right);
+		}
+
+		public static ASTNode Concatenate (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Concatenate, left, right);
+		}
+
+		public static ASTNode Add (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Add, left, right);
+		}
+
+		public static ASTNode Subtract (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Sub, left, right);
+		}
+
+		public static ASTNode Multiply (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Mul, left, right);
+		}
+
+		public static ASTNode Divide (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Div, left, right);
+		}
+
+		public static ASTNode IntDivide (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.IntDiv, left, right);
+		}
+
+		public static ASTNode Modulo (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Mod, left, right);
+		}
+
+		public static ASTNode Power (ASTNode left, ASTNode right)
+		{
+			return new BinaryEx (BinaryOp.Pow, left, right);
+		}
+
+		public static ASTNode UnaryPlus (ASTNode value)
+		{
+			return new UnaryEx (UnaryOp.Plus, value);
+		}
+
+		public static ASTNode UnaryMinus (ASTNode value)
+		{
+			return new UnaryEx (UnaryOp.Minus, value);
+		}
+
+		public static ASTNode Negate (ASTNode value)
+		{
+			return new UnaryEx (UnaryOp.Not, value);
+		}
+
+		public static ASTNode Integer (long value)
+		{
+			return new Constant (DynValue.FromInteger (value));
+		}
+
+		public static ASTNode Number (double value)
+		{
+			return new Constant (DynValue.FromNumber (value));
+		}
+
+		public static ASTNode Boolean (bool value)
 		{
 			return value ? True : False;
 		}
-		public static ASTNode String(string value)
+
+		public static ASTNode String (string value)
 		{
-			return new Constant(DynValue.FromString(value));
+			return new Constant (DynValue.FromString (value));
 		}
-		public static ASTNode Constant(DynValue value){
+
+		public static ASTNode Constant (DynValue value)
+		{
 			return new Constant (value);
 		}
-		public static readonly ASTNode True = new Constant(DynValue.True);
-		public static readonly ASTNode False = new Constant(DynValue.False);
 
-		public static BlockEx Block(ICollection<ASTNode> expressions)
+		public static readonly ASTNode True = new Constant (DynValue.True);
+		public static readonly ASTNode False = new Constant (DynValue.False);
+
+		public static BlockEx Block (ICollection<ASTNode> expressions)
 		{
-			return new BlockEx(expressions);
+			return new BlockEx (expressions);
 		}
-		public static ASTNode IfThen(ASTNode condition, ASTNode  IfTrue)
+
+		public static ASTNode IfThen (ASTNode condition, ASTNode  IfTrue)
 		{
-			return new IfEx(condition, IfTrue, null);
+			return new IfEx (condition, IfTrue, null);
 		}
-		public static ASTNode IfThenElse(ASTNode condition, ASTNode  IfTrue, ASTNode  IfFalse)
+
+		public static ASTNode IfThenElse (ASTNode condition, ASTNode  IfTrue, ASTNode  IfFalse)
 		{
-			return new IfEx(condition, IfTrue, IfFalse);
+			return new IfEx (condition, IfTrue, IfFalse);
 		}
-		public static ASTNode While(ASTNode condition, BlockEx  body)
+
+		public static ASTNode While (ASTNode condition, BlockEx  body)
 		{
-			return new WhileEx(condition, body);
+			return new WhileEx (condition, body);
 		}
-		public static ASTNode For(BlockEx body, string iterator, ASTNode start, ASTNode end)
+
+		public static ASTNode For (BlockEx body, string iterator, ASTNode start, ASTNode end)
 		{
-			return new ForEx(body, iterator, start, end, null);
+			return new ForEx (body, iterator, start, end, null);
 		}
-		public static ASTNode For(BlockEx body, string iterator, ASTNode start, ASTNode end, ASTNode step)
+
+		public static ASTNode For (BlockEx body, string iterator, ASTNode start, ASTNode end, ASTNode step)
 		{
-			return new ForEx(body, iterator, start, end, step);
+			return new ForEx (body, iterator, start, end, step);
 		}
-		public static ASTNode ForEach(BlockEx body, string iterator, ASTNode collection)
+
+		public static ASTNode ForEach (BlockEx body, string iterator, ASTNode collection)
 		{
-			return new ForEachEx(body, iterator, collection);
+			return new ForEachEx (body, iterator, collection);
 		}
-		public static ASTNode Define(string name, NameEx[] parameters, BlockEx body)
+
+		public static ASTNode Define (string name, NameEx[] parameters, BlockEx body)
 		{
-			return new DefFuncEx(name, parameters, body);
+			return new DefFuncEx (name, parameters, body);
 		}
-		public static ASTNode DefineClosure(NameEx[] parameters, ASTNode body)
+
+		public static ASTNode DefineClosure (NameEx[] parameters, ASTNode body)
 		{
-			return new DefClosureEx(parameters, body);
+			return new DefClosureEx (parameters, body);
 		}
-		public static ASTNode Class(string name, BlockEx body, string parent = null)
+
+		public static ASTNode DefineClass (string name, BlockEx body, NameEx parent = null)
 		{
-			return new DefClassEx(name, body, parent);
+			return new DefClassEx (name, body, parent);
 		}
-		public static ASTNode ListInit(ASTNode[] initializers)
+
+		public static ASTNode ListInit (ASTNode[] initializers)
 		{
-			return new ListInitEx(initializers);
+			return new ListInitEx (initializers);
 		}
-		public static ASTNode DictionaryInit(ASTNode[] initializers){
+
+		public static ASTNode DictionaryInit (ASTNode[] initializers)
+		{
 			return new DictionaryInitEx (initializers);
 		}
-		public static ASTNode IndexAccess(ASTNode collection, List<ASTNode>indexes)
+
+		public static ASTNode IndexAccess (ASTNode collection, List<ASTNode>indexes)
 		{
-			if (indexes.Count == 1){
-				return new SingleIndexEx(collection, indexes[0]);
+			if (indexes.Count == 1) {
+				return new SingleIndexEx (collection, indexes [0]);
 			} else {
-				return new IndexEx(collection, indexes);
+				return new IndexEx (collection, indexes);
 			}
 		}
-		public static ASTNode Invoke(ASTNode function, ICollection<ASTNode>arguments)
+
+		public static ASTNode Invoke (ASTNode function, ICollection<ASTNode>arguments)
 		{
-			return new InvokeEx(function, arguments);
-		}
-		public static readonly ASTNode Break = new Constant(DynValue.Break);
-		public static readonly ASTNode Continue = new Constant(DynValue.Continue);
-		public static ASTNode Return(ASTNode value)
-		{
-			return new ReturnEx(value);
+			return new InvokeEx (function, arguments);
 		}
 
-		public static readonly ASTNode Nil = new Constant(DynValue.Nil);
-		public static ASTNode Dot(ASTNode obj, string fieldName)
+		public static readonly ASTNode Break = new Constant (DynValue.Break);
+		public static readonly ASTNode Continue = new Constant (DynValue.Continue);
+
+		public static ASTNode Return (ASTNode value)
 		{
-			return new DotEx(obj, fieldName);
+			return new ReturnEx (value);
+		}
+
+		public static readonly ASTNode Nil = new Constant (DynValue.Nil);
+
+		public static ASTNode Dot (ASTNode obj, string fieldName)
+		{
+			return new DotEx (obj, fieldName);
 		}
 
 	}

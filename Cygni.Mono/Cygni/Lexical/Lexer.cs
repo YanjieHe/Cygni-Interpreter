@@ -14,9 +14,9 @@ namespace Cygni.Lexical
 	/// </summary>
 	public class Lexer
 	{
-		readonly TextReader reader;
-		int lineNumber;
-		readonly StringBuilder s;
+		private readonly TextReader reader;
+		private int lineNumber;
+		private readonly StringBuilder s;
 
 		public int LineNumber{ get { return lineNumber; } }
 
@@ -39,6 +39,15 @@ namespace Cygni.Lexical
 			return reader.Read ();
 		}
 
+		bool IsEOF {
+			get { return Peek () == (-1); }
+		}
+
+		LexicalException Error (string message)
+		{
+			return new LexicalException ("line {0}: {1}.", lineNumber, message);
+		}
+
 		public LinkedList<Token> ReadWords ()
 		{
 			var tokenlist = new LinkedList<Token> ();
@@ -53,123 +62,113 @@ namespace Cygni.Lexical
 
 		public Token Scan ()
 		{
-			if (s.Length > 0){/* Reset the StringBuilder */
+			if (s.Length > 0) {/* Reset the StringBuilder */
 				s.Clear ();
 			}
-			
-			while (IsSpace (Peek ())){/* Skip the white spaces */
-				if(GetChar () == '\n')
+
+			while (IsSpace (Peek ())) {/* Skip the white spaces */
+				if (GetChar () == '\n')
 					lineNumber++;
 			}
-			
+
 			if (Peek () == '#') { /* start of comments */
 				while (Peek () != -1 && Peek () != '\n')
 					GetChar ();
 			}
-				
-				
+
+
 			int ch = Peek ();
-			
+
 			if (ch < 0)
 				return Token.EOF;//End of text
-			
+
 			if (ch == '@') {
-				GetChar ();
-				if (Peek () == '"' || Peek () == '\'') {
-					return ReadUnescapedStr ((char)GetChar ());
-				}
-				throw new LexicalException ("line {0}: Unexpected '@'", lineNumber);
-			}
-			
-			if (ch == ':') {
-				GetChar ();
-				return Token.OfIdentifier (":");
-			}
-			
-			if (ch == '"' || ch == '\'') /* start of string */
-				return ReadStr ((char)GetChar ());
-				
-			if (IsDigit (ch)) {/* start of number */
-				ReadNumber ();
-				
-				if (Peek () == 'E' || Peek () == 'e') {/* Scientific notation */
-					
-					s.Append ((char)GetChar ());
-					if (Peek () == '+' || Peek () == '-')
-						s.Append ((char)GetChar ());
-					ReadInteger ();/* Read exponent */
-				}
-				
-				double number;
-				if (double.TryParse (s.ToString (), out number))
-					return Token.OfNumber (s.ToString ());
-				throw new LexicalException ("line {0}: Illegal number input '{1}'", lineNumber, s);
-			}
-				
-			if (IsLetterOrUnderline (ch)) {/* Start of identifier */
-				do {
-					s.Append ((char)GetChar ());/* Read Id */
-					ch = Peek ();
-				} while (IsLetterOrUnderline (ch) || IsDigit (ch));
-				return Token.OfIdentifier ((s.ToString ()));
-			}
-				
-			if (ch == '!') {
-				GetChar ();
-				if (Peek () == '=') {
-					GetChar ();
-					return Token.OfIdentifier ("!=");
-				} else
-					throw new LexicalException ("line {0}: Unexpected '!', missing '='", lineNumber);
-			}
-			switch (ch) {
-			case '=':
-				{
-					GetChar ();
-					if (Peek () == '=') {
-						GetChar ();
-						return Word.FromString ("==");
-					} else if (Peek () == '>') {
-						GetChar ();
-						return Word.FromString ("=>");
-					} else {
-						return Word.FromString ("=");
-					}
-				}
-			case '>':
-				return ReadCompare ('>');
-			case '<':
-				return ReadCompare ('<');
-			/* arithmetic operators */
-			case '+':
-			case '-':
-			case '*':
-			case '/':
-			case '%':
-			case '^':
+				return ParseUnescapedString ();
+			} else if (ch == '"' || ch == '\'') { /* start of string */
+				return ReadString ((char)GetChar ());
+			} else if (IsDigit (ch)) {/* start of integer or number */
+				return ParseInteger ();
+			} else if (IsLetterOrUnderline (ch)) {/* Start of identifier */
+				return ParseIdentifier ();
+			} else {
 
-			case '(':
-			case ')':
-			case '[':
-			case ']':
-			case '{':
-			case '}':
-
-			case ',':
-			case ';':
-			case '.':
-			case ':':
-				return Token.OfIdentifier (char.ToString (((char)GetChar ())));
-			case '\n':
-				lineNumber++;
 				GetChar ();
-				return Token.OfIdentifier ("\\n");
-			default:
-				throw new LexicalException ("line {0}: Unrecognizable token '{1}'", lineNumber, (char)ch);
+				switch (ch) {
+					case '!':
+						if (Peek () == '=') {
+							GetChar ();
+							return Word.NotEqual;
+						} else
+							throw Error("Unexpected '!', missing '='.");
+					case '=':
+						if (Peek () == '=') {
+							GetChar ();
+							return Word.Equal;
+						} else if (Peek () == '>') {
+							GetChar ();
+							return Word.GoesTo;
+						} else {
+							return Word.Assign;
+						}
+					case '.':
+						if (Peek () == '.') {
+							GetChar();
+							return Word.Concatenate;
+						} else {
+							return Word.Dot;
+						}
+					case '>':
+						return ParseGreater ();
+					case '<':
+						return ParseLess ();
+						/* arithmetic operators */
+					case '+':
+						return Word.Add;
+					case '-':
+						return Word.Sub;
+					case '*':
+						return Word.Mul;
+					case '/':
+						if (Peek() == '/') {
+							GetChar();
+							return Word.IntDiv;
+						} else {
+							return Word.Div;
+						}
+					case '%':
+						return Word.Mod;
+					case '^':
+						return Word.Pow;
+
+					case '(':
+						return Word.LP;
+					case ')':
+						return Word.RP;
+					case '[':
+						return Word.LBracket;
+					case ']':
+						return Word.RBracket;
+					case '{':
+						return Word.LBrace;
+					case '}':
+						return Word.RBrace;
+
+					case ',':
+						return Word.Comma;
+					case ';':
+						return Word.Semicolon;
+					case ':':
+						return Word.Colon;
+					case '\n':
+						lineNumber++;
+						return Word.EOL;
+					default:
+						throw Error(string.Format("Unrecognizable token '{1}'.", (char)ch));
+				}
 			}
 		}
 
-		Token ReadStr (char start_ch)
+		Token ReadString (char start_ch)
 		{
 			while (Peek () != -1) {
 				if (Peek () == start_ch) {
@@ -178,58 +177,147 @@ namespace Cygni.Lexical
 						return Token.OfString (string.Empty);/* "" or '' */
 					if (s [s.Length - 1] != '\\')
 						return Token.OfString (Re.Unescape (s.ToString ()));/* \" or \' */
-					
+
 					s.Append (start_ch);
 				} else
 					s.Append ((char)GetChar ());
 			}
-			throw new LexicalException ("line {0}: Missing closure for string declaration", lineNumber);
+			throw Error("Missing closure for string declaration");
 		}
 
-		Token ReadUnescapedStr (char start_ch)
+		Token ParseUnescapedString ()
 		{
-			while (Peek () != -1) {
-				if (Peek () == start_ch) {
-					GetChar ();
+			GetChar();
+			if (Peek () == '"' || Peek () == '\'') {
+				char start_ch = (char)Peek ();
+				GetChar ();
+				while (!IsEOF) {
 					if (Peek () == start_ch) {
 						GetChar ();
-						s.Append (start_ch);/* "" and '' */
-					} else
-						return Token.OfString (s.ToString ());
-					
-				} else
-					s.Append ((char)GetChar ());
+						if (Peek () == start_ch) {
+							GetChar ();
+							s.Append (start_ch);/* "" and '' */
+						} else {
+							return Token.OfString (s.ToString ());
+						}
+					} else {
+						s.Append ((char)GetChar ());
+					}
+				}
+				throw Error("Missing closure for string declaration");
+			} else {
+				throw Error("Missing '\"' or ''' when parsing unescaped string.");
 			}
-			throw new LexicalException ("line {0}: Missing closure for string declaration", lineNumber);
 		}
 
-		void ReadInteger ()
+		Token ParseInteger ()
 		{
 			do {
 				s.Append ((char)GetChar ());/* Read integer part */
 			} while (IsDigit (Peek ()));
-		}
-
-		void ReadNumber ()
-		{
-			ReadInteger ();
-			if (Peek () == '.') {/* Read decimal part*/
-				GetChar ();
-				s.Append ('.');
-				do {
-					s.Append ((char)GetChar ());
-				} while (IsDigit (Peek ()));
+			if (Peek () == '.' || Peek () == 'e' || Peek () == 'E') {
+				ParseNumber ();
+				return TryParseNumber ();
+			} else {
+				return TryParseInteger ();
 			}
 		}
 
-		Token ReadCompare (char cmp)
+		Token ParseNumber ()
 		{
-			GetChar ();
+			if (Peek () == '.') {/* Read decimal part*/
+				GetChar ();
+				s.Append ('.');
+				if (!IsDigit (Peek ())) {
+					throw Error ("Unrecognizable format of number.");
+				} else {
+					do {
+						s.Append ((char)GetChar ());
+					} while (IsDigit (Peek ()));
+				}
+				if (Peek () == 'e' || Peek () == 'E') {
+					ParseScientificNotation ();
+					return TryParseNumber ();
+				} else {
+					return TryParseNumber ();
+				}
+			} else { /* 'e' or 'E' */
+				ParseScientificNotation ();
+				return TryParseNumber ();
+			}
+		}
+
+		void ParseScientificNotation ()
+		{
+			if (Peek () == 'E' || Peek () == 'e') {/* Scientific notation */
+				s.Append ((char)GetChar ());
+				if (Peek () == '+' || Peek () == '-') {
+					s.Append ((char)GetChar ());
+					if (!IsDigit (Peek ())) {
+						throw Error ("Unrecognizable format of number.");
+					} else {
+						ParseExponent ();
+					}
+				} else {
+					ParseExponent ();
+				}
+			}
+		}
+
+		void ParseExponent ()
+		{
+			do {
+				s.Append ((char)GetChar ());
+			} while (IsDigit (Peek ()));
+		}
+
+		Token TryParseInteger ()
+		{
+			long integer;
+			if (long.TryParse (s.ToString (), out integer)) {
+				return new IntToken (integer);
+			} else {
+				throw Error ("Unrecognizable format of integer.");
+			}
+		}
+
+		Token TryParseNumber ()
+		{
+			double number;
+			if (double.TryParse (s.ToString (), out number)) {
+				return new NumToken (number);
+			} else {
+				throw Error ("Unrecognizable format of number.");
+			}
+		}
+
+		Token ParseIdentifier ()
+		{
+			char ch;
+			do {
+				s.Append ((char)GetChar ());/* Read Identifier */
+				ch = (char)Peek ();
+			} while (IsLetterOrUnderline (ch) || IsDigit (ch));
+			return Token.OfIdentifier ((s.ToString ()));
+		}
+
+		Token ParseGreater ()
+		{
 			if (Peek () == '=') {
 				GetChar ();
-				return Word.FromString (new string (new []{ cmp, '=' }));
+				return Word.GreaterOrEqual;
 			} else {
-				return Word.FromString (char.ToString (cmp));
+				return Word.Greater;
+			}
+		}
+
+		Token ParseLess ()
+		{
+			if (Peek () == '=') {
+				GetChar ();
+				return Word.LessOrEqual;
+			} else {
+				return Word.Less;
 			}
 		}
 
@@ -247,6 +335,6 @@ namespace Cygni.Lexical
 		{
 			return ch == '\t' || ch == '\v' || ch == '\f' || ch == ' ' || ch == '\r' || ch == '\n';
 		}
-		
+
 	}
 }

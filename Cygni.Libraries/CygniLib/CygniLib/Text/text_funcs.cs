@@ -11,12 +11,12 @@ namespace CygniLib.Text
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "Regex");
 			if (args.Length == 1) {
-				return DynValue.FromUserData (new CygniLib.Text.regex (args [0].AsString ()));
+				return DynValue.FromUserData (new CygniRegex (args [0].AsString ()));
 			} else {
 				string option = args [1].AsString ();
 				RegexOptions op;
 				if (Enum.TryParse (option, true, out op)) {
-					return DynValue.FromUserData (new CygniLib.Text.regex (args [0].AsString (), op));
+					return DynValue.FromUserData (new CygniRegex (args [0].AsString (), op));
 				} else {
 					throw new RuntimeException ("Wrong argument '{0}' for constructor 'regex', cannot parse RegexOptions.", option);
 				}

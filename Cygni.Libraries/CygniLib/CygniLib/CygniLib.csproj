@@ -38,32 +38,32 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\io_funcs.cs" />
-    <Compile Include="IO\reader.cs" />
-    <Compile Include="IO\writer.cs" />
-    <Compile Include="Collections\array.cs" />
-    <Compile Include="Collections\array2.cs" />
     <Compile Include="Collections\collections_funcs.cs" />
-    <Compile Include="Collections\stack.cs" />
-    <Compile Include="Collections\queue.cs" />
-    <Compile Include="random\random.cs" />
-    <Compile Include="random\random_funcs.cs" />
     <Compile Include="data\datatable.cs" />
     <Compile Include="data\data_funcs.cs" />
-    <Compile Include="Text\regex.cs" />
-    <Compile Include="Text\match.cs" />
-    <Compile Include="Text\group.cs" />
     <Compile Include="Text\text_funcs.cs" />
-    <Compile Include="Collections\linkedList.cs" />
-    <Compile Include="Collections\linkedListNode.cs" />
     <Compile Include="stopWatch\stopWatch.cs" />
     <Compile Include="stopWatch\stopWatch_funcs.cs" />
+    <Compile Include="Collections\CygniArray.cs" />
+    <Compile Include="Collections\CygniArray2.cs" />
+    <Compile Include="Collections\CygniLinkedList.cs" />
+    <Compile Include="Collections\CygniLinkedListNode.cs" />
+    <Compile Include="Collections\CygniQueue.cs" />
+    <Compile Include="Collections\CygniStack.cs" />
+    <Compile Include="IO\CygniReader.cs" />
+    <Compile Include="IO\CygniWriter.cs" />
+    <Compile Include="Radnom\CygniRandom.cs" />
+    <Compile Include="Radnom\random_funcs.cs" />
+    <Compile Include="Text\CygniGroup.cs" />
+    <Compile Include="Text\CygniMatch.cs" />
+    <Compile Include="Text\CygniRegex.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="IO\" />
-    <Folder Include="random\" />
     <Folder Include="data\" />
     <Folder Include="Text\" />
     <Folder Include="stopWatch\" />
+    <Folder Include="Radnom\" />
   </ItemGroup>
 </Project>

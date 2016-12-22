@@ -96,11 +96,9 @@
     <Compile Include="AST\AssignEx.cs" />
     <Compile Include="AST\SingleIndexEx.cs" />
     <Compile Include="Libraries\DictionaryLib.cs" />
-    <Compile Include="AST\GlobalEx.cs" />
     <Compile Include="AST\Scopes\ScopeType.cs" />
     <Compile Include="DataTypes\Command.cs" />
     <Compile Include="AST\Scopes\ResizableArrayScope.cs" />
-    <Compile Include="AST\SetEx.cs" />
     <Compile Include="AST\UnpackEx.cs" />
     <Compile Include="DataTypes\DynTuple.cs" />
     <Compile Include="Libraries\BuiltInLibrary.cs" />
@@ -118,6 +116,7 @@
     <Compile Include="DataTypes\DynObject.cs" />
     <Compile Include="AST\Scopes\ClassScope.cs" />
     <Compile Include="AST\Visitors\ClassLookUpVisitor.cs" />
+    <Compile Include="Lexical\Tokens\IntToken.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

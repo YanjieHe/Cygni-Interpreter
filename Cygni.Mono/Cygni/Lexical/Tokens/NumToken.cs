@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 
 namespace Cygni.Lexical.Tokens
 {
@@ -8,7 +7,7 @@ namespace Cygni.Lexical.Tokens
 	/// </summary>
 	public sealed class NumToken:Token
 	{
-		readonly double value;
+		private readonly double value;
 		public double Value { get { return value; } }
 		public NumToken(double value)
 			: base(Tag.Number)

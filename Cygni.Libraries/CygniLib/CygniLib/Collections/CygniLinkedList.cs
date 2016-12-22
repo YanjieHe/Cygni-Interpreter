@@ -7,9 +7,9 @@ using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Collections
 {
-	public class linkedList:LinkedList<DynValue>,IDot
+	public class CygniLinkedList:LinkedList<DynValue>,IDot
 	{
-		public linkedList () : base ()
+		public CygniLinkedList () : base ()
 		{
 		}
 
@@ -19,9 +19,9 @@ namespace CygniLib.Collections
 			case "count":
 				return (double)this.Count;
 			case "first":
-				return DynValue.FromUserData (new linkedListNode (this.First));
+				return DynValue.FromUserData (new CygniLinkedListNode (this.First));
 			case "last":
-				return DynValue.FromUserData (new linkedListNode (this.Last));
+				return DynValue.FromUserData (new CygniLinkedListNode (this.Last));
 			case "addFirst":
 				return DynValue.FromDelegate ("addFitst",
 					args => {

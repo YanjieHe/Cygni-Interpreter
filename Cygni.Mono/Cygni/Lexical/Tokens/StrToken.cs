@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
+﻿using System;
 
 namespace Cygni.Lexical.Tokens
 {
@@ -11,7 +7,7 @@ namespace Cygni.Lexical.Tokens
 	/// </summary>
 	public class StrToken:Token
 	{
-		readonly string literal;
+		private readonly string literal;
 		public string Literal{ get { return literal; } }
 		public StrToken(string literal)
 			: base(Tag.String)

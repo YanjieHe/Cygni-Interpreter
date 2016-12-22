@@ -25,6 +25,11 @@ namespace Cygni.AST.Optimizers
 			return this.table;
 		}
 
+		public int Find (string name)
+		{
+			return table [name];
+		}
+
 		public Location Get (string name, int nest = 0)
 		{
 			int index;
@@ -38,16 +43,6 @@ namespace Cygni.AST.Optimizers
 				}
 			}
 		}
-
-		/*public int PutNew (string name)
-		{
-			int index;
-			if (table.TryGetValue (name, out index)) {
-				return index;
-			} else {
-				return AddName (name);		
-			}
-		}*/
 
 		public Location Put (string name)
 		{

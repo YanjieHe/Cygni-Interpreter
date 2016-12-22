@@ -8,6 +8,7 @@ namespace Cygni.DataTypes
 {
 	public enum DataType: byte
 	{
+		Integer,
 		Number,
 		Boolean,
 		String,

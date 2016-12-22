@@ -79,54 +79,48 @@ namespace Cygni.AST
 				Match (Tag.LeftBrace);
 			while (look.tag != Tag.RightBrace) {
 				switch (look.tag) {
-				case Tag.If:
-					list.Add (If ());
-					break;
-				case Tag.While:
-					list.Add (While ());
-					break;
-				case Tag.For:
-					list.Add (For ());
-					break;
-				case Tag.ForEach:
-					list.Add (ForEach ());
-					break;
-				case Tag.Define:
-					list.Add (DefFunc ());
-					break;
-				case Tag.Class:
-					list.Add (DefClass ());
-					break;
-				case Tag.Return:
-					Match (Tag.Return);
-					list.Add (ASTNode.Return (Statement ()));
-					break;
-				case Tag.Local:
-					list.Add (Local ());
-					break;
-				case Tag.Global:
-					list.Add (Global ());
-					break;
-				case Tag.Set:
-					list.Add (Set ());
-					break;
-				case Tag.Unpack:
-					list.Add (Unpack ());
-					break;
-				case Tag.EOF:
-					if (matchBrackets)
-						throw new SyntaxException ("line {0}: Missing '}'", lexer.LineNumber);
-					goto Finish;
-				case Tag.EOL:
-					Move ();
-					break;
-				default:
-					list.Add (Statement ());
-					break;
+					case Tag.If:
+						list.Add (If ());
+						break;
+					case Tag.While:
+						list.Add (While ());
+						break;
+					case Tag.For:
+						list.Add (For ());
+						break;
+					case Tag.ForEach:
+						list.Add (ForEach ());
+						break;
+					case Tag.Define:
+						list.Add (DefFunc ());
+						break;
+					case Tag.Class:
+						list.Add (DefClass ());
+						break;
+					case Tag.Return:
+						Match (Tag.Return);
+						list.Add (ASTNode.Return (Statement ()));
+						break;
+					case Tag.Local:
+						list.Add (Local ());
+						break;
+					case Tag.Unpack:
+						list.Add (Unpack ());
+						break;
+					case Tag.EOF:
+						if (matchBrackets)
+							throw new SyntaxException ("line {0}: Missing '}'", lexer.LineNumber);
+						goto Finish;
+					case Tag.EOL:
+						Move ();
+						break;
+					default:
+						list.Add (Statement ());
+						break;
 				}
 			}
 			Move ();
-			Finish:
+Finish:
 			return ASTNode.Block (list);
 		}
 
@@ -193,7 +187,7 @@ namespace Cygni.AST
 			var list = new List<NameEx> ();
 			while (look.tag != Tag.RightParenthesis) {
 				if (look.tag == Tag.ID) {
-					list.Add (ASTNode.Parameter(look.ToString ()));
+					list.Add (ASTNode.Parameter (look.ToString ()));
 					Move ();
 					if (look.tag == Tag.Comma)
 						Move ();
@@ -207,7 +201,7 @@ namespace Cygni.AST
 			Move ();
 			var body = Block ();
 			NameEx[] parameters = new NameEx[list.Count];
-			list.CopyTo(parameters);
+			list.CopyTo (parameters);
 			return ASTNode.Define (name, parameters, body);
 		}
 
@@ -251,13 +245,13 @@ namespace Cygni.AST
 			MatchOrThrows (Tag.ID, "class definition requires a class name"); 
 			if (look.tag == Tag.Colon) { /* Inheritance */
 				Move ();
-				var parent = look.ToString ();
+				var parent = ASTNode.Variable (look.ToString ());
 				MatchOrThrows (Tag.ID, "Missing parent class in the class definition"); 
 				var body = Block ();
-				return ASTNode.Class (name, body, parent);
+				return ASTNode.DefineClass (name, body, parent);
 			} else {
 				var body = Block ();
-				return ASTNode.Class (name, body);
+				return ASTNode.DefineClass (name, body);
 			}
 		}
 
@@ -291,76 +285,6 @@ namespace Cygni.AST
 			return ASTNode.Local (names, values);
 		}
 
-		ASTNode Global ()
-		{
-			Match (Tag.Global);
-			var names_list = new List<string> ();
-			do {
-				string name = look.ToString ();
-				Match (Tag.ID);
-				names_list.Add (name);
-				if (look.tag == Tag.Comma) {
-					Match (Tag.Comma);
-				} else {
-					break;
-				}
-			} while (true);
-			Match (Tag.Assign);
-
-			var values_list = new List<ASTNode> ();
-			do {
-				ASTNode value = Bool ();
-				values_list.Add (value);
-				if (look.tag == Tag.Comma) {
-					Match (Tag.Comma);
-				} else {
-					break;
-				}
-			} while (true);
-			var names = new string[names_list.Count];
-			var values = new ASTNode[values_list.Count];
-			names_list.CopyTo (names);
-			values_list.CopyTo (values);
-			return ASTNode.Global (names, values);
-		}
-
-		ASTNode Set ()
-		{
-			Match (Tag.Set);
-			List<ASTNode> targets_list = new List<ASTNode> ();
-			do {
-				targets_list.Add (Bool ());	
-				if (look.tag == Tag.Comma) {
-					Match (Tag.Comma);
-				} else {
-					break;
-				}
-			} while (true);
-
-			Match (Tag.Assign);
-
-			List<ASTNode> values_list = new List<ASTNode> ();
-			do {
-				values_list.Add (Bool ());	
-				if (look.tag == Tag.Comma) {
-					Match (Tag.Comma);
-				} else {
-					break;
-				}
-			} while (true);
-
-			if (targets_list.Count != values_list.Count) {
-				throw new SyntaxException ("line {0}: 'set' statement requires the number of targets is the same as the number of values.", lexer.LineNumber);
-			}
-
-			ASTNode[] targets = new ASTNode[targets_list.Count];
-			targets_list.CopyTo (targets);
-
-			ASTNode[] values = new ASTNode[values_list.Count];
-			values_list.CopyTo (values);
-
-			return ASTNode.Set (targets, values);
-		}
 
 		ASTNode Unpack ()
 		{
@@ -381,7 +305,7 @@ namespace Cygni.AST
 			return ASTNode.Unpack (items, tuple);
 		}
 
-		
+
 		ASTNode Assign ()
 		{
 			ASTNode x = Bool ();
@@ -429,23 +353,33 @@ namespace Cygni.AST
 
 		ASTNode Relation ()
 		{
-			ASTNode x = Expr ();
+			ASTNode x = Concatenation ();
 			switch (look.tag) {
-			case Tag.Less:
-				Move ();
-				return ASTNode.Less (x, Expr ());
-			case Tag.Greater:
-				Move ();
-				return ASTNode.Greater (x, Expr ());
-			case Tag.LessOrEqual:
-				Move ();
-				return ASTNode.LessOrEqual (x, Expr ());
-			case Tag.GreaterOrEqual:
-				Move ();
-				return ASTNode.GreaterOrEqual (x, Expr ());
-			default:
-				return x;
+				case Tag.Less:
+					Move ();
+					return ASTNode.Less (x, Concatenation());
+				case Tag.Greater:
+					Move ();
+					return ASTNode.Greater (x, Concatenation ());
+				case Tag.LessOrEqual:
+					Move ();
+					return ASTNode.LessOrEqual (x, Concatenation ());
+				case Tag.GreaterOrEqual:
+					Move ();
+					return ASTNode.GreaterOrEqual (x, Concatenation ());
+				default:
+					return x;
 			}
+		}
+
+		ASTNode Concatenation()
+		{
+			ASTNode x = Expr ();
+			while (look.tag == Tag.Concatenate) {
+				Move ();
+				x = ASTNode.Concatenate(x, Expr ());
+			}
+			return x;
 		}
 
 		ASTNode Expr ()
@@ -464,26 +398,18 @@ namespace Cygni.AST
 
 		ASTNode Term ()
 		{
-			ASTNode x = Power ();
-			while (look.tag == Tag.Mul || look.tag == Tag.Div || look.tag == Tag.Mod) {
+			ASTNode x = Unary ();
+			while (look.tag == Tag.Mul || look.tag == Tag.Div || look.tag == Tag.IntDiv || look.tag == Tag.Mod) {
 				Token tok = look;
 				Move ();
 				if (tok.tag == Tag.Mul)
-					x = ASTNode.Multiply (x, Power ());
+					x = ASTNode.Multiply (x, Unary ());
 				else if (tok.tag == Tag.Div)
-					x = ASTNode.Divide (x, Power ());
+					x = ASTNode.Divide (x, Unary ());
+				else if (tok.tag == Tag.IntDiv)
+					x = ASTNode.IntDivide (x, Unary ());
 				else
-					x = ASTNode.Modulo (x, Power ());
-			}
-			return x;
-		}
-
-		ASTNode Power ()
-		{
-			ASTNode x = Unary ();
-			while (look.tag == Tag.Pow) {
-				Move ();
-				x = ASTNode.Power (x, Unary ());
+					x = ASTNode.Modulo (x, Unary ());
 			}
 			return x;
 		}
@@ -491,18 +417,28 @@ namespace Cygni.AST
 		ASTNode Unary ()
 		{
 			switch (look.tag) {
-			case Tag.Add:
-				Move ();
-				return ASTNode.UnaryPlus (Unary ());
-			case Tag.Sub:
-				Move ();
-				return ASTNode.UnaryMinus (Unary ());
-			case Tag.Not:
-				Move ();
-				return ASTNode.Negate (Unary ());
-			default:
-				return Postfix ();
+				case Tag.Add:
+					Move ();
+					return ASTNode.UnaryPlus (Unary ());
+				case Tag.Sub:
+					Move ();
+					return ASTNode.UnaryMinus (Unary ());
+				case Tag.Not:
+					Move ();
+					return ASTNode.Negate (Unary ());
+				default:
+					return Power ();
 			}
+		}
+
+		ASTNode Power ()
+		{
+			ASTNode x = Postfix ();
+			while (look.tag == Tag.Pow) {
+				Move ();
+				x = ASTNode.Power (x, Unary ());
+			}
+			return x;
 		}
 
 		ASTNode Postfix ()
@@ -558,88 +494,92 @@ namespace Cygni.AST
 		{
 			ASTNode x = null;
 			switch (look.tag) {
-			case Tag.LeftParenthesis:
-				Move ();
-				x = Bool ();
-				Match (Tag.RightParenthesis);
-				return x;
-			case Tag.Number:
-				x = ASTNode.Number ((look as NumToken).Value);
-				Move ();
-				return x;
-			case Tag.True:
-				x = ASTNode.True;
-				Move ();
-				return x;
-			case Tag.False:
-				x = ASTNode.False;
-				Move ();
-				return x;
-			case Tag.String:
-				x = ASTNode.String ((look as StrToken).Literal);
-				Move ();
-				return x;
-			case Tag.Break:
-				Move ();
-				return ASTNode.Break;
-			case Tag.Continue:
-				Move ();
-				return ASTNode.Continue;
-			case Tag.Nil:
-				Move ();
-				return ASTNode.Nil;
-			case Tag.ID:
-				string name = look.ToString ();
-				x = ASTNode.Variable (name);
-				Move ();
-				return x;
-			case Tag.LeftBracket:
-				{
+				case Tag.LeftParenthesis:
 					Move ();
-					var list = new List<ASTNode> ();
-					while (look.tag != Tag.RightBracket) {
-						list.Add (Bool ());
-						if (look.tag == Tag.Comma) {
-							Move ();
-						} else if (look.tag == Tag.RightBracket) {
-							break;
-						} else {
-							throw SyntaxException.Expecting (lexer.LineNumber, "]");
-						}
-					}
-					Move ();
-					ASTNode[] initializers = new ASTNode[list.Count];
-					list.CopyTo (initializers);
-					x = ASTNode.ListInit (initializers);
+					x = Bool ();
+					Match (Tag.RightParenthesis);
 					return x;
-				}
-			case Tag.LeftBrace:
-				{
+				case Tag.Integer:
+					x = ASTNode.Integer ((look as IntToken).Value);
 					Move ();
-					var list = new List<ASTNode> ();
-					while (look.tag != Tag.RightBrace) {
-						list.Add (Bool ());
-						Match (Tag.Colon);
-						list.Add (Bool ());
-						if (look.tag == Tag.Comma) {
-							Move ();
-						} else if (look.tag == Tag.RightBrace) {
-							break;
-						} else {
-							throw SyntaxException.Expecting (lexer.LineNumber, "}");
-						}
-					}
-					Move ();
-					ASTNode[] initializers = new ASTNode[list.Count];
-					list.CopyTo (initializers);
-					x = ASTNode.DictionaryInit (initializers);
 					return x;
-				}
-			case Tag.Lambda:
-				x = DefClosure ();
-				return x;
-			default:
-				throw SyntaxException.Unexpected (lexer.LineNumber, look.ToString ());
+				case Tag.Number:
+					x = ASTNode.Number ((look as NumToken).Value);
+					Move ();
+					return x;
+				case Tag.True:
+					x = ASTNode.True;
+					Move ();
+					return x;
+				case Tag.False:
+					x = ASTNode.False;
+					Move ();
+					return x;
+				case Tag.String:
+					x = ASTNode.String ((look as StrToken).Literal);
+					Move ();
+					return x;
+				case Tag.Break:
+					Move ();
+					return ASTNode.Break;
+				case Tag.Continue:
+					Move ();
+					return ASTNode.Continue;
+				case Tag.Nil:
+					Move ();
+					return ASTNode.Nil;
+				case Tag.ID:
+					string name = look.ToString ();
+					x = ASTNode.Variable (name);
+					Move ();
+					return x;
+				case Tag.LeftBracket:
+					{
+						Move ();
+						var list = new List<ASTNode> ();
+						while (look.tag != Tag.RightBracket) {
+							list.Add (Bool ());
+							if (look.tag == Tag.Comma) {
+								Move ();
+							} else if (look.tag == Tag.RightBracket) {
+								break;
+							} else {
+								throw SyntaxException.Expecting (lexer.LineNumber, "]");
+							}
+						}
+						Move ();
+						ASTNode[] initializers = new ASTNode[list.Count];
+						list.CopyTo (initializers);
+						x = ASTNode.ListInit (initializers);
+						return x;
+					}
+				case Tag.LeftBrace:
+					{
+						Move ();
+						var list = new List<ASTNode> ();
+						while (look.tag != Tag.RightBrace) {
+							list.Add (Bool ());
+							Match (Tag.Colon);
+							list.Add (Bool ());
+							if (look.tag == Tag.Comma) {
+								Move ();
+							} else if (look.tag == Tag.RightBrace) {
+								break;
+							} else {
+								throw SyntaxException.Expecting (lexer.LineNumber, "}");
+							}
+						}
+						Move ();
+						ASTNode[] initializers = new ASTNode[list.Count];
+						list.CopyTo (initializers);
+						x = ASTNode.DictionaryInit (initializers);
+						return x;
+					}
+				case Tag.Lambda:
+					x = DefClosure ();
+					return x;
+				default:
+					throw SyntaxException.Unexpected (lexer.LineNumber, look.ToString ());
 			}
 		}
 

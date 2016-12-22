@@ -3,15 +3,16 @@ using Cygni.DataTypes;
 using Cygni.Errors;
 using System.Diagnostics;
 using Cygni.DataTypes.Interfaces;
-namespace CygniLib.random
+
+namespace CygniLib.Random
 {
-	public class random:Random,IDot
+	public class CygniRandom:System.Random,IDot
 	{
-		public random () : base ()
+		public CygniRandom () : base ()
 		{
 		}
 
-		public random (int seed) : base (seed)
+		public CygniRandom (int seed) : base (seed)
 		{
 		}
 
@@ -26,10 +27,19 @@ namespace CygniLib.random
 							return this.Next ();
 						else
 							return this.Next (
-								(int)args [0].AsNumber (), (int)args [1].AsNumber ());
+								args [0].AsInt32 (), args [1].AsInt32 ());
 					});
 			case "nextDouble":
-				return DynValue.FromDelegate ("nextDouble",args => this.NextDouble ());
+				return DynValue.FromDelegate ("nextDouble", args => { 
+					RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 2, "nextInt");
+					if (args.Length == 0) {
+						return this.NextDouble ();	
+					} else {
+						double min = args [0].AsNumber ();
+						double max = args [1].AsNumber ();
+						return this.NextDouble () * (max - min) + min;
+					}
+				});
 			default:
 				throw RuntimeException.FieldNotExist ("Random", fieldName);
 			}

@@ -62,7 +62,7 @@ namespace Cygni.Libraries
 		public static DynValue sign (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "sign");
-			return (double)Math.Sign (args [0].AsNumber ());
+			return (long)Math.Sign (args [0].AsNumber ());
 		}
 
 		public static DynValue sin (DynValue[] args)
@@ -106,16 +106,19 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "sinh");
 			return Math.Sinh (args [0].AsNumber ());
 		}
+
 		public static DynValue cosh (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "cosh");
 			return Math.Cosh (args [0].AsNumber ());
 		}
+
 		public static DynValue tanh (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "tanh");
 			return Math.Tanh (args [0].AsNumber ());
 		}
+
 		public static DynValue ceiling (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "ceiling");
@@ -133,6 +136,7 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "round");
 			return Math.Round (args [0].AsNumber (), MidpointRounding.AwayFromZero);
 		}
+
 		public static DynValue truncate (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "truncate");

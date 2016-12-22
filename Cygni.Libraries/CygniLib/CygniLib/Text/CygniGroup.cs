@@ -6,10 +6,10 @@ using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Text
 {
-	public class group:IDot
+	public class CygniGroup:IDot
 	{
 		Group _group;
-		public group (Group g)
+		public CygniGroup (Group g)
 		{
 			this._group = g;
 		}

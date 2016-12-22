@@ -37,6 +37,11 @@ namespace Cygni.DataTypes
 
 		#region implicit conversion
 
+		public static implicit operator DynValue (long value)
+		{
+			return new DynValue (DataType.Integer, value);
+		}
+
 		public static implicit operator DynValue (double value)
 		{
 			return new DynValue (DataType.Number, value);
@@ -88,6 +93,11 @@ namespace Cygni.DataTypes
 		}
 
 		#endregion
+
+		public static DynValue FromInteger (long value)
+		{
+			return new DynValue (DataType.Integer, value);
+		}
 
 		public static DynValue FromNumber (double value)
 		{
@@ -166,6 +176,8 @@ namespace Cygni.DataTypes
 			var iconv = value as IConvertible;
 			if (iconv != null)
 				switch (iconv.GetTypeCode ()) {
+				case TypeCode.Single:
+					return FromNumber ((Single)value);
 				case TypeCode.Double:
 					return FromNumber ((double)value);
 				case TypeCode.Boolean:
@@ -173,27 +185,49 @@ namespace Cygni.DataTypes
 				case TypeCode.String:
 					return FromString (value as string);
 				case TypeCode.Int16:
-					return FromNumber ((Int16)value);
+					return FromInteger ((Int16)value);
 				case TypeCode.Int32:
-					return FromNumber ((Int32)value);
+					return FromInteger ((Int32)value);
 				case TypeCode.Int64:
-					return FromNumber ((Int64)value);
+					return FromInteger ((Int64)value);
 				case TypeCode.UInt16:
-					return FromNumber ((UInt16)value);
+					return FromInteger ((UInt16)value);
 				case TypeCode.UInt32:
-					return FromNumber ((UInt32)value);
+					return FromInteger ((UInt32)value);
 				case TypeCode.UInt64:
-					return FromNumber ((UInt64)value);
-				case TypeCode.Single:
-					return FromNumber ((Single)value);
+					return FromInteger (checked((long)(UInt64)value));
 				}
 			return FromUserData (value);
+		}
+
+		public int AsInt32 ()
+		{
+			if (this.type == DataType.Integer) {
+				return (int)(long)value;
+			} else if (this.type == DataType.Number) {
+				return (int)(double)value;
+			} else {
+				throw new RuntimeException ("Cast from '{0}' to Int32 is invalid.", value.GetType ().Name);
+			}
+		}
+
+		public long AsInteger ()
+		{
+			if (this.type == DataType.Integer) {
+				return (long)value;
+			} else if (this.type == DataType.Number) {
+				return (long)(double)value;
+			} else {
+				throw new RuntimeException ("Cast from '{0}' to integer is invalid.", value.GetType ().Name);
+			}
 		}
 
 		public double AsNumber ()
 		{
 			if (this.type == DataType.Number) {
 				return (double)value;
+			} else if (this.type == DataType.Integer) {
+				return (double)(long)value;
 			} else {
 				throw new RuntimeException ("Cast from '{0}' to number is invalid.", value.GetType ().Name);
 			}
@@ -298,31 +332,8 @@ namespace Cygni.DataTypes
 			}
 		}
 
-		/*public static bool operator == (DynValue lhs, DynValue rhs)
-		{
-			return lhs.Equals (rhs);
-		}
-
-		public static bool operator != (DynValue lhs, DynValue rhs)
-		{
-			return !(lhs == rhs);
-		}*/
-
 		#endregion
 
-		public Type GetDynType ()
-		{
-			switch (_type) {
-			case DataType.Number:
-				return typeof(double);
-			case DataType.Boolean:
-				return typeof(bool);	
-			case DataType.String:
-				return typeof(string);
-			default:
-				return value.GetType ();
-			}
-		}
 
 		public IEnumerator<DynValue> GetEnumerator ()
 		{

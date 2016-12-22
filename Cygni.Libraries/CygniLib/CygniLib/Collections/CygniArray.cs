@@ -7,11 +7,11 @@ using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Collections
 {
-	public class array:IIndexable,IDot
+	public class CygniArray:IIndexable,IDot
 	{
 		DynValue[] values;
 
-		public array (int size)
+		public CygniArray (int size)
 		{
 			values = new DynValue[size];
 			for (int i = 0; i < size; i++) {
@@ -19,7 +19,7 @@ namespace CygniLib.Collections
 			}
 		}
 
-		public array (DynList list)
+		public CygniArray (DynList list)
 		{
 			values = new DynValue[list.Count];
 			for (int i = 0; i < values.Length; i++) {
@@ -39,13 +39,13 @@ namespace CygniLib.Collections
 
 		public DynValue GetByIndexes (DynValue[] indexes)
 		{
-			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "array");
+			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Array");
 			return values [(int)indexes [0].AsNumber ()];
 		}
 
 		public DynValue SetByIndexes (DynValue[] indexes, DynValue value)
 		{
-			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "array");
+			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Array");
 			return values [(int)indexes [0].AsNumber ()] = value;
 		}
 
@@ -55,7 +55,7 @@ namespace CygniLib.Collections
 			case "length":
 				return (double)values.Length;
 			default:
-				throw RuntimeException.FieldNotExist ("array", fieldName);
+				throw RuntimeException.FieldNotExist ("Array", fieldName);
 			}
 		}
 

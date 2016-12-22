@@ -12,7 +12,7 @@ namespace Cygni.DataTypes
 {
 	public sealed class DynObject:IDot,IFunction
 	{
-		ClassScope classScope;
+		readonly ClassScope classScope;
 		readonly DynObject parent;
 
 		public DynObject Parent{ get { return this.parent; } }
@@ -62,6 +62,20 @@ namespace Cygni.DataTypes
 			}
 		}
 
+		internal Dictionary<string, DynValue> GetFields(){
+			Dictionary<string, DynValue> fields;
+			if (this.parent == null) {
+				fields = new Dictionary<string, DynValue>();
+			} else {
+				fields = this.parent.GetFields();
+			}
+			foreach (string field in this.FieldNames) {
+				if (!string.Equals(field, "this")) {
+					fields.Add(field, this.GetByDot(field));
+				}
+			}
+			return fields;
+		}
 		public override string ToString ()
 		{
 			return "(Class: " + this.classScope.Name + ")";

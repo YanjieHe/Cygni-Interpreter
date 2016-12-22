@@ -16,7 +16,7 @@ namespace Cygni_CLI
 				engine.ExecuteFile (filePath);
 			} else {
 				GlobalSettings.IsDebug = true;
-				//GlobalSettings.CompleteErrorOutput = true;
+				// GlobalSettings.CompleteErrorOutput = true;
 				engine.ExecuteInConsole (); 
 			}
 		}

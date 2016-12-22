@@ -15,18 +15,20 @@ namespace Cygni.DataTypes
 		readonly int nArgs;
 		readonly ArrayScope funcScope;
 		readonly ASTNode body;
+
 		public Closure (int nArgs, ASTNode body, ArrayScope funcScope)
 		{
 			this.nArgs = nArgs;
 			this.body = body;
 			this.funcScope = funcScope;
 		}
+
 		public DynValue Invoke ()
 		{
 			DynValue result = body.Eval (funcScope);
 			return result.type == DataType.Return
-				? (DynValue)result.Value
-				: DynValue.Nil;
+				? result.Value as DynValue
+					: DynValue.Nil;
 		}
 
 		public DynValue DynInvoke (DynValue[] args)
@@ -65,6 +67,7 @@ namespace Cygni.DataTypes
 			var newScope = new ArrayScope (funcScope.Name, values, funcScope.Parent);
 			return new Closure (nArgs, body, newScope).Invoke ();
 		}
+
 		public override string ToString ()
 		{
 			return "(Anonymous Function)";

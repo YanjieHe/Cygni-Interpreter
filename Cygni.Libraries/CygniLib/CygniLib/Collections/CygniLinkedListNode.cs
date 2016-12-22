@@ -7,11 +7,11 @@ using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Collections
 {
-	public class linkedListNode: IDot
+	public class CygniLinkedListNode: IDot
 	{
 		LinkedListNode<DynValue> node;
 
-		public linkedListNode (LinkedListNode<DynValue>node)
+		public CygniLinkedListNode (LinkedListNode<DynValue>node)
 		{
 			this.node = node;
 		}
@@ -22,13 +22,13 @@ namespace CygniLib.Collections
 			case "value":
 				return this.node.Value;
 			case "previous":
-				return DynValue.FromUserData (new linkedListNode (this.node.Previous));
+				return DynValue.FromUserData (new CygniLinkedListNode (this.node.Previous));
 			case "next":
-				return DynValue.FromUserData (new linkedListNode (this.node.Next));
+				return DynValue.FromUserData (new CygniLinkedListNode (this.node.Next));
 			case "list":
-				return DynValue.FromUserData (this.node.List as linkedList);
+				return DynValue.FromUserData (this.node.List as CygniLinkedList);
 			default:
-				throw RuntimeException.FieldNotExist ("linkedListNode", fieldName);
+				throw RuntimeException.FieldNotExist ("LinkedListNode", fieldName);
 			}
 		}
 

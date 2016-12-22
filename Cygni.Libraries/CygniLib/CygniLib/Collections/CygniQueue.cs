@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using Cygni.DataTypes.Interfaces;
 namespace CygniLib.Collections
 {
-	public class queue:Queue<DynValue>,IDot
+	public class CygniQueue:Queue<DynValue>,IDot
 	{
-		public queue ()
+		public CygniQueue ()
 		{
 		}
 		public DynValue GetByDot(string fieldName){

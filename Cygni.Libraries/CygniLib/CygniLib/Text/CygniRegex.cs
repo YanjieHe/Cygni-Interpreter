@@ -6,14 +6,14 @@ using Cygni.DataTypes.Interfaces;
 
 namespace CygniLib.Text
 {
-	public class regex:Regex,IDot
+	public class CygniRegex:Regex,IDot
 	{
-		public regex (string pattern) : base (pattern)
+		public CygniRegex (string pattern) : base (pattern)
 		{
 			
 		}
 
-		public regex (string pattern, RegexOptions option) : base (pattern, option)
+		public CygniRegex (string pattern, RegexOptions option) : base (pattern, option)
 		{
 
 		}
@@ -27,14 +27,14 @@ namespace CygniLib.Text
 						RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2 || args.Length == 3, "match");
 						string input = args [0].AsString ();
 						if (args.Length == 1)
-							return	DynValue.FromUserData (new match (this.Match (input)));
+							return	DynValue.FromUserData (new CygniMatch (this.Match (input)));
 						else if (args.Length == 2) {
-							int startat = (int)args [1].AsNumber ();
-							return DynValue.FromUserData (new match (this.Match (input, startat)));
+							int startat = args [1].AsInt32 ();
+							return DynValue.FromUserData (new CygniMatch (this.Match (input, startat)));
 						} else {
-							int startat = (int)args [1].AsNumber ();
-							int length = (int)args [2].AsNumber ();
-							return DynValue.FromUserData (new match (this.Match (input, startat, length)));
+							int startat = args [1].AsInt32 ();
+							int length = args [2].AsInt32 ();
+							return DynValue.FromUserData (new CygniMatch (this.Match (input, startat, length)));
 						}
 					});
 			case "isMatch":
@@ -45,7 +45,7 @@ namespace CygniLib.Text
 						if (args.Length == 1)
 							return	this.IsMatch (input);
 						else {
-							int startat = (int)args [1].AsNumber ();
+							int startat = args [1].AsInt32 ();
 							return this.IsMatch (input, startat);
 						}
 					});

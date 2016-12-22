@@ -9,7 +9,6 @@ namespace Cygni.Libraries
 {
 	public static class BuiltInLibrary
 	{
-
 		public static void BuiltIn (ResizableArrayScope scope)
 		{
 			foreach (var element in BuiltInFunctions)
@@ -24,30 +23,36 @@ namespace Cygni.Libraries
 
 		private static readonly Dictionary<string,Func<DynValue[],DynValue>> BuiltInFunctions 
 		= new Dictionary<string, Func<DynValue[], DynValue>> {
+			
 			{ "print",BasicLib.print },
 			{ "printf",BasicLib.printf },
 			{ "input",BasicLib.input },
-			{ "cast",BasicLib.cast },
-			{ "getType",BasicLib.getType },
+			{ "type",BasicLib.type },
 			{ "quiet",BasicLib.quiet },
 			{ "struct",BasicLib.Struct },
 			{ "tuple",BasicLib.tuple },
 			{ "scan",BasicLib.scan },
 			{ "LoadLibrary",BasicLib.LoadLibrary },
-			{ "dispose",BasicLib.dispose },
+
 			{ "throw",BasicLib.Throw },
+
 			{ "exit",BasicLib.exit },
 			{ "range",BasicLib.Range },
 			{ "len",BasicLib.len },
+
+			{ "toInteger",BasicLib.toInteger },
 			{ "toNumber",BasicLib.toNumber },
 			{ "toString",BasicLib.toString },
 			{ "toList",BasicLib.toList },
+
 			{ "pCall",BasicLib.pCall },
 			{ "xpCall",BasicLib.xpCall },
 
 			{ "names",BasicLib.names },
+
 			{ "getwd",BasicLib.getwd },
 			{ "setwd",BasicLib.setwd },
+
 			{ "import",BasicLib.import },
 
 			{ "strcat",StrLib.strcat },
@@ -57,31 +62,14 @@ namespace Cygni.Libraries
 			{ "filter",FunctionalProgrammingLibrary.Filter },
 			{ "reduce",FunctionalProgrammingLibrary.Reduce },
 
-
-			/*{ "abs",MathLib.abs },
-			{ "log",MathLib.log },
-			{ "log10",MathLib.log10 },
-			{ "sqrt",MathLib.sqrt },
-			{ "max",MathLib.max },
-			{ "min",MathLib.min },
-			{ "exp",MathLib.exp },
-			{ "sign",MathLib.sign },
-			{ "sin",MathLib.sin },
-			{ "cos",MathLib.cos },
-			{ "tan",MathLib.tan },
-			{ "asin",MathLib.asin },
-			{ "acos",MathLib.acos },
-			{ "atan",MathLib.atan },
-			{ "ceiling",MathLib.ceiling },
-			{ "floor",MathLib.floor },
-			{ "round",MathLib.round },*/
-
 		};
 
 		private static readonly Dictionary<string,DynValue> BuiltInVariables 
 		= new Dictionary<string, DynValue> {
-			{ "pi",Math.PI },
+			{ "NaN",double.NaN },
 			{ "inf",double.PositiveInfinity },
+			{ "intmax",long.MaxValue },
+			{ "intmin",long.MinValue },
 			{ "realmax",double.MaxValue },
 			{ "realmin",double.MinValue },
 			{ "warranty",GlobalSettings.warranty },
@@ -134,6 +122,7 @@ namespace Cygni.Libraries
 				},
 
 			};
+
 		private static readonly Dictionary<string,Func<ASTNode[],IScope,DynValue>> BuiltInCommands 
 		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>> {
 			{ "source", Commands.source },

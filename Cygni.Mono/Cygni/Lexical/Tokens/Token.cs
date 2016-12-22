@@ -9,6 +9,7 @@ namespace Cygni.Lexical.Tokens
 	public class Token
 	{
 		public Tag tag{ get; protected set; }
+
 		protected Token(Tag tag)
 		{
 			this.tag = tag;
@@ -17,6 +18,14 @@ namespace Cygni.Lexical.Tokens
 		public static readonly Token EOF = new Token(Tag.EOF);
 		/* End of file */
 		
+		public static Token OfInteger(long integer){
+			return new IntToken(integer);
+		}
+
+		public static Token OfInteger(string text){
+			return new IntToken(text);
+		}
+
 		public static Token OfNumber(double number){
 			return new NumToken(number);
 		}

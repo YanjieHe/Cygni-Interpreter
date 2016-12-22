@@ -42,7 +42,7 @@ namespace Cygni.AST
 		{
 			if (scope.type == ScopeType.ResizableArray) {
 				ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
-				if (GlobalScope.HasName (name)) {
+				if (!GlobalScope.HasName (name)) {
 					GlobalScope.Put (name, DynValue.Nil);
 				}
 				Symbols symbols = GlobalScope.GetSymbols ();

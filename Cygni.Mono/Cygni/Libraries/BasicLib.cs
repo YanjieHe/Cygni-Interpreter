@@ -78,50 +78,25 @@ namespace Cygni.Libraries
 			return DynValue.FromTuple (new DynTuple (items));
 		}
 
-		public static DynValue cast (DynValue[] args)
+		public static DynValue type (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "cast");
-			string typeName = args [1].AsString ();
-			object obj = args [0].Value;
-			switch (typeName.ToLower ()) {
-			case "int16":
-				return DynValue.FromUserData (Convert.ToInt16 (obj));
-			case "int":
-			case "int32":
-				return DynValue.FromUserData (Convert.ToInt32 (obj));
-			case "long":
-			case "int64":
-				return DynValue.FromUserData (Convert.ToInt64 (obj));
-			case "float":
-			case "single":
-				return DynValue.FromUserData (Convert.ToSingle (obj));
-			case "double":
-			case "number":
-				return DynValue.FromNumber (Convert.ToDouble (obj));
-			case "bool":
-			case "boolean":
-				return DynValue.FromBoolean (Convert.ToBoolean (obj));
-			case "string":
-				return DynValue.FromString (Convert.ToString (obj));
-			case "char":
-				return DynValue.FromUserData (Convert.ToChar (obj));
-			case "datetime":
-			case "date":
-			case "time":
-				return DynValue.FromUserData (Convert.ToDateTime (obj));
-			default:
-				return DynValue.FromObject (Convert.ChangeType (obj, Type.GetType (typeName)));
-			}
+			RuntimeException.FuncArgsCheck (args.Length == 1, "type");
+			if (args [0].type != DataType.UserData)
+				return args [0].type.ToString ();
+			else
+				return args [0].Value.GetType ().Name;
 		}
 
-		public static DynValue getType (DynValue[] args)
+		public static DynValue toInteger (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "getType");
-			if (args [0].type != DataType.UserData)
-				return DynValue.FromString (args [0].type.ToString ());
+			RuntimeException.FuncArgsCheck (args.Length == 1, "toInteger");
+			var value = args [0];
+			if (value.type == DataType.Integer)
+				return value;
 			else
-				return DynValue.FromString (args [0].GetDynType ().Name);
+				return Convert.ToInt64 (value.Value);
 		}
+
 
 		public static DynValue toNumber (DynValue[] args)
 		{
@@ -168,9 +143,9 @@ namespace Cygni.Libraries
 			return Console.ReadLine ();
 		}
 
-		public static DynValue LoadLibrary (DynValue[]args)
+		public static DynValue LoadLibrary (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "CSharpDll");
+			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "CSharpDll");
 			string filepath = args [0].AsString ();
 			string class_name = args [1].AsString ();
 
@@ -180,23 +155,35 @@ namespace Cygni.Libraries
 			}
 
 			Assembly assembly = Assembly.LoadFile (filepath);
-			Type t = assembly.GetType (class_name, true, true);  //namespace.class
-			MethodInfo[] methods = t.GetMethods ();
-			var list = new List<StructureItem> ();
+			Type t = assembly.GetType (name: class_name, throwOnError: true, ignoreCase: true);  //namespace.class
+			if (args.Length == 2) {
+				MethodInfo[] methods = t.GetMethods ();
+				var list = new List<StructureItem> ();
 
-			foreach (MethodInfo method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
-				ParameterInfo[] parameters = method.GetParameters ();
-				if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
-					string method_name = method.Name;
-					Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
-					StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (method_name, f));
-					list.Add (item);
+				foreach (MethodInfo method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
+					ParameterInfo[] parameters = method.GetParameters ();
+					if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
+						string method_name = method.Name;
+						Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
+						StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (method_name, f));
+						list.Add (item);
+					}
+				}
+				var arr = new StructureItem[list.Count];
+				list.CopyTo (arr);
+				Structure structure = new Structure (arr);
+				return DynValue.FromStructure (structure);
+			} else {
+				string funcName = args [2].AsString ();
+				MethodInfo method = t.GetMethod (funcName);
+				Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
+				if (f == null) {
+					throw new RuntimeException ("cannot load native function '{0}' from class '{1}' in '{2}'.", funcName, class_name, filepath);
+				} else {
+					return DynValue.FromDelegate (method.Name, f);
 				}
 			}
-			var arr = new StructureItem[list.Count];
-			list.CopyTo (arr);
-			Structure structure = new Structure (arr);
-			return DynValue.FromStructure (structure);
+
 		}
 
 		public static DynValue console_clear (DynValue[]args)
@@ -246,14 +233,6 @@ namespace Cygni.Libraries
 		public static DynValue console_readKey (DynValue[]args)
 		{
 			return (double)Console.ReadKey ().KeyChar;
-		}
-
-		public static DynValue dispose (DynValue[] args)
-		{
-			for (int i = 0; i < args.Length; i++) {
-				args [i].As<IDisposable> ().Dispose ();
-			}
-			return DynValue.Nil;
 		}
 
 		public static DynValue exit (DynValue[] args)
@@ -331,6 +310,7 @@ namespace Cygni.Libraries
 				return DynValue.False;
 			}
 		}
+
 		static readonly string[] StrFieldNames = new string[] {
 			"length", "replace", "format", "join", "split", "find", "lower", "upper", "trim", "trimStart", "trimEnd", "slice"
 		};

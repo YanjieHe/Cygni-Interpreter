@@ -7,10 +7,10 @@ using Cygni.DataTypes.Interfaces;
 using System.Linq;
 namespace CygniLib.Collections
 {
-	public class array2:IIndexable,IDot
+	public class CygniArray2:IIndexable,IDot
 	{
 		DynValue[,] values;
-		public array2 (int row,int col)
+		public CygniArray2 (int row,int col)
 		{
 			values = new DynValue[row,col];
 			for (int i = 0; i < row; i++)
@@ -18,18 +18,18 @@ namespace CygniLib.Collections
 					values [i, j] = DynValue.Nil;
 		}
 		public DynValue GetByIndex (DynValue index){
-			throw new RuntimeException ("bad number of arguments for indexer of 'array2'.");
+			throw new RuntimeException ("bad number of arguments for indexer of 'Array2'.");
 		}
 		public DynValue SetByIndex (DynValue index, DynValue value){
-			throw new RuntimeException ("bad number of arguments for indexer of 'array2'.");
+			throw new RuntimeException ("bad number of arguments for indexer of 'Array2'.");
 		}
 		public DynValue GetByIndexes (DynValue[] indexes){
-			RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
+			RuntimeException.IndexerArgsCheck (indexes.Length == 2, "Array2");
 			return values [(int)indexes [0].AsNumber (),
 				   (int)indexes[1].AsNumber()];
 		}
 		public DynValue SetByIndexes (DynValue[] indexes, DynValue value){
-			RuntimeException.IndexerArgsCheck (indexes.Length == 2, "array2");
+			RuntimeException.IndexerArgsCheck (indexes.Length == 2, "Array2");
 			return values [(int)indexes [0].AsNumber (),
 				   (int)indexes[1].AsNumber()] = value;
 		}
@@ -45,7 +45,7 @@ namespace CygniLib.Collections
 				case "nCols":
 					return (double)values.GetLength (1);
 				default:
-					throw RuntimeException.FieldNotExist ("array2", fieldName);
+					throw RuntimeException.FieldNotExist ("Array2", fieldName);
 			}
 		}
 

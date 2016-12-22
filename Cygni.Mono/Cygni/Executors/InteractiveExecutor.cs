@@ -11,6 +11,7 @@ using Cygni.Settings;
 using Cygni.Lexical.Tokens;
 using System.Text.RegularExpressions;
 using Cygni.AST.Scopes;
+using Cygni.Errors;
 
 namespace Cygni.Executors
 {
@@ -19,19 +20,21 @@ namespace Cygni.Executors
 	/// </summary>
 	public class InteractiveExecutor:Executor
 	{
-		readonly LinkedList<string> list;
+		readonly StringBuilder input;
 		/* storage of code. */
 		readonly Stack<Tag> stack;
 		private DynValue result;
+
 		public override DynValue Result {
 			get {
 				return this.result;
 			}
 		}
+
 		public InteractiveExecutor (IScope GlobalScope)
 			: base (GlobalScope)
 		{
-			list = new LinkedList<string> ();
+			input = new StringBuilder ();
 			stack = new Stack<Tag> ();
 		}
 
@@ -43,24 +46,31 @@ namespace Cygni.Executors
 					Console.ForegroundColor = ConsoleColor.Cyan;
 					Console.Write ("Cygni> ");
 					Console.ForegroundColor = ConsoleColor.White;
-Start:
+
+					Start:
 					string line = Console.ReadLine ();
-					list.AddLast (line);
-					string code = string.Join ("\n", list);
-					var state = TryParse (code);
+					input.Append (line).Append ('\n');
+					string code = input.ToString ();
+					InteractiveState state = TryParse (code);
+
 					if (state == InteractiveState.Error) {
-						list.Clear ();
+						input.Clear ();
+
 						Console.ForegroundColor = ConsoleColor.Cyan;
 						Console.Write ("Cygni> ");
 						Console.ForegroundColor = ConsoleColor.White;
+
 						goto Start;
 					} else if (state == InteractiveState.Waiting) {
+						
 						Console.ForegroundColor = ConsoleColor.Cyan;
 						Console.Write ("     -> ");
 						Console.ForegroundColor = ConsoleColor.White;
+
 						goto Start;
 					} else {
-						list.Clear ();
+						input.Clear ();
+
 						using (var sr = new StringReader (code)) {
 							var lexer = new Lexer (1, sr); 
 							/* In the interative mode, the lexer always starts at line 1. */
@@ -72,7 +82,9 @@ Start:
 								Console.WriteLine (Result);
 							}
 						}
+
 					}
+
 				} catch (Exception ex) {
 					Console.ForegroundColor = ConsoleColor.Red;
 					if (GlobalSettings.CompleteErrorOutput)
@@ -85,48 +97,46 @@ Start:
 
 		InteractiveState TryParse (string code)
 		{
-			if (stack.Count > 0){
+			if (stack.Count > 0) {
 				stack.Clear ();
 			}
 			try {
 				using (var sr = new StringReader (code)) {
 					var lexer = new Lexer (1, sr);
 					while (true) {
-						var tok = lexer.Scan ();
+						Token tok = lexer.Scan ();
 						switch (tok.tag) {
-							case Tag.LeftParenthesis:
-							case Tag.LeftBrace:
-							case Tag.LeftBracket:
-								stack.Push (tok.tag); /* push '(' '[' '{' */
+						case Tag.LeftParenthesis:
+						case Tag.LeftBrace:
+						case Tag.LeftBracket:
+							stack.Push (tok.tag); /* push '(' '[' '{' */
+							break;
+						case Tag.RightParenthesis:
+							if (stack.Count != 0 && stack.Peek () == Tag.LeftParenthesis) { // get '(', match ')'
+								stack.Pop ();
 								break;
-							case Tag.RightParenthesis:
-								if (stack.Peek () == Tag.LeftParenthesis) { // get '(', match ')'
-									stack.Pop ();
-									break;
-								}
-								else {
-									return InteractiveState.Error;
-								}
-							case Tag.RightBracket:
-								if (stack.Peek() == Tag.LeftBracket) { // get '[', match ']'
-									stack.Pop();
-									break;
-								} else {
-									return InteractiveState.Error;
-								}
-							case Tag.RightBrace:
-								if (stack.Peek () == Tag.LeftBrace) { // get '{', match '}'
-									stack.Pop ();
-									break;
-								}
-								else {
-									return InteractiveState.Error;
-								}
-							case Tag.EOF:
-								goto Finish;
+							} else {
+								throw SyntaxException.Unexpected (lexer.LineNumber, ")");
+							}
+						case Tag.RightBracket:
+							if (stack.Count != 0 && stack.Peek () == Tag.LeftBracket) { // get '[', match ']'
+								stack.Pop ();
+								break;
+							} else {
+								throw SyntaxException.Unexpected (lexer.LineNumber, "]");
+							}
+						case Tag.RightBrace:
+							if (stack.Count != 0 && stack.Peek () == Tag.LeftBrace) { // get '{', match '}'
+								stack.Pop ();
+								break;
+							} else {
+								throw SyntaxException.Unexpected (lexer.LineNumber, "}");
+							}
+						case Tag.EOF:
+							goto Finish;
 						}
 					}
-Finish:
+					Finish:
 					return stack.Count == 0 ? InteractiveState.Success : InteractiveState.Waiting;
 				}
 			} catch (Exception ex) {
@@ -145,5 +155,6 @@ Finish:
 			Error,
 			Success,
 		}
+
 	}
 }

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
+﻿using System;
 
 namespace Cygni.Lexical.Tokens
 {
@@ -16,8 +12,12 @@ namespace Cygni.Lexical.Tokens
 		Sub,
 		Mul,
 		Div,
+		IntDiv,
 		Mod,
 		Pow,
+
+		/* String Operators */
+		Concatenate,
 
 		/*Logical Operators */
 		And,
@@ -35,9 +35,16 @@ namespace Cygni.Lexical.Tokens
 		LessOrEqual,
 		GreaterOrEqual,
 
-
+		/* Built-in Constant Values */
 		True,
 		False,
+		Nil,
+
+		/* Constant Values */
+		Integer,
+		Number,
+		String,
+		ID,
 
 		/* Statements */
 		If,
@@ -46,22 +53,20 @@ namespace Cygni.Lexical.Tokens
 		While,
 		For,
 		ForEach,
+		In,
 		Define,
 		Lambda,
 		Class,
 		Local,
-		Global,
-		Set,
 		Unpack,
 
-
-		Number,
-		String,
-		ID,
-
+		/* Separators */
 		Comma,
 		Colon,
 		Semicolon,
+		Dot,
+
+		/* Brackets */
 		LeftParenthesis,
 		RightParenthesis,
 		LeftBracket,
@@ -74,9 +79,6 @@ namespace Cygni.Lexical.Tokens
 		Continue,
 		Return,
 
-		Dot,
-		In,
-		Nil,
 		EOF,
 		EOL,
 	}

@@ -29,40 +29,6 @@ namespace Cygni.Lexical.Tokens
 			case "not":
 				return Not;
 
-			/* relation */
-			case "==":
-				return Eq;
-			case "!=":
-				return Neq;
-			case "<":
-				return Less;
-			case ">":
-				return Greater;
-			case "<=":
-				return LessOrEqual;
-			case ">=":
-				return GreaterOrEqual;
-
-			/* arithmetic */
-			case "+":
-				return Add;
-			case "-":
-				return Sub;
-			case "*":
-				return Mul;
-			case "/":
-				return Div;
-			case "%":
-				return Mod;
-			case "^":
-				return Pow;
-
-
-			case "=":
-				return Assign;
-			case "=>":
-				return GoesTo;
-
 			/* keywords */
 			case "if":
 				return If;
@@ -92,10 +58,6 @@ namespace Cygni.Lexical.Tokens
 				return Class;
 			case "local":
 				return Local;
-			case "global":
-				return Global;
-			case "set":
-				return Set;
 			case "unpack":
 				return Unpack;
 
@@ -106,29 +68,6 @@ namespace Cygni.Lexical.Tokens
 				return False;
 			case "nil":
 				return Nil;
-
-			case ",":
-				return Comma;
-			case ":":
-				return Colon;
-			case ";":
-				return Semicolon;
-			case "(":
-				return LP;
-			case ")":
-				return RP;
-			case"[":
-				return LBracket;
-			case "]":
-				return RBracket;
-			case "{":
-				return LBrace;
-			case "}":
-				return RBrace;
-			case ".":
-				return Dot;
-			case "\\n":
-				return EOL;
 			default:
 				return new Word (text, Tag.ID);
 			}
@@ -137,7 +76,7 @@ namespace Cygni.Lexical.Tokens
 		public static readonly Word
 			And = new Word ("and", Tag.And), Or = new Word ("or", Tag.Or),
 			Not = new Word ("not", Tag.Not),
-			Eq = new Word ("==", Tag.Equal), Neq = new Word ("!=", Tag.NotEqual),
+			Equal = new Word ("==", Tag.Equal), NotEqual = new Word ("!=", Tag.NotEqual),
 			Assign = new Word ("=", Tag.Assign),
 			GoesTo = new Word ("=>", Tag.GoesTo),
 			Less = new Word ("<", Tag.Less), Greater = new Word (">", Tag.Greater),
@@ -148,6 +87,9 @@ namespace Cygni.Lexical.Tokens
 			Mul = new Word ("*", Tag.Mul), Div = new Word ("/", Tag.Div),
 			Mod = new Word ("%", Tag.Mod), Pow = new Word ("^", Tag.Pow),
 			
+			IntDiv = new Word ("//", Tag.IntDiv),
+			Concatenate = new Word ("..", Tag.Concatenate),
+
 			If = new Word ("if", Tag.If), Else = new Word ("else", Tag.Else),
 			ElseIf = new Word ("elif", Tag.ElseIf),
 			While = new Word ("while", Tag.While),
@@ -157,8 +99,6 @@ namespace Cygni.Lexical.Tokens
 			Lambda = new Word ("lambda", Tag.Lambda),
 			Class = new Word ("class", Tag.Class),
 			Local = new Word ("local", Tag.Local),
-			Global = new Word ("global", Tag.Global),
-			Set = new Word ("set", Tag.Set),
 			Unpack = new Word ("unpack", Tag.Unpack),
 				
 

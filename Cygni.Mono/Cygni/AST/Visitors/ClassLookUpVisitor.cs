@@ -40,6 +40,10 @@ namespace Cygni.AST.Visitors
 		}
 		internal override void Visit (DefClassEx defClassEx)
 		{
+			if (defClassEx.Parent != null) {
+				this.Visit(defClassEx.Parent);
+			}
+
 			Symbols outerSymbols = this.symbols;
 			Symbols newSymbols = new Symbols(this.symbols);
 			this.symbols = newSymbols;

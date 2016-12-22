@@ -35,7 +35,7 @@ namespace Cygni.DataTypes
 		{
 			DynValue result = body.Eval (funcScope);
 			return result.type == DataType.Return
-				? (DynValue)result.Value
+				? result.Value as DynValue
 				: DynValue.Nil;
 		}
 

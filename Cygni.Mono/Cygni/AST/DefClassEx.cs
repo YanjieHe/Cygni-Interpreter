@@ -17,23 +17,21 @@ namespace Cygni.AST
 	/// </summary>
 	public class DefClassEx:ASTNode
 	{
-		string name;
-		BlockEx body;
-
-		public BlockEx Body{ get { return body; } }
-
-		string parentName;
+		readonly string name;
+		readonly BlockEx body;
+		readonly NameEx parent;
 		Symbols fields;
 
+		public BlockEx Body { get { return body; } }
+		public NameEx Parent { get { return parent; } }
 		internal Symbols Fields { get { return this.fields; } set { this.fields = value; } }
-
 		public  override NodeType type { get { return NodeType.DefClass; } }
 
-		public DefClassEx (string name, BlockEx body, string parentName)
+		public DefClassEx (string name, BlockEx body, NameEx parent)
 		{
 			this.name = name;
 			this.body = body;
-			this.parentName = parentName;
+			this.parent = parent;
 		}
 
 		public override DynValue Eval (IScope scope)
@@ -42,20 +40,43 @@ namespace Cygni.AST
 				throw new Exception ("Scope Error");
 			}
 			ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
-			if (GlobalScope.HasName (name)) {
+			if (!GlobalScope.HasName (name)) {
 				GlobalScope.Put (name, DynValue.Nil);
 			}
+
 			Symbols symbols = GlobalScope.GetSymbols ();
 			ClassLookUpVisitor visitor = new ClassLookUpVisitor (symbols);
 			this.Accept (visitor);
-			DynValue[] values = new DynValue[this.fields.Count];
-			for (int i = 0; i < values.Length; i++) {
-				values [i] = DynValue.Nil;
+			DynValue[] values;
+			DynObject parentClass;
+			if (this.parent != null) {
+				parentClass = parent.Eval (scope).As<DynObject> ();
+				Dictionary<string, DynValue> parentFields = parentClass.GetFields();
+
+				foreach (var item in parentFields) {
+					this.fields.PutLocal(item.Key);
+				}
+				values = new DynValue[this.fields.Count];
+				for (int i = 0; i < values.Length; i++) {
+					values [i] = DynValue.Nil;
+				}
+				foreach (var item in parentFields) {
+					int index = this.fields.Find(item.Key);
+					values[index] = item.Value;
+				}
+			} else {
+
+				parentClass = null;
+				values = new DynValue[this.fields.Count];
+				for (int i = 0; i < values.Length; i++) {
+					values [i] = DynValue.Nil;
+				}
 			}
+
 			ClassScope classScope = new ClassScope (name, 
-				                        this.fields.GetTable (), values, scope);
+					this.fields.GetTable (), values, scope);
 			this.body.Eval (classScope);
-			DynValue newClass = new DynObject (classScope, false, null);
+			DynValue newClass = new DynObject (classScope, false, parentClass);
 			return GlobalScope.Put (name, newClass);
 		}
 

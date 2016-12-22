@@ -16,38 +16,43 @@ namespace Cygni.AST
 	{
 		readonly ASTNode condition;
 		readonly BlockEx body;
+
 		public	ASTNode Condition{ get { return condition; } }
+
 		public	BlockEx Body{ get { return body; } }
+
 		public  override NodeType type { get { return NodeType.While; } }
-		
-		public WhileEx(ASTNode condition, BlockEx body)
+
+		public WhileEx (ASTNode condition, BlockEx body)
 		{
 			this.condition = condition;
 			this.body = body;
 		}
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
 			DynValue result = DynValue.Nil;
 			for (;;) {
-				if ((bool)condition.Eval(scope).Value) {
-					result = body.Eval(scope);
+				if (condition.Eval (scope).AsBoolean ()) {
+					result = body.Eval (scope);
 					switch (result.type) {
-						case DataType.Break:
-							return DynValue.Nil;
-						case DataType.Continue:
-							continue;
-						case DataType.Return:
-							return result;
+					case DataType.Break:
+						return DynValue.Nil;
+					case DataType.Continue:
+						continue;
+					case DataType.Return:
+						return result;
 					}
 				} else
 					return result;
 			}
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
-			return string.Concat(" while ", condition, body);
+			return string.Concat (" while ", condition, body);
 		}
-	
+
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);
