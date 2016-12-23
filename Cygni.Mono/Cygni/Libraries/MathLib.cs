@@ -142,5 +142,26 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "truncate");
 			return Math.Truncate (args [0].AsNumber ());
 		}
+		internal static long IntegerPow(long x, int n)
+		{
+			if (n == 0) {
+				return 1L;
+			} else {
+				while ((n & 1) == 0) {
+					n >>= 1;
+					x *= x;
+				}
+			}
+			long result = x;
+			n >>= 1;
+			while (n != 0) {
+				x *= x;
+				if ((n & 1) != 0) {
+					result *= x;
+				}
+				n >>= 1;
+			}
+			return result;
+		}
 	}
 }

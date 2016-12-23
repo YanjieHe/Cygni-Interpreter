@@ -53,7 +53,7 @@ namespace Cygni.Libraries
 			{ "getwd",BasicLib.getwd },
 			{ "setwd",BasicLib.setwd },
 
-			{ "import",BasicLib.import },
+			{ "require",BasicLib.require },
 
 			{ "strcat",StrLib.strcat },
 			{ "strcmp",StrLib.strcmp },
@@ -128,6 +128,7 @@ namespace Cygni.Libraries
 			{ "source", Commands.source },
 			{ "cond", Commands.cond },
 			{ "assert", Commands.assert },
+			{ "import", Commands.import },
 		};
 
 	}

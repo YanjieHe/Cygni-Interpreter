@@ -69,7 +69,54 @@ namespace Cygni.Libraries
 			}
 		}
 
-	
+		private static readonly Dictionary<string, BlockEx> ModulesCache 
+		= new Dictionary<string, BlockEx> ();
+
+		public static DynValue import (ASTNode[] args, IScope scope)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "import");
+			if (scope.type != ScopeType.ResizableArray) {
+				throw new RuntimeException ("command 'import' can only be executed in global scope.");
+			} else {
+
+				string moduleName = args [0].Eval (scope).AsString ();
+				Encoding encoding;
+				if (args.Length == 2) {
+					encoding = Encoding.GetEncoding (args [1].Eval (scope).AsString ());
+				} else {
+					encoding = Encoding.Default;
+				}
+				string currentDir = GlobalSettings.CurrentDirectory;
+
+				if (!Path.HasExtension (moduleName))
+					moduleName = Path.ChangeExtension (moduleName, "cyg");
+				
+				string filePath = currentDir + "/lib/" + moduleName;
+
+				BlockEx program;
+				if (ModulesCache.TryGetValue (filePath, out program)) {
+					program.Eval (scope);
+					return DynValue.Nil;
+				} else {
+					
+					bool quiet = GlobalSettings.Quiet;
+					GlobalSettings.Quiet = true;
+
+					if (!File.Exists (filePath))
+						throw new RuntimeException ("No module named '{0}.", moduleName);
+
+					ResizableArrayScope globalScope = scope as ResizableArrayScope;
+					CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
+
+					program = executor.Load ();
+					ModulesCache.Add (filePath, program);
+					program.Eval (scope);
+					GlobalSettings.Quiet = quiet;
+					return DynValue.Nil;
+				}
+			}
+		}
+
 		public static DynValue Scope (DynValue[] args, IScope scope)
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 1, "scope");

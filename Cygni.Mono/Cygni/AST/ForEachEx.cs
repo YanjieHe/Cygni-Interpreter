@@ -52,7 +52,7 @@ namespace Cygni.AST
 					return result;
 				}
 			}
-			return result;
+			return DynValue.Nil;
 		}
 
 		internal override void Accept (ASTVisitor visitor)

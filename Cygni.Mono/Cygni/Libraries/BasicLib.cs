@@ -339,12 +339,12 @@ namespace Cygni.Libraries
 			return DynValue.Nil;
 		}
 
-		private static readonly Dictionary<string, DynValue> ModulesCache 
-		= new Dictionary<string, DynValue> ();
+		private static readonly Dictionary<string, ResizableArrayScope> ModulesCache 
+		= new Dictionary<string, ResizableArrayScope> ();
 
-		public static DynValue import (DynValue[] args)
+		public static DynValue require (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "import");
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "require");
 			string moduleName = args [0].AsString ();
 			Encoding encoding;
 			if (args.Length == 2) {
@@ -359,9 +359,9 @@ namespace Cygni.Libraries
 				moduleName = Path.ChangeExtension (moduleName, "cyg");
 
 			string filePath = currentDir + "/lib/" + moduleName;
-			DynValue Result;
+			ResizableArrayScope Result;
 			if (ModulesCache.TryGetValue (filePath, out Result)) {
-				return Result;
+				return DynValue.FromUserData(Result);
 			} else {
 
 				bool quiet = GlobalSettings.Quiet;
@@ -375,14 +375,8 @@ namespace Cygni.Libraries
 				CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
 				GlobalSettings.Quiet = quiet;
 				executor.Run ();
-				DynValue value = executor.Result; 
-				if (value.type != DataType.Return) {
-					throw new RuntimeException ("Module file should return value at the end of the file");
-				} else {
-					Result = (DynValue)value.Value;
-					ModulesCache.Add (filePath, Result);
-					return Result;
-				}
+				return DynValue.FromUserData(globalScope);
+
 			}
 		}
 

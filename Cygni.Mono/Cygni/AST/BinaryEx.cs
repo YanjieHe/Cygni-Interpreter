@@ -8,6 +8,7 @@ using Cygni.Extensions;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
 using Cygni.Errors;
+using Cygni.Libraries;
 using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.AST
@@ -40,193 +41,203 @@ namespace Cygni.AST
 		public override DynValue Eval (IScope scope)
 		{
 			DynValue lvalue = left.Eval (scope);
+			DynValue rvalue;
 			switch (op) {
 			case BinaryOp.Add:
 				{
-					DynValue rvalue = right.Eval (scope);
+
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Integer, a + (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, ((double)a) + (double)rvalue.Value);
+
+						if (rvalue.type == DataType.Integer) { /* integer + integer */
+							return new DynValue (DataType.Integer, (long)lvalue.Value + (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* integer + number */
+							return new DynValue (DataType.Number, (double)(long)lvalue.Value + (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
+
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, a + (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, a + (double)rvalue.Value);
+
+						if (rvalue.type == DataType.Integer) { /* number + integer */
+							return new DynValue (DataType.Number, (double)lvalue.Value + (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* number + number */
+							return new DynValue (DataType.Number, (double)lvalue.Value + (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
+
 					} else {
-						return lvalue.As<IComputable> ().Add (right.Eval (scope));
+						return lvalue.As<IComputable> ().Add (rvalue);
 					}
+
 				}
 			case BinaryOp.Sub:
 				{
-					DynValue rvalue = right.Eval (scope);
+
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Integer, a - (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, ((double)a) - (double)rvalue.Value);
+
+						if (rvalue.type == DataType.Integer) { /* integer - integer */
+							return new DynValue (DataType.Integer, (long)lvalue.Value - (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* integer - number */
+							return new DynValue (DataType.Number, (double)(long)lvalue.Value - (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
+
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, a - (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, a - (double)rvalue.Value);
+
+						if (rvalue.type == DataType.Integer) { /* number - integer */
+							return new DynValue (DataType.Number, (double)lvalue.Value - (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* number - number */
+							return new DynValue (DataType.Number, (double)lvalue.Value - (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
+
 					} else {
-						return lvalue.As<IComputable> ().Subtract (right.Eval (scope));
+						return lvalue.As<IComputable> ().Subtract (rvalue);
 					}
+
 				}
 			case BinaryOp.Mul:
 				{
-					DynValue rvalue = right.Eval (scope);
+
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Integer, a * (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, ((double)a) * (double)rvalue.Value);
+
+						if (rvalue.type == DataType.Integer) { /* integer * integer */
+							return new DynValue (DataType.Integer, (long)lvalue.Value * (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* integer * number */
+							return new DynValue (DataType.Number, (double)(long)lvalue.Value * (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
+
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, a * (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, a * (double)rvalue.Value);
+
+						if (rvalue.type == DataType.Integer) { /* number * integer */
+							return new DynValue (DataType.Number, (double)lvalue.Value * (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* number * number */
+							return new DynValue (DataType.Number, (double)lvalue.Value * (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
+
 					} else {
-						return lvalue.As<IComputable> ().Multiply (right.Eval (scope));
+						return lvalue.As<IComputable> ().Multiply (rvalue);
 					}
+
 				}
 			case BinaryOp.Div:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, ((double)a) / ((double)(long)rvalue.Value));
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, ((double)a) / (double)rvalue.Value);
+						if (rvalue.type == DataType.Integer) { /* integer / integer */
+							return new DynValue (DataType.Number, ((double)(long)lvalue.Value) / ((double)(long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* integer / number */
+							return new DynValue (DataType.Number, ((double)(long)lvalue.Value / (double)rvalue.Value));
 						} else {
 							goto BinaryOperationError;
 						}
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, a / ((double)(long)rvalue.Value));
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, a / (double)rvalue.Value);
+						if (rvalue.type == DataType.Integer) { /* number / integer */
+							return new DynValue (DataType.Number, ((double)lvalue.Value) / ((double)(long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* number / number */
+							return new DynValue (DataType.Number, ((double)lvalue.Value) / (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComputable> ().Divide (right.Eval (scope));
+						return lvalue.As<IComputable> ().Divide (rvalue);
 					}
 				}
 			case BinaryOp.IntDiv:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Integer, ((long)a) / ((long)rvalue.Value));
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, ((long)a) / (long)(double)rvalue.Value);
+						if (rvalue.type == DataType.Integer) { /* integer // integer */
+							return new DynValue (DataType.Integer, ((long)lvalue.Value) / ((long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* integer // number */
+							return new DynValue (DataType.Integer, ((long)lvalue.Value) / (long)(double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, (long)a / ((long)rvalue.Value));
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, (long)a / (long)(double)rvalue.Value);
+						if (rvalue.type == DataType.Integer) { /* number // integer */
+							return new DynValue (DataType.Integer, ((long)(double)lvalue.Value) / ((long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* number // number */
+							return new DynValue (DataType.Integer, ((long)(double)lvalue.Value) / (long)(double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComputable> ().Divide (right.Eval (scope));
+						return lvalue.As<IComputable> ().Divide (rvalue);
 					}
 				}
 			case BinaryOp.Mod:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Integer, a % (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, ((double)a) % (double)rvalue.Value);
+						if (rvalue.type == DataType.Integer) { /* integer % integer */
+							return new DynValue (DataType.Integer, (long)lvalue.Value % (long)rvalue.Value);
+						} else if (rvalue.type == DataType.Number) { /* integer % number */
+							return new DynValue (DataType.Number, ((double)(long)lvalue.Value) % (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, a % (long)rvalue.Value);
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, a % (double)rvalue.Value);
+						if (rvalue.type == DataType.Integer) { /* number % integer */
+							return new DynValue (DataType.Number, ((double)lvalue.Value) % ((double)(long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* number % number */
+							return new DynValue (DataType.Number, ((double)lvalue.Value) % (double)rvalue.Value);
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComputable> ().Modulo (right.Eval (scope));
+						return lvalue.As<IComputable> ().Modulo (rvalue);
 					}
 				}
 			case BinaryOp.Pow:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Integer, (long)Math.Pow (a, (long)rvalue.Value));
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, Math.Pow (((double)a), (double)rvalue.Value));
+						if (rvalue.type == DataType.Integer) { /* integer ^ integer */
+							return new DynValue (DataType.Integer, MathLib.IntegerPow((long)lvalue.Value, (int)(long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* integer ^ number */
+							return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, (double)rvalue.Value));
 						} else {
 							goto BinaryOperationError;
 						}
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return new DynValue (DataType.Number, Math.Pow (a, (long)rvalue.Value));
-						} else if (rvalue.type == DataType.Number) {
-							return new DynValue (DataType.Number, Math.Pow (a, (double)rvalue.Value));
+						if (rvalue.type == DataType.Integer) { /* number ^ integer */
+							return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, (long)rvalue.Value));
+						} else if (rvalue.type == DataType.Number) { /* number ^ number */
+							return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, (double)rvalue.Value));
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComputable> ().Power (right.Eval (scope));
+						return lvalue.As<IComputable> ().Power (rvalue);
 					}
 
 				}
 			case BinaryOp.Concatenate:
 				{
-					DynValue rvalue = right.Eval (scope);
-					return lvalue.Value.ToString () + rvalue.Value.ToString ();
+					rvalue = right.Eval (scope);
+					return new DynValue(DataType.String, lvalue.Value.ToString () + rvalue.Value.ToString ());
 				}
 			case BinaryOp.And:/* shortcut evaluate*/
 				{
 					if (lvalue.type == DataType.Boolean) {
 						if ((bool)lvalue.Value) {
-							return right.Eval (scope).AsBoolean ();
+							rvalue = right.Eval(scope);	
+							if (rvalue.type == DataType.Boolean) {
+								return (bool)rvalue.Value?DynValue.True:DynValue.False;
+							} else {
+								goto BinaryOperationError;
+							}
 						} else {
 							return DynValue.False;
 						}
@@ -239,7 +250,12 @@ namespace Cygni.AST
 					if ((bool)lvalue.Value) {
 						return DynValue.True;/* shortcut evaluate*/
 					} else {
-						return right.Eval (scope).AsBoolean ();
+						rvalue = right.Eval(scope);
+						if (rvalue.type == DataType.Boolean) {
+							return (bool)rvalue.Value?DynValue.True:DynValue.False;
+						}else {
+					goto BinaryOperationError;
+						}
 					}
 				} else {
 					goto BinaryOperationError;
@@ -247,165 +263,149 @@ namespace Cygni.AST
 
 			case BinaryOp.Less:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  (a < (long)rvalue.Value) ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return ((double)a) < (double)rvalue.Value ? DynValue.True : DynValue.False;
+						if (rvalue.type == DataType.Integer) { /* integer < integer */
+							return  (long)lvalue.Value < (long)rvalue.Value ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* integer < number */
+							return ((double)(long)lvalue.Value) < (double)rvalue.Value ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
-					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
+					} else if (lvalue.type == DataType.Number) { /* number < integer */
 						if (rvalue.type == DataType.Integer) {
-							return  a < (long)rvalue.Value ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return  a < (double)rvalue.Value ? DynValue.True : DynValue.False;
+							return  ((double)lvalue.Value) < ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* number < number */
+							return  ((double)lvalue.Value) < ((double)rvalue.Value) ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (right.Eval (scope)) < 0;
+						return lvalue.CompareTo (rvalue) < 0;
 					}
 				}
 
 			case BinaryOp.Greater:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  (a > (long)rvalue.Value) ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return ((double)a) > (double)rvalue.Value ? DynValue.True : DynValue.False;
+						if (rvalue.type == DataType.Integer) { /* integer > integer */
+							return  (long)lvalue.Value > (long)rvalue.Value ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* integer > number */
+							return ((double)(long)lvalue.Value) > (double)rvalue.Value ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
-					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
+					} else if (lvalue.type == DataType.Number) { /* number > integer */
 						if (rvalue.type == DataType.Integer) {
-							return  a > (long)rvalue.Value ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return  a > (double)rvalue.Value ? DynValue.True : DynValue.False;
+							return  ((double)lvalue.Value) > ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* number > number */
+							return  ((double)lvalue.Value) > ((double)rvalue.Value) ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (right.Eval (scope)) > 0;
+						return lvalue.CompareTo (rvalue) > 0;
 					}
 				}
 			case BinaryOp.LessOrEqual:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  (a <= (long)rvalue.Value) ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return ((double)a) <= (double)rvalue.Value ? DynValue.True : DynValue.False;
+						if (rvalue.type == DataType.Integer) { /* integer <= integer */
+							return  (long)lvalue.Value <= (long)rvalue.Value ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* integer <= number */
+							return ((double)(long)lvalue.Value) <= (double)rvalue.Value ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
-					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
+					} else if (lvalue.type == DataType.Number) { /* number <= integer */
 						if (rvalue.type == DataType.Integer) {
-							return  a <= (long)rvalue.Value ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return  a <= (double)rvalue.Value ? DynValue.True : DynValue.False;
+							return  ((double)lvalue.Value) <= ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* number <= number */
+							return  ((double)lvalue.Value) <= ((double)rvalue.Value) ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (right.Eval (scope)) <= 0;
+						return lvalue.CompareTo (rvalue) <= 0;
 					}
 				}
 			case BinaryOp.GreaterOrEqual:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  (a >= (long)rvalue.Value) ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return ((double)a) >= (double)rvalue.Value ? DynValue.True : DynValue.False;
+						if (rvalue.type == DataType.Integer) { /* integer >= integer */
+							return  (long)lvalue.Value >= (long)rvalue.Value ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* integer >= number */
+							return ((double)(long)lvalue.Value) >= (double)rvalue.Value ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
-					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
+					} else if (lvalue.type == DataType.Number) { /* number >= integer */
 						if (rvalue.type == DataType.Integer) {
-							return  a >= (long)rvalue.Value ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return  a >= (double)rvalue.Value ? DynValue.True : DynValue.False;
+							return  ((double)lvalue.Value) >= ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* number >= number */
+							return  ((double)lvalue.Value) >= ((double)rvalue.Value) ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (right.Eval (scope)) >= 0;
+						return lvalue.CompareTo (rvalue) >= 0;
 					}
+
 				}
 			case BinaryOp.Equal:
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  (a == (long)rvalue.Value) ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return ((double)a) == (double)rvalue.Value ? DynValue.True : DynValue.False;
+						if (rvalue.type == DataType.Integer) { /* integer == integer */
+							return  ((long)lvalue.Value == (long)rvalue.Value) ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* integer == number */
+							return ((double)(long)lvalue.Value) == (double)rvalue.Value ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  a == (long)rvalue.Value ? DynValue.True : DynValue.False;
-						} else if (rvalue.type == DataType.Number) {
-							return  a == (double)rvalue.Value ? DynValue.True : DynValue.False;
+						if (rvalue.type == DataType.Integer) { /* number == integer */
+							return  (double)lvalue.Value == (double)(long)rvalue.Value ? DynValue.True : DynValue.False;
+						} else if (rvalue.type == DataType.Number) { /* number == number */
+							return  (double)lvalue.Value == (double)rvalue.Value ? DynValue.True : DynValue.False;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.Equals (right.Eval (scope)) ? DynValue.True : DynValue.False;
+						return lvalue.Equals (rvalue) ? DynValue.True : DynValue.False;
 					}
 				}
 			
 			default:/* BinaryOp.NotEqual */
 				{
-					DynValue rvalue = right.Eval (scope);
+					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
-						long a = (long)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  (a == (long)rvalue.Value) ? DynValue.False : DynValue.True;
-						} else if (rvalue.type == DataType.Number) {
-							return ((double)a) == (double)rvalue.Value ? DynValue.False : DynValue.True;
+						if (rvalue.type == DataType.Integer) { /* integer != integer */
+							return  ((long)lvalue.Value == (long)rvalue.Value) ? DynValue.False : DynValue.True;
+						} else if (rvalue.type == DataType.Number) { /* integer != number */
+							return ((double)(long)lvalue.Value) == (double)rvalue.Value ? DynValue.False : DynValue.True;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else if (lvalue.type == DataType.Number) {
-						double a = (double)lvalue.Value;
-						if (rvalue.type == DataType.Integer) {
-							return  a == (long)rvalue.Value ? DynValue.False : DynValue.True;
-						} else if (rvalue.type == DataType.Number) {
-							return  a == (double)rvalue.Value ? DynValue.False : DynValue.True;
+						if (rvalue.type == DataType.Integer) { /* number != integer */
+							return  (double)lvalue.Value == (double)(long)rvalue.Value ? DynValue.False : DynValue.True;
+						} else if (rvalue.type == DataType.Number) { /* number != number */
+							return  (double)lvalue.Value == (double)rvalue.Value ? DynValue.False : DynValue.True;
 						} else {
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.Equals (right.Eval (scope)) ? DynValue.False : DynValue.True;
+						return lvalue.Equals (rvalue) ? DynValue.False : DynValue.True;
 					}
+
 				}
 			}
 			BinaryOperationError:
-			throw new RuntimeException ("cannot implement '{0}' to '{0}' and '{1}'", op, left, right);
-		}
-
-
-		protected RuntimeException BinaryError (string op)
-		{
-			return new RuntimeException ("cannot implement '{0}' to '{0}' and '{1}'", op, left, right);
+			throw new RuntimeException ("cannot implement binary operator '{0}' to '{0}' and '{1}'", op, left, right);
 		}
 
 		public override string ToString ()
@@ -419,6 +419,8 @@ namespace Cygni.AST
 				return string.Concat ("(", left, "*", right, ")");
 			case BinaryOp.Div:
 				return string.Concat ("(", left, "/", right, ")");
+			case BinaryOp.IntDiv:
+				return string.Concat ("(", left, "//", right, ")");
 			case BinaryOp.Mod:
 				return string.Concat ("(", left, "%", right, ")");
 			case BinaryOp.Pow:
@@ -427,6 +429,8 @@ namespace Cygni.AST
 				return string.Concat ("(", left, " and ", right, ")");
 			case BinaryOp.Or:
 				return string.Concat ("(", left, " or ", right, ")");
+			case BinaryOp.Concatenate:
+				return string.Concat ("(", left, " .. ", right, ")");
 			case BinaryOp.Less:
 				return string.Concat ("(", left, "<", right, ")");
 			case BinaryOp.Greater:
@@ -474,481 +478,4 @@ namespace Cygni.AST
 
 		Concatenate
 	}
-
-	/*public class AddEx:BinaryEx
-	{
-		public AddEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)lvalue.Value + (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, ((double)(long)lvalue.Value) + (double)rvalue.Value);
-				} else {
-					throw BinaryError ("+");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, (double)lvalue.Value + ((double)(long)rvalue.Value));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (double)lvalue.Value + (double)rvalue.Value);
-				} else {
-					throw BinaryError ("+");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Add (right.Eval (scope));
-			}
-		}
-	}
-
-	public class SubtractEx:BinaryEx
-	{
-		public SubtractEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)lvalue.Value - (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, ((double)(long)lvalue.Value) - (double)rvalue.Value);
-				} else {
-					throw BinaryError ("-");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, (double)lvalue.Value - ((double)(long)rvalue.Value));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (double)lvalue.Value - (double)rvalue.Value);
-				} else {
-					throw BinaryError ("-");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Subtract (right.Eval (scope));
-			}
-		}
-	}
-
-	public class MultiplyEx:BinaryEx
-	{
-		public MultiplyEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)lvalue.Value * (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, ((double)(long)lvalue.Value) * (double)rvalue.Value);
-				} else {
-					throw BinaryError ("*");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, (double)lvalue.Value * ((double)(long)rvalue.Value));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (double)lvalue.Value * (double)rvalue.Value);
-				} else {
-					throw BinaryError ("*");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Multiply (right.Eval (scope));
-			}
-		}
-	}
-
-	public class DivideEx:BinaryEx
-	{
-		public DivideEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)lvalue.Value / (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, ((double)(long)lvalue.Value) / (double)rvalue.Value);
-				} else {
-					throw BinaryError ("/");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, (double)lvalue.Value / ((double)(long)rvalue.Value));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (double)lvalue.Value / (double)rvalue.Value);
-				} else {
-					throw BinaryError ("/");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Divide (right.Eval (scope));
-			}
-		}
-	}
-
-	public class IntDivideEx:BinaryEx
-	{
-		public IntDivideEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)lvalue.Value / (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (long)lvalue.Value / (long)(double)rvalue.Value);
-				} else {
-					throw BinaryError ("//");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, (long)(double)lvalue.Value + (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (long)(double)lvalue.Value + (long)(double)rvalue.Value);
-				} else {
-					throw BinaryError ("//");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Divide (right.Eval (scope));
-			}
-		}
-	}
-
-	public class ModuloEx:BinaryEx
-	{
-		public ModuloEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)lvalue.Value % (long)rvalue.Value);
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, ((double)(long)lvalue.Value) % (double)rvalue.Value);
-				} else {
-					throw BinaryError ("%");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, (double)lvalue.Value % ((double)(long)rvalue.Value));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, (double)lvalue.Value % (double)rvalue.Value);
-				} else {
-					throw BinaryError ("%");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Modulo	(right.Eval (scope));
-			}
-		}
-	}
-
-	public class PowerEx:BinaryEx
-	{
-		public PowerEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Integer, (long)Math.Pow ((long)lvalue.Value, (long)rvalue.Value));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, Math.Pow ((long)lvalue.Value, (double)rvalue.Value));
-				} else {
-					throw BinaryError ("^");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, ((double)(long)rvalue.Value)));
-				} else if (rvalue.type == DataType.Number) {
-					return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, (double)rvalue.Value));
-				} else {
-					throw BinaryError ("^");
-				}
-			} else {
-				return lvalue.As<IComputable> ().Power (right.Eval (scope));
-			}
-		}
-	}
-
-	public class LessEx:BinaryEx
-	{
-		public LessEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{			
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((long)lvalue.Value < (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return ((double)lvalue.Value < (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError ("<");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((double)lvalue.Value < (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return  ((double)lvalue.Value < (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError ("<");
-				}
-			} else {
-				return lvalue.CompareTo (right.Eval (scope)) < 0;
-			}
-
-		}
-	}
-
-	public class GreaterEx:BinaryEx
-	{
-		public GreaterEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((long)lvalue.Value > (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return ((double)lvalue.Value > (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError (">");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((double)lvalue.Value > (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return  ((double)lvalue.Value > (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError (">");
-				}
-			} else {
-				return lvalue.CompareTo (right.Eval (scope)) > 0;
-			}
-
-		}
-	}
-
-	public class LessOrEqualEx:BinaryEx
-	{
-		public LessOrEqualEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((long)lvalue.Value <= (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return ((double)lvalue.Value <= (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError ("<=");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((double)lvalue.Value <= (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return  ((double)lvalue.Value <= (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError ("<=");
-				}
-			} else {
-				return lvalue.CompareTo (right.Eval (scope)) <= 0;
-			}
-		}
-	}
-
-	public class GreaterOrEqualEx:BinaryEx
-	{
-		public GreaterOrEqualEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((long)lvalue.Value >= (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return ((double)lvalue.Value >= (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError (">=");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((double)lvalue.Value >= (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return  ((double)lvalue.Value >= (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError (">=");
-				}
-			} else {
-				return lvalue.CompareTo (right.Eval (scope)) >= 0;
-			}
-		}
-	}
-
-	public class EqualEx:BinaryEx
-	{
-		public EqualEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((long)lvalue.Value == (long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return ((double)(long)lvalue.Value == (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError ("==");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((double)lvalue.Value == (double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else if (rvalue.type == DataType.Number) {
-					return  ((double)lvalue.Value == (double)rvalue.Value) ? DynValue.True : DynValue.False;
-				} else {
-					throw BinaryError ("==");
-				}
-			} else {
-				return lvalue.Equals (right.Eval (scope)) ? DynValue.True : DynValue.False;
-			}
-		}
-	}
-
-	public class NotEqualEx:BinaryEx
-	{
-		public NotEqualEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Integer) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((long)lvalue.Value == (long)rvalue.Value) ? DynValue.False : DynValue.True;
-				} else if (rvalue.type == DataType.Number) {
-					return ((double)(long)lvalue.Value == (double)rvalue.Value) ? DynValue.False : DynValue.True;
-				} else {
-					throw BinaryError ("==");
-				}
-			} else if (lvalue.type == DataType.Number) {
-				if (rvalue.type == DataType.Integer) {
-					return  ((double)lvalue.Value == (double)(long)rvalue.Value) ? DynValue.False : DynValue.True;
-				} else if (rvalue.type == DataType.Number) {
-					return  ((double)lvalue.Value == (double)rvalue.Value) ? DynValue.False : DynValue.True;
-				} else {
-					throw BinaryError ("==");
-				}
-			} else {
-				return lvalue.Equals (right.Eval (scope)) ? DynValue.False : DynValue.True;
-			}
-		}
-	}
-
-	public class AndEx:BinaryEx
-	{
-		public AndEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-
-			DynValue lvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Boolean) {
-				if ((bool)lvalue.Value) {
-					return right.Eval (scope).AsBoolean ();
-				} else {
-					return DynValue.False;
-				}
-			} else {
-				throw BinaryError ("and");
-			}
-
-		}
-	}
-
-	public class OrEx:BinaryEx
-	{
-		public OrEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-
-			DynValue lvalue = right.Eval (scope);
-			if (lvalue.type == DataType.Boolean) {
-				if ((bool)lvalue.Value) {
-					return DynValue.True;
-				} else {
-					return right.Eval (scope).AsBoolean ();
-				}
-			} else {
-				throw BinaryError ("or");
-			}
-		}
-	}
-
-	public class ConcatenateEx:BinaryEx
-	{
-		public ConcatenateEx (ASTNode left, ASTNode right) : base (left, right)
-		{
-		}
-
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue lvalue = right.Eval (scope);
-			DynValue rvalue = right.Eval (scope);
-			return lvalue.Value.ToString () + rvalue.Value.ToString ();
-		}
-}*/
 }

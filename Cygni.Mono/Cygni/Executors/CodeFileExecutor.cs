@@ -20,6 +20,7 @@ namespace Cygni.Executors
 		string FilePath;
 		Encoding encoding;
 		private DynValue result;
+
 		public override DynValue Result {
 			get {
 				return this.result;
@@ -54,5 +55,14 @@ namespace Cygni.Executors
 		}
 
 		#endregion
+
+		public BlockEx Load ()
+		{
+			using (var sr = new StreamReader (FilePath, encoding)) {
+				var lexer = new Lexer (1, sr);
+				var ast = new Parser (lexer);
+				return ast.Program ();
+			}
+		}
 	}
 }

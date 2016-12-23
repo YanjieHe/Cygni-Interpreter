@@ -1,6 +1,11 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/Collections/collections_funcs.cs">
+    <Files>
+      <File FileName="CygniLib/Collections/CygniArray.cs" Line="16" Column="20" />
+      <File FileName="CygniLib/Collections/collections_funcs.cs" Line="36" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

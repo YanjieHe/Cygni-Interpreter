@@ -1,1 +1,6 @@
-return LoadLibrary("CygniLib.dll", "CygniLib.Collections.collections_funcs")
+lib = LoadLibrary("CygniLib.dll", "CygniLib.Collections.collections_funcs")
+Array = lib.Array
+Array2 = lib.Array2
+Stack = lib.Stack
+Queue = lib.Queue
+LinkedList = lib.LinkedList

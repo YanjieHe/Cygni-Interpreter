@@ -1,11 +1,12 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/BinaryEx.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Libraries/Commands.cs">
     <Files>
-      <File FileName="Cygni/Libraries/BuiltInLibrary.cs" Line="64" Column="4" />
-      <File FileName="Cygni/AST/BinaryEx.cs" Line="144" Column="24" />
-      <File FileName="Cygni/AST/ASTNode.cs" Line="85" Column="48" />
-      <File FileName="Cygni/AST/Parser.cs" Line="395" Column="5" />
+      <File FileName="Cygni/AST/WhileEx.cs" Line="1" Column="1" />
+      <File FileName="Cygni/AST/ForEx.cs" Line="1" Column="1" />
+      <File FileName="Cygni/AST/ForEachEx.cs" Line="56" Column="4" />
+      <File FileName="Cygni/Libraries/Commands.cs" Line="110" Column="6" />
+      <File FileName="Cygni/Executors/CodeFileExecutor.cs" Line="66" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

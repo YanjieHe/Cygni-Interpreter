@@ -44,7 +44,7 @@ namespace Cygni.AST
 						return result;
 					}
 				} else
-					return result;
+					return DynValue.Nil;
 			}
 		}
 

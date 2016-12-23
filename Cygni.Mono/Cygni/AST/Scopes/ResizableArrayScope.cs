@@ -4,13 +4,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
+using Cygni.DataTypes.Interfaces;
 using Cygni.Errors;
 using Cygni.Libraries;
 using Cygni.AST.Optimizers;
 
 namespace Cygni.AST.Scopes
 {
-	public class ResizableArrayScope:IScope
+	public class ResizableArrayScope:IScope, IDot
 	{
 		private int count;
 		private DynValue[] values;
@@ -115,6 +116,22 @@ namespace Cygni.AST.Scopes
 		public void BuiltIn ()
 		{
 			BuiltInLibrary.BuiltIn (this);
+		}
+
+		public DynValue GetByDot(string fieldName){
+			return this.Get(fieldName);
+		}
+
+		public DynValue SetByDot(string fieldName, DynValue value){
+			return this.Put(fieldName, value);
+		}
+		public string[] FieldNames {
+			get {
+				return this.table.Keys.ToArray();
+			}
+		}
+		public override string ToString(){
+			return "(Module)";
 		}
 	}
 }
