@@ -1,0 +1,218 @@
+\documentclass[]{article}
+\usepackage{listings}
+%opening
+\title{Cygni 1.0\\ A Short Reference}
+\author{He Yanjie}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{What is Cygni?}
+Cygni is a script programming language implemented in C\#. It is easy to use, has neat grammar and can interacts with C\#. It is convenient to wrap C\# classes as Cygni class, namely the Cygni libraries are based on the C\# class libraries.
+
+Cygni is designed by me. I spent a lot of spare time on it, and I love it very much. I hope you will like it too!
+
+\section{Core Language}
+\subsection{Reserved words}
+\begin{itemize}
+	\item and
+	\item or
+	\item not
+	\item true
+	\item false
+	\item nil
+	\item if
+	\item else
+	\item elif
+	\item while
+	\item for
+	\item foreach
+	\item in
+	\item def
+	\item lambda
+	\item class
+	\item local
+	\item unpack
+	\item break
+	\item continue
+	\item return	
+\end{itemize}
+\subsection{Reserved Symbols}
+\begin{itemize}
+	\item Add:+
+	\item Subtract:- 
+	\item Multiply:*
+	\item Divide:/
+	\item Integer Divide: //
+	\item Modulo:\%
+	\item Power: \^{}
+	\item Concatenate: ..
+	\item assign: =
+	\item Equals:==
+	\item Not Equals: !=
+	\item Greater than: $>$
+	\item Less than: $<$
+	\item Greater than or Equals: $>=$
+	\item Less than or Equals: $<=$
+	\item Goes to: $=>$
+	\item Parentheses: (\ )
+	\item Brackets: [ \  ]
+	\item Braces: \{ \ \}
+	\item Colon: :
+	\item Comma: ,
+\end{itemize}
+\subsection{Identifiers}
+The first character of identifiers should be underline or letters, the rest can be underlines, letters or numbers.
+Note that the identifiers should not be the same as the reserved words.
+
+\subsection{Comments}
+Line comment start with \#.
+
+\subsection{Strings}
+String should be enclosed by '' or "". If there is symbol \@ at the start of string, then the escaped characters in the string will be ignored, and the ' or " in the string shoule be written twice.
+
+\subsection{Types}
+Variables in Cygni don't have type. Only the values have.
+\begin{itemize}
+	\item integer
+	\item number
+	\item boolean: true or false
+	\item string
+	\item list: lists contain elements from various types.
+	\item dictionary: key-value pairs
+	\item function
+	\item native function: wrapper for C\# native functions
+	\item tuple
+	\item struct
+	\item class
+	\item userdata: wrapper for C\# native classes.
+	\item nil
+\end{itemize}
+
+\subsection{Control Statements}
+\paragraph{If}
+\begin{lstlisting}
+if condition {
+	# Do something
+} else {
+	# Do something
+}
+
+if condition1 {
+	# Branch 1
+} elif condition2 {
+	# Branch 2
+} else {
+	# Branch 3
+}
+\end{lstlisting}
+\paragraph{For}
+\begin{lstlisting}
+for i = start, end {
+# Do something
+}
+\end{lstlisting}
+\paragraph{Foreach}
+\begin{lstlisting}
+foreach item in collection {
+	# Do something
+}
+\end{lstlisting}
+
+\paragraph{While}
+\begin{lstlisting}
+while condition {
+	# Do something
+}
+\end{lstlisting}
+
+\paragraph{Break, Continue, Return}
+break, return exit the loop. continue stays in the loop.
+
+\subsection{List Constructor}
+\begin{lstlisting}
+[item1, item2, ...]
+\end{lstlisting}
+
+
+\subsection{Dictionary Constructor}
+\begin{lstlisting}
+{key1: value1, key2:  value2, ...}
+\end{lstlisting}
+Note that dictionary only takes values of integer, boolean, string as keys.
+
+\subsection{Function Definition}
+\begin{lstlisting}
+def FunctionName (arg1, arg2, ...) {
+	# Do something	
+}
+
+
+a = lambda(arg1, arg2, ...) => # Expression
+
+a = lambda(arg1, arg2,...) => {
+	# Do something
+}
+\end{lstlisting}
+\subsection{Function Call}
+\begin{lstlisting}
+f(arg1, arg2, ...)
+\end{lstlisting}
+
+\subsection{Tuple Constructor}
+\begin{lstlisting}
+a = tuple(10, 20)
+unpack x, y = a
+\end{lstlisting}
+
+\subsection{Struct Constructor}
+\begin{lstlisting}
+a = struct('key1', value1, 'key2', value2, ...)
+\end{lstlisting}
+\subsection{Class Definition}
+\begin{lstlisting}
+class MyClass {
+	# body
+}
+
+class DerivedClass: MyClass {
+	# body
+}
+\end{lstlisting}
+
+\subsubsection{Reserved Fields}
+\begin{itemize}
+	\item \_\_init
+	\item \_\_add
+	\item \_\_sub
+	\item \_\_mul
+	\item \_\_div
+	\item \_\_mod
+	\item \_\_pow
+	\item \_\_unp
+	\item \_\_unm
+	\item \_\_cmp
+	\item \_\_eq
+	\item \_\_getItem
+	\item \_\_setItem
+	\item \_\_toStr
+\end{itemize}
+
+
+\section{Basic Library}
+\subsection{Executing}
+\begin{itemize}
+	\item source
+	
+	arguments: fileName [,encoding]
+	
+	description: execute a script file.
+	
+	return: nil
+\end{itemize}
+\end{document}

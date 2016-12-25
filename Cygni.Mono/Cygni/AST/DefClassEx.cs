@@ -23,8 +23,11 @@ namespace Cygni.AST
 		Symbols fields;
 
 		public BlockEx Body { get { return body; } }
+
 		public NameEx Parent { get { return parent; } }
+
 		internal Symbols Fields { get { return this.fields; } set { this.fields = value; } }
+
 		public  override NodeType type { get { return NodeType.DefClass; } }
 
 		public DefClassEx (string name, BlockEx body, NameEx parent)
@@ -51,18 +54,18 @@ namespace Cygni.AST
 			DynObject parentClass;
 			if (this.parent != null) {
 				parentClass = parent.Eval (scope).As<DynObject> ();
-				Dictionary<string, DynValue> parentFields = parentClass.GetFields();
+				Dictionary<string, DynValue> parentFields = parentClass.GetFields ();
 
 				foreach (var item in parentFields) {
-					this.fields.PutLocal(item.Key);
+					this.fields.PutLocal (item.Key);
 				}
 				values = new DynValue[this.fields.Count];
 				for (int i = 0; i < values.Length; i++) {
 					values [i] = DynValue.Nil;
 				}
 				foreach (var item in parentFields) {
-					int index = this.fields.Find(item.Key);
-					values[index] = item.Value;
+					int index = this.fields.Find (item.Key);
+					values [index] = item.Value;
 				}
 			} else {
 
@@ -74,9 +77,9 @@ namespace Cygni.AST
 			}
 
 			ClassScope classScope = new ClassScope (name, 
-					this.fields.GetTable (), values, scope);
+				                        this.fields.GetTable (), values, scope);
 			this.body.Eval (classScope);
-			DynValue newClass = new DynObject (classScope, false, parentClass);
+			DynValue newClass = new DynObject (name, classScope, false, parentClass);
 			return GlobalScope.Put (name, newClass);
 		}
 

@@ -339,8 +339,8 @@ namespace Cygni.Libraries
 			return DynValue.Nil;
 		}
 
-		private static readonly Dictionary<string, ResizableArrayScope> ModulesCache 
-		= new Dictionary<string, ResizableArrayScope> ();
+		private static readonly Dictionary<string, BlockEx> ModulesCache 
+		= new Dictionary<string, BlockEx> ();
 
 		public static DynValue require (DynValue[] args)
 		{
@@ -355,13 +355,19 @@ namespace Cygni.Libraries
 			string currentDir = GlobalSettings.CurrentDirectory;
 
 
+
+
 			if (!Path.HasExtension (moduleName))
 				moduleName = Path.ChangeExtension (moduleName, "cyg");
 
 			string filePath = currentDir + "/lib/" + moduleName;
-			ResizableArrayScope Result;
-			if (ModulesCache.TryGetValue (filePath, out Result)) {
-				return DynValue.FromUserData(Result);
+			BlockEx program;
+			ResizableArrayScope globalScope = new ResizableArrayScope ();
+			globalScope.BuiltIn ();
+			if (ModulesCache.TryGetValue (filePath, out program)) {
+				program.Eval (globalScope);
+				return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
+
 			} else {
 
 				bool quiet = GlobalSettings.Quiet;
@@ -370,14 +376,16 @@ namespace Cygni.Libraries
 				if (!File.Exists (filePath))
 					throw new RuntimeException ("No module named '{0}.", moduleName);
 
-				ResizableArrayScope globalScope = new ResizableArrayScope ();
-				globalScope.BuiltIn ();
 				CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
-				GlobalSettings.Quiet = quiet;
-				executor.Run ();
-				return DynValue.FromUserData(globalScope);
 
+				program = executor.Load ();
+				ModulesCache.Add (filePath, program);
+				program.Eval (globalScope);
+				GlobalSettings.Quiet = quiet;
+				return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
 			}
+
+
 		}
 
 	}

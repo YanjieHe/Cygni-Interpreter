@@ -12,6 +12,7 @@ namespace Cygni.DataTypes
 {
 	public sealed class DynObject:IDot,IFunction
 	{
+		readonly string name;
 		readonly ClassScope classScope;
 		readonly DynObject parent;
 
@@ -19,8 +20,9 @@ namespace Cygni.DataTypes
 
 		readonly bool isInstance;
 
-		public DynObject (ClassScope classScope, bool isInstance, DynObject parent = null)
+		public DynObject (string name, ClassScope classScope, bool isInstance, DynObject parent = null)
 		{
+			this.name = name;
 			this.classScope = classScope;
 			this.parent = parent;
 			this.isInstance = isInstance;
@@ -48,12 +50,12 @@ namespace Cygni.DataTypes
 			if (!isInstance) {
 				DynValue constructor;
 				if (classScope.TryGetValue ("__init", out constructor)) {
-					var newClass = new DynObject (this.classScope.Clone (), true, this.parent);
+					var newClass = new DynObject (name, this.classScope.Clone (), true, this.parent);
 					newClass.SetByDot ("this", newClass);
 					newClass.GetByDot ("__init").As<IFunction> ().DynEval (args, scope);
 					return newClass;
 				} else {
-					var newClass = new DynObject (this.classScope.Clone (), true, this.parent);
+					var newClass = new DynObject (name, this.classScope.Clone (), true, this.parent);
 					newClass.SetByDot ("this", newClass);
 					return newClass;
 				}
@@ -62,23 +64,25 @@ namespace Cygni.DataTypes
 			}
 		}
 
-		internal Dictionary<string, DynValue> GetFields(){
+		internal Dictionary<string, DynValue> GetFields ()
+		{
 			Dictionary<string, DynValue> fields;
 			if (this.parent == null) {
-				fields = new Dictionary<string, DynValue>();
+				fields = new Dictionary<string, DynValue> ();
 			} else {
-				fields = this.parent.GetFields();
+				fields = this.parent.GetFields ();
 			}
 			foreach (string field in this.FieldNames) {
-				if (!string.Equals(field, "this")) {
-					fields.Add(field, this.GetByDot(field));
+				if (!string.Equals (field, "this")) {
+					fields.Add (field, this.GetByDot (field));
 				}
 			}
 			return fields;
 		}
+
 		public override string ToString ()
 		{
-			return "(Class: " + this.classScope.Name + ")";
+			return "(Class: " + this.name + ")";
 		}
 	}
 }

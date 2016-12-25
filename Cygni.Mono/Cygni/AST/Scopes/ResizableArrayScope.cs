@@ -11,7 +11,7 @@ using Cygni.AST.Optimizers;
 
 namespace Cygni.AST.Scopes
 {
-	public class ResizableArrayScope:IScope, IDot
+	public class ResizableArrayScope:IScope
 	{
 		private int count;
 		private DynValue[] values;
@@ -45,6 +45,10 @@ namespace Cygni.AST.Scopes
 				symbols.AddSymbol (item.Key, item.Value);
 			}
 			return symbols;
+		}
+
+		internal string[] Names {
+			get{ return this.table.Keys.ToArray (); }
 		}
 
 		public DynValue Get (string name)
@@ -118,21 +122,7 @@ namespace Cygni.AST.Scopes
 			BuiltInLibrary.BuiltIn (this);
 		}
 
-		public DynValue GetByDot(string fieldName){
-			return this.Get(fieldName);
-		}
-
-		public DynValue SetByDot(string fieldName, DynValue value){
-			return this.Put(fieldName, value);
-		}
-		public string[] FieldNames {
-			get {
-				return this.table.Keys.ToArray();
-			}
-		}
-		public override string ToString(){
-			return "(Module)";
-		}
+	
 	}
 }
 

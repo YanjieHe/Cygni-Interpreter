@@ -117,6 +117,7 @@
     <Compile Include="AST\Scopes\ClassScope.cs" />
     <Compile Include="AST\Visitors\ClassLookUpVisitor.cs" />
     <Compile Include="Lexical\Tokens\IntToken.cs" />
+    <Compile Include="DataTypes\Module.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
