@@ -13,7 +13,6 @@ namespace Cygni.AST.Scopes
 
 		private readonly DynValue[] values;
 		private readonly IScope parent;
-		private readonly string name;
 
 		public IScope Parent{ get { return parent; } }
 
@@ -21,11 +20,9 @@ namespace Cygni.AST.Scopes
 
 		public int Count { get { return values.Length; } }
 
-		public string Name { get { return this.name; } }
 
-		public ArrayScope (string name, DynValue[] values, IScope parent = null)
+		public ArrayScope (DynValue[] values, IScope parent = null)
 		{
-			this.name = name;
 			this.values = values;
 			this.parent = parent;
 		}
@@ -74,7 +71,7 @@ namespace Cygni.AST.Scopes
 		{
 			var values = new DynValue[this.values.Length];
 			Array.Copy (this.values, values,values.Length);
-			return new ArrayScope (name, values, scope);
+			return new ArrayScope (values, scope);
 		}
 	}
 }

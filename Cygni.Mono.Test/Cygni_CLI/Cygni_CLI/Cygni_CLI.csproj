@@ -35,7 +35,7 @@
       <HintPath>..\..\..\Cygni.Mono\Cygni\bin\Debug\Cygni.dll</HintPath>
     </Reference>
     <Reference Include="CygniLib">
-      <HintPath>..\..\..\Cygni.Libraries\CygniLib\CygniLib\bin\Debug\CygniLib.dll</HintPath>
+      <HintPath>..\..\..\Cygni.Mono.Libraries\CygniLib\CygniLib\bin\Debug\CygniLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

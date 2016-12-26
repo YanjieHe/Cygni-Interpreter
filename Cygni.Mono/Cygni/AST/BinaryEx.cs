@@ -281,7 +281,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (rvalue) < 0;
+						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) < 0;
 					}
 				}
 
@@ -305,7 +305,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (rvalue) > 0;
+						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) > 0;
 					}
 				}
 			case BinaryOp.LessOrEqual:
@@ -328,7 +328,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (rvalue) <= 0;
+						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) <= 0;
 					}
 				}
 			case BinaryOp.GreaterOrEqual:
@@ -351,7 +351,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.CompareTo (rvalue) >= 0;
+						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) >= 0;
 					}
 
 				}

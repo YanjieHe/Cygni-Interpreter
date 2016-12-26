@@ -112,11 +112,13 @@ if condition1 {
 }
 \end{lstlisting}
 \paragraph{For}
+
 \begin{lstlisting}
 for i = start, end {
-# Do something
+	# Do something
 }
 \end{lstlisting}
+
 \paragraph{Foreach}
 \begin{lstlisting}
 foreach item in collection {
@@ -151,7 +153,6 @@ Note that dictionary only takes values of integer, boolean, string as keys.
 def FunctionName (arg1, arg2, ...) {
 	# Do something	
 }
-
 
 a = lambda(arg1, arg2, ...) => # Expression
 
@@ -198,8 +199,8 @@ class DerivedClass: MyClass {
 	\item \_\_unm
 	\item \_\_cmp
 	\item \_\_eq
-	\item \_\_getItem
-	\item \_\_setItem
+	\item \_\_get
+	\item \_\_set
 	\item \_\_toStr
 \end{itemize}
 
@@ -214,5 +215,57 @@ class DerivedClass: MyClass {
 	description: execute a script file.
 	
 	return: nil
+	
+	\item require
+	
+	arguments: fileName [,encoding]
+	
+	description: execute a script file and return it as a module.
+	
+	return: module
+
+	\item import
+	
+	arguments: fileName [,encoding]
+	
+	description: execute a script file in the current global scope.
+	
+	return: nil
 \end{itemize}
+
+\subsection{Console Output and input}
+
+\begin{itemize}
+	\item print
+	
+		arguments: args
+		
+		description: print arguments in the console, separated by tab.
+		
+		return: nil
+	\item printf
+	
+	arguments: content, args
+	
+	description: print format string in the console. The arguments can be indexed by \{0\},\{1\}... in the string.
+	
+	return: nil
+	\item input
+	
+	arguments: [content]
+		
+	description: write the content in the console and waiting for user to input. The content can be omitted.
+		
+	return: string
+\end{itemize}
+
+
+\subsection{Conversion}
+\begin{itemize}
+	\item int
+	\item number
+	\item str
+	\item list
+\end{itemize}
+
 \end{document}

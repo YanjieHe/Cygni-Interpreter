@@ -18,17 +18,21 @@ namespace Cygni.DataTypes
 		readonly BlockEx body;
 		readonly ArrayScope funcScope;
 		readonly int nArgs;
-		public string Name { get { return funcScope.Name; } }
+		readonly string name;
 
-		public Function (int nArgs, BlockEx body, ArrayScope funcScope)
+		public string Name { get { return Name; } }
+
+		public Function (string name, int nArgs, BlockEx body, ArrayScope funcScope)
 		{
+			this.name = name;
 			this.body = body;
 			this.funcScope = funcScope;
 			this.nArgs = nArgs;
 		}
 
-		public Function Update(IScope scope){
-			return new Function (nArgs, body, this.funcScope.Update (scope));
+		public Function Update (IScope scope)
+		{
+			return new Function (name, nArgs, body, this.funcScope.Update (scope));
 		}
 
 		public DynValue Invoke ()
@@ -54,8 +58,8 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (funcScope.Name, values, funcScope.Parent);
-			return new Function (nArgs, body, newScope).Invoke ();
+			var newScope = new ArrayScope (values, funcScope.Parent);
+			return new Function (name, nArgs, body, newScope).Invoke ();
 		}
 
 		public DynValue DynEval (ASTNode[] args, IScope scope)
@@ -72,8 +76,8 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (funcScope.Name, values, funcScope.Parent);
-			return new Function (nArgs, body, newScope).Invoke ();
+			var newScope = new ArrayScope (values, funcScope.Parent);
+			return new Function (name, nArgs, body, newScope).Invoke ();
 		}
 
 		public override string ToString ()

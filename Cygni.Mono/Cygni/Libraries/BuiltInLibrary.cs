@@ -31,7 +31,6 @@ namespace Cygni.Libraries
 			{ "quiet",BasicLib.quiet },
 			{ "struct",BasicLib.Struct },
 			{ "tuple",BasicLib.tuple },
-			{ "scan",BasicLib.scan },
 			{ "LoadLibrary",BasicLib.LoadLibrary },
 
 			{ "throw",BasicLib.Throw },
@@ -40,23 +39,17 @@ namespace Cygni.Libraries
 			{ "range",BasicLib.Range },
 			{ "len",BasicLib.len },
 
-			{ "toInteger",BasicLib.toInteger },
-			{ "toNumber",BasicLib.toNumber },
-			{ "toString",BasicLib.toString },
-			{ "toList",BasicLib.toList },
+			{ "int",BasicLib.toInteger },
+			{ "number",BasicLib.toNumber },
+			{ "str",BasicLib.toString },
+			{ "list",BasicLib.toList },
 
 			{ "pCall",BasicLib.pCall },
 			{ "xpCall",BasicLib.xpCall },
 
 			{ "names",BasicLib.names },
 
-			{ "getwd",BasicLib.getwd },
-			{ "setwd",BasicLib.setwd },
-
 			{ "require",BasicLib.require },
-
-			{ "strcat",StrLib.strcat },
-			{ "strcmp",StrLib.strcmp },
 
 			{ "map",FunctionalProgrammingLibrary.Map },
 			{ "filter",FunctionalProgrammingLibrary.Filter },
@@ -119,7 +112,12 @@ namespace Cygni.Libraries
 						new StructureItem ("e", Math.E),
 						new StructureItem ("pi", Math.PI) 
 					)
-				},
+				}, {"file",
+				new Structure (
+					new StructureItem ("readLines", DynValue.FromDelegate ("readLines", IOLibrary.readLines)),
+					new StructureItem ("writeLines", DynValue.FromDelegate ("writeLines", IOLibrary.writeLines))
+				)
+			}
 
 			};
 

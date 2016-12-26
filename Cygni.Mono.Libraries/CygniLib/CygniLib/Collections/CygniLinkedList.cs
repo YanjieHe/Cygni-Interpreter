@@ -66,7 +66,7 @@ namespace CygniLib.Collections
 
 		public override string ToString ()
 		{
-			return string.Format ("LinkedList([0])", string.Join (", ", this.AsEnumerable ()));
+			return string.Format ("LinkedList([{0}])", string.Join (", ", this.AsEnumerable ()));
 		}
 	}
 }

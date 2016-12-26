@@ -14,7 +14,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public sealed class DynValue:IEnumerable<DynValue>, IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
+	public sealed class DynValue:IEnumerable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
 	{
 		private readonly DataType _type;
 

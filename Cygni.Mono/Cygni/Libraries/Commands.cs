@@ -69,7 +69,7 @@ namespace Cygni.Libraries
 			}
 		}
 
-		private static readonly Dictionary<string, BlockEx> ModulesCache 
+		internal static readonly Dictionary<string, BlockEx> ModulesCache 
 		= new Dictionary<string, BlockEx> ();
 
 		public static DynValue import (ASTNode[] args, IScope scope)

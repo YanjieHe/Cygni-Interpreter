@@ -89,7 +89,7 @@ namespace Cygni.Libraries
 
 		public static DynValue toInteger (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "toInteger");
+			RuntimeException.FuncArgsCheck (args.Length == 1, "int");
 			var value = args [0];
 			if (value.type == DataType.Integer)
 				return value;
@@ -100,7 +100,7 @@ namespace Cygni.Libraries
 
 		public static DynValue toNumber (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "toNumber");
+			RuntimeException.FuncArgsCheck (args.Length == 1, "number");
 			var value = args [0];
 			if (value.type == DataType.Number)
 				return value;
@@ -110,7 +110,7 @@ namespace Cygni.Libraries
 
 		public static DynValue toString (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "toString");
+			RuntimeException.FuncArgsCheck (args.Length == 1, "str");
 			var value = args [0];
 			if (value.type == DataType.String)
 				return value;
@@ -120,7 +120,7 @@ namespace Cygni.Libraries
 
 		public static DynValue toList (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "toList");
+			RuntimeException.FuncArgsCheck (args.Length == 1, "list");
 			var collection = args [0].As<IEnumerable<DynValue>> ();
 			return new DynList (collection);
 		}
@@ -134,13 +134,6 @@ namespace Cygni.Libraries
 				GlobalSettings.Quiet = args [0].AsBoolean ();
 			}
 			return GlobalSettings.Quiet;
-		}
-
-		public static DynValue scan (DynValue[] args)
-		{
-			if (args.Length == 1)
-				Console.Write (args [0].AsString ());
-			return Console.ReadLine ();
 		}
 
 		public static DynValue LoadLibrary (DynValue[] args)
@@ -326,22 +319,6 @@ namespace Cygni.Libraries
 				return new DynList (obj.As<IDot> ().FieldNames.Select (DynValue.FromString));
 		}
 
-		public static DynValue getwd (DynValue[] args)
-		{
-			return Directory.GetCurrentDirectory ();
-		}
-
-		public static DynValue setwd (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "setwd");
-			string path = args [0].AsString ();
-			Directory.SetCurrentDirectory (path);
-			return DynValue.Nil;
-		}
-
-		private static readonly Dictionary<string, BlockEx> ModulesCache 
-		= new Dictionary<string, BlockEx> ();
-
 		public static DynValue require (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "require");
@@ -354,9 +331,6 @@ namespace Cygni.Libraries
 			}
 			string currentDir = GlobalSettings.CurrentDirectory;
 
-
-
-
 			if (!Path.HasExtension (moduleName))
 				moduleName = Path.ChangeExtension (moduleName, "cyg");
 
@@ -364,7 +338,7 @@ namespace Cygni.Libraries
 			BlockEx program;
 			ResizableArrayScope globalScope = new ResizableArrayScope ();
 			globalScope.BuiltIn ();
-			if (ModulesCache.TryGetValue (filePath, out program)) {
+			if (Commands.ModulesCache.TryGetValue (filePath, out program)) {
 				program.Eval (globalScope);
 				return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
 
@@ -379,7 +353,7 @@ namespace Cygni.Libraries
 				CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
 
 				program = executor.Load ();
-				ModulesCache.Add (filePath, program);
+				Commands.ModulesCache.Add (filePath, program);
 				program.Eval (globalScope);
 				GlobalSettings.Quiet = quiet;
 				return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
