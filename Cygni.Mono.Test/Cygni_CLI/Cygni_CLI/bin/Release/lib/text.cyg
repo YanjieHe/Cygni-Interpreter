@@ -1,0 +1,2 @@
+lib = LoadLibrary("CygniLib.dll", "CygniLib.Text.text_funcs")
+Regex = lib.Regex

@@ -1,0 +1,2 @@
+lib = LoadLibrary('CygniLib.dll', 'CygniLib.random.random_funcs')
+Random = lib.Random

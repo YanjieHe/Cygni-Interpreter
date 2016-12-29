@@ -81,16 +81,12 @@
     <Compile Include="Libraries\MathLib.cs" />
     <Compile Include="Libraries\StrLib.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
-    <Compile Include="AST\Scopes\BasicScope.cs" />
-    <Compile Include="AST\Scopes\NestedScope.cs" />
     <Compile Include="AST\Scopes\IScope.cs" />
     <Compile Include="AST\Scopes\ArrayScope.cs" />
-    <Compile Include="AST\Scopes\EnvTable.cs" />
     <Compile Include="DataTypes\StructureItem.cs" />
     <Compile Include="AST\Visitors\ASTVisitor.cs" />
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
     <Compile Include="AST\ForEachEx.cs" />
-    <Compile Include="AST\Scopes\BuiltInScope.cs" />
     <Compile Include="DataTypes\DynDictionary.cs" />
     <Compile Include="AST\DictionaryInitEx.cs" />
     <Compile Include="AST\AssignEx.cs" />

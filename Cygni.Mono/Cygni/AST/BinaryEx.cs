@@ -204,7 +204,7 @@ namespace Cygni.AST
 					rvalue = right.Eval (scope);
 					if (lvalue.type == DataType.Integer) {
 						if (rvalue.type == DataType.Integer) { /* integer ^ integer */
-							return new DynValue (DataType.Integer, MathLib.IntegerPow((long)lvalue.Value, (int)(long)rvalue.Value));
+							return new DynValue (DataType.Integer, MathLib.IntegerPow ((long)lvalue.Value, (int)(long)rvalue.Value));
 						} else if (rvalue.type == DataType.Number) { /* integer ^ number */
 							return new DynValue (DataType.Number, Math.Pow ((double)lvalue.Value, (double)rvalue.Value));
 						} else {
@@ -226,15 +226,15 @@ namespace Cygni.AST
 			case BinaryOp.Concatenate:
 				{
 					rvalue = right.Eval (scope);
-					return new DynValue(DataType.String, lvalue.Value.ToString () + rvalue.Value.ToString ());
+					return new DynValue (DataType.String, lvalue.Value.ToString () + rvalue.Value.ToString ());
 				}
 			case BinaryOp.And:/* shortcut evaluate*/
 				{
 					if (lvalue.type == DataType.Boolean) {
 						if ((bool)lvalue.Value) {
-							rvalue = right.Eval(scope);	
+							rvalue = right.Eval (scope);	
 							if (rvalue.type == DataType.Boolean) {
-								return (bool)rvalue.Value?DynValue.True:DynValue.False;
+								return (bool)rvalue.Value ? DynValue.True : DynValue.False;
 							} else {
 								goto BinaryOperationError;
 							}
@@ -250,11 +250,11 @@ namespace Cygni.AST
 					if ((bool)lvalue.Value) {
 						return DynValue.True;/* shortcut evaluate*/
 					} else {
-						rvalue = right.Eval(scope);
+						rvalue = right.Eval (scope);
 						if (rvalue.type == DataType.Boolean) {
-							return (bool)rvalue.Value?DynValue.True:DynValue.False;
-						}else {
-					goto BinaryOperationError;
+							return (bool)rvalue.Value ? DynValue.True : DynValue.False;
+						} else {
+							goto BinaryOperationError;
 						}
 					}
 				} else {
@@ -281,7 +281,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) < 0;
+						return lvalue.As<IComparable<DynValue>> ().CompareTo (rvalue) < 0;
 					}
 				}
 
@@ -305,7 +305,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) > 0;
+						return lvalue.As<IComparable<DynValue>> ().CompareTo (rvalue) > 0;
 					}
 				}
 			case BinaryOp.LessOrEqual:
@@ -328,7 +328,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) <= 0;
+						return lvalue.As<IComparable<DynValue>> ().CompareTo (rvalue) <= 0;
 					}
 				}
 			case BinaryOp.GreaterOrEqual:
@@ -351,7 +351,7 @@ namespace Cygni.AST
 							goto BinaryOperationError;
 						}
 					} else {
-						return lvalue.As<IComparable<DynValue>>().CompareTo (rvalue) >= 0;
+						return lvalue.As<IComparable<DynValue>> ().CompareTo (rvalue) >= 0;
 					}
 
 				}
@@ -405,7 +405,8 @@ namespace Cygni.AST
 				}
 			}
 			BinaryOperationError:
-			throw new RuntimeException ("cannot implement binary operator '{0}' to '{0}' and '{1}'", op, left, right);
+			throw RuntimeException.Throw (
+				string.Format ("cannot implement binary operator '{0}' to '{1}' and '{2}'", op, left, right), scope);
 		}
 
 		public override string ToString ()

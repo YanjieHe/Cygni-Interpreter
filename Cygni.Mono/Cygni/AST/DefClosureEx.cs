@@ -38,18 +38,18 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			if (scope.type == ScopeType.ResizableArray) {
+			if (scope.type == ScopeType.Module) {
 				ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
 				Symbols symbols = GlobalScope.GetSymbols ();
 				LookUpVisitor visitor = new LookUpVisitor (symbols);
 				this.Accept (visitor);
-				ArrayScope arrayScope = new ArrayScope (new DynValue[this.size], scope);
+				ArrayScope arrayScope = new ArrayScope ("Anonymous Function", new DynValue[this.size], scope);
 
 				DynValue func = DynValue.FromClosure (
 					                new Closure (parameters.Length, body, arrayScope));
 				return func;
 			} else {
-				ArrayScope arrayScope = new ArrayScope (new DynValue[this.size], scope);
+				ArrayScope arrayScope = new ArrayScope ("Anonymous Function", new DynValue[this.size], scope);
 				DynValue func = DynValue.FromClosure (
 					                new Closure (parameters.Length, body, arrayScope));
 				return func;

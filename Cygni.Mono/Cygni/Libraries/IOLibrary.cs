@@ -14,7 +14,7 @@ namespace Cygni
 	{
 		public static DynValue readLines (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "open");
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "readLines");
 			string path = args [0].AsString ();
 			Encoding encoding;
 			if (args.Length == 2) {
@@ -22,13 +22,13 @@ namespace Cygni
 			} else {
 				encoding = Encoding.UTF8;
 			}
-			return DynValue.FromUserData (File.ReadLines (path, encoding));
+			return DynValue.FromUserData (File.ReadLines (path, encoding).Select (DynValue.FromString));
 		}
 
 		public static DynValue writeLines (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (
-				args.Length == 1 || args.Length == 2 || args.Length == 3, "readLines");
+				args.Length == 1 || args.Length == 2 || args.Length == 3, "writeLines");
 			string path = args [0].AsString ();
 			IEnumerable<DynValue> contents = args [1].As<IEnumerable<DynValue>> ();
 			Encoding encoding;

@@ -1,8 +1,6 @@
 ﻿using System;
 using Cygni.Executors;
 using Cygni.Settings;
-using Cygni.AST.Scopes;
-using System.IO;
 
 namespace Cygni_CLI
 {

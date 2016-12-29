@@ -12,6 +12,8 @@ namespace Cygni.AST.Scopes
 	/// </summary>
 	public interface IScope
 	{
+		string ScopeName { get; }
+
 		DynValue Get (string name);
 
 		DynValue Put (string name, DynValue value);
@@ -19,8 +21,6 @@ namespace Cygni.AST.Scopes
 		DynValue Get (int nest, int index);
 
 		DynValue Put (int nest, int index, DynValue value);
-
-		//bool HasName (string name);
 
 		bool TryGetValue (string name, out DynValue value);
 

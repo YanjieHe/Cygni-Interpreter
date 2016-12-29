@@ -101,8 +101,8 @@ namespace Cygni.AST
 						Match (Tag.Return);
 						list.Add (ASTNode.Return (Statement ()));
 						break;
-					case Tag.Local:
-						list.Add (Local ());
+					case Tag.Var:
+						list.Add (DefineLocalVariable ());
 						break;
 					case Tag.Unpack:
 						list.Add (Unpack ());
@@ -255,9 +255,9 @@ Finish:
 			}
 		}
 
-		ASTNode Local ()
+		ASTNode DefineLocalVariable ()
 		{
-			Match (Tag.Local);
+			Match (Tag.Var);
 			var names_list = new List<NameEx> ();
 			var values_list = new List<ASTNode> ();
 			do {

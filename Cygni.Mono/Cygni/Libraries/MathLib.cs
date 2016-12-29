@@ -43,14 +43,28 @@ namespace Cygni.Libraries
 
 		public static DynValue max (DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "max");
-			return Math.Max (args [0].AsNumber (), args [1].AsNumber ());
+			RuntimeException.FuncArgsCheck (args.Length >= 2, "max");
+			double max_number = args [0].AsNumber ();
+			for (int i = 1; i < args.Length; i++) {
+				double x = args [i].AsNumber ();
+				if (max_number < x) {
+					max_number = x;
+				}
+			}
+			return max_number;
 		}
 
 		public static DynValue min (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "min");
-			return Math.Min (args [0].AsNumber (), args [1].AsNumber ());
+			double min_number = args [0].AsNumber ();
+			for (int i = 1; i < args.Length; i++) {
+				double x = args [i].AsNumber ();
+				if (min_number > x) {
+					min_number = x;
+				}
+			}
+			return min_number;
 		}
 
 		public static DynValue exp (DynValue[] args)
@@ -142,7 +156,8 @@ namespace Cygni.Libraries
 			RuntimeException.FuncArgsCheck (args.Length == 1, "truncate");
 			return Math.Truncate (args [0].AsNumber ());
 		}
-		internal static long IntegerPow(long x, int n)
+
+		internal static long IntegerPow (long x, int n)
 		{
 			if (n == 0) {
 				return 1L;

@@ -11,20 +11,22 @@ namespace Cygni.AST.Scopes
 {
 	public sealed class ClassScope:IScope
 	{
+		private readonly string className;
 		readonly IScope parent;
 		readonly Dictionary<string,int> table;
 		readonly DynValue[] values;
-		readonly string name;
 
-		public string Name { get { return this.name; } }
+		public string Name { get { return this.className; } }
 
 		public IScope Parent { get { return this.parent; } }
 
 		public ScopeType type { get { return ScopeType.Class; } }
 
-		public ClassScope (string name, Dictionary<string,int> table, DynValue[] values, IScope parent)
+		public string ScopeName { get { return this.className; } }
+
+		public ClassScope (string className, Dictionary<string,int> table, DynValue[] values, IScope parent)
 		{
-			this.name = name;
+			this.className = className;
 			this.parent = parent;
 			this.table = table;
 			this.values = values;
@@ -56,7 +58,7 @@ namespace Cygni.AST.Scopes
 			if (table.TryGetValue (name, out index)) {
 				return values [index];
 			} else {
-				throw RuntimeException.FieldNotExist (this.name, name);
+				throw RuntimeException.FieldNotExist (this.className, name);
 			}
 		}
 
@@ -66,7 +68,7 @@ namespace Cygni.AST.Scopes
 			if (table.TryGetValue (name, out index)) {
 				return values [index] = value;
 			} else {
-				throw RuntimeException.FieldNotExist (this.name, name);
+				throw RuntimeException.FieldNotExist (this.className, name);
 			}
 		}
 
@@ -103,7 +105,7 @@ namespace Cygni.AST.Scopes
 		public ClassScope Clone ()
 		{
 			DynValue[] values = new DynValue[this.values.Length];
-			var newScope =	new ClassScope (name, table, values, parent);
+			var newScope =	new ClassScope (className, table, values, parent);
 			for (int i = 0; i < this.values.Length; i++) {
 				if (this.values [i].type == DataType.Function) {
 					values [i] = this.values [i].As<Function> ().Update (newScope);

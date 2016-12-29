@@ -10,19 +10,22 @@ namespace Cygni.AST.Scopes
 {
 	public sealed class ArrayScope:IScope
 	{
-
+		private readonly string scopeName;
 		private readonly DynValue[] values;
 		private readonly IScope parent;
 
 		public IScope Parent{ get { return parent; } }
 
-		public ScopeType type { get { return ScopeType.Array; } }
+		public ScopeType type { get { return ScopeType.Function; } }
+
+		public string ScopeName { get { return this.scopeName; } }
 
 		public int Count { get { return values.Length; } }
 
 
-		public ArrayScope (DynValue[] values, IScope parent = null)
+		public ArrayScope (string name, DynValue[] values, IScope parent = null)
 		{
+			this.scopeName = name;
 			this.values = values;
 			this.parent = parent;
 		}
@@ -57,11 +60,6 @@ namespace Cygni.AST.Scopes
 			throw new NotSupportedException (name);
 		}
 
-		public bool HasName (string name)
-		{
-			throw new NotSupportedException ();
-		}
-
 		public bool TryGetValue (string name, out DynValue value)
 		{
 			throw new NotSupportedException ();
@@ -70,8 +68,8 @@ namespace Cygni.AST.Scopes
 		public ArrayScope Update (IScope scope)
 		{
 			var values = new DynValue[this.values.Length];
-			Array.Copy (this.values, values,values.Length);
-			return new ArrayScope (values, scope);
+			Array.Copy (this.values, values, values.Length);
+			return new ArrayScope (this.scopeName, values, scope);
 		}
 	}
 }

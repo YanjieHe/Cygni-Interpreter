@@ -1,0 +1,3 @@
+lib = LoadLibrary("CygniLib.dll", "CygniLib.IO.io_funcs")
+Reader = lib.Reader
+Writer = lib.Writer

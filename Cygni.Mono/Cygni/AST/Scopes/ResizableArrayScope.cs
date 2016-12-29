@@ -13,16 +13,20 @@ namespace Cygni.AST.Scopes
 {
 	public class ResizableArrayScope:IScope
 	{
+		private readonly string scopeName;
 		private int count;
 		private DynValue[] values;
 		private readonly Dictionary<string, int> table;
 
-		public ScopeType type { get { return ScopeType.ResizableArray; } }
+		public ScopeType type { get { return ScopeType.Module; } }
 
 		public IScope Parent { get { return null; } }
 
-		public ResizableArrayScope ()
+		public string ScopeName { get { return this.scopeName; } }
+
+		public ResizableArrayScope (string name = "main")
 		{
+			this.scopeName = name;
 			this.table = new Dictionary<string,int> ();
 			this.values = new DynValue[4];
 			this.count = 0;

@@ -56,8 +56,8 @@ namespace Cygni.Lexical.Tokens
 				return Lambda;
 			case "class":
 				return Class;
-			case "local":
-				return Local;
+			case "var":
+				return Var;
 			case "unpack":
 				return Unpack;
 
@@ -98,7 +98,7 @@ namespace Cygni.Lexical.Tokens
 			Define = new Word ("def", Tag.Define),
 			Lambda = new Word ("lambda", Tag.Lambda),
 			Class = new Word ("class", Tag.Class),
-			Local = new Word ("local", Tag.Local),
+			Var = new Word ("var", Tag.Var),
 			Unpack = new Word ("unpack", Tag.Unpack),
 				
 

@@ -72,10 +72,29 @@ namespace Cygni.Libraries
 		internal static readonly Dictionary<string, BlockEx> ModulesCache 
 		= new Dictionary<string, BlockEx> ();
 
+		internal static string GetModulePath (string moduleName)
+		{
+			if (!Path.HasExtension (moduleName)) {
+				moduleName = Path.ChangeExtension (moduleName, "cyg");
+			}
+			DirectoryInfo currentDir = GlobalSettings.CurrentDirectory;
+			foreach (DirectoryInfo dir in currentDir.GetDirectories()) {
+				if (string.Equals (dir.Name, "lib")) {
+					foreach (FileInfo file in dir.EnumerateFiles()) {
+						if (string.Equals (file.Name, moduleName)) {
+							return file.FullName;
+						}
+					}
+					throw new RuntimeException ("No module named '{0}.", moduleName);
+				}
+			}
+			throw new RuntimeException ("Missing 'lib' folder");	
+		}
+
 		public static DynValue import (ASTNode[] args, IScope scope)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "import");
-			if (scope.type != ScopeType.ResizableArray) {
+			if (scope.type != ScopeType.Module) {
 				throw new RuntimeException ("command 'import' can only be executed in global scope.");
 			} else {
 
@@ -86,12 +105,8 @@ namespace Cygni.Libraries
 				} else {
 					encoding = Encoding.Default;
 				}
-				string currentDir = GlobalSettings.CurrentDirectory;
 
-				if (!Path.HasExtension (moduleName))
-					moduleName = Path.ChangeExtension (moduleName, "cyg");
-				
-				string filePath = currentDir + "/lib/" + moduleName;
+				string filePath = GetModulePath (moduleName);
 
 				BlockEx program;
 				if (ModulesCache.TryGetValue (filePath, out program)) {
@@ -101,9 +116,6 @@ namespace Cygni.Libraries
 					
 					bool quiet = GlobalSettings.Quiet;
 					GlobalSettings.Quiet = true;
-
-					if (!File.Exists (filePath))
-						throw new RuntimeException ("No module named '{0}.", moduleName);
 
 					ResizableArrayScope globalScope = scope as ResizableArrayScope;
 					CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
@@ -117,7 +129,14 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue Scope (DynValue[] args, IScope scope)
+		public static DynValue error (ASTNode[] args, IScope scope)
+		{
+			RuntimeException.CmdArgsCheck (args.Length == 1, "error");
+			string message = args [0].Eval (scope).AsString ();
+			throw RuntimeException.Throw (message, scope);
+		}
+
+		/*public static DynValue Scope (DynValue[] args, IScope scope)
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 1, "scope");
 			string cmdType = args [0].AsString ();
@@ -148,6 +167,6 @@ namespace Cygni.Libraries
 			default :
 				throw new RuntimeException ("Not supported parameter '{0}' for command 'scope'", cmdType);
 			}
-		}
+		}*/
 	}
 }

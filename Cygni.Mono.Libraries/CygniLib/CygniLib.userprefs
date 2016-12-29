@@ -1,6 +1,10 @@
 ﻿<Properties StartupItem="CygniLib/CygniLib.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CygniLib/IO/CygniReader.cs">
+    <Files>
+      <File FileName="CygniLib/IO/CygniReader.cs" Line="19" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

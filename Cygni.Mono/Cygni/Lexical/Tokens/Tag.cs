@@ -57,7 +57,7 @@ namespace Cygni.Lexical.Tokens
 		Define,
 		Lambda,
 		Class,
-		Local,
+		Var,
 		Unpack,
 
 		/* Separators */

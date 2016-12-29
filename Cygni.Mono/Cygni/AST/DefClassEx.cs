@@ -39,7 +39,7 @@ namespace Cygni.AST
 
 		public override DynValue Eval (IScope scope)
 		{
-			if (scope.type != ScopeType.ResizableArray) {
+			if (scope.type != ScopeType.Module) {
 				throw new Exception ("Scope Error");
 			}
 			ResizableArrayScope GlobalScope = scope as ResizableArrayScope;

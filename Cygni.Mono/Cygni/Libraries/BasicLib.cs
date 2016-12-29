@@ -144,9 +144,16 @@ namespace Cygni.Libraries
 
 
 			if (!Path.IsPathRooted (filepath)) {
-				filepath = GlobalSettings.CurrentDirectory + "/" + filepath;
+				string fileName = string.Copy (filepath);
+				foreach (FileInfo file in GlobalSettings.CurrentDirectory.GetFiles()) {
+					if (string.Equals (file.Name, fileName)) {
+						filepath = file.FullName;
+						goto FoundDLL;
+					}
+				}
+				throw new RuntimeException ("No assembly named '{0}.", fileName);
 			}
-
+			FoundDLL:
 			Assembly assembly = Assembly.LoadFile (filepath);
 			Type t = assembly.GetType (name: class_name, throwOnError: true, ignoreCase: true);  //namespace.class
 			if (args.Length == 2) {
@@ -239,15 +246,6 @@ namespace Cygni.Libraries
 			return DynValue.Nil;
 		}
 
-		public static DynValue Throw (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "throw");
-			if (args.Length == 1)
-				throw new RuntimeException (args [0].AsString ());
-			else
-				throw new RuntimeException (args [0].AsString (), args.SkipMap (1, i => i.Value));
-		}
-
 		public static DynValue Range (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "range");
@@ -270,18 +268,29 @@ namespace Cygni.Libraries
 		{
 			/* Inspire by Lua */
 			/* protected call */
-			RuntimeException.FuncArgsCheck (args.Length == 2, "pCall");
+			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2, "pCall");
 			IFunction func = args [0].As<IFunction> ();
-			DynList paras = args [1].As<DynList> ();
-			try {
-				DynValue[] parameters = new DynValue[paras.Count];
-				paras.CopyTo (parameters);
-				func.DynInvoke (parameters);
-				return true;
-			} catch (RuntimeException ex) {
-				return ex.Message;
-			} catch (Exception ex) {
-				return ex.Message;
+			if (args.Length == 1) {
+				try {
+					func.DynInvoke (DynValue.Empty);
+					return true;
+				} catch (RuntimeException ex) {
+					return ex.Message;
+				} catch (Exception ex) {
+					return ex.Message;
+				}
+			} else {
+				DynList paras = args [1].As<DynList> ();
+				try {
+					DynValue[] parameters = new DynValue[paras.Count];
+					paras.CopyTo (parameters);
+					func.DynInvoke (parameters);
+					return true;
+				} catch (RuntimeException ex) {
+					return ex.Message;
+				} catch (Exception ex) {
+					return ex.Message;
+				}
 			}
 		}
 
@@ -329,12 +338,9 @@ namespace Cygni.Libraries
 			} else {
 				encoding = Encoding.Default;
 			}
-			string currentDir = GlobalSettings.CurrentDirectory;
 
-			if (!Path.HasExtension (moduleName))
-				moduleName = Path.ChangeExtension (moduleName, "cyg");
+			string filePath = Commands.GetModulePath (moduleName);
 
-			string filePath = currentDir + "/lib/" + moduleName;
 			BlockEx program;
 			ResizableArrayScope globalScope = new ResizableArrayScope ();
 			globalScope.BuiltIn ();
@@ -346,9 +352,6 @@ namespace Cygni.Libraries
 
 				bool quiet = GlobalSettings.Quiet;
 				GlobalSettings.Quiet = true;
-
-				if (!File.Exists (filePath))
-					throw new RuntimeException ("No module named '{0}.", moduleName);
 
 				CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
 

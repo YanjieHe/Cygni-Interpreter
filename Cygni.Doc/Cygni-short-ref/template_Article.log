@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2016.12.20)  26 DEC 2016 23:30
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2016.12.20)  27 DEC 2016 14:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -97,7 +97,7 @@ File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 157.
- [5] [6] [7]
+ [5] [6] [7] [8]
 (./template_Article.aux) ) 
 Here is how much of TeX's memory you used:
  1486 strings out of 493638
@@ -108,4 +108,4 @@ Here is how much of TeX's memory you used:
  1328 hyphenation exceptions out of 8191
  26i,6n,32p,263b,1087s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on template_Article.pdf (7 pages).
+Output written on template_Article.pdf (8 pages).

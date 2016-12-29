@@ -1,0 +1,2 @@
+lib = LoadLibrary("CygniLib.dll", "CygniLib.stopWatch.stopWatch_funcs")
+StopWatch = lib.StopWatch

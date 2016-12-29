@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System;
+using Cygni.AST.Scopes;
 
 namespace Cygni.Errors
 {
@@ -26,7 +27,9 @@ namespace Cygni.Errors
 		{
 			return new RuntimeException ("'{0}' is not defined.", name);
 		}
-		public static RuntimeException FieldNotExist(string target, string field){
+
+		public static RuntimeException FieldNotExist (string target, string field)
+		{
 			return new RuntimeException ("'{0}' does not have field '{1}'.", target, field);
 		}
 
@@ -45,16 +48,35 @@ namespace Cygni.Errors
 			if (!condition)
 				throw new RuntimeException ("bad number of arguments for function '{0}'.", funcName);
 		}
+
 		public static void IndexerArgsCheck (bool condition, string collectionName)
 		{
 			if (!condition)
 				throw new RuntimeException ("bad number of arguments for indexer of '{0}'.", collectionName);
 		}
+
 		public static void CmdArgsCheck (bool condition, string cmdName)
 		{
 			if (!condition)
 				throw new RuntimeException ("bad number of arguments for command '{0}'.", cmdName);
 		}
 
+		public static RuntimeException Throw (string message, IScope scope)
+		{
+			Queue<string> queue = new Queue<string> ();
+			IScope current = scope;
+			while (current != null) {
+				queue.Enqueue (string.Format (": in {0} {1} scope.", current.ScopeName, current.type));
+				current = current.Parent;
+			}
+			StringBuilder s = new StringBuilder ();
+			s.AppendLine ();
+			s.AppendLine ("stdin:" + queue.Count + ": " + message);
+			while (queue.Count > 0) {
+				s.Append ("\tstdin:" + queue.Count);
+				s.AppendLine (queue.Dequeue ());
+			}
+			return new RuntimeException (s.ToString ());
+		}
 	}
 }

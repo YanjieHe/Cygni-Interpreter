@@ -33,8 +33,6 @@ namespace Cygni.Libraries
 			{ "tuple",BasicLib.tuple },
 			{ "LoadLibrary",BasicLib.LoadLibrary },
 
-			{ "throw",BasicLib.Throw },
-
 			{ "exit",BasicLib.exit },
 			{ "range",BasicLib.Range },
 			{ "len",BasicLib.len },
@@ -115,7 +113,8 @@ namespace Cygni.Libraries
 				}, {"file",
 				new Structure (
 					new StructureItem ("readLines", DynValue.FromDelegate ("readLines", IOLibrary.readLines)),
-					new StructureItem ("writeLines", DynValue.FromDelegate ("writeLines", IOLibrary.writeLines))
+					new StructureItem ("writeLines", DynValue.FromDelegate ("writeLines", IOLibrary.writeLines)),
+					new StructureItem ("exists", DynValue.FromDelegate ("exists", IOLibrary.exists))
 				)
 			}
 
@@ -127,6 +126,7 @@ namespace Cygni.Libraries
 			{ "cond", Commands.cond },
 			{ "assert", Commands.assert },
 			{ "import", Commands.import },
+			{ "error", Commands.error },
 		};
 
 	}

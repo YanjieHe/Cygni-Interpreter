@@ -16,7 +16,6 @@ namespace CygniLib.IO
 
 		public CygniReader (string filePath, Encoding encoding) : base (filePath, encoding)
 		{
-
 		}
 
 		public DynValue GetByDot (string fieldName)

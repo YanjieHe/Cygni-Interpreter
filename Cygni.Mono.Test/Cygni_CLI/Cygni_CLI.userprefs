@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Cygni_CLI/Program.cs">
     <Files>
-      <File FileName="Cygni_CLI/Program.cs" Line="25" Column="1" />
+      <File FileName="Cygni_CLI/Program.cs" Line="12" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

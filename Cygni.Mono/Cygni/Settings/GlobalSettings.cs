@@ -22,7 +22,7 @@ namespace Cygni.Settings
 		//quiet output
 		public static bool CompleteErrorOutput = false;
 		public static bool IsDebug = true;
-		public static string CurrentDirectory = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location);
+		public static DirectoryInfo CurrentDirectory = new DirectoryInfo (AppDomain.CurrentDomain.BaseDirectory);
 		public const string warranty = 
 			@"
 Cygni, version 1.0.0

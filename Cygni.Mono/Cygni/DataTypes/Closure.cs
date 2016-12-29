@@ -46,7 +46,7 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (values, funcScope.Parent);
+			var newScope = new ArrayScope ("Anonymous Function", values, funcScope.Parent);
 			return new Closure (nArgs, body, newScope).Invoke ();
 		}
 
@@ -64,7 +64,7 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (values, funcScope.Parent);
+			var newScope = new ArrayScope ("Anonymous Function",values, funcScope.Parent);
 			return new Closure (nArgs, body, newScope).Invoke ();
 		}
 
