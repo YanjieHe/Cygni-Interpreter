@@ -30,10 +30,14 @@ namespace Cygni.AST
 		{
 			DynValue collection = this.collection.Eval (scope);
 			DynValue index = this.index.Eval (scope);
-			if (collection.type == DataType.String) {
-				return collection.AsString () [index.AsInt32 ()];
+			if (index.type == DataType.Range) {
+				return collection.As<ISliceable> ().GetBySlice (index.As<Range> ());
 			} else {
-				return collection.As<IIndexable> ().GetByIndex (index);
+				if (collection.type == DataType.String) {
+					return collection.AsString () [index.AsInt32 ()];
+				} else {
+					return collection.As<IIndexable> ().GetByIndex (index);
+				}
 			}
 		}
 

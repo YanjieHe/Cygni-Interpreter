@@ -40,8 +40,6 @@ namespace Cygni.Lexical.Tokens
 				return While;
 			case "for":
 				return For;
-			case "foreach":
-				return ForEach;
 			case "in":
 				return In;
 			case "break":
@@ -88,13 +86,12 @@ namespace Cygni.Lexical.Tokens
 			Mod = new Word ("%", Tag.Mod), Pow = new Word ("^", Tag.Pow),
 			
 			IntDiv = new Word ("//", Tag.IntDiv),
-			Concatenate = new Word ("..", Tag.Concatenate),
+			Concatenate = new Word ("&", Tag.Concatenate),
 
 			If = new Word ("if", Tag.If), Else = new Word ("else", Tag.Else),
 			ElseIf = new Word ("elif", Tag.ElseIf),
 			While = new Word ("while", Tag.While),
 			For = new Word ("for", Tag.For),
-			ForEach = new Word ("foreach", Tag.ForEach),
 			Define = new Word ("def", Tag.Define),
 			Lambda = new Word ("lambda", Tag.Lambda),
 			Class = new Word ("class", Tag.Class),

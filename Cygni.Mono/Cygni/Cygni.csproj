@@ -86,7 +86,6 @@
     <Compile Include="DataTypes\StructureItem.cs" />
     <Compile Include="AST\Visitors\ASTVisitor.cs" />
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
-    <Compile Include="AST\ForEachEx.cs" />
     <Compile Include="DataTypes\DynDictionary.cs" />
     <Compile Include="AST\DictionaryInitEx.cs" />
     <Compile Include="AST\AssignEx.cs" />
@@ -115,6 +114,9 @@
     <Compile Include="Lexical\Tokens\IntToken.cs" />
     <Compile Include="DataTypes\Module.cs" />
     <Compile Include="Libraries\IOLibrary.cs" />
+    <Compile Include="AST\Visitors\RangeEx.cs" />
+    <Compile Include="DataTypes\Range.cs" />
+    <Compile Include="DataTypes\Interfaces\ISliceable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

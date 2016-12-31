@@ -78,23 +78,8 @@ namespace Cygni.AST.Visitors
 			nameEx.Nest = loc.Nest;
 			nameEx.Index = loc.Index;
 
-			forEx.Start.Accept (this);
-			forEx.End.Accept (this);
-			if (forEx.Step != null) {
-				forEx.Step.Accept (this);
-			}
+			forEx.Collection.Accept (this);
 			forEx.Body.Accept (this);
-		}
-
-		internal override void Visit (ForEachEx forEachEx)
-		{
-			NameEx nameEx = forEachEx.Iterator as NameEx;
-			Location loc = symbols.PutLocal (nameEx.Name);
-			nameEx.Nest = loc.Nest;
-			nameEx.Index = loc.Index;
-
-			forEachEx.Collection.Accept (this);
-			forEachEx.Body.Accept (this);
 		}
 
 		internal override void Visit (DefFuncEx defFuncEx)

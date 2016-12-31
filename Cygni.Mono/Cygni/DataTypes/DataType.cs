@@ -21,6 +21,7 @@ namespace Cygni.DataTypes
 		List,
 		Dictionary,
 		Tuple,
+		Range,
 
 		Struct,
 		Class,

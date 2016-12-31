@@ -35,6 +35,11 @@ namespace Cygni.AST
 			return new AssignEx (left, right);
 		}
 
+		public static ASTNode RangeInit (ASTNode start, ASTNode end, ASTNode step = null)
+		{
+			return new RangeEx (start, end, step);
+		}
+
 		public static ASTNode Local (NameEx[] names, ASTNode[] values)
 		{
 			return new LocalEx (names, values);
@@ -52,7 +57,7 @@ namespace Cygni.AST
 
 		public static ASTNode And (ASTNode left, ASTNode right)
 		{
-			return new BinaryEx  (  BinaryOp.And, left, right);
+			return new BinaryEx (BinaryOp.And, left, right);
 		}
 
 		public static ASTNode Equal (ASTNode left, ASTNode right)
@@ -188,19 +193,9 @@ namespace Cygni.AST
 			return new WhileEx (condition, body);
 		}
 
-		public static ASTNode For (BlockEx body, string iterator, ASTNode start, ASTNode end)
+		public static ASTNode For (BlockEx body, NameEx iterator, ASTNode collection)
 		{
-			return new ForEx (body, iterator, start, end, null);
-		}
-
-		public static ASTNode For (BlockEx body, string iterator, ASTNode start, ASTNode end, ASTNode step)
-		{
-			return new ForEx (body, iterator, start, end, step);
-		}
-
-		public static ASTNode ForEach (BlockEx body, string iterator, ASTNode collection)
-		{
-			return new ForEachEx (body, iterator, collection);
+			return new ForEx (body, iterator, collection);
 		}
 
 		public static ASTNode Define (string name, NameEx[] parameters, BlockEx body)

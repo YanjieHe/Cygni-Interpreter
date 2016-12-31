@@ -42,7 +42,7 @@ namespace Cygni.AST
 					if (obj.type == DataType.Number) {
 						return new DynValue (DataType.Number, +(double)obj.Value);
 					} else {
-						return ((IComputable)obj.Value).UnaryPlus ();
+						return obj.As<IComputable> ().UnaryPlus ();
 					}
 				}
 			case UnaryOp.Minus:
@@ -53,7 +53,7 @@ namespace Cygni.AST
 					if (obj.type == DataType.Number) {
 						return new DynValue (DataType.Number, -(double)obj.Value);
 					} else {
-						return ((IComputable)obj.Value).UnaryPlus ();
+						return obj.As<IComputable> ().UnaryMinus ();
 					}
 				}
 			default: /* UnaryOp.Not */

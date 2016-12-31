@@ -53,9 +53,11 @@ namespace Cygni.Lexical
 			var tokenlist = new LinkedList<Token> ();
 			for (;;) {
 				Token word = Scan ();
-				if (word.tag == Tag.EOF)
+				if (word.tag == Tag.EOF) {
 					break;
-				tokenlist.AddLast (word);
+				} else {
+					tokenlist.AddLast (word);
+				}
 			}
 			return tokenlist;
 		}
@@ -66,26 +68,16 @@ namespace Cygni.Lexical
 				s.Clear ();
 			}
 
-			while (IsSpace (Peek ())) {/* Skip the white spaces */
-				if (GetChar () == '\n')
-					lineNumber++;
-			}
-
-			if (Peek () == '#') { /* start of comments */
-				while (Peek () != -1 && Peek () != '\n')
-					GetChar ();
-			}
-
+			SkipNoUseChars ();
 
 			int ch = Peek ();
 
-			if (ch < 0)
+			if (IsEOF) {
 				return Token.EOF;//End of text
-
-			if (ch == '@') {
+			} else if (ch == '@') {
 				return ParseUnescapedString ();
 			} else if (ch == '"' || ch == '\'') { /* start of string */
-				return ReadString ((char)GetChar ());
+				return ParseString ();
 			} else if (IsDigit (ch)) {/* start of integer or number */
 				return ParseInteger ();
 			} else if (IsLetterOrUnderline (ch)) {/* Start of identifier */
@@ -93,83 +85,83 @@ namespace Cygni.Lexical
 			} else {
 
 				GetChar ();
+
 				switch (ch) {
-					case '!':
-						if (Peek () == '=') {
-							GetChar ();
-							return Word.NotEqual;
-						} else
-							throw Error("Unexpected '!', missing '='.");
-					case '=':
-						if (Peek () == '=') {
-							GetChar ();
-							return Word.Equal;
-						} else if (Peek () == '>') {
-							GetChar ();
-							return Word.GoesTo;
-						} else {
-							return Word.Assign;
-						}
-					case '.':
-						if (Peek () == '.') {
-							GetChar();
-							return Word.Concatenate;
-						} else {
-							return Word.Dot;
-						}
-					case '>':
-						return ParseGreater ();
-					case '<':
-						return ParseLess ();
-						/* arithmetic operators */
-					case '+':
-						return Word.Add;
-					case '-':
-						return Word.Sub;
-					case '*':
-						return Word.Mul;
-					case '/':
-						if (Peek() == '/') {
-							GetChar();
-							return Word.IntDiv;
-						} else {
-							return Word.Div;
-						}
-					case '%':
-						return Word.Mod;
-					case '^':
-						return Word.Pow;
+				case '!':
+					return ParseNotEqual ();
+				case '=':
+					return ParseEqual_GoesTo_Assign ();
+				case '>':
+					return ParseGreater ();
+				case '<':
+					return ParseLess ();
 
-					case '(':
-						return Word.LP;
-					case ')':
-						return Word.RP;
-					case '[':
-						return Word.LBracket;
-					case ']':
-						return Word.RBracket;
-					case '{':
-						return Word.LBrace;
-					case '}':
-						return Word.RBrace;
+				/* arithmetic operators */
+				case '+':
+					return Word.Add;
+				case '-':
+					return Word.Sub;
+				case '*':
+					return Word.Mul;
+				case '/':
+					return ParseDiv ();
+				case '%':
+					return Word.Mod;
+				case '^':
+					return Word.Pow;
+				case '&':
+					return Word.Concatenate;
+					
+				case '(':
+					return Word.LP;
+				case ')':
+					return Word.RP;
+				case '[':
+					return Word.LBracket;
+				case ']':
+					return Word.RBracket;
+				case '{':
+					return Word.LBrace;
+				case '}':
+					return Word.RBrace;
 
-					case ',':
-						return Word.Comma;
-					case ';':
-						return Word.Semicolon;
-					case ':':
-						return Word.Colon;
-					case '\n':
-						lineNumber++;
-						return Word.EOL;
-					default:
-						throw Error(string.Format("Unrecognizable token '{1}'.", (char)ch));
+				case ',':
+					return Word.Comma;
+				case '.':
+					return Word.Dot;
+				case ';':
+					return Word.Semicolon;
+				case ':':
+					return Word.Colon;
+				case '\n':
+					lineNumber++;
+					return Word.EOL;
+				default:
+					throw Error (string.Format ("Unrecognizable token '{1}'.", (char)ch));
 				}
 			}
 		}
 
-		Token ReadString (char start_ch)
+		void SkipNoUseChars ()
 		{
+			do {
+				if (IsSpace (Peek ())) {
+					if (GetChar () == '\n') {/* Skip the white spaces */
+						lineNumber++;
+					}
+				} else if (Peek () == '#') {/* start of comments */
+					while (!IsEOF && Peek () != '\n') {
+						GetChar ();
+					}
+				} else {
+					break;
+				}
+			} while (true);
+		}
+
+		Token ParseString ()
+		{
+			char start_ch = (char)GetChar ();
 			while (Peek () != -1) {
 				if (Peek () == start_ch) {
 					GetChar ();
@@ -182,12 +174,12 @@ namespace Cygni.Lexical
 				} else
 					s.Append ((char)GetChar ());
 			}
-			throw Error("Missing closure for string declaration");
+			throw Error ("Missing closure for string declaration");
 		}
 
 		Token ParseUnescapedString ()
 		{
-			GetChar();
+			GetChar ();
 			if (Peek () == '"' || Peek () == '\'') {
 				char start_ch = (char)Peek ();
 				GetChar ();
@@ -204,9 +196,9 @@ namespace Cygni.Lexical
 						s.Append ((char)GetChar ());
 					}
 				}
-				throw Error("Missing closure for string declaration");
+				throw Error ("Missing closure for string declaration");
 			} else {
-				throw Error("Missing '\"' or ''' when parsing unescaped string.");
+				throw Error ("Missing '\"' or ''' when parsing unescaped string.");
 			}
 		}
 
@@ -318,6 +310,38 @@ namespace Cygni.Lexical
 				return Word.LessOrEqual;
 			} else {
 				return Word.Less;
+			}
+		}
+
+		Token ParseNotEqual ()
+		{
+			if (Peek () == '=') {
+				GetChar ();
+				return Word.NotEqual;
+			} else
+				throw Error ("Expected '='");
+		}
+
+		Token ParseDiv ()
+		{
+			if (Peek () == '/') {
+				GetChar ();
+				return Word.IntDiv;
+			} else {
+				return Word.Div;
+			}
+		}
+
+		Token ParseEqual_GoesTo_Assign ()
+		{
+			if (Peek () == '=') {
+				GetChar ();
+				return Word.Equal;
+			} else if (Peek () == '>') {
+				GetChar ();
+				return Word.GoesTo;
+			} else {
+				return Word.Assign;
 			}
 		}
 

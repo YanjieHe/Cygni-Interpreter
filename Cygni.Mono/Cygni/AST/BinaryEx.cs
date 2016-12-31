@@ -431,7 +431,7 @@ namespace Cygni.AST
 			case BinaryOp.Or:
 				return string.Concat ("(", left, " or ", right, ")");
 			case BinaryOp.Concatenate:
-				return string.Concat ("(", left, " .. ", right, ")");
+				return string.Concat ("(", left, " & ", right, ")");
 			case BinaryOp.Less:
 				return string.Concat ("(", left, "<", right, ")");
 			case BinaryOp.Greater:

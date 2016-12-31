@@ -58,7 +58,7 @@ namespace Cygni.DataTypes
 
 		public override string ToString ()
 		{
-			return "Tuple(" + string.Join<DynValue> (", ", this.values) + ")";
+			return "(" + string.Join<DynValue> (", ", this.values) + ")";
 		}
 	}
 }

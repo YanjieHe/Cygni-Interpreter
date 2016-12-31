@@ -30,11 +30,10 @@ namespace Cygni.AST
 		DictionaryInit,
 		Index,
 		SingleIndex,
-		ForEach,
 		Assign,
 		Local,
 		Global,
-		Set,
 		Unpack,
+		Range,
 	}
 }

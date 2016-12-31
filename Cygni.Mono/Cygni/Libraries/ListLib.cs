@@ -107,6 +107,38 @@ namespace Cygni.Libraries
 			return newList;
 		}
 
+		public static DynValue slice (DynList list, Range range)
+		{
+			int start = range.Start;
+			int end = range.End;
+			int step = range.Step;
+			DynList newList;
+			if (step > 0) {
+				if (end < start) {
+					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is positive.");
+				} else {
+
+					newList = new DynList ((end - start + 1) / step);
+					for (int i = start; i < end; i += step) {
+						newList.Add (list [i]);
+					}
+				}
+
+			} else if (step < 0) {
+				if (end > start) {
+					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is negative.");
+				} else {
+					newList = new DynList ((end - start + 1) / step);
+					for (int i = start; i > end; i += step) {
+						newList.Add (list [i]);
+					}
+				}
+			} else {
+				throw new RuntimeException ("'step' of slice cannot be zero");
+			}
+			return newList;
+		}
+
 		public static DynValue slice (DynList list, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "slice");
@@ -147,7 +179,7 @@ namespace Cygni.Libraries
 
 		public static DynValue copy (DynList list, DynValue[] args)
 		{
-			DynList newList = new DynList(list, list.Count);
+			DynList newList = new DynList (list, list.Count);
 			return newList;
 		}
 

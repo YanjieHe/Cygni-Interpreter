@@ -92,6 +92,11 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.NativeFunction, f);
 		}
 
+		public static implicit operator DynValue (Range range)
+		{
+			return new DynValue (DataType.Range, range);
+		}
+
 		#endregion
 
 		public static DynValue FromInteger (long value)
@@ -163,6 +168,12 @@ namespace Cygni.DataTypes
 		{
 			return new DynValue (DataType.Tuple, tuple);
 		}
+
+		public  static DynValue FromRange (Range range)
+		{
+			return new DynValue (DataType.Range, range);
+		}
+
 
 		public static DynValue FromUserData (object value)
 		{
