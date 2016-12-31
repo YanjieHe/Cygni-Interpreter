@@ -17,43 +17,46 @@ namespace Cygni.Libraries
 		public static DynValue strcat (DynValue[] args)
 		{
 			int n = args.Length;
-			RuntimeException.FuncArgsCheck (n >=  1, "strcat");
+			RuntimeException.FuncArgsCheck (n >= 1, "strcat");
 			string[] strs = new string[n];
 			for (int i = 0; i < n; i++)
 				strs [i] = args [i].Value.ToString ();
 			return string.Concat (strs);
 		}
+
 		public static DynValue join (string str, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "join");
-			return string.Join (str, args[0].As<DynList>().Select(i=>i.Value));
+			return string.Join (str, args [0].As<DynList> ().Select (i => i.Value));
 		}
+
 		public static DynValue format (string str, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length >= 1, "format");
-			return string.Format (str, args.Map(i=>i.Value));
+			return string.Format (str, args.Map (i => i.Value));
 		}
+
 		public static DynValue split (string str, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length >= 1, "strsplit");
 			string[] result;
-			if (args[0].type == DataType.List){
-				DynList list = args[0].As<DynList>();
+			if (args [0].type == DataType.List) {
+				DynList list = args [0].As<DynList> ();
 				int n = list.Count;
 				char[] arr = new char[n];
-				for(int i = 0;i < n;i++)
-					arr[i] = char.Parse(list[i].AsString());
-				result = str.Split(arr);
-			}
-			else {
+				for (int i = 0; i < n; i++)
+					arr [i] = char.Parse (list [i].AsString ());
+				result = str.Split (arr);
+			} else {
 				int n = args.Length;
 				char[] arr = new char[n];
-				for(int i = 0;i < n;i++)
-					arr[i] = char.Parse(args[i].AsString());
-				result = str.Split(arr);
+				for (int i = 0; i < n; i++)
+					arr [i] = char.Parse (args [i].AsString ());
+				result = str.Split (arr);
 			}
-			return DynValue.FromList(result.ToDynList(DynValue.FromString));
+			return DynValue.FromList (result.ToDynList (DynValue.FromString));
 		}
+
 		public static DynValue replace (string str, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "replace");
@@ -61,20 +64,23 @@ namespace Cygni.Libraries
 			string newValue = args [1].AsString ();
 			return str.Replace (oldValue, newValue);
 		}
+
 		public static DynValue strcmp (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
 			return (double)string.CompareOrdinal (
-					args [0].AsString (),
-					args [1].AsString ());
+				args [0].AsString (),
+				args [1].AsString ());
 		}
+
 		public static DynValue compare (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "compare");
 			return (double)string.Compare (
-					args [0].AsString (),
-					args [1].AsString ());
+				args [0].AsString (),
+				args [1].AsString ());
 		}
+
 		public static DynValue find (string str, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2 || args.Length == 3, "find");
@@ -85,7 +91,9 @@ namespace Cygni.Libraries
 			else
 				return str.IndexOf (args [0].AsString (), (int)args [1].AsNumber (), (int)args [2].AsNumber ());
 		}
-		public static DynValue trim(string str, DynValue[] args){
+
+		public static DynValue trim (string str, DynValue[] args)
+		{
 			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trim");
 			if (args.Length == 0)
 				return str.Trim ();
@@ -98,7 +106,9 @@ namespace Cygni.Libraries
 				return str.Trim (arr);
 			}
 		}
-		public static DynValue trimStart(string str, DynValue[] args){
+
+		public static DynValue trimStart (string str, DynValue[] args)
+		{
 			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimStart");
 			if (args.Length == 0)
 				return str.TrimStart ();
@@ -111,7 +121,9 @@ namespace Cygni.Libraries
 				return str.TrimStart (arr);
 			}
 		}
-		public static DynValue trimEnd(string str, DynValue[] args){
+
+		public static DynValue trimEnd (string str, DynValue[] args)
+		{
 			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimEnd");
 			if (args.Length == 0)
 				return str.TrimEnd ();
@@ -124,45 +136,27 @@ namespace Cygni.Libraries
 				return str.TrimEnd (arr);
 			}
 		}
-		public static DynValue slice (string str, DynValue[] args)
+
+		public static DynValue Slice (string str, Range range)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "slice");
-			int start = (int)args [0].AsNumber ();
-			int end = (int)args [1].AsNumber ();
-			int step;
-			if (args.Length == 2) {
-				step = 1;
-			} else {
-				step = (int)args [2].AsNumber ();
-			}
-			char[] chArr;
-			if (step > 0) {
-				if (end < start) {
-					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is positive.");
-				} else {
-					chArr = new char [(end - start + 1) / step];
-					int j = 0;
-					for (int i = start; i < end; i += step) {
-						chArr[j] = (str [i]);
-						j++;
-					}
-				}
-					
-			} else if (step < 0) {
-				if (end > start) {
-					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is negative.");
-				} else {
-					chArr = new char [(end - start + 1) / step];
-					int j = 0;
-					for (int i = start; i > end; i += step) {
-						chArr[j] = (str [i]);
-						j++;
-					}
+			int start = range.Start;
+			int end = range.End;
+			int step = range.Step;
+			RuntimeException.SliceCheck (str.Length, range);
+			char[] chArr = new char [(end - start + 1) / step];
+			int j = 0;
+			if (range.IsForward) {
+				for (int i = start; i < end; i += step) {
+					chArr [j] = (str [i]);
+					j++;
 				}
 			} else {
-				throw new RuntimeException ("'step' of 'slice' function cannot be zero");
+				for (int i = start; i > end; i += step) {
+					chArr [j] = (str [i]);
+					j++;
+				}
 			}
-			return new string(chArr);
+			return new string (chArr);
 		}
 
 	}

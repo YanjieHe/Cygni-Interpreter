@@ -6,7 +6,7 @@ using Cygni.AST.Visitors;
 using Cygni.Errors;
 using Cygni.AST.Interfaces;
 using Cygni.DataTypes.Interfaces;
-
+using Cygni.Libraries;
 namespace Cygni.AST
 {
 	public class SingleIndexEx: ASTNode, IAssignable
@@ -30,14 +30,14 @@ namespace Cygni.AST
 		{
 			DynValue collection = this.collection.Eval (scope);
 			DynValue index = this.index.Eval (scope);
-			if (index.type == DataType.Range) {
-				return collection.As<ISliceable> ().GetBySlice (index.As<Range> ());
-			} else {
-				if (collection.type == DataType.String) {
-					return collection.AsString () [index.AsInt32 ()];
+			if (collection.type == DataType.String) {
+				if (index.type == DataType.Range) {
+					return StrLib.Slice (collection.AsString (), index.Value as Range);
 				} else {
-					return collection.As<IIndexable> ().GetByIndex (index);
+					return collection.AsString () [index.AsInt32 ()];
 				}
+			} else {
+				return collection.As<IIndexable> ().GetByIndex (index);
 			}
 		}
 

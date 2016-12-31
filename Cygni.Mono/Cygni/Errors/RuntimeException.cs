@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Cygni.AST.Scopes;
+using Cygni.DataTypes;
 
 namespace Cygni.Errors
 {
@@ -59,6 +60,17 @@ namespace Cygni.Errors
 		{
 			if (!condition)
 				throw new RuntimeException ("bad number of arguments for command '{0}'.", cmdName);
+		}
+
+		public static void SliceCheck (int length, Range range)
+		{
+			if (range.Step > 0 && length < range.End) {
+				throw new RuntimeException ("the end of slice should greater than or equals to the origin length when the step is positive.");
+			} else if (range.Step < 0 && length < range.Start) {
+				throw new RuntimeException ("the start of slice should greater than or equals to the origin length when the step is negative.");
+			} else {
+				return;
+			}
 		}
 
 		public static RuntimeException Throw (string message, IScope scope)

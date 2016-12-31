@@ -106,8 +106,6 @@ namespace Cygni.AST
 				return DynValue.FromDelegate ("trimStart", (args) => StrLib.trimStart (str, args));
 			case "trimEnd":
 				return DynValue.FromDelegate ("trimEnd", (args) => StrLib.trimEnd (str, args));
-			case "slice":
-				return DynValue.FromDelegate ("slice", (args) => StrLib.slice (str, args));
 			default:
 				throw RuntimeException.FieldNotExist ("string", fieldName);
 			}

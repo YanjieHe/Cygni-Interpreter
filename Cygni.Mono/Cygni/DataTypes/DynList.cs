@@ -12,7 +12,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynList.
 	/// </summary>
-	public sealed class DynList:List<DynValue>, IIndexable,ISliceable, IDot
+	public sealed class DynList:List<DynValue>, IIndexable, IDot
 	{
 		public DynList (int capacity)
 			: base (capacity)
@@ -30,37 +30,34 @@ namespace Cygni.DataTypes
 			AddRange (collection);
 		}
 
-
-		public DynValue GetBySlice (Range range)
-		{
-			return ListLib.slice (this, range);
-		}
-
-		public DynValue SetBySlice (Range range, DynValue value)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public DynValue GetByIndex (DynValue index)
 		{
-			return base [index.AsInt32 ()];
+			if (index.type == DataType.Range) {
+				return ListLib.Slice (this, index.Value as Range);
+			} else {
+				return base [index.AsInt32 ()];
+			}
 		}
 
 		public DynValue SetByIndex (DynValue index, DynValue value)
 		{
-			return base [index.AsInt32 ()] = value;
+			if (index.type == DataType.Range) {
+				return ListLib.SliceAssign (this, index.Value as Range, value);
+			} else {
+				return base [index.AsInt32 ()] = value;
+			}
 		}
 
 		public DynValue GetByIndexes (DynValue[] indexes)
 		{
 			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
-			return this [(int)indexes [0].AsNumber ()];
+			return this [indexes [0].AsInt32 ()];
 		}
 
 		public DynValue SetByIndexes (DynValue[] indexes, DynValue value)
 		{
 			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "list");
-			return this [(int)indexes [0].AsNumber ()] = value; 
+			return this [indexes [0].AsInt32 ()] = value; 
 		}
 
 
@@ -70,7 +67,7 @@ namespace Cygni.DataTypes
 			case "append":
 				return DynValue.FromDelegate ("append", (args) => ListLib.append (this, args));
 			case "count":
-				return (double)this.Count;
+				return (long)this.Count;
 			case "removeAt":
 				return DynValue.FromDelegate ("removeAt", (args) => ListLib.removeAt (this, args));
 			case "insert":
@@ -87,8 +84,6 @@ namespace Cygni.DataTypes
 				return DynValue.FromDelegate ("find", (args) => ListLib.find (this, args));
 			case "concat":
 				return DynValue.FromDelegate ("concat", (args) => ListLib.concat (this, args));
-			case "slice":
-				return DynValue.FromDelegate ("slice", (args) => ListLib.slice (this, args));
 			case "copy":
 				return DynValue.FromDelegate ("copy", (args) => ListLib.copy (this, args));
 			case "pop":
@@ -102,15 +97,17 @@ namespace Cygni.DataTypes
 
 		public string[] FieldNames {
 			get {
-				return new string[] {
-					"append", "count", "removeAt", "insert", "sort", "max", "min", "bSearch", "find", "concat", "slice", "copy", "pop", "clear"
+				return new [] {
+					"append", "count", "removeAt", "insert", 
+					"sort", "max", "min", "bSearch", "find", 
+					"concat", "copy", "pop", "clear"
 				};
 			}
 		}
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{
-			throw RuntimeException.NotDefined (fieldName);
+			throw RuntimeException.FieldNotExist ("list", fieldName);
 		}
 
 		public override string ToString ()

@@ -77,12 +77,12 @@ namespace Cygni.Libraries
 
 		public static DynValue max (DynList list, DynValue[] args)
 		{
-			return list.Max ();
+			return list.Max<DynValue> ();
 		}
 
 		public static DynValue min (DynList list, DynValue[] args)
 		{
-			return list.Min ();
+			return list.Min<DynValue> ();
 		}
 
 		public static DynValue find (DynList list, DynValue[] args)
@@ -107,74 +107,41 @@ namespace Cygni.Libraries
 			return newList;
 		}
 
-		public static DynValue slice (DynList list, Range range)
+		public static DynValue Slice (DynList list, Range range)
 		{
 			int start = range.Start;
 			int end = range.End;
 			int step = range.Step;
-			DynList newList;
-			if (step > 0) {
-				if (end < start) {
-					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is positive.");
-				} else {
-
-					newList = new DynList ((end - start + 1) / step);
-					for (int i = start; i < end; i += step) {
-						newList.Add (list [i]);
-					}
-				}
-
-			} else if (step < 0) {
-				if (end > start) {
-					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is negative.");
-				} else {
-					newList = new DynList ((end - start + 1) / step);
-					for (int i = start; i > end; i += step) {
-						newList.Add (list [i]);
-					}
+			RuntimeException.SliceCheck (list.Count, range);
+			DynList newList = new DynList ((end - start + 1) / step);
+			if (range.IsForward) {
+				for (int i = start; i < end; i += step) {
+					newList.Add (list [i]);
 				}
 			} else {
-				throw new RuntimeException ("'step' of slice cannot be zero");
+				for (int i = start; i > end; i += step) {
+					newList.Add (list [i]);
+				}
 			}
 			return newList;
 		}
 
-		public static DynValue slice (DynList list, DynValue[] args)
+		public static DynValue SliceAssign (DynList list, Range range, DynValue value)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "slice");
-			int start = (int)args [0].AsNumber ();
-			int end = (int)args [1].AsNumber ();
-			int step;
-			if (args.Length == 2) {
-				step = 1;
-			} else {
-				step = (int)args [2].AsNumber ();
-			}
-			DynList newList;
-			if (step > 0) {
-				if (end < start) {
-					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is positive.");
-				} else {
-					
-					newList = new DynList ((end - start + 1) / step);
-					for (int i = start; i < end; i += step) {
-						newList.Add (list [i]);
-					}
-				}
-					
-			} else if (step < 0) {
-				if (end > start) {
-					throw new RuntimeException ("function 'slice': 'end' cannot be less than 'start' when the 'step' is negative.");
-				} else {
-					newList = new DynList ((end - start + 1) / step);
-					for (int i = start; i > end; i += step) {
-						newList.Add (list [i]);
-					}
+			int start = range.Start;
+			int end = range.End;
+			int step = range.Step;
+			RuntimeException.SliceCheck (list.Count, range);
+			if (range.IsForward) {
+				for (int i = start; i < end; i += step) {
+					list [i] = value;
 				}
 			} else {
-				throw new RuntimeException ("'step' of slice cannot be zero");
+				for (int i = start; i > end; i += step) {
+					list [i] = value;
+				}
 			}
-			return newList;
+			return value;
 		}
 
 		public static DynValue copy (DynList list, DynValue[] args)

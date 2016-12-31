@@ -31,12 +31,11 @@ Cygni is designed by me. I spent a lot of spare time on it, and I love it very m
 	\item elif
 	\item while
 	\item for
-	\item foreach
 	\item in
 	\item def
 	\item lambda
 	\item class
-	\item local
+	\item var
 	\item unpack
 	\item break
 	\item continue
@@ -51,7 +50,7 @@ Cygni is designed by me. I spent a lot of spare time on it, and I love it very m
 	\item Integer Divide: //
 	\item Modulo:\%
 	\item Power: \^{}
-	\item Concatenate: ..
+	\item Concatenate: \&
 	\item assign: =
 	\item Equals:==
 	\item Not Equals: !=
@@ -88,6 +87,7 @@ Variables in Cygni don't have type. Only the values have.
 	\item function
 	\item native function: wrapper for C\# native functions
 	\item tuple
+	\item range
 	\item struct
 	\item class
 	\item userdata: wrapper for C\# native classes.
@@ -95,7 +95,8 @@ Variables in Cygni don't have type. Only the values have.
 \end{itemize}
 
 \subsection{Control Statements}
-\paragraph{If}
+\subsubsection{If}
+'if' statement can have one or more braches.
 \begin{lstlisting}
 if condition {
 	# Do something
@@ -111,30 +112,43 @@ if condition1 {
 	# Branch 3
 }
 \end{lstlisting}
-\paragraph{For}
+
+\subsubsection{For}
+'for' statement iterates a collection. You may use range syntax to declare a iterable collection. The iterator shouldn't be changed during the iteration.
 
 \begin{lstlisting}
-for i = start, end {
+for i = start: end {
 	# Do something
 }
-\end{lstlisting}
 
-\paragraph{Foreach}
-\begin{lstlisting}
-foreach item in collection {
+for i = start: end: step {
+	# Do something
+}
+
+for item in collection {
 	# Do something
 }
 \end{lstlisting}
 
 \paragraph{While}
+'while' statement will keep running unless the condition is false.
+
 \begin{lstlisting}
 while condition {
 	# Do something
 }
 \end{lstlisting}
 
-\paragraph{Break, Continue, Return}
+\subsubsection{Break, Continue, Return}
+
 break, return exit the loop. continue stays in the loop.
+
+\subsection{Range Constructor}
+
+\begin{lstlisting}
+start: end
+start: end: step
+\end{lstlisting}
 
 \subsection{List Constructor}
 \begin{lstlisting}
@@ -143,12 +157,15 @@ break, return exit the loop. continue stays in the loop.
 
 
 \subsection{Dictionary Constructor}
+Note that dictionary only takes values of integer, boolean, string as keys.
 \begin{lstlisting}
 {key1: value1, key2:  value2, ...}
 \end{lstlisting}
-Note that dictionary only takes values of integer, boolean, string as keys.
 
 \subsection{Function Definition}
+'def' statement declares a function with a name.
+'lambda' statement declares an anonymous function, which contains a statement or a block.
+
 \begin{lstlisting}
 def FunctionName (arg1, arg2, ...) {
 	# Do something	
@@ -160,7 +177,8 @@ a = lambda(arg1, arg2,...) => {
 	# Do something
 }
 \end{lstlisting}
-\subsection{Function Call}
+
+\subsection{Invoke Function}
 \begin{lstlisting}
 f(arg1, arg2, ...)
 \end{lstlisting}
@@ -175,6 +193,7 @@ unpack x, y = a
 \begin{lstlisting}
 a = struct('key1', value1, 'key2', value2, ...)
 \end{lstlisting}
+
 \subsection{Class Definition}
 \begin{lstlisting}
 class MyClass {
@@ -199,8 +218,8 @@ class DerivedClass: MyClass {
 	\item \_\_unm
 	\item \_\_cmp
 	\item \_\_eq
-	\item \_\_get
-	\item \_\_set
+	\item \_\_getItem
+	\item \_\_setItem
 	\item \_\_toStr
 \end{itemize}
 
@@ -208,88 +227,40 @@ class DerivedClass: MyClass {
 \section{Basic Library}
 \subsection{Executing}
 \begin{itemize}
-	\item source
-	
-	arguments: fileName [,encoding]
-	
+	\item source(fileName [,encoding])
+
 	description: execute a script file.
-	
-	return: nil
-	
-	\item require
-	
-	arguments: fileName [,encoding]
+
+	\item require(fileName [,encoding])
 	
 	description: execute a script file and return it as a module.
-	
-	return: module
 
-	\item import
-	
-	arguments: fileName [,encoding]
-	
+	\item import(fileName [,encoding])
+
 	description: execute a script file in the current global scope.
-	
-	return: nil
 \end{itemize}
 
 \subsection{Console Output and input}
 
 \begin{itemize}
-	\item print
-	
-		arguments: args
-		
-		description: print arguments in the console, separated by tab.
-		
-		return: nil
-	\item printf
-	
-	arguments: content, args
-	
-	description: print format string in the console. The arguments can be indexed by \{0\},\{1\}... in the string.
-	
-	return: nil
-	\item input
-	
-	arguments: [content]
-		
-	description: write the content in the console and waiting for user to input. The content can be omitted.
-		
-	return: string
+	\item print(args) print arguments in the console, separated by tab.
+
+	\item printf(content, args) print format string in the console. The arguments can be indexed by \{0\},\{1\}... in the string.
+
+	\item input([content]) write the content in the console and waiting for user to input. The content can be omitted.
 \end{itemize}
 
 
 \subsection{Conversion}
 \begin{itemize}
-	\item int
+	\item int(a) convert certain value into integer.
 
-		arguments: a
+	\item number(a) convert certain value into number.
 
-		description: convert certain value into integer.
+	\item str(a) convert certain value into string.
 
-		return: integer
-	\item number
+	\item list(a) convert an iterable object into list.
 
-		arguments: a
-
-		description: convert certain value into number.
-
-		return: number
-	\item str
-
-		arguments: a
-
-		description: convert certain value into string.
-
-		return: string
-	\item list
-
-		arguments: a
-
-		description: convert a Iterable object into list.
-
-		return: list
 \end{itemize}
 
 

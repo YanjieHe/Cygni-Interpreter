@@ -14,7 +14,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public sealed class DynValue:IEnumerable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
+	public sealed class DynValue:IEnumerable<DynValue>,IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
 	{
 		private readonly DataType _type;
 
@@ -276,16 +276,28 @@ namespace Cygni.DataTypes
 
 		public int CompareTo (DynValue other)
 		{
-			switch (type) {
-			case DataType.Number:
-				return ((double)value).CompareTo ((double)other.value);
-			case DataType.Boolean:
-				return ((bool)value).CompareTo ((bool)other.value);
-			case DataType.String:
-				return (value as string).CompareTo ((string)other.value);
-			default:
-				return (value as IComparable<DynValue>).CompareTo (other);
+			if (this.type == other.type) {
+				switch (type) {
+				case DataType.Integer:
+					return ((long)value).CompareTo ((long)other.value);
+				case DataType.Number:
+					return ((double)value).CompareTo ((double)other.value);
+				case DataType.Boolean:
+					return ((bool)value).CompareTo ((bool)other.value);
+				case DataType.String:
+					return (value as string).CompareTo (other.value as string);
+				default:
+					return this.As<IComparable<DynValue>> ().CompareTo (other);
+				}
+			} else {
+				if ((this.type == DataType.Integer && other.type == DataType.Number)
+				    || (this.type == DataType.Number && other.type == DataType.Integer)) {
+					return Convert.ToDouble (this.value).CompareTo (Convert.ToDouble (other.value));
+				} else {
+					return this.As<IComparable<DynValue>> ().CompareTo (other);
+				}
 			}
+				
 		}
 
 		#endregion
@@ -331,16 +343,7 @@ namespace Cygni.DataTypes
 
 		public override int GetHashCode ()
 		{
-			switch (type) {
-			case DataType.Number:
-				return (int)(double)this.value;
-			case DataType.Boolean:
-				return !(bool)this.value ? 0 : 1;
-			case DataType.String:
-				return (this.value as string).GetHashCode ();
-			default:
-				throw new Exception ();
-			}
+			return this.value.GetHashCode ();
 		}
 
 		#endregion

@@ -21,10 +21,16 @@ namespace Cygni.DataTypes
 
 		public int Step{ get { return this.step; } }
 
+		public bool IsForward { get { return this.step > 0; } }
+
 		public Range (int start, int end, int step = 1)
 		{
 			if (step == 0) {
 				throw new RuntimeException ("step of range cannot be zero.");
+			} else if (step > 0 && end < start) {
+				throw new RuntimeException ("range: 'end' cannot be less than 'start' when the 'step' is positive.");
+			} else if (step < 0 && start < end) {
+				throw new RuntimeException ("range: 'start' cannot be less than 'end' when the 'step' is negative.");
 			}
 			this.start = start;
 			this.end = end;
