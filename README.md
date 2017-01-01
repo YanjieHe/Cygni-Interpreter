@@ -21,7 +21,7 @@ https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Debug
 
 - Import the Cygni.dll to your project.
 
-The API is very easy to use. Have a look at this example.
+The API is very easy. Have a look at this example.
 ``` csharp
 using System;
 using Cygni.Executors;
