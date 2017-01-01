@@ -26,7 +26,7 @@ namespace Cygni_CLI
 		{
 			Engine engine = Engine.CreateInstance ();
 			engine.ExecuteInConsole ();
-    		}
+		}
 	}
 }
 ```
