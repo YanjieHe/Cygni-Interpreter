@@ -42,4 +42,25 @@ namespace Cygni_CLI
 ## Some tutorial examples
 For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc/Cygni_short_ref.pdf
 
-
+### Factorial
+``` cygni
+def fact(n) {
+	if n == 0 {
+		return 1
+	} else {
+		return n * fact(n - 1)
+	}
+}
+print(fact(10)) # 3628800
+```
+### Calculate the sum of a list
+``` cygni
+def sum(myList) {
+	var s = 0
+	for v in myList {
+		s = s + v
+	}
+	return s
+}
+print(sum([1,2,3,4,5])) # 15
+```
