@@ -40,6 +40,6 @@ namespace Cygni_CLI
 ```
 
 ## Some tutorial examples
-For more information, see the short reference in .
+For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc.
 
 
