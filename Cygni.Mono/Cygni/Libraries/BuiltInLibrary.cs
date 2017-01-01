@@ -34,7 +34,6 @@ namespace Cygni.Libraries
 			{ "LoadLibrary",BasicLib.LoadLibrary },
 
 			{ "exit",BasicLib.exit },
-			{ "range",BasicLib.Range },
 			{ "len",BasicLib.len },
 
 			{ "int",BasicLib.toInteger },

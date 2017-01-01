@@ -14,7 +14,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynValue.
 	/// </summary>
-	public sealed class DynValue:IEnumerable<DynValue>,IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
+	public sealed class DynValue:IComparable<DynValue>, IComparer<DynValue>, IEquatable<DynValue>
 	{
 		private readonly DataType _type;
 
@@ -266,7 +266,8 @@ namespace Cygni.DataTypes
 		{
 			TValue v = value as TValue;
 			if (v == null) {
-				throw new RuntimeException ("Cast from '{0}' to '{1}' is invalid.", value.GetType ().Name, typeof(TValue).Name);
+				throw new RuntimeException ("Cast from '{0}' to '{1}' is invalid.", 
+					value.GetType ().Name, typeof(TValue).Name);
 			} else {
 				return v;
 			}
@@ -347,28 +348,5 @@ namespace Cygni.DataTypes
 		}
 
 		#endregion
-
-
-		public IEnumerator<DynValue> GetEnumerator ()
-		{
-			if (type == DataType.String) {
-				foreach (var c in value as string) {
-					yield return new DynValue (DataType.String, char.ToString (c));
-				}
-			} else {
-				var collection = value as IEnumerable<DynValue>;
-				if (collection == null)
-					throw new RuntimeException ("Target is not enumerable");
-				foreach (var item in collection) {
-					yield return item;
-				}
-			}
-		}
-
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
-		{
-			yield return this.AsEnumerable ();
-		}
-
 	}
 }

@@ -87,6 +87,13 @@ namespace Cygni.Libraries
 				return args [0].Value.GetType ().Name;
 		}
 
+		public static DynValue len (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1, "len");
+			return (long)args [0].As<ICountable> ().Count;
+		}
+
+
 		public static DynValue toInteger (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "int");
@@ -154,7 +161,7 @@ namespace Cygni.Libraries
 				throw new RuntimeException ("No assembly named '{0}.", fileName);
 			}
 			FoundDLL:
-			Assembly assembly = Assembly.LoadFile (filepath);
+			Assembly assembly = Assembly.UnsafeLoadFrom (filepath);
 			Type t = assembly.GetType (name: class_name, throwOnError: true, ignoreCase: true);  //namespace.class
 			if (args.Length == 2) {
 				MethodInfo[] methods = t.GetMethods ();
@@ -222,7 +229,7 @@ namespace Cygni.Libraries
 
 		public static DynValue console_read (DynValue[]args)
 		{
-			return (double)Console.Read ();
+			return (long)Console.Read ();
 		}
 
 		public static DynValue console_readLine (DynValue[]args)
@@ -232,7 +239,7 @@ namespace Cygni.Libraries
 
 		public static DynValue console_readKey (DynValue[]args)
 		{
-			return (double)Console.ReadKey ().KeyChar;
+			return (long)Console.ReadKey ().KeyChar;
 		}
 
 		public static DynValue exit (DynValue[] args)
@@ -244,24 +251,6 @@ namespace Cygni.Libraries
 				Environment.Exit ((int)args [0].AsNumber ());
 			}
 			return DynValue.Nil;
-		}
-
-		public static DynValue Range (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "range");
-			if (args.Length == 2)
-				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber (), 
-					(int)args [1].AsNumber ()).Select (i => DynValue.FromNumber (i)));
-			else
-				return DynValue.FromUserData (Extension.Range ((int)args [0].AsNumber ()
-							, (int)args [1].AsNumber ()
-							, (int)args [2].AsNumber ()).Select (i => DynValue.FromNumber (i)));
-		}
-
-		public static DynValue len (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "len");
-			return (double)args [0].As<ICollection> ().Count;
 		}
 
 		public static DynValue pCall (DynValue[] args)

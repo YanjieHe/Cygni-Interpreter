@@ -12,7 +12,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynDictionary.
 	/// </summary>
-	public sealed class DynDictionary: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot
+	public sealed class DynDictionary: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot,ICountable
 	{
 
 		public DynValue GetByIndex (DynValue index)

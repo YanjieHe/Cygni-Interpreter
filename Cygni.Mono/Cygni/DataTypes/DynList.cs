@@ -12,7 +12,7 @@ namespace Cygni.DataTypes
 	/// <summary>
 	/// Description of DynList.
 	/// </summary>
-	public sealed class DynList:List<DynValue>, IIndexable, IDot
+	public sealed class DynList:List<DynValue>, IIndexable, IDot,ICountable
 	{
 		public DynList (int capacity)
 			: base (capacity)
