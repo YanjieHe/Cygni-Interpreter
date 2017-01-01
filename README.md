@@ -38,3 +38,8 @@ namespace Cygni_CLI
 	}
 }
 ```
+
+## Some tutorial examples
+For more information, see the short reference in .
+
+
