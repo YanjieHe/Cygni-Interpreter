@@ -14,7 +14,7 @@ https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono.Test/Cygni_CLI/Cygni
 - If you are using Linux, you need to install mono environment and input "mono Cygni_CLI.exe" in the terminal.
 
 
-The second option is compiled one by yourself. 
+The second option is to compile one by yourself. 
 - Download the Cygni Core from 
 
 https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Release
