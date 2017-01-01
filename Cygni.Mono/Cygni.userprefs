@@ -1,11 +1,6 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Libraries/BasicLib.cs">
-    <Files>
-      <File FileName="Cygni/DataTypes/DynValue.cs" Line="203" Column="34" />
-      <File FileName="Cygni/Libraries/BasicLib.cs" Line="164" Column="47" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

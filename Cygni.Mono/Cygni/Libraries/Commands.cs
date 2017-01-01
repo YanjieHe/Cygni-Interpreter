@@ -23,6 +23,7 @@ namespace Cygni.Libraries
 		{
 			RuntimeException.CmdArgsCheck (args.Length == 1 || args.Length == 2, "source");
 			string filepath = args [0].Eval (scope).AsString ();
+
 			Encoding encoding;
 			if (args.Length == 2) {
 				encoding = Encoding.GetEncoding (args [1].Eval (scope).AsString ());
@@ -31,20 +32,25 @@ namespace Cygni.Libraries
 			}
 
 			var globalScope = scope as ResizableArrayScope;
-			if (globalScope == null)
+			if (globalScope == null) {
 				throw new RuntimeException ("Unable to run command 'source' in local scope");
-
+			}
 			if (!Path.HasExtension (filepath))
 				filepath = Path.ChangeExtension (filepath, "cyg");
 
 			bool quiet = GlobalSettings.Quiet;
 			GlobalSettings.Quiet = true;
-
-			var executor = new CodeFileExecutor (globalScope, filepath, encoding);
-			GlobalSettings.Quiet = quiet;
-
-			executor.Run ();
-			return executor.Result;
+			try {
+				var executor = new CodeFileExecutor (globalScope, filepath, encoding);
+				executor.Run ();
+				return executor.Result;
+			} catch (RuntimeException ex) {
+				throw ex;
+			} catch (Exception ex) {
+				throw ex;
+			} finally {
+				GlobalSettings.Quiet = quiet;
+			}
 		}
 
 		public static DynValue cond (ASTNode[] args, IScope scope)
@@ -60,7 +66,7 @@ namespace Cygni.Libraries
 				bool test = args [0].Eval (scope).AsBoolean ();
 				if (!test) {
 					string message = args [1].Eval (scope).AsString ();
-					throw new RuntimeException (message);
+					throw RuntimeException.Throw (message, scope);
 				} else {
 					return DynValue.Nil;
 				}
@@ -78,7 +84,7 @@ namespace Cygni.Libraries
 				moduleName = Path.ChangeExtension (moduleName, "cyg");
 			}
 			DirectoryInfo currentDir = GlobalSettings.CurrentDirectory;
-			foreach (DirectoryInfo dir in currentDir.GetDirectories()) {
+			foreach (DirectoryInfo dir in currentDir.EnumerateDirectories()) {
 				if (string.Equals (dir.Name, "lib")) {
 					foreach (FileInfo file in dir.EnumerateFiles()) {
 						if (string.Equals (file.Name, moduleName)) {

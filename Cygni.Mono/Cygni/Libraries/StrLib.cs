@@ -16,12 +16,13 @@ namespace Cygni.Libraries
 	{
 		public static DynValue strcat (DynValue[] args)
 		{
-			int n = args.Length;
-			RuntimeException.FuncArgsCheck (n >= 1, "strcat");
-			string[] strs = new string[n];
-			for (int i = 0; i < n; i++)
-				strs [i] = args [i].Value.ToString ();
-			return string.Concat (strs);
+			RuntimeException.FuncArgsCheck (args.Length == 1, "concat");
+			DynList list = args [0].As<DynList> ();
+			string[] values = new string[list.Count];
+			for (int i = 0; i < list.Count; i++) {
+				values [i] = list [i].Value.ToString ();
+			}
+			return string.Concat (values);
 		}
 
 		public static DynValue join (string str, DynValue[] args)
@@ -32,29 +33,28 @@ namespace Cygni.Libraries
 
 		public static DynValue format (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "format");
-			return string.Format (str, args.Map (i => i.Value));
+			object[] values = new object[args.Length];
+			for (int i = 0; i < args.Length; i++) {
+				values [i] = args [i].Value;
+			}
+			return string.Format (str, values);
 		}
 
 		public static DynValue split (string str, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length >= 1, "strsplit");
-			string[] result;
-			if (args [0].type == DataType.List) {
-				DynList list = args [0].As<DynList> ();
-				int n = list.Count;
-				char[] arr = new char[n];
-				for (int i = 0; i < n; i++)
-					arr [i] = char.Parse (list [i].AsString ());
-				result = str.Split (arr);
-			} else {
-				int n = args.Length;
-				char[] arr = new char[n];
-				for (int i = 0; i < n; i++)
-					arr [i] = char.Parse (args [i].AsString ());
-				result = str.Split (arr);
+
+			char[] arr = new char[args.Length];
+			for (int i = 0; i < arr.Length; i++)
+				arr [i] = char.Parse (args [i].AsString ());
+			string[] result = str.Split (arr);
+
+			DynList list = new DynList (result.Length);
+			foreach (string item in result) {
+				list.Add (item);
 			}
-			return DynValue.FromList (result.ToDynList (DynValue.FromString));
+
+			return DynValue.FromList (list);
 		}
 
 		public static DynValue replace (string str, DynValue[] args)
@@ -68,7 +68,7 @@ namespace Cygni.Libraries
 		public static DynValue strcmp (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
-			return (double)string.CompareOrdinal (
+			return string.CompareOrdinal (
 				args [0].AsString (),
 				args [1].AsString ());
 		}
@@ -76,7 +76,7 @@ namespace Cygni.Libraries
 		public static DynValue compare (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "compare");
-			return (double)string.Compare (
+			return string.Compare (
 				args [0].AsString (),
 				args [1].AsString ());
 		}
@@ -87,52 +87,43 @@ namespace Cygni.Libraries
 			if (args.Length == 1)
 				return str.IndexOf (args [0].AsString ());
 			else if (args.Length == 2)
-				return str.IndexOf (args [0].AsString (), (int)args [1].AsNumber ());
+				return str.IndexOf (args [0].AsString (), args [1].AsInt32 ());
 			else
-				return str.IndexOf (args [0].AsString (), (int)args [1].AsNumber (), (int)args [2].AsNumber ());
+				return str.IndexOf (args [0].AsString (), args [1].AsInt32 (), args [2].AsInt32 ());
 		}
 
 		public static DynValue trim (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trim");
 			if (args.Length == 0)
 				return str.Trim ();
 			else {
-				DynList list = args [0].As<DynList> ();
-				int n = list.Count;
-				char[] arr = new char[n];
-				for (int i = 0; i < n; i++)
-					arr [i] = char.Parse (list [i].AsString ());
+				char[] arr = new char[args.Length];
+				for (int i = 0; i < args.Length; i++)
+					arr [i] = char.Parse (args [i].AsString ());
 				return str.Trim (arr);
 			}
 		}
 
 		public static DynValue trimStart (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimStart");
 			if (args.Length == 0)
 				return str.TrimStart ();
 			else {
-				DynList list = args [0].As<DynList> ();
-				int n = list.Count;
-				char[] arr = new char[n];
-				for (int i = 0; i < n; i++)
-					arr [i] = char.Parse (list [i].AsString ());
+				char[] arr = new char[args.Length];
+				for (int i = 0; i < args.Length; i++)
+					arr [i] = char.Parse (args [i].AsString ());
 				return str.TrimStart (arr);
 			}
 		}
 
 		public static DynValue trimEnd (string str, DynValue[] args)
 		{
-			RuntimeException.FuncArgsCheck (args.Length == 0 || args.Length == 1, "trimEnd");
 			if (args.Length == 0)
 				return str.TrimEnd ();
 			else {
-				DynList list = args [0].As<DynList> ();
-				int n = list.Count;
-				char[] arr = new char[n];
-				for (int i = 0; i < n; i++)
-					arr [i] = char.Parse (list [i].AsString ());
+				char[] arr = new char[args.Length];
+				for (int i = 0; i < args.Length; i++)
+					arr [i] = char.Parse (args [i].AsString ());
 				return str.TrimEnd (arr);
 			}
 		}

@@ -37,6 +37,11 @@ namespace Cygni.DataTypes
 
 		#region implicit conversion
 
+		public static implicit operator DynValue (int value)
+		{
+			return new DynValue (DataType.Integer, (long)value);
+		}
+
 		public static implicit operator DynValue (long value)
 		{
 			return new DynValue (DataType.Integer, value);
@@ -174,7 +179,6 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Range, range);
 		}
 
-
 		public static DynValue FromUserData (object value)
 		{
 			return new DynValue (DataType.UserData, value);
@@ -182,33 +186,35 @@ namespace Cygni.DataTypes
 
 		public static DynValue FromObject (object value)
 		{
-			if (value == null)
+			if (value == null) {
 				return DynValue.Nil;
-			var iconv = value as IConvertible;
-			if (iconv != null)
-				switch (iconv.GetTypeCode ()) {
-				case TypeCode.Single:
-					return FromNumber ((Single)value);
-				case TypeCode.Double:
-					return FromNumber ((double)value);
-				case TypeCode.Boolean:
-					return FromBoolean ((bool)value);
-				case TypeCode.String:
-					return FromString (value as string);
-				case TypeCode.Int16:
-					return FromInteger ((Int16)value);
-				case TypeCode.Int32:
-					return FromInteger ((Int32)value);
-				case TypeCode.Int64:
-					return FromInteger ((Int64)value);
-				case TypeCode.UInt16:
-					return FromInteger ((UInt16)value);
-				case TypeCode.UInt32:
-					return FromInteger ((UInt32)value);
-				case TypeCode.UInt64:
-					return FromInteger (checked((long)(UInt64)value));
-				}
-			return FromUserData (value);
+			} else {
+				var iconv = value as IConvertible;
+				if (iconv != null)
+					switch (iconv.GetTypeCode ()) {
+					case TypeCode.Single:
+						return FromNumber ((Single)value);
+					case TypeCode.Double:
+						return FromNumber ((double)value);
+					case TypeCode.Boolean:
+						return FromBoolean ((bool)value);
+					case TypeCode.String:
+						return FromString (value as string);
+					case TypeCode.Int16:
+						return FromInteger ((Int16)value);
+					case TypeCode.Int32:
+						return FromInteger ((Int32)value);
+					case TypeCode.Int64:
+						return FromInteger ((Int64)value);
+					case TypeCode.UInt16:
+						return FromInteger ((UInt16)value);
+					case TypeCode.UInt32:
+						return FromInteger ((UInt32)value);
+					case TypeCode.UInt64:
+						return FromInteger (checked((long)(UInt64)value));
+					}
+				return FromUserData (value);
+			}
 		}
 
 		public int AsInt32 ()

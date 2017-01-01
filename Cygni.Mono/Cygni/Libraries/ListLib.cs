@@ -26,16 +26,14 @@ namespace Cygni.Libraries
 		public static DynValue removeAt (DynList list, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "removeAt");
-			list.RemoveAt ((int)args [0].AsNumber ());
+			list.RemoveAt (args [0].AsInt32 ());
 			return DynValue.Nil;
 		}
 
 		public static DynValue insert (DynList list, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "insert");
-			list.Insert (
-				(int)args [0].AsNumber (),
-				(int)args [1].AsNumber ());
+			list.Insert (index: args [1].AsInt32 (), item: args [0]);
 			return DynValue.Nil;
 		}
 
@@ -59,7 +57,7 @@ namespace Cygni.Libraries
 			if (args.Length == 0)
 				list.Sort ();
 			else {
-				list.Sort ((int)args [0].AsNumber (), (int)args [1].AsNumber (), DynValue.Nil);
+				list.Sort (args [0].AsInt32 (), args [1].AsInt32 (), DynValue.Nil);
 			}
 			return DynValue.Nil;
 		}
@@ -68,10 +66,13 @@ namespace Cygni.Libraries
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 3, "bSearch");
 			if (args.Length == 1)
-				return (double)list.BinarySearch (args [0]);
+				return list.BinarySearch (args [0]);
 			else {
-				return (double)list.BinarySearch (
-					(int)args [0].AsNumber (), (int)args [1].AsNumber (), args [2], DynValue.Nil);
+				return list.BinarySearch (
+					index: args [1].AsInt32 (), 
+					count: args [2].AsInt32 (), 
+					item: args [0], 
+					comparer: DynValue.Nil);
 			}
 		}
 
@@ -91,9 +92,9 @@ namespace Cygni.Libraries
 			if (args.Length == 1)
 				return list.IndexOf (args [0]);
 			else if (args.Length == 2)
-				return list.IndexOf (args [0], (int)args [1].AsNumber ());
+				return list.IndexOf (args [0], args [1].AsInt32 ());
 			else
-				return list.IndexOf (args [0], (int)args [1].AsNumber (), (int)args [2].AsNumber ());
+				return list.IndexOf (args [0], args [1].AsInt32 (), args [2].AsInt32 ());
 		}
 
 		public static DynValue concat (DynList list, DynValue[] args)

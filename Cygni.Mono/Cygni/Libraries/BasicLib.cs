@@ -146,9 +146,9 @@ namespace Cygni.Libraries
 		public static DynValue LoadLibrary (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2 || args.Length == 3, "CSharpDll");
+
 			string filepath = args [0].AsString ();
 			string class_name = args [1].AsString ();
-
 
 			if (!Path.IsPathRooted (filepath)) {
 				string fileName = string.Copy (filepath);
@@ -160,29 +160,37 @@ namespace Cygni.Libraries
 				}
 				throw new RuntimeException ("No assembly named '{0}.", fileName);
 			}
+
 			FoundDLL:
 			Assembly assembly = Assembly.UnsafeLoadFrom (filepath);
-			Type t = assembly.GetType (name: class_name, throwOnError: true, ignoreCase: true);  //namespace.class
+			Type t = assembly.GetType (name: class_name, throwOnError: true, ignoreCase: true);  
+			//namespace.class
+
 			if (args.Length == 2) {
 				MethodInfo[] methods = t.GetMethods ();
 				var list = new List<StructureItem> ();
 
-				foreach (MethodInfo method in methods.Where(i => i.ReturnType == typeof(DynValue))) {
-					ParameterInfo[] parameters = method.GetParameters ();
-					if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
-						string method_name = method.Name;
-						Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
-						StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (method_name, f));
-						list.Add (item);
+				foreach (MethodInfo method in methods) {
+					if (method.ReturnType == typeof(DynValue)) {
+						ParameterInfo[] parameters = method.GetParameters ();
+						if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
+							string method_name = method.Name;
+							Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
+							StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (method_name, f));
+							list.Add (item);
+						}
 					}
 				}
+
 				var arr = new StructureItem[list.Count];
 				list.CopyTo (arr);
+
 				Structure structure = new Structure (arr);
 				return DynValue.FromStructure (structure);
 			} else {
 				string funcName = args [2].AsString ();
 				MethodInfo method = t.GetMethod (funcName);
+
 				Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
 				if (f == null) {
 					throw new RuntimeException ("cannot load native function '{0}' from class '{1}' in '{2}'.", funcName, class_name, filepath);
@@ -190,7 +198,6 @@ namespace Cygni.Libraries
 					return DynValue.FromDelegate (method.Name, f);
 				}
 			}
-
 		}
 
 		public static DynValue console_clear (DynValue[]args)
@@ -331,26 +338,32 @@ namespace Cygni.Libraries
 			string filePath = Commands.GetModulePath (moduleName);
 
 			BlockEx program;
-			ResizableArrayScope globalScope = new ResizableArrayScope ();
+			ResizableArrayScope globalScope = new ResizableArrayScope (moduleName);
 			globalScope.BuiltIn ();
-			if (Commands.ModulesCache.TryGetValue (filePath, out program)) {
-				program.Eval (globalScope);
-				return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
+			bool quiet = GlobalSettings.Quiet;
+			try {
+				if (Commands.ModulesCache.TryGetValue (filePath, out program)) {
+					program.Eval (globalScope);
+					return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
+				} else {
 
-			} else {
+					GlobalSettings.Quiet = true;
 
-				bool quiet = GlobalSettings.Quiet;
-				GlobalSettings.Quiet = true;
+					CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
 
-				CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
-
-				program = executor.Load ();
-				Commands.ModulesCache.Add (filePath, program);
-				program.Eval (globalScope);
+					program = executor.Load ();
+					Commands.ModulesCache.Add (filePath, program);
+					program.Eval (globalScope);
+					return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
+				
+				}
+			} catch (RuntimeException ex) {
+				throw ex;
+			} catch (Exception ex) {
+				throw ex;
+			} finally {
 				GlobalSettings.Quiet = quiet;
-				return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
 			}
-
 
 		}
 

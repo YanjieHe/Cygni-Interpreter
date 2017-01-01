@@ -23,6 +23,7 @@ namespace Cygni.Settings
 		public static bool CompleteErrorOutput = false;
 		public static bool IsDebug = true;
 		public static DirectoryInfo CurrentDirectory = new DirectoryInfo (AppDomain.CurrentDomain.BaseDirectory);
+
 		public const string warranty = 
 			@"
 Cygni, version 1.0.0
