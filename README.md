@@ -17,7 +17,7 @@ https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono.Test/Cygni_CLI/Cygni
 The second option is compiled one by yourself. 
 - Download the Cygni Core from 
 
-https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Debug
+https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Release
 
 - Import the Cygni.dll to your project.
 
@@ -40,6 +40,6 @@ namespace Cygni_CLI
 ```
 
 ## Some tutorial examples
-For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc.
+For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc/Cygni_short_ref.pdf
 
 
