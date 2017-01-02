@@ -30,12 +30,18 @@ namespace Cygni.AST
 			look = lexer.Scan ();
 		}
 
+		SyntaxException Error (string message, params object[] objs)
+		{
+			return new SyntaxException ("line {0}: {1}.", lexer.LineNumber, string.Format (message, objs));
+		}
+
 		void Match (Tag tag)
 		{
-			if (look.tag == tag)
+			if (look.tag == tag) {
 				Move ();
-			else
+			} else {
 				throw new SyntaxException ("line {0}: Expecting '{1}'.", lexer.LineNumber, tag);
+			}
 		}
 
 		void MatchOrThrows (Tag tag, string message)
@@ -49,34 +55,30 @@ namespace Cygni.AST
 
 		void Match (Tag tag1, Tag tag2)
 		{
-			if (look.tag == tag1 || look.tag == tag2)
+			if (look.tag == tag1 || look.tag == tag2) {
 				Move ();
-			else
+			} else {
 				throw new SyntaxException ("line {0}: Expecting '{1}' or '{2}.", lexer.LineNumber, tag1, tag2);
+			}
 		}
 
 		public BlockEx Program ()
 		{
-			var block = Block (matchBrackets: false);
+			BlockEx block = Block (matchBrackets: false);
 
-			if (look.tag != Tag.EOF)
+			if (look.tag != Tag.EOF) {
 				throw SyntaxException.Expecting (lexer.LineNumber, "EOF");
-
-			return block;
-		}
-
-
-		ASTNode Statement ()
-		{
-			ASTNode statement = Assign ();
-			return statement;
+			} else {
+				return block;
+			}
 		}
 
 		BlockEx Block (bool matchBrackets = true)
 		{
 			var list = new List<ASTNode> ();
-			if (matchBrackets)
+			if (matchBrackets) {
 				Match (Tag.LeftBrace);
+			}
 			while (look.tag != Tag.RightBrace) {
 				switch (look.tag) {
 				case Tag.If:
@@ -105,9 +107,11 @@ namespace Cygni.AST
 					list.Add (Unpack ());
 					break;
 				case Tag.EOF:
-					if (matchBrackets)
+					if (matchBrackets) {
 						throw new SyntaxException ("line {0}: Missing '}'", lexer.LineNumber);
-					goto Finish;
+					} else {
+						return ASTNode.Block (list);
+					}
 				case Tag.EOL:
 					Move ();
 					break;
@@ -116,9 +120,14 @@ namespace Cygni.AST
 					break;
 				}
 			}
-			Move ();
-			Finish:
+			Match (Tag.RightBrace);
 			return ASTNode.Block (list);
+		}
+
+		ASTNode Statement ()
+		{
+			ASTNode statement = Assign ();
+			return statement;
 		}
 
 		ASTNode If ()
@@ -139,9 +148,9 @@ namespace Cygni.AST
 		ASTNode While ()
 		{
 			Match (Tag.While);
-			ASTNode c = Bool ();
+			ASTNode condition = Bool ();
 			BlockEx body = Block ();
-			return ASTNode.While (c, body);
+			return ASTNode.While (condition, body);
 		}
 
 		ASTNode For ()
@@ -162,20 +171,22 @@ namespace Cygni.AST
 			MatchOrThrows (Tag.ID, "function definition requires a function name"); 
 			MatchOrThrows (Tag.LeftParenthesis, "function definition requires '(' after function name"); 
 			var list = new List<NameEx> ();
+
 			while (look.tag != Tag.RightParenthesis) {
 				if (look.tag == Tag.ID) {
 					list.Add (ASTNode.Parameter (look.ToString ()));
 					Move ();
-					if (look.tag == Tag.Comma)
+					if (look.tag == Tag.Comma) {
 						Move ();
-					else if (look.tag == Tag.RightParenthesis)
+					} else if (look.tag == Tag.RightParenthesis) {
 						break;
-					else
+					} else {
 						throw new SyntaxException ("line {0}: function definition Expecting ',' or ')'", lexer.LineNumber);
+					}
 				} else
 					throw new SyntaxException ("line {0}: Wrong argument for function definition", lexer.LineNumber);
 			}
-			Move ();
+			Match (Tag.RightBracket);
 			BlockEx body = Block ();
 			NameEx[] parameters = new NameEx[list.Count];
 			list.CopyTo (parameters);
@@ -184,13 +195,13 @@ namespace Cygni.AST
 
 		public ASTNode DefClosure ()
 		{
-			Match (Tag.Lambda);
+			// Match (Tag.Lambda);
 			var list = new List<NameEx> ();
 			Match (Tag.LeftParenthesis);
 			while (look.tag != Tag.RightParenthesis) {
 				if (look.tag == Tag.ID) {
 					list.Add (ASTNode.Variable (look.ToString ()));
-					Match (Tag.ID);
+					Move ();
 					if (look.tag == Tag.Comma) {
 						Move ();
 					} else if (look.tag == Tag.RightParenthesis) {
@@ -207,7 +218,7 @@ namespace Cygni.AST
 			list.CopyTo (parameters);
 			if (look.tag == Tag.GoesTo) {
 				Match (Tag.GoesTo);
-				ASTNode statement = ASTNode.Return (Bool ());
+				ASTNode statement = ASTNode.Return (Range ());
 				return ASTNode.DefineClosure (parameters, statement);
 			} else {
 				ASTNode body = Block ();
@@ -222,12 +233,12 @@ namespace Cygni.AST
 			MatchOrThrows (Tag.ID, "class definition requires a class name"); 
 			if (look.tag == Tag.Colon) { /* Inheritance */
 				Move ();
-				var parent = ASTNode.Variable (look.ToString ());
+				NameEx parent = ASTNode.Variable (look.ToString ());
 				MatchOrThrows (Tag.ID, "Missing parent class in the class definition"); 
-				var body = Block ();
+				BlockEx body = Block ();
 				return ASTNode.DefineClass (name, body, parent);
 			} else {
-				var body = Block ();
+				BlockEx body = Block ();
 				return ASTNode.DefineClass (name, body);
 			}
 		}
@@ -237,24 +248,26 @@ namespace Cygni.AST
 			Match (Tag.Var);
 			var names_list = new List<NameEx> ();
 			var values_list = new List<ASTNode> ();
+
 			do {
 				string name = look.ToString ();
 				Match (Tag.ID);
 				names_list.Add (ASTNode.Variable (name));
 
 				if (look.tag == Tag.Assign) {
-					Match (Tag.Assign);
-					values_list.Add (Bool ());
+					Move ();
+					values_list.Add (Range ());
 				} else {
 					values_list.Add (ASTNode.Nil);
 				}
 
 				if (look.tag == Tag.Comma) {
-					Match (Tag.Comma);
+					Move ();
 				} else {
 					break;
 				}
 			} while (true);
+
 			NameEx[] names = new NameEx[names_list.Count];
 			ASTNode[] values = new ASTNode[values_list.Count];
 			names_list.CopyTo (names);
@@ -267,15 +280,18 @@ namespace Cygni.AST
 		{
 			Match (Tag.Unpack);
 			var items_list = new List<ASTNode> ();
+
 			do {
 				items_list.Add (Bool ());
 				if (look.tag == Tag.Comma) {
-					Match (Tag.Comma);
+					Move ();
 				} else {
 					break;
 				}
 			} while (true);
-			Match (Tag.Assign);
+
+			MatchOrThrows (Tag.Assign, "Unpack statement expecting assign");
+
 			ASTNode tuple = Bool ();
 			ASTNode[] items = new ASTNode[items_list.Count];
 			items_list.CopyTo (items);
@@ -338,10 +354,11 @@ namespace Cygni.AST
 			while (look.tag == Tag.Equal || look.tag == Tag.NotEqual) {
 				Token tok = look;
 				Move ();
-				if (tok.tag == Tag.Equal)
+				if (tok.tag == Tag.Equal) {
 					x = ASTNode.Equal (x, Relation ());
-				else
+				} else {
 					x = ASTNode.NotEqual (x, Relation ());
+				}
 			}
 			return x;
 		}
@@ -349,22 +366,24 @@ namespace Cygni.AST
 		ASTNode Relation ()
 		{
 			ASTNode x = Concatenation ();
-			switch (look.tag) {
-			case Tag.Less:
+			if (look.tag == Tag.Less
+			    || look.tag == Tag.Greater
+			    || look.tag == Tag.LessOrEqual
+			    || look.tag == Tag.GreaterOrEqual) {
+				Token tok = look;
 				Move ();
-				return ASTNode.Less (x, Concatenation ());
-			case Tag.Greater:
-				Move ();
-				return ASTNode.Greater (x, Concatenation ());
-			case Tag.LessOrEqual:
-				Move ();
-				return ASTNode.LessOrEqual (x, Concatenation ());
-			case Tag.GreaterOrEqual:
-				Move ();
-				return ASTNode.GreaterOrEqual (x, Concatenation ());
-			default:
-				return x;
+				switch (tok.tag) {
+				case Tag.Less:
+					return ASTNode.Less (x, Concatenation ());
+				case Tag.Greater:
+					return ASTNode.Greater (x, Concatenation ());
+				case Tag.LessOrEqual:
+					return ASTNode.LessOrEqual (x, Concatenation ());
+				case Tag.GreaterOrEqual:
+					return ASTNode.GreaterOrEqual (x, Concatenation ());
+				}
 			}
+			return x;
 		}
 
 		ASTNode Concatenation ()
@@ -383,10 +402,11 @@ namespace Cygni.AST
 			while (look.tag == Tag.Add || look.tag == Tag.Sub) {
 				Token tok = look;
 				Move ();
-				if (tok.tag == Tag.Add)
+				if (tok.tag == Tag.Add) {
 					x = ASTNode.Add (x, Term ());
-				else
+				} else {
 					x = ASTNode.Subtract (x, Term ());
+				}
 			}
 			return x;
 		}
@@ -394,36 +414,43 @@ namespace Cygni.AST
 		ASTNode Term ()
 		{
 			ASTNode x = Unary ();
-			while (look.tag == Tag.Mul || look.tag == Tag.Div || look.tag == Tag.IntDiv || look.tag == Tag.Mod) {
+			while (look.tag == Tag.Mul
+			       || look.tag == Tag.Div
+			       || look.tag == Tag.IntDiv
+			       || look.tag == Tag.Mod) {
 				Token tok = look;
 				Move ();
-				if (tok.tag == Tag.Mul)
+				if (tok.tag == Tag.Mul) {
 					x = ASTNode.Multiply (x, Unary ());
-				else if (tok.tag == Tag.Div)
+				} else if (tok.tag == Tag.Div) {
 					x = ASTNode.Divide (x, Unary ());
-				else if (tok.tag == Tag.IntDiv)
+				} else if (tok.tag == Tag.IntDiv) {
 					x = ASTNode.IntDivide (x, Unary ());
-				else
+				} else {
 					x = ASTNode.Modulo (x, Unary ());
+				}
 			}
 			return x;
 		}
 
 		ASTNode Unary ()
 		{
-			switch (look.tag) {
-			case Tag.Add:
+			if (look.tag == Tag.Add
+			    || look.tag == Tag.Sub
+			    || look.tag == Tag.Not) {
+				Token tok = look;
 				Move ();
-				return ASTNode.UnaryPlus (Unary ());
-			case Tag.Sub:
-				Move ();
-				return ASTNode.UnaryMinus (Unary ());
-			case Tag.Not:
-				Move ();
-				return ASTNode.Negate (Unary ());
-			default:
-				return Power ();
+				switch (tok.tag) {
+				case Tag.Add:
+					return ASTNode.UnaryPlus (Unary ());
+				case Tag.Sub:
+					return ASTNode.UnaryMinus (Unary ());
+				case Tag.Not:
+					return ASTNode.Negate (Unary ());
+				}
 			}
+
+			return Power ();
 		}
 
 		ASTNode Power ()
@@ -440,7 +467,9 @@ namespace Cygni.AST
 		{
 			ASTNode x = Factor ();
 
-			while (look.tag == Tag.LeftParenthesis || look.tag == Tag.LeftBracket || look.tag == Tag.Dot) {
+			while (look.tag == Tag.LeftParenthesis
+			       || look.tag == Tag.LeftBracket
+			       || look.tag == Tag.Dot) {
 
 				Token tok = look;
 				Move ();
@@ -475,8 +504,8 @@ namespace Cygni.AST
 					Match (Tag.RightBracket);
 					x = ASTNode.IndexAccess (x, indexes);
 
-				} else { /* if (tok.tag == Tag.Dot) */
-					var fieldName = look.ToString ();
+				} else { /* Tag.Dot */
+					string fieldName = look.ToString ();
 					MatchOrThrows (Tag.ID, "Missing field");
 					x = ASTNode.Dot (x, fieldName);
 				}
@@ -487,53 +516,44 @@ namespace Cygni.AST
 
 		ASTNode Factor ()
 		{
-			ASTNode x = null;
-			switch (look.tag) {
+			ASTNode x;
+			Token tok = look;
+			Move ();
+			switch (tok.tag) {
 			case Tag.LeftParenthesis:
-				Move ();
-				x = Bool ();
+				x = Range ();
 				Match (Tag.RightParenthesis);
 				return x;
 			case Tag.Integer:
 				x = ASTNode.Integer ((look as IntToken).Value);
-				Move ();
 				return x;
 			case Tag.Number:
 				x = ASTNode.Number ((look as NumToken).Value);
-				Move ();
 				return x;
 			case Tag.True:
 				x = ASTNode.True;
-				Move ();
 				return x;
 			case Tag.False:
 				x = ASTNode.False;
-				Move ();
 				return x;
 			case Tag.String:
 				x = ASTNode.String ((look as StrToken).Literal);
-				Move ();
 				return x;
 			case Tag.Break:
-				Move ();
 				return ASTNode.Break;
 			case Tag.Continue:
-				Move ();
 				return ASTNode.Continue;
 			case Tag.Nil:
-				Move ();
 				return ASTNode.Nil;
 			case Tag.ID:
-				string name = look.ToString ();
+				string name = tok.ToString ();
 				x = ASTNode.Variable (name);
-				Move ();
 				return x;
 			case Tag.LeftBracket:
 				{
-					Move ();
 					var list = new List<ASTNode> ();
 					while (look.tag != Tag.RightBracket) {
-						list.Add (Bool ());
+						list.Add (Range ());
 						if (look.tag == Tag.Comma) {
 							Move ();
 						} else if (look.tag == Tag.RightBracket) {
@@ -542,7 +562,7 @@ namespace Cygni.AST
 							throw SyntaxException.Expecting (lexer.LineNumber, "]");
 						}
 					}
-					Move ();
+					Match (Tag.RightBracket);
 					ASTNode[] initializers = new ASTNode[list.Count];
 					list.CopyTo (initializers);
 					x = ASTNode.ListInit (initializers);
@@ -550,12 +570,11 @@ namespace Cygni.AST
 				}
 			case Tag.LeftBrace:
 				{
-					Move ();
 					var list = new List<ASTNode> ();
 					while (look.tag != Tag.RightBrace) {
 						list.Add (Bool ());
 						Match (Tag.Colon);
-						list.Add (Bool ());
+						list.Add (Range ());
 						if (look.tag == Tag.Comma) {
 							Move ();
 						} else if (look.tag == Tag.RightBrace) {
@@ -564,7 +583,7 @@ namespace Cygni.AST
 							throw SyntaxException.Expecting (lexer.LineNumber, "}");
 						}
 					}
-					Move ();
+					Match (Tag.RightBrace);
 					ASTNode[] initializers = new ASTNode[list.Count];
 					list.CopyTo (initializers);
 					x = ASTNode.DictionaryInit (initializers);
@@ -574,7 +593,7 @@ namespace Cygni.AST
 				x = DefClosure ();
 				return x;
 			default:
-				throw SyntaxException.Unexpected (lexer.LineNumber, look.ToString ());
+				throw SyntaxException.Unexpected (lexer.LineNumber, tok.ToString ());
 			}
 		}
 
