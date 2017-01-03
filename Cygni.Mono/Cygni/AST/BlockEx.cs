@@ -6,6 +6,7 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+
 namespace Cygni.AST
 {
 	/// <summary>
@@ -14,39 +15,44 @@ namespace Cygni.AST
 	public class BlockEx:ASTNode
 	{
 		readonly ASTNode[] _expressions;
+
 		public ASTNode[] expressions{ get { return _expressions; } }
+
 		public  override NodeType type { get { return NodeType.Block; } }
-		
-		public BlockEx(ICollection<ASTNode> _expressions)
+
+		public BlockEx (ICollection<ASTNode> _expressions)
 		{
 			this._expressions = new ASTNode[_expressions.Count];
-			_expressions.CopyTo(this._expressions, 0);
+			_expressions.CopyTo (this._expressions, 0);
 		}
+
 		public static BlockEx EmptyBlock = new BlockEx (new ASTNode[0]);
-		public override DynValue Eval(IScope scope)
+
+		public override DynValue Eval (IScope scope)
 		{
 			DynValue result = DynValue.Nil;
 			int n = expressions.Length;
-			for(int i = 0; i < n;i++){
-				result = expressions [i].Eval (scope);
+			foreach (ASTNode line in _expressions) {
+				result = line.Eval (scope);
 				switch (result.type) {
-					case DataType.Break:
-					case DataType.Continue:
-					case DataType.Return:
-						return result;
+				case DataType.Break:
+				case DataType.Continue:
+				case DataType.Return:
+					return result;
 				}
 			}
 			return result;
 		}
-		public override string ToString()
+
+		public override string ToString ()
 		{
-			var s = new StringBuilder();
-			s.AppendLine("{ ");
+			var s = new StringBuilder ();
+			s.AppendLine ("{ ");
 			foreach (var element in _expressions) {
-				s.Append(element.ToString()).AppendLine(";");
+				s.Append (element.ToString ()).AppendLine (";");
 			}
-			s.AppendLine("} ");
-			return s.ToString();
+			s.AppendLine ("} ");
+			return s.ToString ();
 		}
 
 		internal override void Accept (ASTVisitor visitor)

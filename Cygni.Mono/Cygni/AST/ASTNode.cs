@@ -188,6 +188,15 @@ namespace Cygni.AST
 			return new IfEx (condition, IfTrue, IfFalse);
 		}
 
+		public static ASTNode Conditions (ASTNode[] conditions, BlockEx[] blocks, BlockEx elseBlock = null)
+		{
+			Branch[] branches = new Branch[conditions.Length];
+			for (int i = 0; i < branches.Length; i++) {
+				branches [i] = new Branch (conditions [i], blocks [i]);
+			}
+			return new ConditionEx (branches, elseBlock);
+		}
+
 		public static ASTNode While (ASTNode condition, BlockEx  body)
 		{
 			return new WhileEx (condition, body);
@@ -220,7 +229,13 @@ namespace Cygni.AST
 
 		public static ASTNode DictionaryInit (ASTNode[] initializers)
 		{
-			return new DictionaryInitEx (initializers);
+			var items = new KeyValuePair<ASTNode, ASTNode>[initializers.Length / 2];
+			int j = 0;
+			for (int i = 0; i < initializers.Length - 1; i += 2) {
+				items [j] = new KeyValuePair<ASTNode, ASTNode> (initializers [i], initializers [i + 1]);
+				j++;
+			}
+			return new DictionaryInitEx (items);
 		}
 
 		public static ASTNode IndexAccess (ASTNode collection, List<ASTNode>indexes)

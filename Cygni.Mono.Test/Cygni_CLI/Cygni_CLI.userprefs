@@ -1,9 +1,20 @@
 ﻿<Properties StartupItem="Cygni_CLI/Cygni_CLI.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Cygni_CLI/Program.cs">
     <Files>
-      <File FileName="Cygni_CLI/Program.cs" Line="23" Column="1" />
+      <File FileName="Cygni_CLI/Program.cs" Line="17" Column="8" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Cygni_CLI" expanded="True">
+            <Node name="Cygni_CLI" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

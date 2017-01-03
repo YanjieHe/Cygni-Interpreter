@@ -13,22 +13,22 @@ namespace Cygni.AST
 	{
 		public override NodeType type { get { return NodeType.DictionaryInit; } }
 
-		ASTNode[] initializers;
+		KeyValuePair<ASTNode,ASTNode>[] initializers;
 
-		public ASTNode[] Initializers { get { return this.initializers; } }
+		public KeyValuePair<ASTNode,ASTNode>[]  Initializers { get { return this.initializers; } }
 
-		public DictionaryInitEx (ASTNode[] initializers)
+		public DictionaryInitEx (KeyValuePair<ASTNode,ASTNode>[]  initializers)
 		{
 			this.initializers = initializers;
 		}
 
 		public override DynValue Eval (IScope scope)
 		{
-			DynDictionary ht = new DynDictionary ();
-			int n = initializers.Length - 1;
-			for (int i = 0; i < n; i += 2)
-				ht.Add (initializers [i].Eval (scope), initializers [i + 1].Eval (scope));
-			return DynValue.FromDictionary (ht);
+			DynDictionary dict = new DynDictionary (initializers.Length);
+			foreach (var item in initializers) {
+				dict.Add (item.Key.Eval (scope), item.Value.Eval (scope));
+			}
+			return DynValue.FromDictionary (dict);
 		}
 
 		internal override void Accept (ASTVisitor visitor)

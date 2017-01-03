@@ -16,6 +16,8 @@ namespace Cygni.DataTypes
 		readonly ArrayScope funcScope;
 		readonly ASTNode body;
 
+		public bool IsSingleLine { get { return this.body.type != NodeType.Block; } }
+
 		public Closure (int nArgs, ASTNode body, ArrayScope funcScope)
 		{
 			this.nArgs = nArgs;
@@ -26,9 +28,14 @@ namespace Cygni.DataTypes
 		public DynValue Invoke ()
 		{
 			DynValue result = body.Eval (funcScope);
-			return result.type == DataType.Return
-				? result.Value as DynValue
-					: DynValue.Nil;
+			if (IsSingleLine) {
+				return result;
+			} else {
+				return 
+					result.type == DataType.Return ? 
+					result.Value as DynValue : 
+					DynValue.Nil;
+			}
 		}
 
 		public DynValue DynInvoke (DynValue[] args)
@@ -64,7 +71,7 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope ("Anonymous Function",values, funcScope.Parent);
+			var newScope = new ArrayScope ("Anonymous Function", values, funcScope.Parent);
 			return new Closure (nArgs, body, newScope).Invoke ();
 		}
 

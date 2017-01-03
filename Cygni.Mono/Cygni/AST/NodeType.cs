@@ -19,6 +19,7 @@ namespace Cygni.AST
 		DefClosure,
 		Dot,
 		If,
+		Condition,
 		Invoke,
 		Name,
 		Unary,

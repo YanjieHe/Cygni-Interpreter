@@ -114,9 +114,10 @@
     <Compile Include="Lexical\Tokens\IntToken.cs" />
     <Compile Include="DataTypes\Module.cs" />
     <Compile Include="Libraries\IOLibrary.cs" />
-    <Compile Include="AST\Visitors\RangeEx.cs" />
     <Compile Include="DataTypes\Range.cs" />
     <Compile Include="DataTypes\Interfaces\ICountable.cs" />
+    <Compile Include="AST\ConditionEx.cs" />
+    <Compile Include="AST\RangeEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

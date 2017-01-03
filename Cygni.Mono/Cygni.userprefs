@@ -1,9 +1,29 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Parser.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/DotEx.cs">
     <Files>
-      <File FileName="Cygni/AST/Parser.cs" Line="293" Column="17" />
+      <File FileName="Cygni/AST/DotEx.cs" Line="109" Column="12" />
+      <File FileName="Cygni/AST/NameEx.cs" Line="1" Column="1" />
+      <File FileName="Cygni/DataTypes/Closure.cs" Line="1" Column="1" />
+      <File FileName="Cygni/AST/DefClosureEx.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Cygni" expanded="True">
+            <Node name="Cygni" expanded="True">
+              <Node name="AST" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+                <Node name="Optimizers" expanded="True" />
+                <Node name="Visitors" expanded="True" />
+                <Node name="DotEx.cs" selected="True" />
+              </Node>
+              <Node name="DataTypes" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

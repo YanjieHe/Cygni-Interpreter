@@ -14,6 +14,9 @@ namespace Cygni.DataTypes
 	/// </summary>
 	public sealed class DynDictionary: Dictionary<object,DynValue> ,IEnumerable<DynValue>, IIndexable,IDot,ICountable
 	{
+		public DynDictionary (int capacity) : base (capacity)
+		{
+		}
 
 		public DynValue GetByIndex (DynValue index)
 		{
