@@ -205,7 +205,7 @@ namespace Cygni.AST
 				} else
 					throw new SyntaxException ("line {0}: Wrong argument for function definition", lexer.LineNumber);
 			}
-			Match (Tag.RightBracket);
+			Match (Tag.RightParenthesis);
 			BlockEx body = Block ();
 			NameEx[] parameters = new NameEx[list.Count];
 			list.CopyTo (parameters);
