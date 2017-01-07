@@ -76,10 +76,12 @@ namespace Cygni.Executors
 							/* In the interative mode, the lexer always starts at line 1. */
 							var ast = new Parser (lexer);
 							this.result = ast.Program ().Eval (GlobalScope);
-							if (!GlobalSettings.Quiet && Result != DynValue.Nil) {
+							if (!GlobalSettings.Quiet) {
+								if (!Result.IsVoid && !Result.IsNil) {
 								Console.ForegroundColor = ConsoleColor.White;
 								Console.Write ("=> ");
 								Console.WriteLine (Result);
+								}
 							}
 						}
 

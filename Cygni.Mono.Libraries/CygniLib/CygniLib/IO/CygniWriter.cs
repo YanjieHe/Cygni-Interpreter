@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Text;
 using Cygni.DataTypes;
@@ -27,7 +29,7 @@ namespace CygniLib.IO
 					args => {
 						RuntimeException.FuncArgsCheck (args.Length == 1, "write");
 						this.Write (args [0].Value);
-						return DynValue.Nil;
+						return DynValue.Void;
 					}
 				);
 			case "writeLine":
@@ -35,24 +37,39 @@ namespace CygniLib.IO
 					args => {
 						RuntimeException.FuncArgsCheck (args.Length == 1, "writeLine");
 						this.WriteLine (args [0].Value);
-						return DynValue.Nil;
+						return DynValue.Void;
+					}
+				);
+			case "writeLines":
+				return DynValue.FromDelegate ("writeLines",
+					args => {
+						RuntimeException.FuncArgsCheck (args.Length == 1, "writeLines");
+						this.WriteLines (args [0].As <IEnumerable<DynValue>> ().Select (i => i.AsString ()));
+						return DynValue.Void;
 					}
 				);
 			case "close":
 				return DynValue.FromDelegate ("close",
 					args => {
 						this.Close ();
-						return DynValue.Nil;
+						return DynValue.Void;
 					});
 			default :
 				throw RuntimeException.FieldNotExist ("Writer", fieldName);
 			}
 		}
 
+		public void WriteLines (IEnumerable<string> content)
+		{
+			foreach (string line in content) {
+				this.WriteLine (line);
+			}
+		}
+
 		public string[] FieldNames {
 			get { 
 				return new string[] {
-					"write", "writeLine", "close"
+					"write", "writeLine", "writeLines", "close"
 				};
 			}
 		}

@@ -9,7 +9,7 @@ using Cygni.DataTypes.Interfaces;
 using Cygni.Libraries;
 namespace Cygni.AST
 {
-	public class SingleIndexEx: ASTNode, IAssignable
+	public class SingleIndexEx: ASTNode
 	{
 		readonly ASTNode collection;
 		readonly ASTNode index;
@@ -39,13 +39,6 @@ namespace Cygni.AST
 			} else {
 				return collection.As<IIndexable> ().GetByIndex (index);
 			}
-		}
-
-		public DynValue Assign (DynValue value, IScope scope)
-		{
-			DynValue collection = this.collection.Eval (scope);
-			DynValue index = this.index.Eval (scope);
-			return collection.As<IIndexable> ().SetByIndex (index, value);
 		}
 
 		internal override void Accept (ASTVisitor visitor)

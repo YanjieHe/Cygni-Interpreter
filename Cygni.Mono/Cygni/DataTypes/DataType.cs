@@ -27,6 +27,7 @@ namespace Cygni.DataTypes
 		Class,
 		
 		Nil,
+		Void,
 		
 		Break,
 		Continue,

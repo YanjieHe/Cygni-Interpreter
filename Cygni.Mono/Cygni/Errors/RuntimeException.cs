@@ -90,5 +90,9 @@ namespace Cygni.Errors
 			}
 			return new RuntimeException (s.ToString ());
 		}
+		public static RuntimeException AssignVoidValue (IScope scope)
+		{
+		return	Throw("Cannot assign 'void'",scope);
+		}
 	}
 }

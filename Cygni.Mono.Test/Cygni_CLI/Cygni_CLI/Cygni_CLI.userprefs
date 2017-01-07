@@ -1,8 +1,8 @@
-﻿<Properties StartupItem="Cygni_CLI/Cygni_CLI.csproj">
+﻿<Properties StartupItem="Cygni_CLI.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni_CLI/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Cygni_CLI/Program.cs" Line="8" Column="3" />
+      <File FileName="Program.cs" Line="20" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

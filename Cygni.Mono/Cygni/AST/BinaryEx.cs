@@ -401,7 +401,6 @@ namespace Cygni.AST
 					} else {
 						return lvalue.Equals (rvalue) ? DynValue.False : DynValue.True;
 					}
-
 				}
 			}
 			BinaryOperationError:

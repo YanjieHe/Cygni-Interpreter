@@ -20,21 +20,21 @@ namespace Cygni.Libraries
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "append");
 			list.Add (args [0]);
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue removeAt (DynList list, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "removeAt");
 			list.RemoveAt (args [0].AsInt32 ());
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue insert (DynList list, DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 2, "insert");
 			list.Insert (index: args [1].AsInt32 (), item: args [0]);
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue pop (DynList list, DynValue[] args)
@@ -48,7 +48,7 @@ namespace Cygni.Libraries
 		public static DynValue clear (DynList list, DynValue[] args)
 		{
 			list.Clear ();
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue sort (DynList list, DynValue[] args)
@@ -59,7 +59,7 @@ namespace Cygni.Libraries
 			else {
 				list.Sort (args [0].AsInt32 (), args [1].AsInt32 (), DynValue.Nil);
 			}
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue bSearch (DynList list, DynValue[] args)

@@ -26,14 +26,14 @@ namespace Cygni.Libraries
 		public static DynValue print (DynValue[] args)
 		{
 			if (args == null || args.Length == 0)
-				return DynValue.Nil;
+				return DynValue.Void;
 			Console.Write (args [0].Value);
 			for (int i = 1; i < args.Length; i++) {
 				Console.Write ('\t');
 				Console.Write (args [i].Value);
 			}
 			Console.WriteLine ();
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue printf (DynValue[] args)
@@ -43,7 +43,7 @@ namespace Cygni.Libraries
 			for (int i = 0; i < arguments.Length; i++)
 				arguments [i] = args [i + 1].Value;
 			Console.WriteLine (args [0].AsString (), arguments);
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue input (DynValue[] args)
@@ -97,8 +97,8 @@ namespace Cygni.Libraries
 		public static DynValue toInteger (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "int");
-			var value = args [0];
-			if (value.type == DataType.Integer)
+			DynValue value = args [0];
+			if (value.IsInteger)
 				return value;
 			else
 				return Convert.ToInt64 (value.Value);
@@ -108,18 +108,29 @@ namespace Cygni.Libraries
 		public static DynValue toNumber (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "number");
-			var value = args [0];
-			if (value.type == DataType.Number)
+			DynValue value = args [0];
+			if (value.IsNumber)
 				return value;
 			else
 				return Convert.ToDouble (value.Value);
 		}
 
+		public static DynValue toBoolean (DynValue[] args)
+		{
+			RuntimeException.FuncArgsCheck (args.Length == 1, "bool");
+			DynValue value = args [0];
+			if (value.IsBoolean) {
+				return value;
+			} else {
+				return Convert.ToBoolean (value.Value);
+			}
+		}
+
 		public static DynValue toString (DynValue[] args)
 		{
 			RuntimeException.FuncArgsCheck (args.Length == 1, "str");
-			var value = args [0];
-			if (value.type == DataType.String)
+			DynValue value = args [0];
+			if (value.IsString)
 				return value;
 			else
 				return Convert.ToString (value.Value);
@@ -175,8 +186,10 @@ namespace Cygni.Libraries
 						ParameterInfo[] parameters = method.GetParameters ();
 						if (parameters.Length == 1 && parameters [0].ParameterType == typeof(DynValue[])) {
 							string method_name = method.Name;
-							Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
-							StructureItem item = new StructureItem (method_name, DynValue.FromDelegate (method_name, f));
+							Func<DynValue[],DynValue> f = method.CreateDelegate (
+									typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
+							StructureItem item = new StructureItem (
+								method_name, DynValue.FromDelegate (method_name, f));
 							list.Add (item);
 						}
 					}
@@ -191,9 +204,11 @@ namespace Cygni.Libraries
 				string funcName = args [2].AsString ();
 				MethodInfo method = t.GetMethod (funcName);
 
-				Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) as Func<DynValue[],DynValue>;
+				Func<DynValue[],DynValue> f = method.CreateDelegate (typeof(Func<DynValue[],DynValue>)) 
+																			as Func<DynValue[],DynValue>;
 				if (f == null) {
-					throw new RuntimeException ("cannot load native function '{0}' from class '{1}' in '{2}'.", funcName, class_name, filepath);
+					throw new RuntimeException (
+					"cannot load native function '{0}' from class '{1}' in '{2}'.", funcName, class_name, filepath);
 				} else {
 					return DynValue.FromDelegate (method.Name, f);
 				}
@@ -203,7 +218,7 @@ namespace Cygni.Libraries
 		public static DynValue console_clear (DynValue[]args)
 		{
 			Console.Clear ();
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue console_write (DynValue[]args)
@@ -217,7 +232,7 @@ namespace Cygni.Libraries
 					arguments [i] = args [i + 1].Value;
 				Console.Write (args [0].AsString (), arguments);
 			}
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue console_writeLine (DynValue[]args)
@@ -231,7 +246,7 @@ namespace Cygni.Libraries
 					arguments [i] = args [i + 1].Value;
 				Console.WriteLine (args [0].AsString (), arguments);
 			}
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue console_read (DynValue[]args)
@@ -257,7 +272,7 @@ namespace Cygni.Libraries
 			} else {
 				Environment.Exit ((int)args [0].AsNumber ());
 			}
-			return DynValue.Nil;
+			return DynValue.Void;
 		}
 
 		public static DynValue pCall (DynValue[] args)
@@ -355,7 +370,6 @@ namespace Cygni.Libraries
 					Commands.ModulesCache.Add (filePath, program);
 					program.Eval (globalScope);
 					return DynValue.FromUserData (new Cygni.DataTypes.Module (globalScope));
-				
 				}
 			} catch (RuntimeException ex) {
 				throw ex;

@@ -11,7 +11,7 @@ namespace Cygni.DataTypes
 {
 	public sealed class DynTuple:IDot
 	{
-		DynValue[] values;
+		readonly DynValue[] values;
 
 		public DynValue[] Values{ get { return this.values; } }
 
@@ -28,17 +28,25 @@ namespace Cygni.DataTypes
 				if (ch == '0') {
 					throw RuntimeException.FieldNotExist ("tuple", fieldName);
 				} else {
-					index = ch - '0';
-					for (int i = 2; i < fieldName.Length; i++) {
-						index = index * 10 + fieldName [i];
+					if (!IsDigit(ch)) {
+						throw RuntimeException.FieldNotExist ("tuple", fieldName);
+					} else {
+						index = ch - '0';
+						for (int i = 2; i < fieldName.Length; i++) {
+							index = index * 10 + fieldName [i];
+						}
+						return this.values [index - 1];
 					}
-					return this.values [index - 1];
 				}
 			} else {
 				throw RuntimeException.FieldNotExist ("tuple", fieldName);
 			}
 		}
 
+		private bool IsDigit(char ch)
+		{
+			return ch >= '0' && ch <= '9';
+		}
 
 		public DynValue SetByDot (string fieldName, DynValue value)
 		{

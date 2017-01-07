@@ -38,6 +38,7 @@ namespace Cygni.Libraries
 
 			{ "int",BasicLib.toInteger },
 			{ "number",BasicLib.toNumber },
+			{ "bool",BasicLib.toBoolean },
 			{ "str",BasicLib.toString },
 			{ "list",BasicLib.toList },
 

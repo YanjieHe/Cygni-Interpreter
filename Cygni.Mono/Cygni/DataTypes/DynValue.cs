@@ -33,9 +33,10 @@ namespace Cygni.DataTypes
 		public static readonly DynValue True = new DynValue (DataType.Boolean, true);
 		public static readonly DynValue False = new DynValue (DataType.Boolean, false);
 		public static readonly DynValue Nil = new DynValue (DataType.Nil, null);
+		public static readonly DynValue Void = new DynValue (DataType.Void, null);
 		public static readonly DynValue[] Empty = new DynValue[0];
 
-		#region implicit conversion
+#region implicit conversion
 
 		public static implicit operator DynValue (int value)
 		{
@@ -102,7 +103,7 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Range, range);
 		}
 
-		#endregion
+#endregion
 
 		public static DynValue FromInteger (long value)
 		{
@@ -192,30 +193,37 @@ namespace Cygni.DataTypes
 				var iconv = value as IConvertible;
 				if (iconv != null)
 					switch (iconv.GetTypeCode ()) {
-					case TypeCode.Single:
-						return FromNumber ((Single)value);
-					case TypeCode.Double:
-						return FromNumber ((double)value);
-					case TypeCode.Boolean:
-						return FromBoolean ((bool)value);
-					case TypeCode.String:
-						return FromString (value as string);
-					case TypeCode.Int16:
-						return FromInteger ((Int16)value);
-					case TypeCode.Int32:
-						return FromInteger ((Int32)value);
-					case TypeCode.Int64:
-						return FromInteger ((Int64)value);
-					case TypeCode.UInt16:
-						return FromInteger ((UInt16)value);
-					case TypeCode.UInt32:
-						return FromInteger ((UInt32)value);
-					case TypeCode.UInt64:
-						return FromInteger (checked((long)(UInt64)value));
+						case TypeCode.Single:
+							return FromNumber ((Single)value);
+						case TypeCode.Double:
+							return FromNumber ((double)value);
+						case TypeCode.Boolean:
+							return FromBoolean ((bool)value);
+						case TypeCode.String:
+							return FromString (value as string);
+						case TypeCode.Int16:
+							return FromInteger ((Int16)value);
+						case TypeCode.Int32:
+							return FromInteger ((Int32)value);
+						case TypeCode.Int64:
+							return FromInteger ((Int64)value);
+						case TypeCode.UInt16:
+							return FromInteger ((UInt16)value);
+						case TypeCode.UInt32:
+							return FromInteger ((UInt32)value);
+						case TypeCode.UInt64:
+							return FromInteger (checked((long)(UInt64)value));
 					}
 				return FromUserData (value);
 			}
 		}
+
+		public bool IsInteger { get { return this.type == DataType.Integer; } }
+		public bool IsNumber { get { return this.type == DataType.Number; } }
+		public bool IsBoolean { get { return this.type == DataType.Boolean; } }
+		public bool IsString { get { return this.type == DataType.String; } }
+		public bool IsNil { get { return this.type == DataType.Nil; } }
+		public bool IsVoid { get { return this.type == DataType.Void; } }
 
 		public int AsInt32 ()
 		{
@@ -273,41 +281,42 @@ namespace Cygni.DataTypes
 			TValue v = value as TValue;
 			if (v == null) {
 				throw new RuntimeException ("Cast from '{0}' to '{1}' is invalid.", 
-					value.GetType ().Name, typeof(TValue).Name);
+						value.GetType ().Name, typeof(TValue).Name);
 			} else {
 				return v;
 			}
 		}
 
-		#region IComparable implementation
+#region IComparable implementation
 
 		public int CompareTo (DynValue other)
 		{
-			if (this.type == other.type) {
-				switch (type) {
-				case DataType.Integer:
-					return ((long)value).CompareTo ((long)other.value);
-				case DataType.Number:
-					return ((double)value).CompareTo ((double)other.value);
-				case DataType.Boolean:
-					return ((bool)value).CompareTo ((bool)other.value);
-				case DataType.String:
-					return (value as string).CompareTo (other.value as string);
-				default:
-					return this.As<IComparable<DynValue>> ().CompareTo (other);
+			if (this._type == other._type) {
+				switch (this._type) {
+					case DataType.Integer:
+						return ((long)value).CompareTo ((long)other.value);
+					case DataType.Number:
+						return ((double)value).CompareTo ((double)other.value);
+					case DataType.Boolean:
+						return ((bool)value).CompareTo ((bool)other.value);
+					case DataType.String:
+						return (value as string).CompareTo (other.value as string);
+					default:
+						return this.As<IComparable<DynValue>> ().CompareTo (other);
 				}
 			} else {
-				if ((this.type == DataType.Integer && other.type == DataType.Number)
-				    || (this.type == DataType.Number && other.type == DataType.Integer)) {
-					return Convert.ToDouble (this.value).CompareTo (Convert.ToDouble (other.value));
+				if (this._type == DataType.Integer && other._type == DataType.Number) {
+					return ((double)(long)this.value).CompareTo ( (double)other.value);
+				} else if (this._type == DataType.Number && other._type == DataType.Integer) {
+					return ((double)this.value).CompareTo((double)(long)other.value);
 				} else {
 					return this.As<IComparable<DynValue>> ().CompareTo (other);
 				}
 			}
-				
+
 		}
 
-		#endregion
+#endregion
 
 		public int Compare (DynValue x, DynValue y)
 		{
@@ -323,25 +332,36 @@ namespace Cygni.DataTypes
 			return new DynValue (DataType.Return, value);
 		}
 
-		#region IEquatable implementation
+#region IEquatable implementation
 
 		public bool Equals (DynValue other)
 		{
-			return _type == other._type && (value == null || object.Equals (value, other.value));
+			if (this._type == other._type) {
+				if (this.value == null) {
+					return true;
+				} else {
+					return object.Equals (this.value, other.value);
+				}
+			} else {
+				return false;
+			}
 		}
 
-		#endregion
+#endregion
 
 		public override string ToString ()
 		{
-			if (value == null)
+			if (value == null) {
 				return string.Empty;
-			if (type == DataType.String)
+			}
+			else if (type == DataType.String){
 				return string.Concat ("\"", value as string, "\"");
-			return value.ToString ();
+			} else{
+				return value.ToString ();
+			}
 		}
 
-		#region Equals and GetHashCode implementation
+#region Equals and GetHashCode implementation
 
 		public override bool Equals (object obj)
 		{
@@ -353,6 +373,6 @@ namespace Cygni.DataTypes
 			return this.value.GetHashCode ();
 		}
 
-		#endregion
+#endregion
 	}
 }

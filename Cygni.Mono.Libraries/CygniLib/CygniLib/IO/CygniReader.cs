@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Cygni.DataTypes;
@@ -27,20 +29,30 @@ namespace CygniLib.IO
 				return DynValue.FromDelegate ("read", args => (double)this.Read ());
 			case "readLine":
 				return DynValue.FromDelegate ("readLine", args => this.ReadLine ());
+			case "readLines":
+				return DynValue.FromDelegate ("readLines",
+					args => DynValue.FromUserData (this.ReadLines ().Select (DynValue.FromString)));
 			case "close":
 				return DynValue.FromDelegate ("close", args => {
 					this.Close ();
-					return DynValue.Nil;
+					return DynValue.Void;
 				});
 			default :
 				throw RuntimeException.FieldNotExist ("Reader", fieldName);
 			}
 		}
 
+		public IEnumerable<string> ReadLines ()
+		{
+			while (this.Peek () != -1) {
+				yield return this.ReadLine ();
+			}
+		}
+
 		public string[] FieldNames {
 			get { 
 				return new string[] {
-					"peek", "read", "readLine", "close"
+					"peek", "read", "readLine", "readLines", "close"
 				};
 			}
 		}

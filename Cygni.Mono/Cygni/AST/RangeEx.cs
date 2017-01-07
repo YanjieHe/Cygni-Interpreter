@@ -35,7 +35,7 @@ namespace Cygni.AST
 
 		internal override void Accept (ASTVisitor visitor)
 		{
-			throw new NotImplementedException ();
+            visitor.Visit(this);
 		}
 
 		public override DynValue Eval (IScope scope)

@@ -68,10 +68,10 @@ namespace Cygni.Libraries
 					string message = args [1].Eval (scope).AsString ();
 					throw RuntimeException.Throw (message, scope);
 				} else {
-					return DynValue.Nil;
+					return DynValue.Void;
 				}
 			} else {
-				return DynValue.Nil;
+				return DynValue.Void;
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace Cygni.Libraries
 				BlockEx program;
 				if (ModulesCache.TryGetValue (filePath, out program)) {
 					program.Eval (scope);
-					return DynValue.Nil;
+					return DynValue.Void;
 				} else {
 					
 					bool quiet = GlobalSettings.Quiet;
@@ -130,7 +130,7 @@ namespace Cygni.Libraries
 					ModulesCache.Add (filePath, program);
 					program.Eval (scope);
 					GlobalSettings.Quiet = quiet;
-					return DynValue.Nil;
+					return DynValue.Void;
 				}
 			}
 		}

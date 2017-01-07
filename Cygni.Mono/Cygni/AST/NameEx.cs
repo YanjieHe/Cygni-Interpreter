@@ -7,13 +7,14 @@ using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
 using Cygni.AST.Interfaces;
+using Cygni.Errors;
 
 namespace Cygni.AST
 {
 	/// <summary>
 	/// Description of NameEx.
 	/// </summary>
-	public sealed class NameEx:ASTNode,IAssignable
+	public sealed class NameEx:ASTNode
 	{
 		private string name;
 		private int nest;
@@ -28,6 +29,7 @@ namespace Cygni.AST
 		public  override NodeType type { get { return NodeType.Name; } }
 
 		public bool IsUnknown { get { return this.index == -1; }}
+
 		public NameEx (string name, int index = -1)
 		{
 			this.name = name;
