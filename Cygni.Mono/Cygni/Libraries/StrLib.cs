@@ -9,146 +9,188 @@ using Cygni.Errors;
 
 namespace Cygni.Libraries
 {
-	/// <summary>
-	/// Description of StrLib.
-	/// </summary>
-	public static class StrLib
-	{
-		public static DynValue strcat (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "concat");
-			DynList list = args [0].As<DynList> ();
-			string[] values = new string[list.Count];
-			for (int i = 0; i < list.Count; i++) {
-				values [i] = list [i].Value.ToString ();
-			}
-			return string.Concat (values);
-		}
+    /// <summary>
+    /// Description of StrLib.
+    /// </summary>
+    public static class StrLib
+    {
+        internal static DynValue StrGetByDot(string str, string fieldName)
+        {
+            switch (fieldName)
+            {
+                case "length":
+                    return (double)str.Length;
+                case "replace":
+                    return DynValue.FromDelegate("replace", (args) => StrLib.replace(str, args));
+                case "format":
+                    return DynValue.FromDelegate("format", (args) => StrLib.format(str, args));
+                case "join":
+                    return DynValue.FromDelegate("join", (args) => StrLib.join(str, args));
+                case "split":
+                    return DynValue.FromDelegate("split", (args) => StrLib.split(str, args));
+                case "find":
+                    return DynValue.FromDelegate("find", (args) => StrLib.find(str, args));
+                case "lower":
+                    return DynValue.FromDelegate("lower", (args) => str.ToLower());
+                case "upper":
+                    return DynValue.FromDelegate("upper", (args) => str.ToUpper());
+                case "trim":
+                    return DynValue.FromDelegate("trim", (args) => StrLib.trim(str, args));
+                case "trimStart":
+                    return DynValue.FromDelegate("trimStart", (args) => StrLib.trimStart(str, args));
+                case "trimEnd":
+                    return DynValue.FromDelegate("trimEnd", (args) => StrLib.trimEnd(str, args));
+                default:
+                    throw RuntimeException.FieldNotExist("string", fieldName);
+            }
+        }
 
-		public static DynValue join (string str, DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1, "join");
-			return string.Join (str, args [0].As<DynList> ().Select (i => i.Value));
-		}
+        public static DynValue strcat(DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length == 1, "concat");
+            DynList list = args[0].As<DynList>();
+            string[] values = new string[list.Count];
+            for (int i = 0; i < list.Count; i++)
+            {
+                values[i] = list[i].Value.ToString();
+            }
+            return string.Concat(values);
+        }
 
-		public static DynValue format (string str, DynValue[] args)
-		{
-			object[] values = new object[args.Length];
-			for (int i = 0; i < args.Length; i++) {
-				values [i] = args [i].Value;
-			}
-			return string.Format (str, values);
-		}
+        public static DynValue join(string str, DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length == 1, "join");
+            return string.Join(str, args[0].As<DynList>().Select(i => i.Value));
+        }
 
-		public static DynValue split (string str, DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length >= 1, "strsplit");
+        public static DynValue format(string str, DynValue[] args)
+        {
+            object[] values = new object[args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                values[i] = args[i].Value;
+            }
+            return string.Format(str, values);
+        }
 
-			char[] arr = new char[args.Length];
-			for (int i = 0; i < arr.Length; i++)
-				arr [i] = char.Parse (args [i].AsString ());
-			string[] result = str.Split (arr);
+        public static DynValue split(string str, DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length >= 1, "strsplit");
 
-			DynList list = new DynList (result.Length);
-			foreach (string item in result) {
-				list.Add (item);
-			}
+            char[] arr = new char[args.Length];
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = char.Parse(args[i].AsString());
+            string[] result = str.Split(arr);
 
-			return DynValue.FromList (list);
-		}
+            DynList list = new DynList(result.Length);
+            foreach (string item in result)
+            {
+                list.Add(item);
+            }
 
-		public static DynValue replace (string str, DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "replace");
-			string oldValue = args [0].AsString ();
-			string newValue = args [1].AsString ();
-			return str.Replace (oldValue, newValue);
-		}
+            return DynValue.FromList(list);
+        }
 
-		public static DynValue strcmp (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "strcmp");
-			return string.CompareOrdinal (
-				args [0].AsString (),
-				args [1].AsString ());
-		}
+        public static DynValue replace(string str, DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length == 2, "replace");
+            string oldValue = args[0].AsString();
+            string newValue = args[1].AsString();
+            return str.Replace(oldValue, newValue);
+        }
 
-		public static DynValue compare (DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 2, "compare");
-			return string.Compare (
-				args [0].AsString (),
-				args [1].AsString ());
-		}
+        public static DynValue strcmp(DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length == 2, "strcmp");
+            return string.CompareOrdinal(
+                args[0].AsString(),
+                args[1].AsString());
+        }
 
-		public static DynValue find (string str, DynValue[] args)
-		{
-			RuntimeException.FuncArgsCheck (args.Length == 1 || args.Length == 2 || args.Length == 3, "find");
-			if (args.Length == 1)
-				return str.IndexOf (args [0].AsString ());
-			else if (args.Length == 2)
-				return str.IndexOf (args [0].AsString (), args [1].AsInt32 ());
-			else
-				return str.IndexOf (args [0].AsString (), args [1].AsInt32 (), args [2].AsInt32 ());
-		}
+        public static DynValue compare(DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length == 2, "compare");
+            return string.Compare(
+                args[0].AsString(),
+                args[1].AsString());
+        }
 
-		public static DynValue trim (string str, DynValue[] args)
-		{
-			if (args.Length == 0)
-				return str.Trim ();
-			else {
-				char[] arr = new char[args.Length];
-				for (int i = 0; i < args.Length; i++)
-					arr [i] = char.Parse (args [i].AsString ());
-				return str.Trim (arr);
-			}
-		}
+        public static DynValue find(string str, DynValue[] args)
+        {
+            RuntimeException.FuncArgsCheck(args.Length == 1 || args.Length == 2 || args.Length == 3, "find");
+            if (args.Length == 1)
+                return str.IndexOf(args[0].AsString());
+            else if (args.Length == 2)
+                return str.IndexOf(args[0].AsString(), args[1].AsInt32());
+            else
+                return str.IndexOf(args[0].AsString(), args[1].AsInt32(), args[2].AsInt32());
+        }
 
-		public static DynValue trimStart (string str, DynValue[] args)
-		{
-			if (args.Length == 0)
-				return str.TrimStart ();
-			else {
-				char[] arr = new char[args.Length];
-				for (int i = 0; i < args.Length; i++)
-					arr [i] = char.Parse (args [i].AsString ());
-				return str.TrimStart (arr);
-			}
-		}
+        public static DynValue trim(string str, DynValue[] args)
+        {
+            if (args.Length == 0)
+                return str.Trim();
+            else
+            {
+                char[] arr = new char[args.Length];
+                for (int i = 0; i < args.Length; i++)
+                    arr[i] = char.Parse(args[i].AsString());
+                return str.Trim(arr);
+            }
+        }
 
-		public static DynValue trimEnd (string str, DynValue[] args)
-		{
-			if (args.Length == 0)
-				return str.TrimEnd ();
-			else {
-				char[] arr = new char[args.Length];
-				for (int i = 0; i < args.Length; i++)
-					arr [i] = char.Parse (args [i].AsString ());
-				return str.TrimEnd (arr);
-			}
-		}
+        public static DynValue trimStart(string str, DynValue[] args)
+        {
+            if (args.Length == 0)
+                return str.TrimStart();
+            else
+            {
+                char[] arr = new char[args.Length];
+                for (int i = 0; i < args.Length; i++)
+                    arr[i] = char.Parse(args[i].AsString());
+                return str.TrimStart(arr);
+            }
+        }
 
-		public static DynValue Slice (string str, Range range)
-		{
-			int start = range.Start;
-			int end = range.End;
-			int step = range.Step;
-			RuntimeException.SliceCheck (str.Length, range);
-			char[] chArr = new char [(end - start + 1) / step];
-			int j = 0;
-			if (range.IsForward) {
-				for (int i = start; i < end; i += step) {
-					chArr [j] = (str [i]);
-					j++;
-				}
-			} else {
-				for (int i = start; i > end; i += step) {
-					chArr [j] = (str [i]);
-					j++;
-				}
-			}
-			return new string (chArr);
-		}
+        public static DynValue trimEnd(string str, DynValue[] args)
+        {
+            if (args.Length == 0)
+                return str.TrimEnd();
+            else
+            {
+                char[] arr = new char[args.Length];
+                for (int i = 0; i < args.Length; i++)
+                    arr[i] = char.Parse(args[i].AsString());
+                return str.TrimEnd(arr);
+            }
+        }
 
-	}
+        public static DynValue Slice(string str, Range range)
+        {
+            int start = range.Start;
+            int end = range.End;
+            int step = range.Step;
+            RuntimeException.SliceCheck(str.Length, range);
+            char[] chArr = new char [(end - start + 1) / step];
+            int j = 0;
+            if (range.IsForward)
+            {
+                for (int i = start; i < end; i += step)
+                {
+                    chArr[j] = (str[i]);
+                    j++;
+                }
+            }
+            else
+            {
+                for (int i = start; i > end; i += step)
+                {
+                    chArr[j] = (str[i]);
+                    j++;
+                }
+            }
+            return new string(chArr);
+        }
+
+    }
 }

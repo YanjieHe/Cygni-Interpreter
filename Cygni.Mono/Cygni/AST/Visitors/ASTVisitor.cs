@@ -43,13 +43,10 @@ namespace Cygni.AST.Visitors
 
         internal virtual void Visit(LocalEx localEx)
         {
-            foreach (var variable in localEx.Variables)
+            foreach (var item in localEx.VariableDefs)
             {
-                variable.Accept(this);
-            }
-            foreach (var value in localEx.Values)
-            {
-                value.Accept(this);
+                item.Variable.Accept(this);
+                item.Value.Accept(this);
             }
         }
 

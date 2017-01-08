@@ -1,11 +1,14 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AST/Visitors/ASTVisitor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AST/Visitors/ClassLookUpVisitor.cs">
     <Files>
-      <File FileName="DataTypes/Closure.cs" Line="71" Column="1" />
-      <File FileName="DataTypes/Range.cs" Line="98" Column="2" />
-      <File FileName="AST/RangeEx.cs" Line="38" Column="25" />
-      <File FileName="AST/Visitors/ASTVisitor.cs" Line="28" Column="9" />
+      <File FileName="AST/Parser.cs" Line="23" Column="10" />
+      <File FileName="AST/DotEx.cs" Line="19" Column="31" />
+      <File FileName="AST/ForEx.cs" Line="38" Column="10" />
+      <File FileName="AST/LocalEx.cs" Line="49" Column="64" />
+      <File FileName="AST/Visitors/ASTVisitor.cs" Line="51" Column="1" />
+      <File FileName="AST/Visitors/LookUpVisitor.cs" Line="45" Column="46" />
+      <File FileName="AST/Visitors/ClassLookUpVisitor.cs" Line="35" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

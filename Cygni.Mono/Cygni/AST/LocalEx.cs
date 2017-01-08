@@ -8,39 +8,65 @@ using Cygni.AST.Interfaces;
 
 namespace Cygni.AST
 {
-	public class LocalEx:ASTNode
-	{
-		NameEx[] variables;
-		ASTNode[] values;
+    public class LocalEx:ASTNode
+    {
+        VariableDefinition[] variableDefs;
 
-		public NameEx[] Variables { get { return this.variables; } }
+        public VariableDefinition[] VariableDefs { get { return this.variableDefs; } }
 
-		public ASTNode[] Values { get { return this.values; } }
+        public override NodeType type
+        {
+            get
+            {
+                return NodeType.Local;
+            }
+        }
 
-		public override NodeType type {
-			get {
-				return NodeType.Local;
-			}
-		}
+        public LocalEx(NameEx[] variables, ASTNode[] values)
+        {
+            this.variableDefs = new VariableDefinition[variables.Length];
+            for (int i = 0; i < variables.Length; i++)
+            {
+                variableDefs[i] = new VariableDefinition(variables[i], values[i]);
+            }
+        }
 
-		public LocalEx (NameEx[] variables, ASTNode[] values)
-		{
-			this.variables = variables;
-			this.values = values;
-		}
+        internal override void Accept(ASTVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
-		internal override void Accept (ASTVisitor visitor)
-		{
-			visitor.Visit (this);
-		}
+        public override DynValue Eval(IScope scope)
+        {
+            foreach (VariableDefinition item in variableDefs)
+            {
+                if (item.Variable.IsUnknown)
+                {
+                    scope.Put(item.Variable.Name, item.Value.Eval(scope));
+                }
+                else
+                {
+                    scope.Put(item.Variable.Nest, item.Variable.Index, item.Value.Eval(scope));
+                }
+            }
+            return DynValue.Void;
+        }
+    }
 
-		public override DynValue Eval (IScope scope)
-		{
-			for (int i = 0; i < values.Length; i++) {
-				this.variables [i].Assign (this.values [i].Eval (scope), scope);
-			}
-			return DynValue.Nil;
-		}
-	}
+    public class VariableDefinition
+    {
+        readonly NameEx variable;
+        readonly ASTNode value;
+
+        public NameEx Variable { get { return this.variable; } }
+
+        public ASTNode Value { get { return this.value; } }
+
+        public VariableDefinition(NameEx variable, ASTNode value)
+        {
+            this.variable = variable;
+            this.value = value;
+        }
+    }
 }
 
