@@ -3,7 +3,10 @@ A lightweight, object-oriented script interpreter implemented in C#.
 
 The Cygni language is inspired by many script languages, such as Lua, Python, etc. 
 
-## How to run the Cygni interpreter?
+## Screen shots
+![image](https://github.com/JasonHe0727/Cygni/blob/master/Screenshots/Cygni_Screen_shot1.png)
+
+## Installation 
 Here are two options. 
 The first option is to download the compiled interpreter.
 - Download the program from 
