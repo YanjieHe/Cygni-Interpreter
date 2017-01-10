@@ -59,18 +59,6 @@ namespace Cygni.AST
             }
         }
 
-        void Match(Tag tag1, Tag tag2)
-        {
-            if (look.tag == tag1 || look.tag == tag2)
-            {
-                Move();
-            }
-            else
-            {
-                throw new SyntaxException("line {0}: Expecting '{1}' or '{2}.", lexer.LineNumber, tag1, tag2);
-            }
-        }
-
         public BlockEx Program()
         {
             BlockEx block = Block(matchBrackets: false);
@@ -150,7 +138,7 @@ namespace Cygni.AST
 
         ASTNode If()
         {
-            Match(Tag.If, Tag.ElseIf);
+            Match(Tag.If);
             ASTNode test = Bool();
             BlockEx body = Block();
             if (look.tag == Tag.Else)
@@ -413,10 +401,11 @@ namespace Cygni.AST
         ASTNode Relation()
         {
             ASTNode x = Concatenation();
-            if (look.tag == Tag.Less ||
-            look.tag == Tag.Greater ||
-            look.tag == Tag.LessOrEqual ||
-            look.tag == Tag.GreaterOrEqual)
+            if (
+                look.tag == Tag.Less ||
+                look.tag == Tag.Greater ||
+                look.tag == Tag.LessOrEqual ||
+                look.tag == Tag.GreaterOrEqual)
             {
                 Token tok = look;
                 Move();
@@ -472,9 +461,9 @@ namespace Cygni.AST
         {
             ASTNode x = Unary();
             while (look.tag == Tag.Mul ||
-            look.tag == Tag.Div ||
-            look.tag == Tag.IntDiv ||
-            look.tag == Tag.Mod)
+                   look.tag == Tag.Div ||
+                   look.tag == Tag.IntDiv ||
+                   look.tag == Tag.Mod)
             {
                 Token tok = look;
                 Move();
@@ -501,8 +490,8 @@ namespace Cygni.AST
         ASTNode Unary()
         {
             if (look.tag == Tag.Add ||
-            look.tag == Tag.Sub ||
-            look.tag == Tag.Not)
+                look.tag == Tag.Sub ||
+                look.tag == Tag.Not)
             {
                 Token tok = look;
                 Move();
@@ -538,8 +527,8 @@ namespace Cygni.AST
             ASTNode x = Factor();
 
             while (look.tag == Tag.LeftParenthesis ||
-            look.tag == Tag.LeftBracket ||
-            look.tag == Tag.Dot)
+                   look.tag == Tag.LeftBracket ||
+                   look.tag == Tag.Dot)
             {
 
                 Token tok = look;
@@ -547,49 +536,11 @@ namespace Cygni.AST
 
                 if (tok.tag == Tag.LeftParenthesis)
                 {
-                    var list = new List<ASTNode>();
-                    while (look.tag != Tag.RightParenthesis)
-                    {
-                        list.Add(Range());
-                        if (look.tag == Tag.Comma)
-                        {
-                            Move();
-                        }
-                        else if (look.tag == Tag.RightParenthesis)
-                        {
-                            break;
-                        }
-                        else
-                        {						
-                            throw SyntaxException.Expecting(lexer.LineNumber, ")");
-                        }
-                    }
-                    Match(Tag.RightParenthesis);
-                    x = ASTNode.Invoke(x, list);
-
+                    x = Invoke(x);
                 }
                 else if (tok.tag == Tag.LeftBracket)
                 {
-                    var indexes = new List<ASTNode>();
-                    while (look.tag != Tag.RightBracket)
-                    {
-                        indexes.Add(Range());
-                        if (look.tag == Tag.Comma)
-                        {
-                            Move();
-                        }
-                        else if (look.tag == Tag.RightBracket)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            throw SyntaxException.Expecting(lexer.LineNumber, "]");
-                        }
-                    }
-                    Match(Tag.RightBracket);
-                    x = ASTNode.IndexAccess(x, indexes);
-
+                    x = Index(x);
                 }
                 else
                 { /* Tag.Dot */
@@ -637,6 +588,52 @@ namespace Cygni.AST
                 default:
                     throw SyntaxException.Unexpected(lexer.LineNumber, tok.ToString());
             }
+        }
+
+        ASTNode Invoke(ASTNode function)
+        {
+            var arguments = new List<ASTNode>();
+            while (look.tag != Tag.RightParenthesis)
+            {
+                arguments.Add(Range());
+                if (look.tag == Tag.Comma)
+                {
+                    Move();
+                }
+                else if (look.tag == Tag.RightParenthesis)
+                {
+                    break;
+                }
+                else
+                {                       
+                    throw SyntaxException.Expecting(lexer.LineNumber, ")");
+                }
+            }
+            Match(Tag.RightParenthesis);
+            return ASTNode.Invoke(function, arguments);
+        }
+
+        ASTNode Index(ASTNode collection)
+        {
+            var indexes = new List<ASTNode>();
+            while (look.tag != Tag.RightBracket)
+            {
+                indexes.Add(Range());
+                if (look.tag == Tag.Comma)
+                {
+                    Move();
+                }
+                else if (look.tag == Tag.RightBracket)
+                {
+                    break;
+                }
+                else
+                {
+                    throw SyntaxException.Expecting(lexer.LineNumber, "]");
+                }
+            }
+            Match(Tag.RightBracket);
+            return ASTNode.IndexAccess(collection, indexes);
         }
 
         ASTNode Parentheses()

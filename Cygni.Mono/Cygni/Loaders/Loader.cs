@@ -7,12 +7,12 @@ using Cygni.DataTypes;
 using Cygni.AST;
 using Cygni.AST.Scopes;
 
-namespace Cygni.Executors
+namespace Cygni.Loaders
 {
 	/// <summary>
 	/// Description of Executor.
 	/// </summary>
-	public abstract class Executor
+	public abstract class Loader
 	{
 		public abstract void Run ();
 
@@ -20,7 +20,7 @@ namespace Cygni.Executors
 
 		protected IScope GlobalScope;
 
-		protected Executor (IScope GlobalScope)
+        protected Loader (IScope GlobalScope)
 		{
 			this.GlobalScope = GlobalScope;
 		}

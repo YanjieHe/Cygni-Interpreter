@@ -1,8 +1,8 @@
-﻿<Properties StartupItem="Cygni.csproj">
+﻿<Properties StartupItem="TestRunner/TestRunner.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Engine.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TestRunner/Program.cs">
     <Files>
-      <File FileName="Engine.cs" Line="112" Column="1" />
+      <File FileName="TestRunner/Program.cs" Line="35" Column="103" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

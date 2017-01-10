@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Cygni.DataTypes;
 using Cygni.AST;
-using Cygni.Executors;
+using Cygni.Loaders;
 using Cygni.Settings;
 using System.Reflection;
 using System.IO;
@@ -41,7 +41,7 @@ namespace Cygni.Libraries
 			bool quiet = GlobalSettings.Quiet;
 			GlobalSettings.Quiet = true;
 			try {
-				var executor = new CodeFileExecutor (globalScope, filepath, encoding);
+				var executor = new CodeFileLoader (globalScope, filepath, encoding);
 				executor.Run ();
 				return executor.Result;
 			} catch (RuntimeException ex) {
@@ -124,7 +124,7 @@ namespace Cygni.Libraries
 					GlobalSettings.Quiet = true;
 
 					ResizableArrayScope globalScope = scope as ResizableArrayScope;
-					CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
+					CodeFileLoader executor = new CodeFileLoader (globalScope, filePath, encoding);
 
 					program = executor.Load ();
 					ModulesCache.Add (filePath, program);

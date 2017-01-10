@@ -13,7 +13,7 @@ using System.Reflection;
 using System.IO;
 using Cygni.Settings;
 using System.Threading;
-using Cygni.Executors;
+using Cygni.Loaders;
 using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.Libraries
@@ -364,7 +364,7 @@ namespace Cygni.Libraries
 
 					GlobalSettings.Quiet = true;
 
-					CodeFileExecutor executor = new CodeFileExecutor (globalScope, filePath, encoding);
+					CodeFileLoader executor = new CodeFileLoader (globalScope, filePath, encoding);
 
 					program = executor.Load ();
 					Commands.ModulesCache.Add (filePath, program);

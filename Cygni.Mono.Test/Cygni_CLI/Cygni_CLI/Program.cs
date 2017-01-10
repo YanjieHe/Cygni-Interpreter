@@ -1,6 +1,6 @@
 ﻿using System;
-using Cygni.Executors;
 using Cygni.Settings;
+using Cygni;
 
 namespace Cygni_CLI
 {
