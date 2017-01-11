@@ -1,9 +1,27 @@
 ﻿<Properties StartupItem="Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Engine.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AST/SingleIndexEx.cs">
     <Files>
-      <File FileName="Engine.cs" Line="112" Column="1" />
+      <File FileName="Engine.cs" Line="41" Column="33" />
+      <File FileName="AST/SingleIndexEx.cs" Line="32" Column="50" />
+      <File FileName="AST/BinaryEx.cs" Line="694" Column="20" />
+      <File FileName="AST/NodeType.cs" Line="41" Column="9" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Cygni" expanded="True">
+            <Node name="Cygni" expanded="True">
+              <Node name="AST" expanded="True">
+                <Node name="Interfaces" expanded="True" />
+                <Node name="SingleIndexEx.cs" selected="True" />
+              </Node>
+              <Node name="DataTypes" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

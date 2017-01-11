@@ -1,6 +1,0 @@
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/TestRunner/TestRunner/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/TestRunner/TestRunner/bin/Debug/TestRunner.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/TestRunner/TestRunner/bin/Debug/TestRunner.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/TestRunner/TestRunner/obj/x86/Debug/TestRunner.exe
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/TestRunner/TestRunner/obj/x86/Debug/TestRunner.exe.mdb
-/home/jasonhe/MyCode/CSharpCode/Cygni/Cygni.Mono.Test/TestRunner/TestRunner/bin/Debug/Cygni.dll
