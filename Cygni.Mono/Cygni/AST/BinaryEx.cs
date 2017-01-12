@@ -48,14 +48,14 @@ namespace Cygni.AST
                     {
 
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
 
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer + integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value + (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer + number */
                                 return new DynValue(DataType.Number, (double)(long)lvalue.Value + (double)rvalue.Value);
                             }
@@ -65,14 +65,14 @@ namespace Cygni.AST
                             }
 
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
 
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number + integer */
                                 return new DynValue(DataType.Number, (double)lvalue.Value + (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number + number */
                                 return new DynValue(DataType.Number, (double)lvalue.Value + (double)rvalue.Value);
                             }
@@ -92,14 +92,14 @@ namespace Cygni.AST
                     {
 
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
 
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer - integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value - (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer - number */
                                 return new DynValue(DataType.Number, (double)(long)lvalue.Value - (double)rvalue.Value);
                             }
@@ -109,14 +109,14 @@ namespace Cygni.AST
                             }
 
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
 
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number - integer */
                                 return new DynValue(DataType.Number, (double)lvalue.Value - (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number - number */
                                 return new DynValue(DataType.Number, (double)lvalue.Value - (double)rvalue.Value);
                             }
@@ -136,14 +136,14 @@ namespace Cygni.AST
                     {
 
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
 
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer * integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value * (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer * number */
                                 return new DynValue(DataType.Number, (double)(long)lvalue.Value * (double)rvalue.Value);
                             }
@@ -153,14 +153,14 @@ namespace Cygni.AST
                             }
 
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
 
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number * integer */
                                 return new DynValue(DataType.Number, (double)lvalue.Value * (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number * number */
                                 return new DynValue(DataType.Number, (double)lvalue.Value * (double)rvalue.Value);
                             }
@@ -179,13 +179,13 @@ namespace Cygni.AST
                 case BinaryOp.Div:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer / integer */
                                 return new DynValue(DataType.Number, ((double)(long)lvalue.Value) / ((double)(long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer / number */
                                 return new DynValue(DataType.Number, ((double)(long)lvalue.Value / (double)rvalue.Value));
                             }
@@ -194,13 +194,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number / integer */
                                 return new DynValue(DataType.Number, ((double)lvalue.Value) / ((double)(long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number / number */
                                 return new DynValue(DataType.Number, ((double)lvalue.Value) / (double)rvalue.Value);
                             }
@@ -217,13 +217,13 @@ namespace Cygni.AST
                 case BinaryOp.IntDiv:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer // integer */
                                 return new DynValue(DataType.Integer, ((long)lvalue.Value) / ((long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer // number */
                                 return new DynValue(DataType.Integer, ((long)lvalue.Value) / (long)(double)rvalue.Value);
                             }
@@ -232,13 +232,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number // integer */
                                 return new DynValue(DataType.Integer, ((long)(double)lvalue.Value) / ((long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number // number */
                                 return new DynValue(DataType.Integer, ((long)(double)lvalue.Value) / (long)(double)rvalue.Value);
                             }
@@ -255,13 +255,13 @@ namespace Cygni.AST
                 case BinaryOp.Mod:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer % integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value % (long)rvalue.Value);
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer % number */
                                 return new DynValue(DataType.Number, ((double)(long)lvalue.Value) % (double)rvalue.Value);
                             }
@@ -270,13 +270,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number % integer */
                                 return new DynValue(DataType.Number, ((double)lvalue.Value) % ((double)(long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number % number */
                                 return new DynValue(DataType.Number, ((double)lvalue.Value) % (double)rvalue.Value);
                             }
@@ -293,13 +293,13 @@ namespace Cygni.AST
                 case BinaryOp.Pow:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer ^ integer */
                                 return new DynValue(DataType.Integer, MathLib.IntegerPow((long)lvalue.Value, (int)(long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer ^ number */
                                 return new DynValue(DataType.Number, Math.Pow((double)lvalue.Value, (double)rvalue.Value));
                             }
@@ -308,13 +308,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number ^ integer */
                                 return new DynValue(DataType.Number, Math.Pow((double)lvalue.Value, (long)rvalue.Value));
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number ^ number */
                                 return new DynValue(DataType.Number, Math.Pow((double)lvalue.Value, (double)rvalue.Value));
                             }
@@ -334,67 +334,16 @@ namespace Cygni.AST
                         rvalue = right.Eval(scope);
                         return new DynValue(DataType.String, lvalue.Value.ToString() + rvalue.Value.ToString());
                     }
-                case BinaryOp.And:/* shortcut evaluate*/
-                    {
-                        if (lvalue.type == DataType.Boolean)
-                        {
-                            if ((bool)lvalue.Value)
-                            {
-                                rvalue = right.Eval(scope);	
-                                if (rvalue.type == DataType.Boolean)
-                                {
-                                    return (bool)rvalue.Value ? DynValue.True : DynValue.False;
-                                }
-                                else
-                                {
-                                    goto BinaryOperationError;
-                                }
-                            }
-                            else
-                            {
-                                return DynValue.False;
-                            }
-                        }
-                        else
-                        {
-                            goto BinaryOperationError;
-                        }
-                    }
-                case BinaryOp.Or:
-                    if (lvalue.type == DataType.Boolean)
-                    {
-                        if ((bool)lvalue.Value)
-                        {
-                            return DynValue.True;/* shortcut evaluate*/
-                        }
-                        else
-                        {
-                            rvalue = right.Eval(scope);
-                            if (rvalue.type == DataType.Boolean)
-                            {
-                                return (bool)rvalue.Value ? DynValue.True : DynValue.False;
-                            }
-                            else
-                            {
-                                goto BinaryOperationError;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        goto BinaryOperationError;
-                    }
-
                 case BinaryOp.Less:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer < integer */
                                 return  (long)lvalue.Value < (long)rvalue.Value ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer < number */
                                 return ((double)(long)lvalue.Value) < (double)rvalue.Value ? DynValue.True : DynValue.False;
                             }
@@ -403,13 +352,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         { /* number < integer */
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             {
                                 return  ((double)lvalue.Value) < ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number < number */
                                 return  ((double)lvalue.Value) < ((double)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
@@ -427,13 +376,13 @@ namespace Cygni.AST
                 case BinaryOp.Greater:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer > integer */
                                 return  (long)lvalue.Value > (long)rvalue.Value ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer > number */
                                 return ((double)(long)lvalue.Value) > (double)rvalue.Value ? DynValue.True : DynValue.False;
                             }
@@ -442,13 +391,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         { /* number > integer */
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             {
                                 return  ((double)lvalue.Value) > ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number > number */
                                 return  ((double)lvalue.Value) > ((double)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
@@ -465,13 +414,13 @@ namespace Cygni.AST
                 case BinaryOp.LessOrEqual:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer <= integer */
                                 return  (long)lvalue.Value <= (long)rvalue.Value ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer <= number */
                                 return ((double)(long)lvalue.Value) <= (double)rvalue.Value ? DynValue.True : DynValue.False;
                             }
@@ -480,13 +429,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         { /* number <= integer */
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             {
                                 return  ((double)lvalue.Value) <= ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number <= number */
                                 return  ((double)lvalue.Value) <= ((double)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
@@ -503,13 +452,13 @@ namespace Cygni.AST
                 case BinaryOp.GreaterOrEqual:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer >= integer */
                                 return  (long)lvalue.Value >= (long)rvalue.Value ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer >= number */
                                 return ((double)(long)lvalue.Value) >= (double)rvalue.Value ? DynValue.True : DynValue.False;
                             }
@@ -518,13 +467,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         { /* number >= integer */
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             {
                                 return  ((double)lvalue.Value) >= ((double)(long)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number >= number */
                                 return  ((double)lvalue.Value) >= ((double)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
@@ -542,13 +491,13 @@ namespace Cygni.AST
                 case BinaryOp.Equal:
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer == integer */
                                 return  ((long)lvalue.Value == (long)rvalue.Value) ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer == number */
                                 return ((double)(long)lvalue.Value) == (double)rvalue.Value ? DynValue.True : DynValue.False;
                             }
@@ -557,13 +506,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number == integer */
                                 return  (double)lvalue.Value == (double)(long)rvalue.Value ? DynValue.True : DynValue.False;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number == number */
                                 return  (double)lvalue.Value == (double)rvalue.Value ? DynValue.True : DynValue.False;
                             }
@@ -581,13 +530,13 @@ namespace Cygni.AST
                 default:/* BinaryOp.NotEqual */
                     {
                         rvalue = right.Eval(scope);
-                        if (lvalue.type == DataType.Integer)
+                        if (lvalue.IsInteger)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* integer != integer */
                                 return  ((long)lvalue.Value == (long)rvalue.Value) ? DynValue.False : DynValue.True;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* integer != number */
                                 return ((double)(long)lvalue.Value) == (double)rvalue.Value ? DynValue.False : DynValue.True;
                             }
@@ -596,13 +545,13 @@ namespace Cygni.AST
                                 goto BinaryOperationError;
                             }
                         }
-                        else if (lvalue.type == DataType.Number)
+                        else if (lvalue.IsNumber)
                         {
-                            if (rvalue.type == DataType.Integer)
+                            if (rvalue.IsInteger)
                             { /* number != integer */
                                 return  (double)lvalue.Value == (double)(long)rvalue.Value ? DynValue.False : DynValue.True;
                             }
-                            else if (rvalue.type == DataType.Number)
+                            else if (rvalue.IsNumber)
                             { /* number != number */
                                 return  (double)lvalue.Value == (double)rvalue.Value ? DynValue.False : DynValue.True;
                             }

@@ -58,7 +58,6 @@ namespace Cygni.Lexical.Tokens
 		Lambda,
 		Class,
 		Var,
-		Unpack,
 
 		/* Separators */
 		Comma,

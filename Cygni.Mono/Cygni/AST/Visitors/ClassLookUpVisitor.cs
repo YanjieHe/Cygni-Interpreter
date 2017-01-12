@@ -26,17 +26,17 @@ namespace Cygni.AST.Visitors
             base.Visit(assignEx);
         }
 
-        internal override void Visit(LocalEx localEx)
+        internal override void Visit(DefVarEx node)
         {
-            for (int i = 0; i < localEx.VariableDefs.Length; i++)
+            for (int i = 0; i < node.VariableDefs.Length; i++)
             {
-                NameEx nameEx = localEx.VariableDefs[i].Variable;
+                NameEx nameEx = node.VariableDefs[i].Variable;
                 if (nameEx.Name == "this")
                 {
                     throw new RuntimeException("Cannot assign to `this' because it is read-only.");
                 }
             }
-            base.Visit(localEx);
+            base.Visit(node);
         }
 
         internal override void Visit(DefFuncEx defFuncEx)

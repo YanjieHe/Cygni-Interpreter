@@ -12,7 +12,7 @@ namespace Cygni.AST.Visitors
 
         internal LookUpVisitor(Symbols symbols)
         {
-            this.symbols = symbols;	
+            this.symbols = symbols;
         }
 
         internal override void Visit(AssignEx assignEx)
@@ -32,41 +32,21 @@ namespace Cygni.AST.Visitors
             }
         }
 
-        internal override void Visit(LocalEx localEx)
+        internal override void Visit(DefVarEx node)
         {
-            for (int i = 0; i < localEx.VariableDefs.Length; i++)
+            for (int i = 0; i < node.VariableDefs.Length; i++)
             {
 
-                NameEx nameEx = localEx.VariableDefs[i].Variable;
+                NameEx nameEx = node.VariableDefs[i].Variable;
                 Location loc = symbols.PutLocal(nameEx.Name);
                 nameEx.Nest = loc.Nest;
                 nameEx.Index = loc.Index;
 
-                localEx.VariableDefs[i].Value.Accept(this);
+                node.VariableDefs[i].Value.Accept(this);
             }
         }
 
 	
-        internal override void Visit(UnpackEx unpackEx)
-        {
-            for (int i = 0; i < unpackEx.Items.Length; i++)
-            {
-                var item = unpackEx.Items[i];
-                if (item.type == NodeType.Name)
-                {
-                    NameEx nameEx = item as NameEx;
-                    Location loc = symbols.Put(nameEx.Name);
-                    nameEx.Nest = loc.Nest;
-                    nameEx.Index = loc.Index;
-
-                    unpackEx.Tuple.Accept(this);
-                }
-                else
-                {
-                    base.Visit(unpackEx);
-                }
-            }
-        }
 
         internal override void Visit(NameEx nameEx)
         {

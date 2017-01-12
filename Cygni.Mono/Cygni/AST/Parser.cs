@@ -106,9 +106,6 @@ namespace Cygni.AST
                     case Tag.Var:
                         list.Add(DefineLocalVariable());
                         break;
-                    case Tag.Unpack:
-                        list.Add(Unpack());
-                        break;
                     case Tag.EOF:
                         if (matchBrackets)
                         {
@@ -116,7 +113,7 @@ namespace Cygni.AST
                         }
                         else
                         {
-                            return ASTNode.Block(list);
+                            return ASTNode.Block(list.ToArray());
                         }
                     case Tag.EOL:
                         Move();
@@ -127,7 +124,7 @@ namespace Cygni.AST
                 }
             }
             Match(Tag.RightBrace);
-            return ASTNode.Block(list);
+            return ASTNode.Block(list.ToArray());
         }
 
         ASTNode Statement()
@@ -292,36 +289,8 @@ namespace Cygni.AST
             ASTNode[] values = new ASTNode[values_list.Count];
             names_list.CopyTo(names);
             values_list.CopyTo(values);
-            return ASTNode.Local(names, values);
+            return ASTNode.DefineVariable(names, values);
         }
-
-
-        ASTNode Unpack()
-        {
-            Match(Tag.Unpack);
-            var items_list = new List<ASTNode>();
-
-            do
-            {
-                items_list.Add(Bool());
-                if (look.tag == Tag.Comma)
-                {
-                    Move();
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
-
-            MatchOrThrows(Tag.Assign, "Unpack statement expecting assign");
-
-            ASTNode tuple = Bool();
-            ASTNode[] items = new ASTNode[items_list.Count];
-            items_list.CopyTo(items);
-            return ASTNode.Unpack(items, tuple);
-        }
-
 
         ASTNode Assign()
         {

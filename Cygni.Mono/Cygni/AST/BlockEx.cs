@@ -9,55 +9,57 @@ using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
-	/// <summary>
-	/// Description of BlockEx.
-	/// </summary>
-	public class BlockEx:ASTNode
-	{
-		readonly ASTNode[] _expressions;
+    /// <summary>
+    /// Description of BlockEx.
+    /// </summary>
+    public class BlockEx:ASTNode
+    {
+        readonly ASTNode[] expressions;
 
-		public ASTNode[] expressions{ get { return _expressions; } }
+        public ASTNode[] Expressions{ get { return expressions; } }
 
-		public  override NodeType type { get { return NodeType.Block; } }
+        public  override NodeType type { get { return NodeType.Block; } }
 
-		public BlockEx (ICollection<ASTNode> _expressions)
-		{
-			this._expressions = new ASTNode[_expressions.Count];
-			_expressions.CopyTo (this._expressions, 0);
-		}
+        public BlockEx(ASTNode[] expressions)
+        {
+            this.expressions = expressions;
+        }
 
-		public static BlockEx EmptyBlock = new BlockEx (new ASTNode[0]);
+        public static BlockEx EmptyBlock = new BlockEx(new ASTNode[0]);
 
-		public override DynValue Eval (IScope scope)
-		{
-			DynValue result = DynValue.Nil;
-			int n = expressions.Length;
-			foreach (ASTNode line in _expressions) {
-				result = line.Eval (scope);
-				switch (result.type) {
-				case DataType.Break:
-				case DataType.Continue:
-				case DataType.Return:
-					return result;
-				}
-			}
-			return result;
-		}
+        public override DynValue Eval(IScope scope)
+        {
+            DynValue result = DynValue.Nil;
+            int n = expressions.Length;
+            foreach (ASTNode line in this.expressions)
+            {
+                result = line.Eval(scope);
+                switch (result.type)
+                {
+                    case DataType.Break:
+                    case DataType.Continue:
+                    case DataType.Return:
+                        return result;
+                }
+            }
+            return result;
+        }
 
-		public override string ToString ()
-		{
-			var s = new StringBuilder ();
-			s.AppendLine ("{ ");
-			foreach (var element in _expressions) {
-				s.Append (element.ToString ()).AppendLine (";");
-			}
-			s.AppendLine ("} ");
-			return s.ToString ();
-		}
+        public override string ToString()
+        {
+            var s = new StringBuilder();
+            s.AppendLine("{ ");
+            foreach (var element in expressions)
+            {
+                s.Append(element.ToString()).AppendLine(";");
+            }
+            s.AppendLine("} ");
+            return s.ToString();
+        }
 
-		internal override void Accept (ASTVisitor visitor)
-		{
-			visitor.Visit (this);
-		}
-	}
+        internal override void Accept(ASTVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+    }
 }

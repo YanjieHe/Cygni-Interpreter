@@ -10,20 +10,18 @@ namespace Cygni.AST.Visitors
             binaryEx.Right.Accept(this);
         }
 
+        internal virtual void Visit(LogicalEx node)
+        {
+            node.Left.Accept(this);
+            node.Right.Accept(this);
+        }
+
         internal virtual void Visit(AssignEx assignEx)
         {
             assignEx.Target.Accept(this);
             assignEx.Value.Accept(this);
         }
 
-        internal virtual void Visit(UnpackEx unpackEx)
-        {
-            foreach (var item in unpackEx.Items)
-            {
-                item.Accept(this);
-            }
-            unpackEx.Tuple.Accept(this);
-        }
 
         internal virtual void Visit(RangeEx rangeEx)
         {
@@ -37,13 +35,13 @@ namespace Cygni.AST.Visitors
 
         internal virtual void Visit(BlockEx blockEx)
         {
-            foreach (var item in blockEx.expressions)
+            foreach (var item in blockEx.Expressions)
                 item.Accept(this);
         }
 
-        internal virtual void Visit(LocalEx localEx)
+        internal virtual void Visit(DefVarEx node)
         {
-            foreach (var item in localEx.VariableDefs)
+            foreach (var item in node.VariableDefs)
             {
                 item.Variable.Accept(this);
                 item.Value.Accept(this);

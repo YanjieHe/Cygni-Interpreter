@@ -56,8 +56,6 @@ namespace Cygni.Lexical.Tokens
 				return Class;
 			case "var":
 				return Var;
-			case "unpack":
-				return Unpack;
 
 			/* constants */
 			case "true":
@@ -96,7 +94,6 @@ namespace Cygni.Lexical.Tokens
 			Lambda = new Word ("lambda", Tag.Lambda),
 			Class = new Word ("class", Tag.Class),
 			Var = new Word ("var", Tag.Var),
-			Unpack = new Word ("unpack", Tag.Unpack),
 				
 
 

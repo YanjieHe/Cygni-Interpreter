@@ -8,7 +8,7 @@ using Cygni.AST.Interfaces;
 
 namespace Cygni.AST
 {
-    public class LocalEx:ASTNode
+    public class DefVarEx:ASTNode
     {
         VariableDefinition[] variableDefs;
 
@@ -22,7 +22,7 @@ namespace Cygni.AST
             }
         }
 
-        public LocalEx(NameEx[] variables, ASTNode[] values)
+        public DefVarEx(NameEx[] variables, ASTNode[] values)
         {
             this.variableDefs = new VariableDefinition[variables.Length];
             for (int i = 0; i < variables.Length; i++)
