@@ -127,17 +127,17 @@ namespace Cygni.AST
 
         public static ASTNode UnaryPlus(ASTNode value)
         {
-            return new UnaryEx(UnaryOp.Plus, value);
+            return new UnaryEx(NodeType.Plus, value);
         }
 
         public static ASTNode UnaryMinus(ASTNode value)
         {
-            return new UnaryEx(UnaryOp.Minus, value);
+            return new UnaryEx(NodeType.Minus, value);
         }
 
         public static ASTNode Negate(ASTNode value)
         {
-            return new UnaryEx(UnaryOp.Not, value);
+            return new UnaryEx(NodeType.Not, value);
         }
 
         public static ASTNode Integer(long value)

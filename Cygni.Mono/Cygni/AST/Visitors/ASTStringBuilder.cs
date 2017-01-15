@@ -76,14 +76,49 @@ namespace Cygni.AST.Visitors
             base.Visit(defClassEx);
         }
 
-        internal override void Visit(DefClosureEx defClosureEx)
+        internal override void Visit(DefClosureEx node)
         {
-            base.Visit(defClosureEx);
+            builder.Append("lambda ");
+            builder.Append("( ");
+            bool first = true;
+            foreach (var item in node.Parameters)
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    builder.Append(", ");
+                }
+                item.Accept(this);
+            }
+            if (node.Body.type != NodeType.Block)
+            {
+                builder.Append(" => ");
+            }
+            node.Body.Accept(this);
         }
 
-        internal override void Visit(DefFuncEx defFuncEx)
+        internal override void Visit(DefFuncEx node)
         {
-            base.Visit(defFuncEx);
+            builder.Append("def ");
+            builder.Append(node.Name);
+            builder.Append("( ");
+            bool first = true;
+            foreach (var item in node.Parameters)
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    builder.Append(", ");
+                }
+                item.Accept(this);
+            }
+            node.Body.Accept(this);
         }
 
         internal override void Visit(DefVarEx node)

@@ -1,8 +1,8 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Loaders/InteractiveLoader.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/DataTypes/DynObject.cs">
     <Files>
-      <File FileName="Cygni/Loaders/InteractiveLoader.cs" Line="85" Column="35" />
+      <File FileName="Cygni/DataTypes/DynObject.cs" Line="109" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

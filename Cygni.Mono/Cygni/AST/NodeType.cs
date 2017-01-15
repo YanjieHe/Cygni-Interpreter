@@ -11,7 +11,6 @@ namespace Cygni.AST
     /// </summary>
     public enum NodeType
     {
-        Binary,
         Block,
         Constant,
         DefClass,
@@ -58,5 +57,9 @@ namespace Cygni.AST
         GreaterThan,
         LessThanOrEqual,
         GreaterThanOrEqual,
+
+        Plus,
+        Minus,
+        Not,
     }
 }

@@ -27,7 +27,7 @@ https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Release
 The API is very easy. Have a look at this example.
 ``` csharp
 using System;
-using Cygni.Executors;
+using Cygni;
 
 namespace Cygni_CLI
 {
