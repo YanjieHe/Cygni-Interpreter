@@ -65,11 +65,6 @@ namespace Cygni.AST
 
         #endregion
 
-        public override string ToString()
-        {
-            return string.Format("{0}.{1}", target, fieldName);
-        }
-
         internal override void Accept(ASTVisitor visitor)
         {
             visitor.Visit(this);

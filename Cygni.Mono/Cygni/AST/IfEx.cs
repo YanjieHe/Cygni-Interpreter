@@ -21,6 +21,8 @@ namespace Cygni.AST
 		public ASTNode IfTrue { get { return ifTrue; } }
 		public ASTNode IfFalse { get { return ifFalse; } }
 
+        public bool HasElsePart { get { return this.ifFalse != null; } }
+
 		public override NodeType type { get { return NodeType.If; } }
 		
 		public IfEx(ASTNode condition, ASTNode ifTrue, ASTNode ifFalse)
@@ -34,14 +36,6 @@ namespace Cygni.AST
 			if ((bool)condition.Eval(scope).Value)
 				return ifTrue.Eval(scope);
 			return ifFalse == null ? DynValue.Nil : ifFalse.Eval(scope);
-		}
-		public override string ToString()
-		{
-			if (ifFalse == null) {
-				return string.Concat(" if ", condition, ifTrue);
-			} else {
-				return string.Concat(" if ", condition, ifTrue, " else ", ifFalse);
-			}
 		}
 
 		internal override void Accept (ASTVisitor visitor)

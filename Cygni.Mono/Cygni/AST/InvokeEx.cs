@@ -40,10 +40,7 @@ namespace Cygni.AST
 			}
 			return f.DynEval (arguments, scope);
 		}
-		public override string ToString()
-		{
-			return string.Concat(func, "(", string.Join(", ", arguments.Select(i=>i.ToString())), ")");
-		}
+		
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);

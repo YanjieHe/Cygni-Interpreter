@@ -47,68 +47,70 @@ namespace Cygni.Loaders
             {
                 try
                 {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write("Cygni> ");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    WriteInCyan("Cygni> ");
 
-                    Start:
-                    string line = Console.ReadLine();
-                    input.Append(line).Append('\n');
-                    string code = input.ToString();
-                    InteractiveState state = TryParse(code);
-
-                    if (state == InteractiveState.Error)
+                    while (true)
                     {
-                        input.Clear();
+                        string code = ReadInput();
+                        InteractiveState state = TryParse(code);
 
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write("Cygni> ");
-                        Console.ForegroundColor = ConsoleColor.White;
-
-                        goto Start;
-                    }
-                    else if (state == InteractiveState.Waiting)
-                    {
-						
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write("     -> ");
-                        Console.ForegroundColor = ConsoleColor.White;
-
-                        goto Start;
-                    }
-                    else
-                    {
-                        input.Clear();
-
-                        using (var sr = new StringReader(code))
+                        if (state == InteractiveState.Error)
                         {
-                            var lexer = new Lexer(1, sr); 
-                            /* In the interative mode, the lexer always starts at line 1. */
-                            var ast = new Parser(lexer);
-                            this.result = ast.Program().Eval(GlobalScope);
-                            if (!GlobalSettings.Quiet)
+                            input.Clear();
+                            WriteInCyan("Cygni> ");
+                            continue;
+                        }
+                        else if (state == InteractiveState.Waiting)
+                        {
+                            WriteInCyan("     -> ");
+                            continue;
+                        }
+                        else
+                        {
+                            input.Clear();
+
+                            using (var sr = new StringReader(code))
                             {
-                                if (!Result.IsVoid && !Result.IsNil)
+                                var lexer = new Lexer(1, sr); 
+                                /* In the interative mode, the lexer always starts at line 1. */
+                                var ast = new Parser(lexer);
+                                this.result = ast.Program().Eval(GlobalScope);
+                                if (!GlobalSettings.Quiet && !Result.IsVoid && !Result.IsNil)
                                 {
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Console.Write("=> ");
                                     Console.WriteLine(Result);
                                 }
                             }
+                            break;
                         }
-
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    if (GlobalSettings.CompleteErrorOutput)
-                        Console.WriteLine("error: {0}", ex);
-                    else
-                        Console.WriteLine("error: {0}", ex.Message);
+                    HandleException(ex);
                 }
             }
+        }
+
+        bool DoesPeekMatch(Tag tag)
+        {
+            return stack.Count != 0 && stack.Peek() == tag;
+        }
+
+        void WriteInCyan(string str)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(str);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        string ReadInput()
+        {
+            string line = Console.ReadLine();
+            input.AppendLine(line);
+            return input.ToString();
         }
 
         InteractiveState TryParse(string code)
@@ -133,8 +135,8 @@ namespace Cygni.Loaders
                                 stack.Push(tok.tag); /* push '(' '[' '{' */
                                 break;
                             case Tag.RightParenthesis:
-                                if (stack.Count != 0 && stack.Peek() == Tag.LeftParenthesis)
-                                { // get '(', match ')'
+                                if (DoesPeekMatch(Tag.LeftParenthesis))
+                                {
                                     stack.Pop();
                                     break;
                                 }
@@ -143,8 +145,8 @@ namespace Cygni.Loaders
                                     throw SyntaxException.Unexpected(lexer.LineNumber, ")");
                                 }
                             case Tag.RightBracket:
-                                if (stack.Count != 0 && stack.Peek() == Tag.LeftBracket)
-                                { // get '[', match ']'
+                                if (DoesPeekMatch(Tag.LeftBracket))
+                                { 
                                     stack.Pop();
                                     break;
                                 }
@@ -153,8 +155,8 @@ namespace Cygni.Loaders
                                     throw SyntaxException.Unexpected(lexer.LineNumber, "]");
                                 }
                             case Tag.RightBrace:
-                                if (stack.Count != 0 && stack.Peek() == Tag.LeftBrace)
-                                { // get '{', match '}'
+                                if (DoesPeekMatch(Tag.LeftBrace))
+                                {
                                     stack.Pop();
                                     break;
                                 }
@@ -172,11 +174,7 @@ namespace Cygni.Loaders
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                if (GlobalSettings.CompleteErrorOutput)
-                    Console.WriteLine("error: {0}", ex);
-                else
-                    Console.WriteLine("error: {0}", ex.Message);
+                HandleException(ex);
                 return InteractiveState.Error;
             }
         }

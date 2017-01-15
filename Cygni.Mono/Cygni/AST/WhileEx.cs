@@ -48,11 +48,6 @@ namespace Cygni.AST
 			}
 		}
 
-		public override string ToString ()
-		{
-			return string.Concat (" while ", condition, body);
-		}
-
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);

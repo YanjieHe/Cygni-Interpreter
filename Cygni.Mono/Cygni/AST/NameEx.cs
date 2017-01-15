@@ -48,10 +48,6 @@ namespace Cygni.AST
             }
         }
 
-        public override string ToString()
-        {
-            return name;
-        }
 
         internal override void Accept(ASTVisitor visitor)
         {

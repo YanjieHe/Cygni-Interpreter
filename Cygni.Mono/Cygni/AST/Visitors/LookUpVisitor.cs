@@ -36,7 +36,6 @@ namespace Cygni.AST.Visitors
         {
             for (int i = 0; i < node.VariableDefs.Length; i++)
             {
-
                 NameEx nameEx = node.VariableDefs[i].Variable;
                 Location loc = symbols.PutLocal(nameEx.Name);
                 nameEx.Nest = loc.Nest;
@@ -45,8 +44,6 @@ namespace Cygni.AST.Visitors
                 node.VariableDefs[i].Value.Accept(this);
             }
         }
-
-	
 
         internal override void Visit(NameEx nameEx)
         {
@@ -64,7 +61,7 @@ namespace Cygni.AST.Visitors
 
         internal override void Visit(ForEx forEx)
         {
-            NameEx nameEx = forEx.Iterator as NameEx;
+            NameEx nameEx = forEx.Iterator;
             Location loc = symbols.PutLocal(nameEx.Name);
             nameEx.Nest = loc.Nest;
             nameEx.Index = loc.Index;

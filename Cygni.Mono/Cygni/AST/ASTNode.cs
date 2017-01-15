@@ -57,72 +57,72 @@ namespace Cygni.AST
 
         public static ASTNode Equal(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Equal, left, right);
+            return new BinaryEx(NodeType.Equal, left, right);
         }
 
         public static ASTNode NotEqual(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.NotEqual, left, right);
+            return new BinaryEx(NodeType.NotEqual, left, right);
         }
 
         public static ASTNode Less(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Less, left, right);
+            return new BinaryEx(NodeType.LessThan, left, right);
         }
 
         public static ASTNode Greater(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Greater, left, right);
+            return new BinaryEx(NodeType.GreaterThan, left, right);
         }
 
         public static ASTNode LessOrEqual(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.LessOrEqual, left, right);
+            return new BinaryEx(NodeType.LessThanOrEqual, left, right);
         }
 
         public static ASTNode GreaterOrEqual(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.GreaterOrEqual, left, right);
+            return new BinaryEx(NodeType.GreaterThanOrEqual, left, right);
         }
 
         public static ASTNode Concatenate(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Concatenate, left, right);
+            return new BinaryEx(NodeType.Concatenate, left, right);
         }
 
         public static ASTNode Add(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Add, left, right);
+            return new BinaryEx(NodeType.Add, left, right);
         }
 
         public static ASTNode Subtract(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Sub, left, right);
+            return new BinaryEx(NodeType.Subtract, left, right);
         }
 
         public static ASTNode Multiply(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Mul, left, right);
+            return new BinaryEx(NodeType.Multiply, left, right);
         }
 
         public static ASTNode Divide(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Div, left, right);
+            return new BinaryEx(NodeType.Divide, left, right);
         }
 
         public static ASTNode IntDivide(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.IntDiv, left, right);
+            return new BinaryEx(NodeType.IntDiv, left, right);
         }
 
         public static ASTNode Modulo(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Mod, left, right);
+            return new BinaryEx(NodeType.Modulo, left, right);
         }
 
         public static ASTNode Power(ASTNode left, ASTNode right)
         {
-            return new BinaryEx(BinaryOp.Pow, left, right);
+            return new BinaryEx(NodeType.Power, left, right);
         }
 
         public static ASTNode UnaryPlus(ASTNode value)
@@ -267,5 +267,11 @@ namespace Cygni.AST
             return new DotEx(obj, fieldName);
         }
 
+        public override string ToString()
+        {
+            ASTStringBuilder builder = new ASTStringBuilder();
+            this.Accept(builder);
+            return builder.GetString();
+        }
     }
 }

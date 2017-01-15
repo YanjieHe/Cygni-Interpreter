@@ -10,23 +10,11 @@ using Cygni.AST.Optimizers;
 
 namespace Cygni.AST
 {
-	public class DefClosureEx: ASTNode
+	public class DefClosureEx: DefFuncEx 
 	{
-		readonly NameEx[] parameters;
-		readonly ASTNode body;
-		int size;
-
-		internal int Size { get { return this.size; } set { this.size = value; } }
-
-		public NameEx[] Parameters { get { return this.parameters; } }
-
-		public ASTNode Body { get { return this.body; } }
-
 		public DefClosureEx (NameEx[] parameters, ASTNode body)
+            : base(string.Empty, parameters, body)
 		{
-			this.parameters = parameters;
-			this.body = body;
-			this.size = -1;
 		}
 
 		public override NodeType type{ get { return NodeType.DefClosure; } }
@@ -45,13 +33,11 @@ namespace Cygni.AST
 				this.Accept (visitor);
 				ArrayScope arrayScope = new ArrayScope ("Anonymous Function", new DynValue[this.size], scope);
 
-				DynValue func = DynValue.FromClosure (
-					                new Closure (parameters.Length, body, arrayScope));
+				DynValue func = new Closure (parameters.Length, body, arrayScope);
 				return func;
 			} else {
 				ArrayScope arrayScope = new ArrayScope ("Anonymous Function", new DynValue[this.size], scope);
-				DynValue func = DynValue.FromClosure (
-					                new Closure (parameters.Length, body, arrayScope));
+				DynValue func = new Closure (parameters.Length, body, arrayScope);
 				return func;
 			}
 		}

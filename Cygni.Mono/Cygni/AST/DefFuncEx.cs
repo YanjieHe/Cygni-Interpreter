@@ -16,14 +16,14 @@ namespace Cygni.AST
 	/// </summary>
 	public class DefFuncEx:ASTNode
 	{
-		readonly string name;
-		readonly BlockEx body;
-		readonly NameEx[] parameters;
-		int size;
+		protected readonly string name;
+		protected readonly ASTNode body;
+		protected readonly NameEx[] parameters;
+		protected int size;
 
 		public string Name{ get { return this.name; } }
 
-		public BlockEx Body{ get { return body; } }
+		public ASTNode Body{ get { return body; } }
 
 		public NameEx[] Parameters{ get { return parameters; } }
 
@@ -31,11 +31,12 @@ namespace Cygni.AST
 
 		public override NodeType type { get { return NodeType.DefFunc; } }
 
-		public DefFuncEx (string name, NameEx[] parameters, BlockEx body)
+		public DefFuncEx (string name, NameEx[] parameters, ASTNode body)
 		{
 			this.name = name;
 			this.parameters = parameters;
 			this.body = body;
+			this.size = -1;
 		}
 
 		public override DynValue Eval (IScope scope)
@@ -50,22 +51,17 @@ namespace Cygni.AST
 				this.Accept (visitor);
 
 				ArrayScope arrayScope = new ArrayScope (this.name, new DynValue[this.size], scope);
-				DynValue func = new Function (parameters.Length, body, arrayScope);
+				DynValue func = new Function (parameters.Length, (BlockEx)body, arrayScope);
 				return scope.Put (name, func);
 
 			} else if (scope.type == ScopeType.Class) {
 				ArrayScope arrayScope = new ArrayScope (this.name, new DynValue[this.size], scope);
-				DynValue func = new Function (parameters.Length, body, arrayScope);
+				DynValue func = new Function (parameters.Length, (BlockEx)body, arrayScope);
 
 				return scope.Put (name, func);
 			} else {
 				throw new RuntimeException ("Function '{0}' can only be declared in global scope or in a class.", name);
 			}
-		}
-
-		public override string ToString ()
-		{
-			return string.Concat (" def ", name, "(", string.Join<NameEx> (", ", parameters), ")", body);
 		}
 
 		internal override void Accept (ASTVisitor visitor)

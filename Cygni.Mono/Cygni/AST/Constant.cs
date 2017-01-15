@@ -28,10 +28,6 @@ namespace Cygni.AST
 			return value;
 		}
 		
-		public override string ToString()
-		{
-			return value.ToString();
-		}
 		internal override void Accept (ASTVisitor visitor)
 		{
 			visitor.Visit (this);

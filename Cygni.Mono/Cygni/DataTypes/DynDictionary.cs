@@ -48,32 +48,13 @@ namespace Cygni.DataTypes
 		public DynValue GetByIndexes (DynValue[] indexes)
 		{
 			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Dictionary");
-			var key = indexes [0];
-			switch (key.type) {
-			case DataType.Integer:
-				return base [(long)key.Value];
-			case DataType.Boolean:
-			case DataType.String:
-				return base [key.Value];
-			default :
-				throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
-			}
-
+			return GetByIndex(indexes[0]);
 		}
 
 		public DynValue SetByIndexes (DynValue[] indexes, DynValue value)
 		{
 			RuntimeException.IndexerArgsCheck (indexes.Length == 1, "Dictionary");
-			var key = indexes [0];
-			switch (key.type) {
-			case DataType.Integer:
-				return base [(long)key.Value] = value;
-			case DataType.Boolean:
-			case DataType.String:
-				return base [key.Value] = value;
-			default :
-				throw new RuntimeException ("Dictionary only takes number, boolean and string as keys.");
-			}
+			return SetByIndex(indexes[0], value);
 		}
 
 		public void Add (DynValue key, DynValue value)
@@ -143,8 +124,9 @@ namespace Cygni.DataTypes
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
 		{
 			var iterator = this.GetEnumerator ();
-			while (iterator.MoveNext ())
+			while (iterator.MoveNext ()) {
 				yield return iterator.Current;
+			}
 		}
 
 		public DynValue GetByDot (string fieldName)

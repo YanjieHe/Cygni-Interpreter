@@ -76,10 +76,6 @@ namespace Cygni.AST
 			visitor.Visit (this);
 		}
 
-		public override string ToString ()
-		{
-			return string.Concat ("(", target, "=", value, ")");
-		}
 
 	}
 }

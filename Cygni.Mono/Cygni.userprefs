@@ -1,28 +1,9 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/Visitors/ASTStringBuilder.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Loaders/InteractiveLoader.cs">
     <Files>
-      <File FileName="Cygni/AST/Visitors/ASTStringBuilder.cs" Line="22" Column="43" />
-      <File FileName="Cygni/AST/Visitors/ASTVisitor.cs" Line="14" Column="10" />
+      <File FileName="Cygni/Loaders/InteractiveLoader.cs" Line="85" Column="35" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Cygni" expanded="True">
-            <Node name="Cygni" expanded="True">
-              <Node name="AST" expanded="True">
-                <Node name="Visitors" expanded="True">
-                  <Node name="ASTStringBuilder.cs" selected="True" />
-                </Node>
-              </Node>
-              <Node name="Lexical" expanded="True">
-                <Node name="Tokens" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

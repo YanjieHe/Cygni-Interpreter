@@ -68,6 +68,11 @@ namespace Cygni.DataTypes
             return new DynValue(DataType.Function, value);
         }
 
+        public static implicit operator DynValue(Closure value)
+        {
+            return new DynValue(DataType.Closure, value);
+        }
+
         public static implicit operator DynValue(Structure value)
         {
             return new DynValue(DataType.Struct, value);

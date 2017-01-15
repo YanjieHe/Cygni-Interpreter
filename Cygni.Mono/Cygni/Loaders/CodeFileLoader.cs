@@ -52,11 +52,7 @@ namespace Cygni.Loaders
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                if (GlobalSettings.CompleteErrorOutput)
-                    Console.WriteLine("error: {0}", ex);
-                else
-                    Console.WriteLine("error: {0}", ex.Message);
+                HandleException(ex);
             }
         }
 

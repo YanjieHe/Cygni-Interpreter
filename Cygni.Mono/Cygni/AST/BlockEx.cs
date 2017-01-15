@@ -45,18 +45,6 @@ namespace Cygni.AST
             return result;
         }
 
-        public override string ToString()
-        {
-            var s = new StringBuilder();
-            s.AppendLine("{ ");
-            foreach (var element in expressions)
-            {
-                s.Append(element.ToString()).AppendLine(";");
-            }
-            s.AppendLine("} ");
-            return s.ToString();
-        }
-
         internal override void Accept(ASTVisitor visitor)
         {
             visitor.Visit(this);

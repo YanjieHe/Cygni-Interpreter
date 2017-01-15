@@ -10,7 +10,6 @@ using Cygni.AST.Visitors;
 using Cygni.Errors;
 using Cygni.Libraries;
 using Cygni.DataTypes.Interfaces;
-
 namespace Cygni.AST
 {
     /// <summary>
@@ -20,37 +19,28 @@ namespace Cygni.AST
     {
         readonly ASTNode left;
         readonly ASTNode right;
-
-        readonly BinaryOp op;
-
-        public BinaryOp Op{ get { return op; } }
+        readonly NodeType op;
 
         public ASTNode Left{ get { return left; } }
-
         public ASTNode Right{ get { return right; } }
+        public override NodeType type { get { return op; } }
 
-        public override NodeType type { get { return NodeType.Binary; } }
-
-        public BinaryEx(BinaryOp op, ASTNode left, ASTNode right)
+        public BinaryEx(NodeType op, ASTNode left, ASTNode right)
         {
             this.op = op;
             this.left = left;
             this.right = right;
         }
-
         public override DynValue Eval(IScope scope)
         {
             DynValue lvalue = left.Eval(scope);
-            DynValue rvalue;
+            DynValue rvalue = right.Eval(scope);
             switch (op)
             {
-                case BinaryOp.Add:
+                case NodeType.Add:
                     {
-
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
-
                             if (rvalue.IsInteger)
                             { /* integer + integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value + (long)rvalue.Value);
@@ -61,13 +51,11 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
-
                         }
                         else if (lvalue.IsNumber)
                         {
-
                             if (rvalue.IsInteger)
                             { /* number + integer */
                                 return new DynValue(DataType.Number, (double)lvalue.Value + (long)rvalue.Value);
@@ -78,23 +66,18 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
-
                         }
                         else
                         {
                             return lvalue.As<IComputable>().Add(rvalue);
                         }
-
                     }
-                case BinaryOp.Sub:
+                case NodeType.Subtract:
                     {
-
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
-
                             if (rvalue.IsInteger)
                             { /* integer - integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value - (long)rvalue.Value);
@@ -105,13 +88,11 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
-
                         }
                         else if (lvalue.IsNumber)
                         {
-
                             if (rvalue.IsInteger)
                             { /* number - integer */
                                 return new DynValue(DataType.Number, (double)lvalue.Value - (long)rvalue.Value);
@@ -122,23 +103,18 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
-
                         }
                         else
                         {
                             return lvalue.As<IComputable>().Subtract(rvalue);
                         }
-
                     }
-                case BinaryOp.Mul:
+                case NodeType.Multiply:
                     {
-
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
-
                             if (rvalue.IsInteger)
                             { /* integer * integer */
                                 return new DynValue(DataType.Integer, (long)lvalue.Value * (long)rvalue.Value);
@@ -149,13 +125,11 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
-
                         }
                         else if (lvalue.IsNumber)
                         {
-
                             if (rvalue.IsInteger)
                             { /* number * integer */
                                 return new DynValue(DataType.Number, (double)lvalue.Value * (long)rvalue.Value);
@@ -166,19 +140,16 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
-
                         }
                         else
                         {
                             return lvalue.As<IComputable>().Multiply(rvalue);
                         }
-
                     }
-                case BinaryOp.Div:
+                case NodeType.Divide:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -191,7 +162,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -206,7 +177,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -214,9 +185,8 @@ namespace Cygni.AST
                             return lvalue.As<IComputable>().Divide(rvalue);
                         }
                     }
-                case BinaryOp.IntDiv:
+                case NodeType.IntDiv:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -229,7 +199,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -244,7 +214,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -252,9 +222,8 @@ namespace Cygni.AST
                             return lvalue.As<IComputable>().Divide(rvalue);
                         }
                     }
-                case BinaryOp.Mod:
+                case NodeType.Modulo:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -267,7 +236,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -282,7 +251,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -290,9 +259,8 @@ namespace Cygni.AST
                             return lvalue.As<IComputable>().Modulo(rvalue);
                         }
                     }
-                case BinaryOp.Pow:
+                case NodeType.Power:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -305,7 +273,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -320,23 +288,20 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
                         {
                             return lvalue.As<IComputable>().Power(rvalue);
                         }
-
                     }
-                case BinaryOp.Concatenate:
+                case NodeType.Concatenate:
                     {
-                        rvalue = right.Eval(scope);
                         return new DynValue(DataType.String, lvalue.Value.ToString() + rvalue.Value.ToString());
                     }
-                case BinaryOp.Less:
+                case NodeType.LessThan:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -349,7 +314,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -364,7 +329,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -372,10 +337,8 @@ namespace Cygni.AST
                             return lvalue.As<IComparable<DynValue>>().CompareTo(rvalue) < 0;
                         }
                     }
-
-                case BinaryOp.Greater:
+                case NodeType.GreaterThan:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -388,7 +351,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -403,7 +366,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -411,9 +374,8 @@ namespace Cygni.AST
                             return lvalue.As<IComparable<DynValue>>().CompareTo(rvalue) > 0;
                         }
                     }
-                case BinaryOp.LessOrEqual:
+                case NodeType.LessThanOrEqual:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -426,7 +388,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -441,7 +403,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -449,9 +411,8 @@ namespace Cygni.AST
                             return lvalue.As<IComparable<DynValue>>().CompareTo(rvalue) <= 0;
                         }
                     }
-                case BinaryOp.GreaterOrEqual:
+                case NodeType.GreaterThanOrEqual:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -464,7 +425,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -479,18 +440,16 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
                         {
                             return lvalue.As<IComparable<DynValue>>().CompareTo(rvalue) >= 0;
                         }
-
                     }
-                case BinaryOp.Equal:
+                case NodeType.Equal:
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -503,7 +462,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -518,7 +477,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -526,10 +485,8 @@ namespace Cygni.AST
                             return lvalue.Equals(rvalue) ? DynValue.True : DynValue.False;
                         }
                     }
-			
-                default:/* BinaryOp.NotEqual */
+                default:/* NodeType.NotEqual */
                     {
-                        rvalue = right.Eval(scope);
                         if (lvalue.IsInteger)
                         {
                             if (rvalue.IsInteger)
@@ -542,7 +499,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else if (lvalue.IsNumber)
@@ -557,7 +514,7 @@ namespace Cygni.AST
                             }
                             else
                             {
-                                goto BinaryOperationError;
+                                throw BinaryError(scope);
                             }
                         }
                         else
@@ -566,80 +523,51 @@ namespace Cygni.AST
                         }
                     }
             }
-            BinaryOperationError:
-            throw RuntimeException.Throw(
-                string.Format("cannot implement binary operator '{0}' to '{1}' and '{2}'", op, left, right), scope);
         }
 
-        public override string ToString()
-        {
-            switch (op)
-            {
-                case BinaryOp.Add:
-                    return string.Concat("(", left, "+", right, ")");
-                case BinaryOp.Sub:
-                    return string.Concat("(", left, "-", right, ")");
-                case BinaryOp.Mul:
-                    return string.Concat("(", left, "*", right, ")");
-                case BinaryOp.Div:
-                    return string.Concat("(", left, "/", right, ")");
-                case BinaryOp.IntDiv:
-                    return string.Concat("(", left, "//", right, ")");
-                case BinaryOp.Mod:
-                    return string.Concat("(", left, "%", right, ")");
-                case BinaryOp.Pow:
-                    return string.Concat("(", left, "^", right, ")");
-                case BinaryOp.And:
-                    return string.Concat("(", left, " and ", right, ")");
-                case BinaryOp.Or:
-                    return string.Concat("(", left, " or ", right, ")");
-                case BinaryOp.Concatenate:
-                    return string.Concat("(", left, " & ", right, ")");
-                case BinaryOp.Less:
-                    return string.Concat("(", left, "<", right, ")");
-                case BinaryOp.Greater:
-                    return string.Concat("(", left, ">", right, ")");
-                case BinaryOp.LessOrEqual:
-                    return string.Concat("(", left, "<=", right, ")");
-                case BinaryOp.GreaterOrEqual:
-                    return string.Concat("(", left, ">=", right, ")");
-                case BinaryOp.Equal:
-                    return string.Concat("(", left, "==", right, ")");
-                case BinaryOp.NotEqual:
-                    return string.Concat("(", left, "!=", right, ")");
+		private RuntimeException BinaryError(IScope scope){
+            throw RuntimeException.Throw(
+                string.Format("cannot implement binary operator '{0}' to '{1}' and '{2}'", op, left, right), scope);
+		}
+
+		public string GetOperatorStr(){
+			switch(op) {
+				case NodeType.Add:
+                    return "+";
+                case NodeType.Subtract:
+                    return "-";
+                case NodeType.Multiply:
+                    return "*";
+                case NodeType.Divide:
+                    return "/";
+                case NodeType.IntDiv:
+                    return "//";
+                case NodeType.Modulo:
+                    return "%";
+                case NodeType.Power:
+                    return "^";
+                case NodeType.Concatenate:
+                    return "&";
+                case NodeType.LessThan:
+                    return "<";
+                case NodeType.GreaterThan:
+                    return ">";
+                case NodeType.LessThanOrEqual:
+                    return "<=";
+                case NodeType.GreaterThanOrEqual:
+                    return ">=";
+                case NodeType.Equal:
+                    return "==";
+                case NodeType.NotEqual:
+                    return "!=";
                 default:
                     throw new NotSupportedException(op.ToString());
-            }
-        }
+			}
+		}
 
         internal override void Accept(ASTVisitor visitor)
         {
             visitor.Visit(this);
         }
-
-    }
-
-    public enum BinaryOp:byte
-    {
-        Add,
-        Sub,
-        Mul,
-        Div,
-        IntDiv,
-        Mod,
-        Pow,
-
-        And,
-        Or,
-
-        Equal,
-        NotEqual,
-
-        Less,
-        Greater,
-        LessOrEqual,
-        GreaterOrEqual,
-
-        Concatenate
     }
 }
