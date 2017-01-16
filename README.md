@@ -67,3 +67,39 @@ def sum(myList) {
 }
 print(sum([1,2,3,4,5])) # 15
 ```
+
+### Define a class and a derived class
+``` cygni
+class Person {
+
+	var name, age
+
+	def __init__(name, age) {
+		this.name = name
+		this.age = age
+	}
+
+	def say() {
+		printf("{0} is a person.", this.name)
+	}
+
+}
+
+class Employee: Person {
+
+	var salary = 3000
+
+	def say() {
+		printf("{0} is an employee.", this.name)
+	}
+
+}
+
+alice = Person("Alice", 35)
+john = Employee("John", 40)
+
+alice.say()
+john.say()
+
+print("John's salary : " & john.salary)
+```
