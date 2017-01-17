@@ -1,7 +1,0 @@
-chapter 01: Introduction
-chapter 02: Core Cygni
-chapter 03: Functions
-chapter 04: Structures
-chapter 05: Classes
-chapter 06: Built-in Commands
-chapter 07: Lists and Dictionaries

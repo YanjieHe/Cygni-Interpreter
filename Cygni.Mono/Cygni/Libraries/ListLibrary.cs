@@ -12,9 +12,9 @@ using System.Collections;
 namespace Cygni.Libraries
 {
 	/// <summary>
-	/// Description of ListLib.
+	/// Description of ListLibrary.
 	/// </summary>
-	public static class ListLib
+	public static class ListLibrary
 	{
 		public static DynValue append (DynList list, DynValue[] args)
 		{

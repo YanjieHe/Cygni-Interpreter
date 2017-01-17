@@ -33,7 +33,7 @@ namespace Cygni.DataTypes
 		public DynValue GetByIndex (DynValue index)
 		{
 			if (index.type == DataType.Range) {
-				return ListLib.Slice (this, index.Value as Range);
+				return ListLibrary.Slice (this, index.Value as Range);
 			} else {
 				return base [index.AsInt32 ()];
 			}
@@ -42,7 +42,7 @@ namespace Cygni.DataTypes
 		public DynValue SetByIndex (DynValue index, DynValue value)
 		{
 			if (index.type == DataType.Range) {
-				return ListLib.SliceAssign (this, index.Value as Range, value);
+				return ListLibrary.SliceAssign (this, index.Value as Range, value);
 			} else {
 				return base [index.AsInt32 ()] = value;
 			}
@@ -65,31 +65,31 @@ namespace Cygni.DataTypes
 		{
 			switch (fieldName) {
 			case "append":
-				return DynValue.FromDelegate ("append", (args) => ListLib.append (this, args));
+				return DynValue.FromDelegate ("append", (args) => ListLibrary.append (this, args));
 			case "count":
 				return (long)this.Count;
 			case "removeAt":
-				return DynValue.FromDelegate ("removeAt", (args) => ListLib.removeAt (this, args));
+				return DynValue.FromDelegate ("removeAt", (args) => ListLibrary.removeAt (this, args));
 			case "insert":
-				return DynValue.FromDelegate ("insert", (args) => ListLib.insert (this, args));
+				return DynValue.FromDelegate ("insert", (args) => ListLibrary.insert (this, args));
 			case "sort":
-				return DynValue.FromDelegate ("sort", (args) => ListLib.sort (this, args));
+				return DynValue.FromDelegate ("sort", (args) => ListLibrary.sort (this, args));
 			case "max":
-				return DynValue.FromDelegate ("max", (args) => ListLib.max (this, args));
+				return DynValue.FromDelegate ("max", (args) => ListLibrary.max (this, args));
 			case "min":
-				return DynValue.FromDelegate ("min", (args) => ListLib.min (this, args));
+				return DynValue.FromDelegate ("min", (args) => ListLibrary.min (this, args));
 			case "bSearch":
-				return DynValue.FromDelegate ("bSearch", (args) => ListLib.bSearch (this, args));
+				return DynValue.FromDelegate ("bSearch", (args) => ListLibrary.bSearch (this, args));
 			case "find":
-				return DynValue.FromDelegate ("find", (args) => ListLib.find (this, args));
+				return DynValue.FromDelegate ("find", (args) => ListLibrary.find (this, args));
 			case "concat":
-				return DynValue.FromDelegate ("concat", (args) => ListLib.concat (this, args));
+				return DynValue.FromDelegate ("concat", (args) => ListLibrary.concat (this, args));
 			case "copy":
-				return DynValue.FromDelegate ("copy", (args) => ListLib.copy (this, args));
+				return DynValue.FromDelegate ("copy", (args) => ListLibrary.copy (this, args));
 			case "pop":
-				return DynValue.FromDelegate ("pop", (args) => ListLib.pop (this, args));
+				return DynValue.FromDelegate ("pop", (args) => ListLibrary.pop (this, args));
 			case "clear":
-				return DynValue.FromDelegate ("clear", (args) => ListLib.clear (this, args));
+				return DynValue.FromDelegate ("clear", (args) => ListLibrary.clear (this, args));
 			default:
 				throw RuntimeException.FieldNotExist ("list", fieldName);
 			}

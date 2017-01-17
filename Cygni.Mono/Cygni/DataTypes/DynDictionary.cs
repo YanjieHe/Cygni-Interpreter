@@ -133,21 +133,21 @@ namespace Cygni.DataTypes
 		{
 			switch (fieldName) {
 			case "hasKey":
-				return DynValue.FromDelegate ("hasKey", (args) => DictionaryLib.hasKey (this, args));
+				return DynValue.FromDelegate ("hasKey", (args) => DictionaryLibrary.hasKey (this, args));
 			case "hasValue":
-				return DynValue.FromDelegate ("hasValue", (args) => DictionaryLib.hasValue (this, args));
+				return DynValue.FromDelegate ("hasValue", (args) => DictionaryLibrary.hasValue (this, args));
 			case "remove":
-				return DynValue.FromDelegate ("remove", (args) => DictionaryLib.remove (this, args));
+				return DynValue.FromDelegate ("remove", (args) => DictionaryLibrary.remove (this, args));
 			case "count":
 				return (long)this.Count;
 			case "keys":
-				return DynValue.FromDelegate ("keys", (args) => DictionaryLib.keys (this, args));
+				return DynValue.FromDelegate ("keys", (args) => DictionaryLibrary.keys (this, args));
 			case "values":
-				return DynValue.FromDelegate ("values", (args) => DictionaryLib.values (this, args));
+				return DynValue.FromDelegate ("values", (args) => DictionaryLibrary.values (this, args));
 			case "add":
-				return DynValue.FromDelegate ("add", (args) => DictionaryLib.add (this, args));
+				return DynValue.FromDelegate ("add", (args) => DictionaryLibrary.add (this, args));
 			case "clear":
-				return DynValue.FromDelegate ("clear", (args) => DictionaryLib.clear (this, args));
+				return DynValue.FromDelegate ("clear", (args) => DictionaryLibrary.clear (this, args));
 			default:
 				throw RuntimeException.FieldNotExist ("Dictionary", fieldName);
 			}

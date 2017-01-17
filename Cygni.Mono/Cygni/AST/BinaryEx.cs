@@ -265,7 +265,7 @@ namespace Cygni.AST
                         {
                             if (rvalue.IsInteger)
                             { /* integer ^ integer */
-                                return new DynValue(DataType.Integer, MathLib.IntegerPow((long)lvalue.Value, (int)(long)rvalue.Value));
+                                return new DynValue(DataType.Integer, MathLibrary.IntegerPow((long)lvalue.Value, (int)(long)rvalue.Value));
                             }
                             else if (rvalue.IsNumber)
                             { /* integer ^ number */

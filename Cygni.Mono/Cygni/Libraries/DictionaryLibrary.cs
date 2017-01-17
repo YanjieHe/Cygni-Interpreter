@@ -10,9 +10,9 @@ using Cygni.Extensions;
 namespace Cygni.Libraries
 {
 	/// <summary>
-	/// Description of DictionaryLib.
+	/// Description of DictionaryLibrary.
 	/// </summary>
-	public static class DictionaryLib
+	public static class DictionaryLibrary
 	{
 		public static DynValue hasKey (DynDictionary ht, DynValue[] args)
 		{

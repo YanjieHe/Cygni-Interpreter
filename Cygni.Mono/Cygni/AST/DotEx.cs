@@ -47,7 +47,7 @@ namespace Cygni.AST
             if (target_value.type == DataType.String)
             {
                 string str = target_value.Value as string;
-                return StrLib.StrGetByDot(str, fieldName);
+                return StringLibrary.StrGetByDot(str, fieldName);
             }
             else
             {

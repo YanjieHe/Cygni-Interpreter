@@ -69,11 +69,7 @@
     <Compile Include="DataTypes\NativeFunction.cs" />
     <Compile Include="DataTypes\Structure.cs" />
     <Compile Include="Extensions\Extension.cs" />
-    <Compile Include="Libraries\BasicLib.cs" />
     <Compile Include="Libraries\Commands.cs" />
-    <Compile Include="Libraries\ListLib.cs" />
-    <Compile Include="Libraries\MathLib.cs" />
-    <Compile Include="Libraries\StrLib.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="AST\Scopes\IScope.cs" />
     <Compile Include="AST\Scopes\ArrayScope.cs" />
@@ -84,7 +80,6 @@
     <Compile Include="AST\DictionaryInitEx.cs" />
     <Compile Include="AST\AssignEx.cs" />
     <Compile Include="AST\SingleIndexEx.cs" />
-    <Compile Include="Libraries\DictionaryLib.cs" />
     <Compile Include="AST\Scopes\ScopeType.cs" />
     <Compile Include="DataTypes\Command.cs" />
     <Compile Include="AST\Scopes\ResizableArrayScope.cs" />
@@ -105,7 +100,6 @@
     <Compile Include="AST\Visitors\ClassLookUpVisitor.cs" />
     <Compile Include="Lexical\Tokens\IntToken.cs" />
     <Compile Include="DataTypes\Module.cs" />
-    <Compile Include="Libraries\IOLibrary.cs" />
     <Compile Include="DataTypes\Range.cs" />
     <Compile Include="DataTypes\Interfaces\ICountable.cs" />
     <Compile Include="AST\ConditionEx.cs" />
@@ -118,6 +112,12 @@
     <Compile Include="AST\DefVarEx.cs" />
     <Compile Include="AST\LogicalEx.cs" />
     <Compile Include="AST\Visitors\ASTStringBuilder.cs" />
+    <Compile Include="Libraries\ConsoleLibrary.cs" />
+    <Compile Include="Libraries\DictionaryLibrary.cs" />
+    <Compile Include="Libraries\BasicLibrary.cs" />
+    <Compile Include="Libraries\ListLibrary.cs" />
+    <Compile Include="Libraries\MathLibrary.cs" />
+    <Compile Include="Libraries\StringLibrary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

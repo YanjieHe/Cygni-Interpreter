@@ -35,7 +35,7 @@ namespace Cygni.AST
             {
                 if (index.IsRange)
                 {
-                    return StrLib.Slice(collection.AsString(), index.Value as Range);
+                    return StringLibrary.Slice(collection.AsString(), index.Value as Range);
                 }
                 else
                 {

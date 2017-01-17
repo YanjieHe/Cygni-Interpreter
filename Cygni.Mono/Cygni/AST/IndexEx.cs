@@ -48,7 +48,7 @@ namespace Cygni.AST
                 DynValue index = indexes[0];
                 if (index.IsRange)
                 {
-                    return StrLib.Slice(collection.AsString(), index.Value as Range);
+                    return StringLibrary.Slice(collection.AsString(), index.Value as Range);
                 }
                 else
                 {

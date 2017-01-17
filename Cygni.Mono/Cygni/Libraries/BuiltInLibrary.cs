@@ -7,128 +7,130 @@ using Cygni.AST.Scopes;
 
 namespace Cygni.Libraries
 {
-	public static class BuiltInLibrary
-	{
-		public static void BuiltIn (ResizableArrayScope scope)
-		{
-			foreach (var element in BuiltInFunctions)
-				scope.Put (element.Key, DynValue.FromDelegate (element.Key, element.Value));
-			foreach (var element in BuiltInVariables)
-				scope.Put (element.Key, element.Value);
-			foreach (var element in BuiltInStructures)
-				scope.Put (element.Key, DynValue.FromStructure (element.Value));
-			foreach (var element in BuiltInCommands)
-				scope.Put (element.Key, DynValue.FromDelegate (element.Key, element.Value));
-		}
+    public static class BuiltInLibrary
+    {
+        public static void BuiltIn(ResizableArrayScope scope)
+        {
+            foreach (var element in BuiltInFunctions)
+                scope.Put(element.Key, DynValue.FromDelegate(element.Key, element.Value));
+            foreach (var element in BuiltInVariables)
+                scope.Put(element.Key, element.Value);
+            foreach (var element in BuiltInStructures)
+                scope.Put(element.Key, DynValue.FromStructure(element.Value));
+            foreach (var element in BuiltInCommands)
+                scope.Put(element.Key, DynValue.FromDelegate(element.Key, element.Value));
+        }
 
-		private static readonly Dictionary<string,Func<DynValue[],DynValue>> BuiltInFunctions 
-		= new Dictionary<string, Func<DynValue[], DynValue>> {
+        private static readonly Dictionary<string,Func<DynValue[],DynValue>> BuiltInFunctions 
+		= new Dictionary<string, Func<DynValue[], DynValue>>
+        {
 			
-			{ "print",BasicLib.print },
-			{ "printf",BasicLib.printf },
-			{ "input",BasicLib.input },
-			{ "type",BasicLib.type },
-			{ "quiet",BasicLib.quiet },
-			{ "struct",BasicLib.Struct },
-			{ "tuple",BasicLib.tuple },
-			{ "LoadLibrary",BasicLib.LoadLibrary },
+            { "print",BasicLibrary.print },
+            { "printf",BasicLibrary.printf },
+            { "input",BasicLibrary.input },
+            { "type",BasicLibrary.type },
+            { "quiet",BasicLibrary.quiet },
+            { "struct",BasicLibrary.Struct },
+            { "tuple",BasicLibrary.tuple },
+            { "LoadLibrary",BasicLibrary.LoadLibrary },
 
-			{ "exit",BasicLib.exit },
-			{ "len",BasicLib.len },
+            { "exit",BasicLibrary.exit },
+            { "len",BasicLibrary.len },
 
-			{ "int",BasicLib.toInteger },
-			{ "number",BasicLib.toNumber },
-			{ "bool",BasicLib.toBoolean },
-			{ "str",BasicLib.toString },
-			{ "list",BasicLib.toList },
+            { "int",BasicLibrary.toInteger },
+            { "number",BasicLibrary.toNumber },
+            { "bool",BasicLibrary.toBoolean },
+            { "str",BasicLibrary.toString },
+            { "list",BasicLibrary.toList },
 
-			{ "pCall",BasicLib.pCall },
-			{ "xpCall",BasicLib.xpCall },
+            { "pCall",BasicLibrary.pCall },
+            { "xpCall",BasicLibrary.xpCall },
 
-			{ "names",BasicLib.names },
+            { "fields",BasicLibrary.fields },
 
-			{ "require",BasicLib.require },
+            { "require",BasicLibrary.require },
 
-			{ "map",FunctionalProgrammingLibrary.Map },
-			{ "filter",FunctionalProgrammingLibrary.Filter },
-			{ "reduce",FunctionalProgrammingLibrary.Reduce },
+            { "map",FunctionalProgrammingLibrary.Map },
+            { "filter",FunctionalProgrammingLibrary.Filter },
+            { "reduce",FunctionalProgrammingLibrary.Reduce },
 
-		};
+        };
 
-		private static readonly Dictionary<string,DynValue> BuiltInVariables 
-		= new Dictionary<string, DynValue> {
-			{ "NaN",double.NaN },
-			{ "inf",double.PositiveInfinity },
-			{ "intmax",long.MaxValue },
-			{ "intmin",long.MinValue },
-			{ "realmax",double.MaxValue },
-			{ "realmin",double.MinValue },
-			{ "warranty",GlobalSettings.warranty },
-		};
+        private static readonly Dictionary<string,DynValue> BuiltInVariables 
+		= new Dictionary<string, DynValue>
+        {
+            { "NaN",double.NaN },
+            { "inf",double.PositiveInfinity },
+            { "intmax",long.MaxValue },
+            { "intmin",long.MinValue },
+            { "realmax",double.MaxValue },
+            { "realmin",double.MinValue },
+            { "warranty",GlobalSettings.warranty },
+        };
 
 
-		private static readonly Dictionary<string,Structure> BuiltInStructures = 
-			new Dictionary<string, Structure> { {"console",
-					new Structure (
-						new StructureItem ("clear", DynValue.FromDelegate ("clear", BasicLib.console_clear)),
-						new StructureItem ("write", DynValue.FromDelegate ("write", BasicLib.console_write)),
-						new StructureItem ("writeLine", DynValue.FromDelegate ("writeLine", BasicLib.console_writeLine)),
-						new StructureItem ("read", DynValue.FromDelegate ("read", BasicLib.console_read)),
-						new StructureItem ("readLine", DynValue.FromDelegate ("readLine", BasicLib.console_readLine)),
-						new StructureItem ("readKey", DynValue.FromDelegate ("readKey", BasicLib.console_readKey)) 
+        private static readonly Dictionary<string,Structure> BuiltInStructures = 
+            new Dictionary<string, Structure>
+            {
+                {"console",
+                    new Structure(
+                        new StructureItem("clear", DynValue.FromDelegate("clear", ConsoleLibrary.clear)),
+                        new StructureItem("write", DynValue.FromDelegate("write", ConsoleLibrary.write)),
+                        new StructureItem("writeLine", DynValue.FromDelegate("writeLine", ConsoleLibrary.writeLine)),
+                        new StructureItem("read", DynValue.FromDelegate("read", ConsoleLibrary.read)),
+                        new StructureItem("readLine", DynValue.FromDelegate("readLine", ConsoleLibrary.readLine)),
+                        new StructureItem("readKey", DynValue.FromDelegate("readKey", ConsoleLibrary.readKey)) 
 
-					)
-				}, {"string",
-					new Structure (
-						new StructureItem ("concat", DynValue.FromDelegate ("concat", StrLib.strcat)),
-						new StructureItem ("compare", DynValue.FromDelegate ("compare", StrLib.compare)),
-						new StructureItem ("empty", string.Empty) 
-					)
-				}, {"math",
-					new Structure (
-						new StructureItem ("abs", DynValue.FromDelegate ("abs", MathLib.abs)),
-						new StructureItem ("log", DynValue.FromDelegate ("log", MathLib.log)),
-						new StructureItem ("log10", DynValue.FromDelegate ("log10", MathLib.log10)),
-						new StructureItem ("sqrt", DynValue.FromDelegate ("sqrt", MathLib.sqrt)),
-						new StructureItem ("max", DynValue.FromDelegate ("max", MathLib.max)),
-						new StructureItem ("min", DynValue.FromDelegate ("min", MathLib.min)),
-						new StructureItem ("exp", DynValue.FromDelegate ("exp", MathLib.exp)),
-						new StructureItem ("sign", DynValue.FromDelegate ("sign", MathLib.sign)),
-						new StructureItem ("sin", DynValue.FromDelegate ("sin", MathLib.sin)),
-						new StructureItem ("cos", DynValue.FromDelegate ("cos", MathLib.cos)),
-						new StructureItem ("tan", DynValue.FromDelegate ("tan", MathLib.tan)),
-						new StructureItem ("asin", DynValue.FromDelegate ("asin", MathLib.asin)),
-						new StructureItem ("acos", DynValue.FromDelegate ("acos", MathLib.acos)),
-						new StructureItem ("atan", DynValue.FromDelegate ("atan", MathLib.atan)),
-						new StructureItem ("sinh", DynValue.FromDelegate ("sinh", MathLib.sinh)),
-						new StructureItem ("cosh", DynValue.FromDelegate ("cosh", MathLib.cosh)),
-						new StructureItem ("tanh", DynValue.FromDelegate ("tanh", MathLib.tanh)),
-						new StructureItem ("ceiling", DynValue.FromDelegate ("ceiling", MathLib.ceiling)),
-						new StructureItem ("floor", DynValue.FromDelegate ("floor", MathLib.floor)),
-						new StructureItem ("round", DynValue.FromDelegate ("round", MathLib.round)),
-						new StructureItem ("truncate", DynValue.FromDelegate ("truncate", MathLib.truncate)),
-						new StructureItem ("e", Math.E),
-						new StructureItem ("pi", Math.PI) 
-					)
-				}, {"file",
-				new Structure (
-					new StructureItem ("readLines", DynValue.FromDelegate ("readLines", IOLibrary.readLines)),
-					new StructureItem ("writeLines", DynValue.FromDelegate ("writeLines", IOLibrary.writeLines)),
-					new StructureItem ("exists", DynValue.FromDelegate ("exists", IOLibrary.exists))
-				)
-			}
+                    )
+                },
+                {"string",
+                    new Structure(
+                        new StructureItem("concat", DynValue.FromDelegate("concat", StringLibrary.concat)),
+                        new StructureItem("compare", DynValue.FromDelegate("compare", StringLibrary.compare)),
+                        new StructureItem("compareOrdinal", DynValue.FromDelegate("compareOrdinal", StringLibrary.compareOrdinal)),
+                        new StructureItem("empty", string.Empty) 
+                    )
+                },
+                {"math",
+                    new Structure(
+                        new StructureItem("abs", DynValue.FromDelegate("abs", MathLibrary.abs)),
+                        new StructureItem("log", DynValue.FromDelegate("log", MathLibrary.log)),
+                        new StructureItem("log10", DynValue.FromDelegate("log10", MathLibrary.log10)),
+                        new StructureItem("sqrt", DynValue.FromDelegate("sqrt", MathLibrary.sqrt)),
+                        new StructureItem("max", DynValue.FromDelegate("max", MathLibrary.max)),
+                        new StructureItem("min", DynValue.FromDelegate("min", MathLibrary.min)),
+                        new StructureItem("exp", DynValue.FromDelegate("exp", MathLibrary.exp)),
+                        new StructureItem("sign", DynValue.FromDelegate("sign", MathLibrary.sign)),
+                        new StructureItem("sin", DynValue.FromDelegate("sin", MathLibrary.sin)),
+                        new StructureItem("cos", DynValue.FromDelegate("cos", MathLibrary.cos)),
+                        new StructureItem("tan", DynValue.FromDelegate("tan", MathLibrary.tan)),
+                        new StructureItem("asin", DynValue.FromDelegate("asin", MathLibrary.asin)),
+                        new StructureItem("acos", DynValue.FromDelegate("acos", MathLibrary.acos)),
+                        new StructureItem("atan", DynValue.FromDelegate("atan", MathLibrary.atan)),
+                        new StructureItem("sinh", DynValue.FromDelegate("sinh", MathLibrary.sinh)),
+                        new StructureItem("cosh", DynValue.FromDelegate("cosh", MathLibrary.cosh)),
+                        new StructureItem("tanh", DynValue.FromDelegate("tanh", MathLibrary.tanh)),
+                        new StructureItem("ceiling", DynValue.FromDelegate("ceiling", MathLibrary.ceiling)),
+                        new StructureItem("floor", DynValue.FromDelegate("floor", MathLibrary.floor)),
+                        new StructureItem("round", DynValue.FromDelegate("round", MathLibrary.round)),
+                        new StructureItem("truncate", DynValue.FromDelegate("truncate", MathLibrary.truncate)),
+                        new StructureItem("e", Math.E),
+                        new StructureItem("pi", Math.PI) 
+                    )
+                },
 
-			};
+            };
 
-		private static readonly Dictionary<string,Func<ASTNode[],IScope,DynValue>> BuiltInCommands 
-		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>> {
-			{ "source", Commands.source },
-			{ "cond", Commands.cond },
-			{ "assert", Commands.assert },
-			{ "import", Commands.import },
-			{ "error", Commands.error },
-		};
+        private static readonly Dictionary<string,Func<ASTNode[],IScope,DynValue>> BuiltInCommands 
+		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>>
+        {
+            { "source", Commands.source },
+            { "cond", Commands.cond },
+            { "assert", Commands.assert },
+            { "import", Commands.import },
+            { "error", Commands.error },
+        };
 
-	}
+    }
 }
 
