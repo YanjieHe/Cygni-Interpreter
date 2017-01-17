@@ -11,7 +11,7 @@ using Cygni.AST.Optimizers;
 
 namespace Cygni.AST.Scopes
 {
-	public class ResizableArrayScope:IScope
+	public class ModuleScope:IScope
 	{
 		private readonly string scopeName;
 		private int count;
@@ -24,7 +24,7 @@ namespace Cygni.AST.Scopes
 
 		public string ScopeName { get { return this.scopeName; } }
 
-		public ResizableArrayScope (string name = "main")
+		public ModuleScope (string name = "main")
 		{
 			this.scopeName = name;
 			this.table = new Dictionary<string,int> ();

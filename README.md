@@ -43,7 +43,7 @@ namespace Cygni_CLI
 ```
 
 ## Some tutorial examples
-For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc/Cygni_short_ref.pdf
+For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc/Cygni-short-ref.md
 
 ### Factorial
 ``` cygni

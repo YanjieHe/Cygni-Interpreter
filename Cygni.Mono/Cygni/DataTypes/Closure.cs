@@ -13,12 +13,12 @@ namespace Cygni.DataTypes
     public sealed class Closure:IFunction,IEnumerable<DynValue>
     {
         readonly int nArgs;
-        readonly ArrayScope funcScope;
+        readonly FunctionScope funcScope;
         readonly ASTNode body;
 
         public bool IsSingleLine { get { return this.body.type != NodeType.Block; } }
 
-        public Closure(int nArgs, ASTNode body, ArrayScope funcScope)
+        public Closure(int nArgs, ASTNode body, FunctionScope funcScope)
         {
             this.nArgs = nArgs;
             this.body = body;
@@ -59,7 +59,7 @@ namespace Cygni.DataTypes
                 values[i] = DynValue.Nil;
                 i++;
             }
-            var newScope = new ArrayScope("Anonymous Function", values, funcScope.Parent);
+            var newScope = new FunctionScope("Anonymous Function", values, funcScope.Parent);
             return new Closure(nArgs, body, newScope).Invoke();
         }
 
@@ -79,7 +79,7 @@ namespace Cygni.DataTypes
                 values[i] = DynValue.Nil;
                 i++;
             }
-            var newScope = new ArrayScope("Anonymous Function", values, funcScope.Parent);
+            var newScope = new FunctionScope("Anonymous Function", values, funcScope.Parent);
             return new Closure(nArgs, body, newScope).Invoke();
         }
 

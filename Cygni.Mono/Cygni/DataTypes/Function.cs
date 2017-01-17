@@ -16,12 +16,12 @@ namespace Cygni.DataTypes
 	public sealed class Function:IFunction
 	{
 		readonly BlockEx body;
-		readonly ArrayScope funcScope;
+		readonly FunctionScope funcScope;
 		readonly int nArgs;
 
 		public string Name { get { return this.funcScope.ScopeName; } }
 
-		public Function (int nArgs, BlockEx body, ArrayScope funcScope)
+		public Function (int nArgs, BlockEx body, FunctionScope funcScope)
 		{
 			this.body = body;
 			this.funcScope = funcScope;
@@ -56,7 +56,7 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (this.Name, values, funcScope.Parent);
+			var newScope = new FunctionScope (this.Name, values, funcScope.Parent);
 			return new Function (nArgs, body, newScope).Invoke ();
 		}
 
@@ -74,7 +74,7 @@ namespace Cygni.DataTypes
 				values [i] = DynValue.Nil;
 				i++;
 			}
-			var newScope = new ArrayScope (this.Name, values, funcScope.Parent);
+			var newScope = new FunctionScope (this.Name, values, funcScope.Parent);
 			return new Function (nArgs, body, newScope).Invoke ();
 		}
 

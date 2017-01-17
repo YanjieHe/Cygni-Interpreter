@@ -31,7 +31,7 @@ namespace Cygni.Libraries
 				encoding = Encoding.Default;
 			}
 
-			var globalScope = scope as ResizableArrayScope;
+			var globalScope = scope as ModuleScope;
 			if (globalScope == null) {
 				throw new RuntimeException ("Unable to run command 'source' in local scope");
 			}
@@ -123,7 +123,7 @@ namespace Cygni.Libraries
 					bool quiet = GlobalSettings.Quiet;
 					GlobalSettings.Quiet = true;
 
-					ResizableArrayScope globalScope = scope as ResizableArrayScope;
+					ModuleScope globalScope = scope as ModuleScope;
 					CodeFileLoader executor = new CodeFileLoader (globalScope, filePath, encoding);
 
 					program = executor.Load ();

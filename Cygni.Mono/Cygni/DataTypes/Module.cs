@@ -12,9 +12,9 @@ namespace Cygni.DataTypes
 {
 	public class Module: IDot
 	{
-		ResizableArrayScope scope;
+		ModuleScope scope;
 
-		public Module (ResizableArrayScope scope)
+		public Module (ModuleScope scope)
 		{
 			this.scope = scope;
 		}

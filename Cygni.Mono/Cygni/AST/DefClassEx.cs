@@ -42,7 +42,7 @@ namespace Cygni.AST
 			if (scope.type != ScopeType.Module) {
 				throw new Exception ("Scope Error");
 			}
-			ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
+			ModuleScope GlobalScope = scope as ModuleScope;
 			if (!GlobalScope.HasName (name)) {
 				GlobalScope.Put (name, DynValue.Nil);
 			}

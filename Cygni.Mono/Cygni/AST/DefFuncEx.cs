@@ -42,7 +42,7 @@ namespace Cygni.AST
 		public override DynValue Eval (IScope scope)
 		{
 			if (scope.type == ScopeType.Module) {
-				ResizableArrayScope GlobalScope = scope as ResizableArrayScope;
+				ModuleScope GlobalScope = scope as ModuleScope;
 				if (!GlobalScope.HasName (name)) {
 					GlobalScope.Put (name, DynValue.Nil);
 				}
@@ -50,12 +50,12 @@ namespace Cygni.AST
 				LookUpVisitor visitor = new LookUpVisitor (symbols);
 				this.Accept (visitor);
 
-				ArrayScope arrayScope = new ArrayScope (this.name, new DynValue[this.size], scope);
+				FunctionScope arrayScope = new FunctionScope (this.name, new DynValue[this.size], scope);
 				DynValue func = new Function (parameters.Length, (BlockEx)body, arrayScope);
 				return scope.Put (name, func);
 
 			} else if (scope.type == ScopeType.Class) {
-				ArrayScope arrayScope = new ArrayScope (this.name, new DynValue[this.size], scope);
+				FunctionScope arrayScope = new FunctionScope (this.name, new DynValue[this.size], scope);
 				DynValue func = new Function (parameters.Length, (BlockEx)body, arrayScope);
 
 				return scope.Put (name, func);

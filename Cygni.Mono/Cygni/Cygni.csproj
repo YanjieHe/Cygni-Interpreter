@@ -72,7 +72,6 @@
     <Compile Include="Libraries\Commands.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="AST\Scopes\IScope.cs" />
-    <Compile Include="AST\Scopes\ArrayScope.cs" />
     <Compile Include="DataTypes\StructureItem.cs" />
     <Compile Include="AST\Visitors\ASTVisitor.cs" />
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="AST\SingleIndexEx.cs" />
     <Compile Include="AST\Scopes\ScopeType.cs" />
     <Compile Include="DataTypes\Command.cs" />
-    <Compile Include="AST\Scopes\ResizableArrayScope.cs" />
     <Compile Include="DataTypes\DynTuple.cs" />
     <Compile Include="Libraries\BuiltInLibrary.cs" />
     <Compile Include="AST\Interfaces\IAssignable.cs" />
@@ -118,6 +116,8 @@
     <Compile Include="Libraries\ListLibrary.cs" />
     <Compile Include="Libraries\MathLibrary.cs" />
     <Compile Include="Libraries\StringLibrary.cs" />
+    <Compile Include="AST\Scopes\ModuleScope.cs" />
+    <Compile Include="AST\Scopes\FunctionScope.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

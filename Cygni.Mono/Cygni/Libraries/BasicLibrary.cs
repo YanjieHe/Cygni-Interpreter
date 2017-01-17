@@ -356,7 +356,7 @@ namespace Cygni.Libraries
             string filePath = Commands.GetModulePath(moduleName);
 
             BlockEx program;
-            ResizableArrayScope globalScope = new ResizableArrayScope(moduleName);
+            ModuleScope globalScope = new ModuleScope(moduleName);
             globalScope.BuiltIn();
 
             bool quiet = GlobalSettings.Quiet;

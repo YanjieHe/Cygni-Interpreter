@@ -19,11 +19,11 @@ namespace Cygni
     /// </summary>
     public class Engine
     {
-        readonly ResizableArrayScope globalScope;
+        readonly ModuleScope globalScope;
 
         public Engine()
         {
-            globalScope = new ResizableArrayScope();
+            globalScope = new ModuleScope();
         }
 
         public void Initialize()

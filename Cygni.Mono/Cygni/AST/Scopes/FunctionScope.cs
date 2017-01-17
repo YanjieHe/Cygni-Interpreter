@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Cygni.AST.Scopes
 {
-	public sealed class ArrayScope:IScope
+	public sealed class FunctionScope:IScope
 	{
 		private readonly string scopeName;
 		private readonly DynValue[] values;
@@ -23,7 +23,7 @@ namespace Cygni.AST.Scopes
 		public int Count { get { return values.Length; } }
 
 
-		public ArrayScope (string name, DynValue[] values, IScope parent = null)
+		public FunctionScope (string name, DynValue[] values, IScope parent = null)
 		{
 			this.scopeName = name;
 			this.values = values;
@@ -65,11 +65,11 @@ namespace Cygni.AST.Scopes
 			throw new NotSupportedException ();
 		}
 
-		public ArrayScope Update (IScope scope)
+		public FunctionScope Update (IScope scope)
 		{
 			var values = new DynValue[this.values.Length];
 			Array.Copy (this.values, values, values.Length);
-			return new ArrayScope (this.scopeName, values, scope);
+			return new FunctionScope (this.scopeName, values, scope);
 		}
 	}
 }

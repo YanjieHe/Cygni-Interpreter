@@ -9,7 +9,7 @@ namespace Cygni.Libraries
 {
     public static class BuiltInLibrary
     {
-        public static void BuiltIn(ResizableArrayScope scope)
+        public static void BuiltIn(ModuleScope scope)
         {
             foreach (var element in BuiltInFunctions)
                 scope.Put(element.Key, DynValue.FromDelegate(element.Key, element.Value));
