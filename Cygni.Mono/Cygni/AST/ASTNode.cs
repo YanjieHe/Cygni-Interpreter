@@ -271,7 +271,7 @@ namespace Cygni.AST
         {
             ASTStringBuilder builder = new ASTStringBuilder();
             this.Accept(builder);
-            return builder.GetString();
+            return builder.ToString();
         }
     }
 }
