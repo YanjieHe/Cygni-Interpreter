@@ -35,7 +35,7 @@ namespace Cygni.AST
         Global,
         Unpack,
         Range,
-
+        RightArrow,
 
 
         Add,

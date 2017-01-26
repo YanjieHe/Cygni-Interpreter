@@ -125,7 +125,6 @@ namespace Cygni.Libraries
 		= new Dictionary<string, Func<ASTNode[], IScope, DynValue>>
         {
             { "source", Commands.source },
-            { "cond", Commands.cond },
             { "assert", Commands.assert },
             { "import", Commands.import },
             { "error", Commands.error },

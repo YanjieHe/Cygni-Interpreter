@@ -10,6 +10,7 @@ using Cygni.AST.Visitors;
 using Cygni.Errors;
 using Cygni.Libraries;
 using Cygni.DataTypes.Interfaces;
+
 namespace Cygni.AST
 {
     /// <summary>
@@ -17,25 +18,28 @@ namespace Cygni.AST
     /// </summary>
     public class BinaryEx:ASTNode
     {
-        readonly ASTNode left;
-        readonly ASTNode right;
-        readonly NodeType op;
+        protected readonly ASTNode left;
+        protected readonly ASTNode right;
+        protected readonly NodeType _type;
 
         public ASTNode Left{ get { return left; } }
-        public ASTNode Right{ get { return right; } }
-        public override NodeType type { get { return op; } }
 
-        public BinaryEx(NodeType op, ASTNode left, ASTNode right)
+        public ASTNode Right{ get { return right; } }
+
+        public override NodeType type { get { return _type; } }
+
+        public BinaryEx(NodeType _type, ASTNode left, ASTNode right)
         {
-            this.op = op;
+            this._type = _type;
             this.left = left;
             this.right = right;
         }
+
         public override DynValue Eval(IScope scope)
         {
             DynValue lvalue = left.Eval(scope);
             DynValue rvalue = right.Eval(scope);
-            switch (op)
+            switch (_type)
             {
                 case NodeType.Add:
                     {
@@ -296,6 +300,10 @@ namespace Cygni.AST
                             return lvalue.As<IComputable>().Power(rvalue);
                         }
                     }
+                case NodeType.RightArrow:
+                    {
+                        return new DynValue(DataType.KeyValuePair, new KeyValuePair(lvalue, rvalue));
+                    }
                 case NodeType.Concatenate:
                     {
                         return new DynValue(DataType.String, lvalue.Value.ToString() + rvalue.Value.ToString());
@@ -485,7 +493,7 @@ namespace Cygni.AST
                             return lvalue.Equals(rvalue) ? DynValue.True : DynValue.False;
                         }
                     }
-                default:/* NodeType.NotEqual */
+                case NodeType.NotEqual:
                     {
                         if (lvalue.IsInteger)
                         {
@@ -522,52 +530,22 @@ namespace Cygni.AST
                             return lvalue.Equals(rvalue) ? DynValue.False : DynValue.True;
                         }
                     }
+                default:
+                    {
+                        throw new RuntimeException("Not supported binary operator: {0}", _type);
+                    }
             }
         }
 
-		private RuntimeException BinaryError(IScope scope){
+        private RuntimeException BinaryError(IScope scope)
+        {
             throw RuntimeException.Throw(
-                string.Format("cannot implement binary operator '{0}' to '{1}' and '{2}'", op, left, right), scope);
-		}
-
-		public string GetOperatorStr(){
-			switch(op) {
-				case NodeType.Add:
-                    return "+";
-                case NodeType.Subtract:
-                    return "-";
-                case NodeType.Multiply:
-                    return "*";
-                case NodeType.Divide:
-                    return "/";
-                case NodeType.IntDiv:
-                    return "//";
-                case NodeType.Modulo:
-                    return "%";
-                case NodeType.Power:
-                    return "^";
-                case NodeType.Concatenate:
-                    return "&";
-                case NodeType.LessThan:
-                    return "<";
-                case NodeType.GreaterThan:
-                    return ">";
-                case NodeType.LessThanOrEqual:
-                    return "<=";
-                case NodeType.GreaterThanOrEqual:
-                    return ">=";
-                case NodeType.Equal:
-                    return "==";
-                case NodeType.NotEqual:
-                    return "!=";
-                default:
-                    throw new NotSupportedException(op.ToString());
-			}
-		}
+                string.Format("cannot implement binary operator '{0}' to '{1}' and '{2}'", _type, left, right), scope);
+        }
 
         internal override void Accept(ASTVisitor visitor)
         {
-            visitor.Visit(this);
+            visitor.VisitBinary(this);
         }
     }
 }

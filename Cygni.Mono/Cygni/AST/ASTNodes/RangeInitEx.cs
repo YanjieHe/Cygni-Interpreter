@@ -8,7 +8,7 @@ using Cygni.AST.Interfaces;
 
 namespace Cygni.AST
 {
-    public class RangeEx:ASTNode
+    public class RangeInitEx:ASTNode
     {
         ASTNode start;
         ASTNode end;
@@ -30,7 +30,7 @@ namespace Cygni.AST
             }
         }
 
-        public RangeEx(ASTNode start, ASTNode end, ASTNode step = null)
+        public RangeInitEx(ASTNode start, ASTNode end, ASTNode step = null)
         {
             this.start = start;
             this.end = end;
@@ -57,7 +57,6 @@ namespace Cygni.AST
 
             }
         }
-
     }
 }
 

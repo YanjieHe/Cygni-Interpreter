@@ -306,7 +306,7 @@ namespace Cygni.AST
 
         ASTNode Range()
         {
-            ASTNode x = Bool();
+            ASTNode x = RightArrow();
             if (look.tag == Tag.Colon)
             {
                 Move();
@@ -322,6 +322,20 @@ namespace Cygni.AST
                 {
                     return ASTNode.RangeInit(start, end);
                 }
+            }
+            else
+            {
+                return x;
+            }
+        }
+
+        ASTNode RightArrow()
+        {
+            ASTNode x = Bool();
+            if (look.tag == Tag.RightArrow)
+            {
+                Move();
+                x = ASTNode.RightArrow(x, RightArrow());
             }
             return x;
         }
@@ -642,9 +656,7 @@ namespace Cygni.AST
             var list = new List<ASTNode>();
             while (look.tag != Tag.RightBrace)
             {
-                list.Add(Bool());
-                Match(Tag.Colon);
-                list.Add(Range());
+                list.Add(RightArrow());
                 if (look.tag == Tag.Comma)
                 {
                     Move();

@@ -88,6 +88,11 @@ namespace Cygni.DataTypes
             return new DynValue(DataType.List, list);
         }
 
+        public static implicit operator DynValue(KeyValuePair pair)
+        {
+            return new DynValue(DataType.KeyValuePair, pair);
+        }
+
         public static implicit operator DynValue(DynDictionary dictionary)
         {
             return new DynValue(DataType.Dictionary, dictionary);
@@ -168,6 +173,11 @@ namespace Cygni.DataTypes
         public static DynValue FromList(DynList list)
         {
             return new DynValue(DataType.List, list);
+        }
+
+        public static DynValue FromKeyValuePair(KeyValuePair pair)
+        {
+            return new DynValue(DataType.KeyValuePair, pair);
         }
 
         public static DynValue FromDictionary(DynDictionary dictionary)

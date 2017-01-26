@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Cygni.Extensions;
 
 namespace Cygni.AST.Visitors
 {
@@ -43,10 +44,10 @@ namespace Cygni.AST.Visitors
             node.Value.Accept(this);
         }
 
-        internal override void Visit(BinaryEx node)
+        internal override void VisitBinary(BinaryEx node)
         {
             node.Left.Accept(this);
-            builder.Append(" " + node.GetOperatorStr() + " ");
+            builder.Append(" " + node.type.OperatorToString() + " ");
             node.Right.Accept(this);
         }
 
@@ -158,11 +159,20 @@ namespace Cygni.AST.Visitors
             }
         }
 
-        internal override void Visit(ListInitEx node)
+        internal override void Visit(InitEx node)
         {
-            builder.Append("[ ");
-            Join(", ", node.Initializers, item => item.Accept(this));
-            builder.Append(" ]");
+            if (node.type == NodeType.ListInit)
+            {
+                builder.Append("[ ");
+                Join(", ", node.Arguments, item => item.Accept(this));
+                builder.Append(" ]");
+            }
+            else if (node.type == NodeType.DictionaryInit)
+            {
+                builder.Append("{ ");
+                Join(", ", node.Arguments, item => item.Accept(this));
+                builder.Append(" }");
+            }
         }
 
         private void AppendKeyValuePair(KeyValuePair<ASTNode,ASTNode> pair)
@@ -172,7 +182,7 @@ namespace Cygni.AST.Visitors
             pair.Value.Accept(this);
         }
 
-        internal override void Visit(DictionaryInitEx node)
+        /* internal override void Visit(DictionaryInitEx node)
         {
             builder.Append("{ ");
             using (
@@ -191,7 +201,7 @@ namespace Cygni.AST.Visitors
                 }
             }
             builder.Append(" }");
-        }
+        }*/
 
         internal override void Visit(DotEx dotEx)
         {
@@ -250,7 +260,7 @@ namespace Cygni.AST.Visitors
             builder.Append(nameEx.Name);
         }
 
-        internal override void Visit(RangeEx node)
+        internal override void Visit(RangeInitEx node)
         {
             node.Start.Accept(this);
             builder.Append(":");
@@ -279,7 +289,7 @@ namespace Cygni.AST.Visitors
 
         internal override void Visit(UnaryEx unaryEx)
         {
-            unaryEx.GetOperatorStr();
+            builder.Append(unaryEx.type.OperatorToString());
             unaryEx.Operand.Accept(this);
         }
 

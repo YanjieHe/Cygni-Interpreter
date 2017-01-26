@@ -10,27 +10,21 @@ using Cygni.Libraries;
 
 namespace Cygni.AST
 {
-    public class SingleIndexEx: ASTNode
+    public class SingleIndexEx: BinaryEx
     {
-        readonly ASTNode collection;
-        readonly ASTNode index;
+        public ASTNode Collection { get { return this.left; } }
 
-        public ASTNode Collection { get { return this.collection; } }
-
-        public ASTNode Index { get { return this.index; } }
+        public ASTNode Index { get { return this.right; } }
 
         public SingleIndexEx(ASTNode collection, ASTNode index)
+            : base(NodeType.SingleIndex, collection, index)
         {
-            this.collection = collection;
-            this.index = index;
         }
-
-        public override NodeType type{ get { return NodeType.SingleIndex; } }
 
         public override DynValue Eval(IScope scope)
         {
-            DynValue collection = this.collection.Eval(scope);
-            DynValue index = this.index.Eval(scope);
+            DynValue collection = this.left.Eval(scope);
+            DynValue index = this.right.Eval(scope);
             if (collection.type == DataType.String)
             {
                 if (index.IsRange)
@@ -47,12 +41,6 @@ namespace Cygni.AST
                 return collection.As<IIndexable>().GetByIndex(index);
             }
         }
-
-        internal override void Accept(ASTVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
-
     }
 }
 

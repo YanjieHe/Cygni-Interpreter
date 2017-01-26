@@ -63,14 +63,13 @@ namespace Cygni.Libraries
 
         public static DynValue Struct(DynValue[] args)
         {
-            if ((args.Length & 1) == 0)
-            {/* even */
-                var structureItems = new StructureItem [args.Length >> 1];
-                for (int i = 0, j = 0; i < args.Length - 1; i += 2,j++)
-                    structureItems[j] = new StructureItem(args[i].AsString(), args[i + 1]);
-                return new DynValue(DataType.Struct, new Structure(structureItems));
-            } 
-            throw RuntimeException.BadArgsNum("struct", "even");
+            var structureItems = new StructureItem [args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                var pair = args[i].As<KeyValuePair>();
+                structureItems[i] = new StructureItem(pair.Key.As<String>(), pair.Value);
+            }
+            return new DynValue(DataType.Struct, new Structure(structureItems));
         }
 
         public static DynValue tuple(DynValue[] args)

@@ -37,7 +37,12 @@ namespace Cygni.AST
 
         public static ASTNode RangeInit(ASTNode start, ASTNode end, ASTNode step = null)
         {
-            return new RangeEx(start, end, step);
+            return new RangeInitEx(start, end, step);
+        }
+
+        public static ASTNode RightArrow(ASTNode key, ASTNode value)
+        {
+            return new BinaryEx(NodeType.RightArrow, key, value);
         }
 
         public static ASTNode DefineVariable(NameEx[] names, ASTNode[] values)
@@ -223,16 +228,10 @@ namespace Cygni.AST
             return new ListInitEx(initializers);
         }
 
+
         public static ASTNode DictionaryInit(ASTNode[] initializers)
         {
-            var items = new KeyValuePair<ASTNode, ASTNode>[initializers.Length / 2];
-            int j = 0;
-            for (int i = 0; i < initializers.Length - 1; i += 2)
-            {
-                items[j] = new KeyValuePair<ASTNode, ASTNode>(initializers[i], initializers[i + 1]);
-                j++;
-            }
-            return new DictionaryInitEx(items);
+            return new DictionaryInitEx(initializers);
         }
 
         public static ASTNode IndexAccess(ASTNode collection, List<ASTNode>indexes)

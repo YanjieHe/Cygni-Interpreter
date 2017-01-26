@@ -79,19 +79,6 @@ namespace Cygni.AST
             }
         }
 
-        public string GetOperatorStr()
-        {
-            switch (op)
-            {
-                case NodeType.Plus:
-                    return "+";
-                case NodeType.Minus:
-                    return "-";
-                default: /* UnaryOp.Not */
-                    return " not ";
-            }
-        }
-
         internal override void Accept(ASTVisitor visitor)
         {
             visitor.Visit(this);

@@ -44,24 +44,8 @@
     <Compile Include="Errors\LexicalException.cs" />
     <Compile Include="Errors\RuntimeException.cs" />
     <Compile Include="Errors\SyntaxException.cs" />
-    <Compile Include="AST\ASTNode.cs" />
-    <Compile Include="AST\BinaryEx.cs" />
-    <Compile Include="AST\BlockEx.cs" />
-    <Compile Include="AST\Constant.cs" />
-    <Compile Include="AST\DefClassEx.cs" />
-    <Compile Include="AST\DefFuncEx.cs" />
-    <Compile Include="AST\DotEx.cs" />
-    <Compile Include="AST\ForEx.cs" />
-    <Compile Include="AST\IfEx.cs" />
-    <Compile Include="AST\IndexEx.cs" />
-    <Compile Include="AST\InvokeEx.cs" />
-    <Compile Include="AST\ListInitEx.cs" />
-    <Compile Include="AST\NameEx.cs" />
     <Compile Include="AST\NodeType.cs" />
     <Compile Include="AST\Parser.cs" />
-    <Compile Include="AST\ReturnEx.cs" />
-    <Compile Include="AST\UnaryEx.cs" />
-    <Compile Include="AST\WhileEx.cs" />
     <Compile Include="DataTypes\DataType.cs" />
     <Compile Include="DataTypes\DynList.cs" />
     <Compile Include="DataTypes\DynValue.cs" />
@@ -76,9 +60,6 @@
     <Compile Include="AST\Visitors\ASTVisitor.cs" />
     <Compile Include="AST\Visitors\LookUpVisitor.cs" />
     <Compile Include="DataTypes\DynDictionary.cs" />
-    <Compile Include="AST\DictionaryInitEx.cs" />
-    <Compile Include="AST\AssignEx.cs" />
-    <Compile Include="AST\SingleIndexEx.cs" />
     <Compile Include="AST\Scopes\ScopeType.cs" />
     <Compile Include="DataTypes\Command.cs" />
     <Compile Include="DataTypes\DynTuple.cs" />
@@ -91,7 +72,6 @@
     <Compile Include="AST\Optimizers\Location.cs" />
     <Compile Include="AST\Optimizers\Symbols.cs" />
     <Compile Include="DataTypes\Closure.cs" />
-    <Compile Include="AST\DefClosureEx.cs" />
     <Compile Include="Libraries\FunctionalProgrammingLibrary.cs" />
     <Compile Include="DataTypes\DynObject.cs" />
     <Compile Include="AST\Scopes\ClassScope.cs" />
@@ -100,15 +80,11 @@
     <Compile Include="DataTypes\Module.cs" />
     <Compile Include="DataTypes\Range.cs" />
     <Compile Include="DataTypes\Interfaces\ICountable.cs" />
-    <Compile Include="AST\ConditionEx.cs" />
-    <Compile Include="AST\RangeEx.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Loaders\CodeFileLoader.cs" />
     <Compile Include="Loaders\CodeStringLoader.cs" />
     <Compile Include="Loaders\Loader.cs" />
     <Compile Include="Loaders\InteractiveLoader.cs" />
-    <Compile Include="AST\DefVarEx.cs" />
-    <Compile Include="AST\LogicalEx.cs" />
     <Compile Include="AST\Visitors\ASTStringBuilder.cs" />
     <Compile Include="Libraries\ConsoleLibrary.cs" />
     <Compile Include="Libraries\DictionaryLibrary.cs" />
@@ -118,6 +94,32 @@
     <Compile Include="Libraries\StringLibrary.cs" />
     <Compile Include="AST\Scopes\ModuleScope.cs" />
     <Compile Include="AST\Scopes\FunctionScope.cs" />
+    <Compile Include="AST\ASTNodes\AssignEx.cs" />
+    <Compile Include="AST\ASTNodes\ASTNode.cs" />
+    <Compile Include="AST\ASTNodes\BinaryEx.cs" />
+    <Compile Include="AST\ASTNodes\BlockEx.cs" />
+    <Compile Include="AST\ASTNodes\ConditionEx.cs" />
+    <Compile Include="AST\ASTNodes\Constant.cs" />
+    <Compile Include="AST\ASTNodes\DefClassEx.cs" />
+    <Compile Include="AST\ASTNodes\DefClosureEx.cs" />
+    <Compile Include="AST\ASTNodes\DefFuncEx.cs" />
+    <Compile Include="AST\ASTNodes\DefVarEx.cs" />
+    <Compile Include="AST\ASTNodes\DictionaryInitEx.cs" />
+    <Compile Include="AST\ASTNodes\DotEx.cs" />
+    <Compile Include="AST\ASTNodes\ForEx.cs" />
+    <Compile Include="AST\ASTNodes\IfEx.cs" />
+    <Compile Include="AST\ASTNodes\IndexEx.cs" />
+    <Compile Include="AST\ASTNodes\InvokeEx.cs" />
+    <Compile Include="AST\ASTNodes\ListInitEx.cs" />
+    <Compile Include="AST\ASTNodes\LogicalEx.cs" />
+    <Compile Include="AST\ASTNodes\NameEx.cs" />
+    <Compile Include="AST\ASTNodes\RangeInitEx.cs" />
+    <Compile Include="AST\ASTNodes\ReturnEx.cs" />
+    <Compile Include="AST\ASTNodes\SingleIndexEx.cs" />
+    <Compile Include="AST\ASTNodes\UnaryEx.cs" />
+    <Compile Include="AST\ASTNodes\WhileEx.cs" />
+    <Compile Include="DataTypes\KeyValuePair.cs" />
+    <Compile Include="AST\ASTNodes\InitEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -127,5 +129,6 @@
     <Folder Include="AST\Interfaces\" />
     <Folder Include="DataTypes\Interfaces\" />
     <Folder Include="AST\Optimizers\" />
+    <Folder Include="AST\ASTNodes\" />
   </ItemGroup>
 </Project>

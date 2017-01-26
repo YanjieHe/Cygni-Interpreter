@@ -1,13 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Cygni.AST.Visitors
 {
     internal abstract class ASTVisitor
     {
-        internal virtual void Visit(BinaryEx binaryEx)
+        internal virtual void VisitBinary(BinaryEx node)
         {
-            binaryEx.Left.Accept(this);
-            binaryEx.Right.Accept(this);
+            node.Left.Accept(this);
+            node.Right.Accept(this);
+        }
+
+        internal virtual void VisitArguments(ASTNode[] arguments)
+        {
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                arguments[i].Accept(this);
+            }
         }
 
         internal virtual void Visit(LogicalEx node)
@@ -23,7 +32,7 @@ namespace Cygni.AST.Visitors
         }
 
 
-        internal virtual void Visit(RangeEx rangeEx)
+        internal virtual void Visit(RangeInitEx rangeEx)
         {
             rangeEx.Start.Accept(this);
             rangeEx.End.Accept(this);
@@ -123,19 +132,9 @@ namespace Cygni.AST.Visitors
                 item.Accept(this);
         }
 
-        internal virtual void Visit(ListInitEx listInitEx)
+        internal virtual void Visit(InitEx node)
         {
-            foreach (var item in listInitEx.Initializers)
-                item.Accept(this);
-        }
-
-        internal virtual void Visit(DictionaryInitEx dictionaryInitEx)
-        {
-            foreach (var item in dictionaryInitEx.Initializers)
-            {
-                item.Key.Accept(this);
-                item.Value.Accept(this);
-            }
+            VisitArguments(node.Arguments);
         }
 
         internal virtual void Visit(NameEx nameEx)

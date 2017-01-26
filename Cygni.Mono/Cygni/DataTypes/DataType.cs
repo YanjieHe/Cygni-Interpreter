@@ -6,33 +6,34 @@ using System;
 
 namespace Cygni.DataTypes
 {
-	public enum DataType: byte
-	{
-		Integer,
-		Number,
-		Boolean,
-		String,
+    public enum DataType: byte
+    {
+        Integer,
+        Number,
+        Boolean,
+        String,
 
-		Function,
-		Closure,
-		NativeFunction,
-		Command,
+        Function,
+        Closure,
+        NativeFunction,
+        Command,
 	
-		List,
-		Dictionary,
-		Tuple,
-		Range,
+        List,
+        Dictionary,
+        Tuple,
+        Range,
+        KeyValuePair,
 
-		Struct,
-		Class,
+        Struct,
+        Class,
 		
-		Nil,
-		Void,
+        Nil,
+        Void,
 		
-		Break,
-		Continue,
-		Return,
+        Break,
+        Continue,
+        Return,
 
-		UserData,
-	}
+        UserData,
+    }
 }

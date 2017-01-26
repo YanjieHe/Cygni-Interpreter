@@ -9,7 +9,7 @@ using Cygni.DataTypes.Interfaces;
 
 namespace Cygni.DataTypes
 {
-    public sealed class Range:IEnumerable<DynValue>
+    public sealed class Range: IEnumerable<DynValue>
     {
         readonly int start;
         readonly int end;
@@ -68,10 +68,21 @@ namespace Cygni.DataTypes
                 }
                 else
                 {
-                    for (int i = start; i < end; i += step)
+                    if (step == 1)
                     {
-                        yield return new DynValue(DataType.Integer, (long)i);
+                        for (int i = start; i < end; i++)
+                        {
+                            yield return new DynValue(DataType.Integer, (long)i);
+                        }
                     }
+                    else
+                    {
+                        for (int i = start; i < end; i += step)
+                        {
+                            yield return new DynValue(DataType.Integer, (long)i);
+                        }
+                    }
+                  
                 }
             }
             else

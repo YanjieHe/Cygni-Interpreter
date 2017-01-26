@@ -10,33 +10,15 @@ using Cygni.Errors;
 
 namespace Cygni.AST
 {
-    public class LogicalEx:ASTNode
+    public class LogicalEx:BinaryEx
     {
-        readonly ASTNode left;
-        readonly ASTNode right;
-        readonly NodeType _type;
-
-        public ASTNode Left{ get { return left; } }
-
-        public ASTNode Right{ get { return right; } }
-
-        public override NodeType type { get { return this._type; } }
-
         public LogicalEx(NodeType type, ASTNode left, ASTNode right)
+            : base(type, left, right)
         {
-            if (type == NodeType.And || type == NodeType.Or)
-            {
-                this._type = type;
-            }
-            else
+            if (type != NodeType.And && type != NodeType.Or)
             {
                 throw new ArgumentException("Node type for logical expression should be 'and' or 'or'.", "type");
             }
-        }
-
-        internal override void Accept(ASTVisitor visitor)
-        {
-            visitor.Visit(this);
         }
 
         public override DynValue Eval(IScope scope)
@@ -88,7 +70,6 @@ namespace Cygni.AST
             {
                 throw new RuntimeException("Wrong argument type for operation '{0}'. Expected boolean type.", this._type);
             }
-                
         }
     }
 }

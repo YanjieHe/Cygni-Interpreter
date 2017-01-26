@@ -53,12 +53,6 @@ namespace Cygni.Libraries
 			}
 		}
 
-		public static DynValue cond (ASTNode[] args, IScope scope)
-		{
-			RuntimeException.CmdArgsCheck (args.Length == 3, "cond");
-			return args [0].Eval (scope).AsBoolean () ? args [1].Eval (scope) : args [2].Eval (scope);
-		}
-
 		public static DynValue assert (ASTNode[] args, IScope scope)
 		{
 			if (GlobalSettings.IsDebug) {

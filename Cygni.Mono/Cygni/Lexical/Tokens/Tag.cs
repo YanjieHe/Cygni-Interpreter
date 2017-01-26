@@ -64,6 +64,7 @@ namespace Cygni.Lexical.Tokens
 		Colon,
 		Semicolon,
 		Dot,
+        RightArrow,
 
 		/* Brackets */
 		LeftParenthesis,
