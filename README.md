@@ -11,7 +11,7 @@ Here are two options.
 The first option is to download the compiled interpreter.
 - Download the program from 
 
-https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono.Test/Cygni_CLI/Cygni_CLI/bin/Release
+[Cygni_CLI](https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono.Test/Cygni_CLI/Cygni_CLI/bin/Release)
 - If you are using windows, just double click the Cygni_CLI.exe. 
 
 - If you are using Linux, you need to install mono environment and input "mono Cygni_CLI.exe" in the terminal.
@@ -20,7 +20,7 @@ https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono.Test/Cygni_CLI/Cygni
 The second option is to compile one by yourself. 
 - Download the Cygni Core from 
 
-https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Release
+[Cygni](https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Mono/Cygni/bin/Release)
 
 - Import the Cygni.dll to your project.
 
@@ -43,7 +43,7 @@ namespace Cygni_CLI
 ```
 
 ## Some tutorial examples
-For more information, see the short reference in https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc/Cygni-short-ref.md
+For more information, see the short reference in [Cygni-short-ref](https://github.com/JasonHe0727/Cygni/tree/master/Cygni.Doc/Cygni-short-ref.md)
 
 ### Factorial
 ``` cygni
