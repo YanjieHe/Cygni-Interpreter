@@ -36,6 +36,7 @@ Cygni is designed by me. I spent a lot of spare time on it, and I love it very m
 - Integer Divide: //
 - Modulo:\%
 - Power: \^{}
+- RightArrow: ->
 - Concatenate: \&
 - assign: =
 - Equals:==
@@ -72,6 +73,7 @@ Variables in Cygni don't have type. Only the values have.
 - function
 - native function: wrapper for C\# native functions
 - tuple
+- key value pair
 - range
 - struct
 - class
@@ -139,12 +141,10 @@ start: end: step
 ```cygni
 [item1, item2, ...]
 ```
-
-
 ## Dictionary Constructor
 Note that dictionary only takes values of integer, boolean, string as keys.
 ```cygni
-{key1: value1, key2:  value2, ...}
+{key1 -> value1, key2 -> value2, ...}
 ```
 
 ## Function Definition
@@ -174,9 +174,15 @@ f(arg1, arg2, ...)
 a = tuple(10, 20)
 ```
 
-## Struct Constructor
+## KeyValuePair Constructor
 ```cygni
-a = struct('key1', value1, 'key2', value2, ...)
+a = key -> value
+```
+## Struct Constructor
+The types of keys of structure can only be string.
+```cygni
+a = struct('key1' -> value1, 'key2' -> value2, ...)
+print(a.key1)
 ```
 
 ## Class Definition
