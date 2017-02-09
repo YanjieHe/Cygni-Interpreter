@@ -25,8 +25,6 @@ namespace Cygni.AST
 
         public BlockEx Body{ get { return body; } }
 
-
-
         public ForEx(BlockEx body, NameEx iterator, ASTNode collection)
         {
             this.iterator = iterator;
@@ -44,8 +42,8 @@ namespace Cygni.AST
 
         public override DynValue Eval(IScope scope)
         {
-            DynValue result = DynValue.Nil;
-            IEnumerable<DynValue> collection = this.collection.Eval(scope).As<IEnumerable<DynValue>>();
+            DynValue result = DynValue.Void;
+            var collection = this.collection.Eval(scope).As<IEnumerable<DynValue>>();
             if (iterator.IsUnknown)
             {
                 foreach (DynValue item in collection)

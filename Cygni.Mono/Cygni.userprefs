@@ -1,36 +1,12 @@
 ﻿<Properties StartupItem="Cygni/Cygni.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/AST/ASTNodes/Constant.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Cygni/Loaders/InteractiveLoader.cs">
     <Files>
-      <File FileName="Cygni/AST/ASTNodes/Constant.cs" Line="15" Column="31" />
+      <File FileName="Cygni/AST/Parser.cs" Line="19" Column="30" />
+      <File FileName="Cygni/AST/ASTNodes/ASTNode.cs" Line="242" Column="37" />
+      <File FileName="Cygni/AST/ASTNodes/IndexAccess.cs" Line="13" Column="38" />
+      <File FileName="Cygni/Loaders/InteractiveLoader.cs" Line="59" Column="46" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Cygni" expanded="True">
-            <Node name="Cygni" expanded="True">
-              <Node name="AST" expanded="True">
-                <Node name="ASTNodes" expanded="True">
-                  <Node name="Constant.cs" selected="True" />
-                </Node>
-                <Node name="Interfaces" expanded="True" />
-                <Node name="Optimizers" expanded="True" />
-                <Node name="Scopes" expanded="True" />
-                <Node name="Visitors" expanded="True" />
-              </Node>
-              <Node name="DataTypes" expanded="True">
-                <Node name="Interfaces" expanded="True" />
-              </Node>
-              <Node name="Extensions" expanded="True" />
-              <Node name="Lexical" expanded="True">
-                <Node name="Tokens" expanded="True" />
-              </Node>
-              <Node name="Libraries" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

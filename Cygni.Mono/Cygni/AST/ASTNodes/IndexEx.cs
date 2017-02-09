@@ -17,7 +17,7 @@ namespace Cygni.AST
     /// <summary>
     /// Description of IndexEx.
     /// </summary>
-    public class IndexEx:ASTNode
+    public class IndexEx:ASTNode, IArgumentProvider
     {
         public override NodeType type{ get { return NodeType.Index; } }
 
@@ -27,6 +27,13 @@ namespace Cygni.AST
         public ASTNode Collection { get { return collection; } }
 
         public ASTNode[] Indexes { get { return indexes; } }
+
+        public int ArgumentCount { get { return this.indexes.Length; } }
+
+        public ASTNode GetArgument(int index)
+        {
+            return this.indexes[index];
+        }
 
         public IndexEx(ASTNode collection, ICollection<ASTNode> indexes)
         {

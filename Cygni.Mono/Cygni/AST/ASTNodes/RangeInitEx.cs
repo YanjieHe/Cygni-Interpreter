@@ -10,9 +10,9 @@ namespace Cygni.AST
 {
     public class RangeInitEx:ASTNode
     {
-        ASTNode start;
-        ASTNode end;
-        ASTNode step;
+        readonly ASTNode start;
+        readonly ASTNode end;
+        readonly ASTNode step;
 
         public ASTNode Start { get { return this.start; } }
 

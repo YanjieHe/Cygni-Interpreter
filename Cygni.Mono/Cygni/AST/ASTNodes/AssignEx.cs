@@ -20,58 +20,33 @@ namespace Cygni.AST
         {
         }
 
-        public override NodeType type { get { return NodeType.Assign; } }
+        protected AssignEx(NodeType type, ASTNode target, ASTNode value)
+            : base(type, target, value)
+        {
+            
+        }
 
         public override DynValue Eval(IScope scope)
         {
-            DynValue value = this.right.Eval(scope);
-            if (value.IsVoid)
+            /*if (value.IsVoid)
             {
                 throw RuntimeException.AssignVoidValue(scope);
+            }*/
+            DynValue value = this.right.Eval(scope);
+            NameEx nameEx = this.left as NameEx;	
+            if (nameEx.IsUnknown)
+            {
+                return scope.Put(nameEx.Name, value);
             }
             else
             {
-                switch (left.type)
-                {
-                    case NodeType.Name:
-                        {
-                            NameEx nameEx = this.left as NameEx;	
-                            if (nameEx.IsUnknown)
-                            {
-                                return scope.Put(nameEx.Name, value);
-                            }
-                            else
-                            {
-                                return scope.Put(nameEx.Nest, nameEx.Index, value);
-                            }
-                        }
-                    case NodeType.SingleIndex:
-                        {
-                            SingleIndexEx indexEx = this.left as SingleIndexEx;
-                            DynValue collection = indexEx.Collection.Eval(scope);
-                            DynValue index = indexEx.Index.Eval(scope);
-                            return collection.As<IIndexable>().SetByIndex(index, value);
-                        }
-                    case NodeType.Index:
-                        {
-                            IndexEx indexEx = this.left as IndexEx;
-                            DynValue collection = indexEx.Collection.Eval(scope);
-                            int n = indexEx.Indexes.Length;
-                            DynValue[] indexes = new DynValue[n];
-                            for (int i = 0; i < n; i++)
-                                indexes[i] = indexEx.Indexes[i].Eval(scope);
-                            return collection.As<IIndexable>().SetByIndexes(indexes, value);
-                        }
-                    case NodeType.Dot:
-                        {
-                            DotEx dotEx = this.left as DotEx;
-                            DynValue target = dotEx.Target.Eval(scope);
-                            return target.As<IDot>().SetByDot(dotEx.FieldName, value);
-                        }
-                    default:
-                        throw RuntimeException.Throw("left side is not assignable.", scope);
-                }
+                return scope.Put(nameEx.Nest, nameEx.Index, value);
             }
+        }
+
+        protected RuntimeException NotAssignable(IScope scope)
+        {
+            return RuntimeException.Throw("left side is not assignable.", scope);
         }
 
         internal override void Accept(ASTVisitor visitor)

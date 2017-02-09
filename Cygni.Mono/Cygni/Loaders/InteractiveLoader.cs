@@ -12,6 +12,7 @@ using Cygni.Lexical.Tokens;
 using System.Text.RegularExpressions;
 using Cygni.AST.Scopes;
 using Cygni.Errors;
+using Mono.Terminal;
 
 namespace Cygni.Loaders
 {
@@ -40,29 +41,35 @@ namespace Cygni.Loaders
             stack = new Stack<Tag>();
         }
 
+        LineEditor editor = new LineEditor("Cygni");
+
         public override void Run()
         {
+            Console.WriteLine("Cygni, version 0.7.0");
+            Console.WriteLine("Copyright (C) 2017 Jason He.");
             this.result = DynValue.Nil;
             for (;;)
             {
+                string prompt = "> ";
                 try
                 {
-                    WriteInCyan("Cygni> ");
-
                     while (true)
                     {
-                        string code = ReadInput();
+                        string line = editor.Edit(prompt, "");
+                        input.AppendLine(line);
+                        string code = input.ToString();
+                        //string code = ReadInput();
                         InteractiveState state = TryParse(code);
 
                         if (state == InteractiveState.Error)
                         {
                             input.Clear();
-                            WriteInCyan("Cygni> ");
+                            prompt = "> ";
                             continue;
                         }
                         else if (state == InteractiveState.Waiting)
                         {
-                            WriteInCyan("     -> ");
+                            prompt = ">> ";
                             continue;
                         }
                         else
@@ -99,10 +106,10 @@ namespace Cygni.Loaders
             return stack.Count != 0 && stack.Peek() == tag;
         }
 
-        void WriteInCyan(string str)
+        void WriteInCyan(string prompt)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write(str);
+            Console.Write(prompt);
             Console.ForegroundColor = ConsoleColor.White;
         }
 

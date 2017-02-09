@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cygni.AST.Interfaces;
 
 namespace Cygni.AST.Visitors
 {
@@ -11,18 +12,18 @@ namespace Cygni.AST.Visitors
             node.Right.Accept(this);
         }
 
-        internal virtual void VisitArguments(ASTNode[] arguments)
+        internal virtual void VisitArguments(IArgumentProvider arguments)
         {
-            for (int i = 0; i < arguments.Length; i++)
+            for (int i = 0; i < arguments.ArgumentCount; i++)
             {
-                arguments[i].Accept(this);
+                arguments.GetArgument(i).Accept(this);
             }
         }
 
-        internal virtual void Visit(LogicalEx node)
+        internal virtual void Visit(SingleIndexEx node)
         {
-            node.Left.Accept(this);
-            node.Right.Accept(this);
+            node.Collection.Accept(this);
+            node.Index.Accept(this);
         }
 
         internal virtual void Visit(AssignEx assignEx)
@@ -30,7 +31,6 @@ namespace Cygni.AST.Visitors
             assignEx.Target.Accept(this);
             assignEx.Value.Accept(this);
         }
-
 
         internal virtual void Visit(RangeInitEx rangeEx)
         {
@@ -72,11 +72,6 @@ namespace Cygni.AST.Visitors
             defFuncEx.Body.Accept(this);
         }
 
-        internal virtual void Visit(DefClosureEx defClosureEx)
-        {
-            defClosureEx.Body.Accept(this);
-        }
-
         internal virtual void Visit(DotEx dotEx)
         {
             dotEx.Target.Accept(this);
@@ -89,52 +84,35 @@ namespace Cygni.AST.Visitors
             forEx.Body.Accept(this);
         }
 
-        internal virtual void Visit(ConditionEx conditionEx)
+        internal virtual void Visit(IfEx node)
         {
-            foreach (Branch branch in conditionEx.Branches)
+            foreach (Branch branch in node.Branches)
             {
                 branch.Condition.Accept(this);
                 branch.Block.Accept(this);
             }
-            if (conditionEx.ElseBlock != null)
+            if (node.ElseBlock != null)
             {
-                conditionEx.ElseBlock.Accept(this);
+                node.ElseBlock.Accept(this);
             }
         }
 
-        internal virtual void Visit(IfEx ifEx)
+        internal virtual void Visit(IndexEx node)
         {
-            ifEx.Condition.Accept(this);
-            ifEx.IfTrue.Accept(this);
-            if (ifEx.IfFalse != null)
-            {
-                ifEx.IfFalse.Accept(this);
-            }
-        }
-
-        internal virtual void Visit(IndexEx indexEx)
-        {
-            indexEx.Collection.Accept(this);
-            foreach (var item in indexEx.Indexes)
-                item.Accept(this);
-        }
-
-        internal virtual void Visit(SingleIndexEx indexEx)
-        {
-            indexEx.Collection.Accept(this);
-            indexEx.Index.Accept(this);
+            node.Collection.Accept(this);
+            VisitArguments(node);
         }
 
         internal virtual void Visit(InvokeEx invokeEx)
         {
-            invokeEx.Func.Accept(this);
+            invokeEx.Function.Accept(this);
             foreach (var item in invokeEx.Arguments)
                 item.Accept(this);
         }
 
         internal virtual void Visit(InitEx node)
         {
-            VisitArguments(node.Arguments);
+            VisitArguments(node);
         }
 
         internal virtual void Visit(NameEx nameEx)

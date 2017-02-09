@@ -136,44 +136,29 @@ namespace Cygni.AST
         ASTNode If()
         {
             Match(Tag.If);
-            ASTNode test = Bool();
-            BlockEx body = Block();
-            if (look.tag == Tag.Else)
-            {
-                Move();
-                return ASTNode.IfThenElse(test, body, Block());
-            }
-            else if (look.tag == Tag.ElseIf)
-            {
-                return Conditions(test, body);
-            }
-            else
-            {
-                return ASTNode.IfThen(test, body);
-            }
-        }
 
-        ASTNode Conditions(ASTNode IfTrue, BlockEx TrueBody)
-        {
-            var conditions_list = new List<ASTNode>();
-            var bodys_list = new List<BlockEx>();
+            var conditions = new List<ASTNode>();
+            var bodys = new List<BlockEx>();
+
+            conditions.Add(Bool());
+            bodys.Add(Block());
             while (look.tag == Tag.ElseIf || look.tag == Tag.Else)
             {
                 if (look.tag == Tag.ElseIf)
                 {
                     Move();
-                    conditions_list.Add(Bool());
-                    bodys_list.Add(Block());
-                    return ASTNode.Conditions(conditions_list.ToArray(), bodys_list.ToArray());
+                    conditions.Add(Bool());
+                    bodys.Add(Block());
                 }
                 else if (look.tag == Tag.Else)
                 {
                     Move();
-                    return ASTNode.Conditions(
-                        conditions_list.ToArray(), bodys_list.ToArray(), Block());
+                    return ASTNode.If(
+                        conditions.ToArray(), bodys.ToArray(), Block());
                 }
             }
-            return ASTNode.Conditions(conditions_list.ToArray(), bodys_list.ToArray());
+            return ASTNode.If(conditions.ToArray(), bodys.ToArray());
+
         }
 
         ASTNode While()
@@ -616,7 +601,7 @@ namespace Cygni.AST
                 }
             }
             Match(Tag.RightBracket);
-            return ASTNode.IndexAccess(collection, indexes);
+            return ASTNode.Indexer(collection, indexes);
         }
 
         ASTNode Parentheses()

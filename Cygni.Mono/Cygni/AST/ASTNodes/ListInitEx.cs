@@ -16,8 +16,6 @@ namespace Cygni.AST
     {
         public override NodeType type { get { return NodeType.ListInit; } }
 
-        public ASTNode[]Initializers{ get { return this.arguments; } }
-
         public ListInitEx(ASTNode[] initializers)
             : base(initializers)
         {
@@ -25,8 +23,8 @@ namespace Cygni.AST
 
         public override DynValue Eval(IScope scope)
         {
-            DynList newList = new DynList(arguments.Length);
-            foreach (ASTNode item in this.arguments)
+            DynList newList = new DynList(initializers.Length);
+            foreach (ASTNode item in this.initializers)
             {
                 newList.Add(item.Eval(scope));
             }

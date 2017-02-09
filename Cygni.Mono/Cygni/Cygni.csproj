@@ -98,7 +98,6 @@
     <Compile Include="AST\ASTNodes\ASTNode.cs" />
     <Compile Include="AST\ASTNodes\BinaryEx.cs" />
     <Compile Include="AST\ASTNodes\BlockEx.cs" />
-    <Compile Include="AST\ASTNodes\ConditionEx.cs" />
     <Compile Include="AST\ASTNodes\Constant.cs" />
     <Compile Include="AST\ASTNodes\DefClassEx.cs" />
     <Compile Include="AST\ASTNodes\DefClosureEx.cs" />
@@ -120,6 +119,11 @@
     <Compile Include="AST\ASTNodes\WhileEx.cs" />
     <Compile Include="DataTypes\KeyValuePair.cs" />
     <Compile Include="AST\ASTNodes\InitEx.cs" />
+    <Compile Include="AST\Interfaces\IArgumentProvider.cs" />
+    <Compile Include="Loaders\getline.cs" />
+    <Compile Include="AST\ASTNodes\IndexAccess.cs" />
+    <Compile Include="AST\ASTNodes\SingleIndexAccess.cs" />
+    <Compile Include="AST\ASTNodes\MemberAccess.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

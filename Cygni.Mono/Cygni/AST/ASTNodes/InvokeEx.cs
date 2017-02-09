@@ -15,31 +15,40 @@ namespace Cygni.AST
     /// <summary>
     /// Description of InvokeEx.
     /// </summary>
-    public class InvokeEx:ASTNode
+    public class InvokeEx:ASTNode, IArgumentProvider
     {
-        protected readonly ASTNode target;
+        readonly ASTNode function;
 
-        protected readonly ASTNode[] arguments;
+        readonly ASTNode[] arguments;
 
-        public ASTNode Func{ get { return target; } }
+
+
+        public ASTNode Function { get { return function; } }
 
         public ASTNode[] Arguments{ get { return arguments; } }
 
         public override  NodeType type { get { return NodeType.Invoke; } }
 
-        public InvokeEx(ASTNode target, ICollection<ASTNode> arguments)
+        public int ArgumentCount { get { return arguments.Length; } }
+
+        public ASTNode GetArgument(int index)
         {
-            this.target = target;
+            return this.arguments[index];
+        }
+
+        public InvokeEx(ASTNode function, ICollection<ASTNode> arguments)
+        {
+            this.function = function;
             this.arguments = new ASTNode[arguments.Count];
             arguments.CopyTo(this.arguments, 0);
         }
 
         public override DynValue Eval(IScope scope)
         {
-            IFunction f = target.Eval(scope).Value as IFunction;
+            IFunction f = function.Eval(scope).Value as IFunction;
             if (f == null)
             {
-                throw new RuntimeException("'{0}' is not a function.", target);
+                throw new RuntimeException("'{0}' is not a function.", Function);
             }
             else
             {

@@ -6,18 +6,26 @@ using System;
 using Cygni.DataTypes;
 using Cygni.AST.Scopes;
 using Cygni.AST.Visitors;
+using Cygni.AST.Interfaces;
 
 namespace Cygni.AST
 {
-    public abstract class InitEx:ASTNode
+    public abstract class InitEx: ASTNode,IArgumentProvider
     {
-        protected readonly ASTNode[] arguments;
+        protected readonly ASTNode[] initializers;
 
-        public ASTNode[] Arguments { get { return this.arguments; } }
+        public ASTNode[] Initializers { get { return this.initializers; } }
 
-        protected InitEx(ASTNode[] arguments)
+        protected InitEx(ASTNode[] initializers)
         {
-            this.arguments = arguments;
+            this.initializers = initializers;
+        }
+
+        public int ArgumentCount { get { return this.initializers.Length; } }
+
+        public ASTNode GetArgument(int index)
+        {
+            return this.initializers[index];
         }
 
         internal override void Accept(ASTVisitor visitor)

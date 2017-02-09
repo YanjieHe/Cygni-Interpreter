@@ -32,7 +32,22 @@ namespace Cygni.AST
 
         public static ASTNode Assign(ASTNode left, ASTNode right)
         {
-            return new AssignEx(left, right);
+            if (left is SingleIndexEx)
+            {
+                return new SingleIndexAccess(left, right);
+            }
+            else if (left is IndexEx)
+            {
+                return new IndexAccess(left, right);
+            }
+            else if (left is DotEx)
+            {
+                return new MemberAccess(left, right);
+            }
+            else
+            {
+                return new AssignEx(left, right);
+            }
         }
 
         public static ASTNode RangeInit(ASTNode start, ASTNode end, ASTNode step = null)
@@ -178,24 +193,14 @@ namespace Cygni.AST
             return new BlockEx(expressions);
         }
 
-        public static ASTNode IfThen(ASTNode condition, ASTNode  IfTrue)
-        {
-            return new IfEx(condition, IfTrue, null);
-        }
-
-        public static ASTNode IfThenElse(ASTNode condition, ASTNode  IfTrue, ASTNode  IfFalse)
-        {
-            return new IfEx(condition, IfTrue, IfFalse);
-        }
-
-        public static ASTNode Conditions(ASTNode[] conditions, BlockEx[] blocks, BlockEx elseBlock = null)
+        public static ASTNode If(ASTNode[] conditions, BlockEx[] blocks, BlockEx elseBlock = null)
         {
             Branch[] branches = new Branch[conditions.Length];
             for (int i = 0; i < branches.Length; i++)
             {
                 branches[i] = new Branch(conditions[i], blocks[i]);
             }
-            return new ConditionEx(branches, elseBlock);
+            return new IfEx(branches, elseBlock);
         }
 
         public static ASTNode While(ASTNode condition, BlockEx  body)
@@ -234,7 +239,7 @@ namespace Cygni.AST
             return new DictionaryInitEx(initializers);
         }
 
-        public static ASTNode IndexAccess(ASTNode collection, List<ASTNode>indexes)
+        public static ASTNode Indexer(ASTNode collection, List<ASTNode>indexes)
         {
             if (indexes.Count == 1)
             {

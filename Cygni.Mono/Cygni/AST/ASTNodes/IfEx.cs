@@ -9,38 +9,73 @@ using Cygni.AST.Visitors;
 
 namespace Cygni.AST
 {
-	/// <summary>
-	/// Description of IfEx.
-	/// </summary>
-	public class IfEx:ASTNode
-	{
-		ASTNode condition;
-		ASTNode ifTrue;
-		ASTNode ifFalse;
-		public ASTNode Condition { get { return condition; } }
-		public ASTNode IfTrue { get { return ifTrue; } }
-		public ASTNode IfFalse { get { return ifFalse; } }
+    /// <summary>
+    /// Description of IfEx.
+    /// </summary>
+    public class IfEx:ASTNode
+    {
+        Branch[] branches;
+        BlockEx elseBlock;
 
-        public bool HasElsePart { get { return this.ifFalse != null; } }
+        public Branch[] Branches { get { return this.branches; } }
 
-		public override NodeType type { get { return NodeType.If; } }
-		
-		public IfEx(ASTNode condition, ASTNode ifTrue, ASTNode ifFalse)
-		{
-			this.condition = condition;
-			this.ifTrue = ifTrue;
-			this.ifFalse = ifFalse;
-		}
-		public override DynValue Eval(IScope scope)
-		{
-			if ((bool)condition.Eval(scope).Value)
-				return ifTrue.Eval(scope);
-			return ifFalse == null ? DynValue.Nil : ifFalse.Eval(scope);
-		}
+        public BlockEx ElseBlock { get { return this.elseBlock; } }
 
-		internal override void Accept (ASTVisitor visitor)
-		{
-			visitor.Visit (this);
-		}
-	}
+        public bool HasElsePart { get { return this.elseBlock != null; } }
+
+        public IfEx(Branch[] branches, BlockEx elseBlock = null)
+        {
+            this.branches = branches;
+            this.elseBlock = elseBlock;
+        }
+
+        public override NodeType type
+        {
+            get
+            {
+                return NodeType.Condition;
+            }
+        }
+
+        internal override void Accept(ASTVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
+        public override DynValue Eval(IScope scope)
+        {
+            foreach (Branch branch in branches)
+            {
+                bool test = branch.Condition.Eval(scope).AsBoolean();
+                if (test)
+                {
+                    return branch.Block.Eval(scope);
+                }
+            }
+            if (HasElsePart)
+            {
+                return elseBlock.Eval(scope);
+            }
+            else
+            {
+                return DynValue.Void;
+            }
+        }
+    }
+
+    public sealed class Branch
+    {
+        ASTNode condition;
+        BlockEx block;
+
+        public ASTNode Condition { get { return this.condition; } }
+
+        public ASTNode Block{ get { return this.block; } }
+
+        public Branch(ASTNode condition, BlockEx block)
+        {
+            this.condition = condition;
+            this.block = block;
+        }
+    }
 }

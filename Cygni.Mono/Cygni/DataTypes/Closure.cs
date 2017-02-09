@@ -65,8 +65,9 @@ namespace Cygni.DataTypes
 
         public DynValue DynEval(ASTNode[] args, IScope scope)
         {
-            if (args.Length > nArgs)
+            if (args.Length > nArgs) {
                 throw RuntimeException.BadArgsNum("Anonymous Function", nArgs);
+			}
             DynValue[] values = new DynValue[funcScope.Count];
             int i = 0;
             while (i < args.Length)

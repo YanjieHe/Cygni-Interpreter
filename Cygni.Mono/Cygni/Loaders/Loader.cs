@@ -28,6 +28,7 @@ namespace Cygni.Loaders
 
         protected void HandleException(Exception ex)
         {
+            ConsoleColor current = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             if (GlobalSettings.CompleteErrorOutput)
             {
@@ -37,6 +38,7 @@ namespace Cygni.Loaders
             {
                 Console.WriteLine("error: {0}", ex.Message);
             }
+            Console.ForegroundColor = current;
         }
     }
 }

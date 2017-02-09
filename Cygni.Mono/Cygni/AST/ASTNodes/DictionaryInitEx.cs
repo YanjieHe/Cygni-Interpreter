@@ -13,8 +13,6 @@ namespace Cygni.AST
     {
         public override NodeType type { get { return NodeType.DictionaryInit; } }
 
-        public ASTNode[] Initializers { get { return this.arguments; } }
-
         public DictionaryInitEx(ASTNode[]  initializers)
             : base(initializers)
         {
@@ -22,8 +20,8 @@ namespace Cygni.AST
 
         public override DynValue Eval(IScope scope)
         {
-            DynDictionary dict = new DynDictionary(arguments.Length);
-            foreach (ASTNode item in arguments)
+            DynDictionary dict = new DynDictionary(initializers.Length);
+            foreach (ASTNode item in initializers)
             {
                 KeyValuePair pair = item.Eval(scope).As<KeyValuePair>();
                 dict.Add(pair.Key, pair.Value);

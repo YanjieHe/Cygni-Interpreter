@@ -30,7 +30,12 @@ namespace Cygni.AST
         DictionaryInit,
         Index,
         SingleIndex,
+
         Assign,
+        IndexAccess,
+        SingleIndexAccess,
+        MemberAccess,
+
         Local,
         Global,
         Unpack,
